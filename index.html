@@ -185,6 +185,7 @@
             min-height: 100vh;
             line-height: 1.6;
             transition: var(--transition);
+            font-size: 16px;
         }
 
         /* Dark Mode Styles */
@@ -197,7 +198,7 @@
         header {
             background: var(--gradient);
             color: white;
-            padding: 1rem 2rem;
+            padding: 1rem;
             position: fixed;
             top: 0;
             width: 100%;
@@ -217,16 +218,18 @@
         }
 
         .logo h1 {
-            font-size: 1.8rem;
+            font-size: 1.2rem;
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
+            gap: 0.2rem;
+            text-align: right;
+            line-height: 1.3;
         }
 
         .welcome-text {
             color: var(--accent-color);
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 0.8rem;
             letter-spacing: 0.5px;
         }
 
@@ -238,15 +241,17 @@
             background: rgba(255, 255, 255, 0.15);
             color: white;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 0.7rem 1.5rem;
+            padding: 0.5rem 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.3rem;
             backdrop-filter: blur(5px);
+            font-size: 0.8rem;
+            white-space: nowrap;
         }
 
         .admin-login-btn:hover {
@@ -259,16 +264,16 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem;
         }
 
         /* شێوازی نوێ بۆ Search Section */
         .search-section {
             background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
+            padding: 1.5rem;
+            border-radius: 15px;
             box-shadow: var(--shadow);
-            margin: 6rem auto 3rem;
+            margin: 5rem auto 2rem;
             max-width: 900px;
             position: relative;
             overflow: hidden;
@@ -286,7 +291,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 4px;
             background: var(--gradient);
         }
 
@@ -297,16 +302,16 @@
         .search-box {
             width: 100%;
             position: relative;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .search-box input {
             width: 100%;
-            padding: 1.2rem 1.5rem;
-            padding-right: 3.5rem;
+            padding: 1rem;
+            padding-right: 3rem;
             border: 2px solid var(--gray-color);
-            border-radius: 15px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1rem;
             transition: var(--transition);
             background: var(--light-color);
             color: var(--text-color);
@@ -331,11 +336,11 @@
 
         .search-box i {
             position: absolute;
-            right: 1.5rem;
+            right: 1rem;
             top: 50%;
             transform: translateY(-50%);
             color: var(--secondary-color);
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         body.dark-mode .search-box i {
@@ -351,10 +356,10 @@
             background: var(--gradient);
             color: white;
             border: none;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             margin-bottom: 1rem;
             transition: var(--transition);
@@ -382,10 +387,10 @@
             display: none;
             background: white;
             border: 2px solid var(--gray-color);
-            border-radius: 15px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 1rem;
             margin-top: 1rem;
-            max-height: 350px;
+            max-height: 300px;
             overflow-y: auto;
             box-shadow: var(--shadow);
             animation: fadeIn 0.3s ease;
@@ -405,18 +410,19 @@
 
         .genre-list.active {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 0.5rem;
         }
 
         .genre-item {
-            padding: 1rem;
+            padding: 0.8rem;
             cursor: pointer;
-            border-radius: 10px;
+            border-radius: 8px;
             text-align: center;
             transition: var(--transition);
             background: var(--light-color);
             border: 1px solid transparent;
+            font-size: 0.9rem;
         }
 
         body.dark-mode .genre-item {
@@ -451,18 +457,18 @@
 
         /* شێوازی نوێ بۆ Books Section */
         .books-section {
-            margin: 4rem 0;
+            margin: 3rem 0;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .section-header h2 {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             color: var(--primary-color);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             position: relative;
             display: inline-block;
         }
@@ -474,11 +480,11 @@
         .section-header h2::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
+            width: 60px;
+            height: 3px;
             background: var(--gradient-accent);
             border-radius: 2px;
         }
@@ -489,7 +495,7 @@
 
         .section-header p {
             color: #666;
-            font-size: 1.1rem;
+            font-size: 1rem;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -498,21 +504,25 @@
             color: #cbd5e1;
         }
 
+        /* دەستکاری: کتێبەکان بکە 2 ڕیز ستوونی لە سەر مۆبایل */
         .books-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            padding: 1rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 0.5rem;
         }
 
         .book-card {
             background: white;
-            border-radius: 20px;
+            border-radius: 15px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
             cursor: pointer;
             position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         body.dark-mode .book-card {
@@ -521,7 +531,7 @@
         }
 
         .book-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-hover);
         }
 
@@ -535,7 +545,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 4px;
             background: var(--gradient);
         }
 
@@ -545,7 +555,7 @@
 
         .book-image {
             width: 100%;
-            height: 300px;
+            height: 180px;
             object-fit: cover;
             transition: transform 0.5s ease;
             position: relative;
@@ -556,20 +566,23 @@
         }
 
         .book-info {
-            padding: 1.5rem;
+            padding: 1rem;
             position: relative;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         /* دەستکاری بوون بۆ ژانەری سەر کتێبەکان */
         .book-badge {
             position: absolute;
-            top: 15px;
-            left: 15px;
+            top: 10px;
+            left: 10px;
             background: rgba(15, 76, 117, 0.95);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
             font-weight: 600;
             z-index: 100;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
@@ -584,10 +597,15 @@
 
         .book-title {
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             color: var(--dark-color);
-            font-size: 1.2rem;
-            line-height: 1.4;
+            font-size: 1rem;
+            line-height: 1.3;
+            height: 2.6em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
 
         body.dark-mode .book-title {
@@ -596,9 +614,9 @@
 
         .book-genre {
             color: var(--secondary-color);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
 
         body.dark-mode .book-genre {
@@ -608,20 +626,20 @@
         /* دوگمەی زیادکردنی کتێب بۆ لیستی دڵخوازەکان */
         .add-to-wishlist-btn {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background: rgba(255, 255, 255, 0.9);
             color: var(--danger-color);
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1rem;
             z-index: 100;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
@@ -677,13 +695,13 @@
 
         .modal-content {
             background: white;
-            border-radius: 25px;
-            width: 90%;
-            max-width: 800px;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 500px;
             max-height: 85vh;
             overflow-y: auto;
             position: relative;
-            padding: 2.5rem;
+            padding: 1.5rem;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
             animation: modalSlideIn 0.4s ease;
             transition: var(--transition);
@@ -700,19 +718,20 @@
 
         .close-modal {
             position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            font-size: 1.8rem;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
             cursor: pointer;
             color: var(--secondary-color);
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             transition: var(--transition);
             background: var(--light-color);
+            z-index: 1101;
         }
 
         body.dark-mode .close-modal {
@@ -731,15 +750,17 @@
         }
 
         .book-details {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
             align-items: start;
         }
 
         .book-details img {
             width: 100%;
-            border-radius: 15px;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
             box-shadow: var(--shadow);
         }
 
@@ -749,8 +770,8 @@
 
         .book-details h2 {
             color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.5rem;
         }
 
         body.dark-mode .book-details h2 {
@@ -758,9 +779,10 @@
         }
 
         .book-details p {
-            margin-bottom: 1rem;
-            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
             color: #555;
+            font-size: 0.95rem;
         }
 
         body.dark-mode .book-details p {
@@ -779,12 +801,12 @@
             background: var(--gradient);
             color: white;
             border: none;
-            padding: 1rem 2rem;
+            padding: 0.9rem 1.5rem;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             width: 100%;
             transition: var(--transition);
             display: flex;
@@ -811,10 +833,10 @@
             background: linear-gradient(135deg, #f56565 0%, #ed8936 100%);
             color: white;
             border: none;
-            padding: 1rem 2rem;
+            padding: 0.9rem 1.5rem;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             margin-top: 1rem;
             width: 100%;
@@ -848,15 +870,15 @@
 
         /* شێوازی نوێ بۆ Forms */
         .form-group {
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.7rem;
+            margin-bottom: 0.5rem;
             font-weight: 600;
             color: var(--dark-color);
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         body.dark-mode .form-group label {
@@ -865,10 +887,10 @@
 
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 1rem 1.2rem;
+            padding: 0.8rem 1rem;
             border: 2px solid var(--gray-color);
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             transition: var(--transition);
             background: var(--light-color);
             color: var(--text-color);
@@ -897,23 +919,24 @@
 
         .form-buttons {
             display: flex;
-            gap: 1rem;
-            margin-top: 2.5rem;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 2rem;
         }
 
         .submit-btn, .cancel-btn {
-            padding: 1rem 2rem;
+            padding: 0.9rem 1.5rem;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             border: none;
-            flex: 1;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            width: 100%;
         }
 
         .submit-btn {
@@ -952,25 +975,25 @@
         /* شێوازی نوێ بۆ Admin Panel */
         .admin-actions {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .admin-action-btn {
             background: var(--gradient);
             color: white;
             border: none;
-            padding: 1.2rem;
-            border-radius: 15px;
+            padding: 1rem;
+            border-radius: 12px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             box-shadow: var(--shadow);
         }
 
@@ -997,11 +1020,12 @@
 
         .admin-table-container {
             background: white;
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 15px;
+            padding: 1rem;
             box-shadow: var(--shadow);
-            overflow: hidden;
+            overflow-x: auto;
             transition: var(--transition);
+            margin-bottom: 2rem;
         }
 
         body.dark-mode .admin-table-container {
@@ -1013,9 +1037,10 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            min-width: 600px;
         }
 
         body.dark-mode .admin-table {
@@ -1025,10 +1050,11 @@
         .admin-table th {
             background: var(--gradient);
             color: white;
-            padding: 1.2rem;
+            padding: 1rem;
             text-align: right;
             font-weight: 600;
             border: none;
+            font-size: 0.9rem;
         }
 
         body.dark-mode .admin-table th {
@@ -1036,11 +1062,12 @@
         }
 
         .admin-table td {
-            padding: 1.2rem;
+            padding: 0.8rem;
             text-align: right;
             border-bottom: 1px solid var(--gray-color);
             background: white;
             transition: var(--transition);
+            font-size: 0.85rem;
         }
 
         body.dark-mode .admin-table td {
@@ -1062,17 +1089,17 @@
         }
 
         .action-btn {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
-            margin-left: 0.5rem;
+            margin-left: 0.3rem;
             transition: var(--transition);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.2rem;
         }
 
         .edit-btn {
@@ -1152,9 +1179,9 @@
         }
 
         .status-badge {
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
             font-weight: 600;
             display: inline-block;
         }
@@ -1192,11 +1219,11 @@
         /* شێوازی نوێ بۆ Login Box */
         .login-box {
             background: white;
-            padding: 3rem;
-            border-radius: 25px;
+            padding: 2rem;
+            border-radius: 20px;
             box-shadow: var(--shadow);
-            width: 90%;
-            max-width: 450px;
+            width: 95%;
+            max-width: 400px;
             position: relative;
             overflow: hidden;
             transition: var(--transition);
@@ -1213,7 +1240,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 4px;
             background: var(--gradient);
         }
 
@@ -1224,8 +1251,8 @@
         .login-box h2 {
             text-align: center;
             color: var(--primary-color);
-            margin-bottom: 2.5rem;
-            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
         }
 
         body.dark-mode .login-box h2 {
@@ -1235,12 +1262,13 @@
         .error-message {
             background: #FED7D7;
             color: #C53030;
-            padding: 1rem;
-            border-radius: 10px;
+            padding: 0.8rem;
+            border-radius: 8px;
             text-align: center;
             margin-top: 1rem;
             display: none;
             font-weight: 500;
+            font-size: 0.9rem;
         }
 
         body.dark-mode .error-message {
@@ -1253,10 +1281,11 @@
             background: var(--dark-color);
             color: white;
             text-align: center;
-            padding: 3rem 2rem;
-            margin-top: 6rem;
+            padding: 2rem 1rem;
+            margin-top: 4rem;
             position: relative;
             transition: var(--transition);
+            font-size: 0.9rem;
         }
 
         body.dark-mode footer {
@@ -1270,7 +1299,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 4px;
             background: var(--gradient);
         }
 
@@ -1281,6 +1310,7 @@
         footer p {
             margin: 0.5rem 0;
             color: #CBD5E0;
+            font-size: 0.9rem;
         }
 
         .footer-content {
@@ -1291,10 +1321,10 @@
         /* شێوازی نوێ بۆ Registration Form */
         .registration-form {
             background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
+            padding: 1.5rem;
+            border-radius: 15px;
             box-shadow: var(--shadow);
-            margin-top: 3rem;
+            margin-top: 2rem;
             display: none;
             position: relative;
             overflow: hidden;
@@ -1312,7 +1342,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 4px;
             background: var(--gradient);
         }
 
@@ -1328,14 +1358,15 @@
         .confirmation-message {
             background: #C6F6D5;
             color: #065F46;
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
             text-align: center;
             display: none;
             font-weight: 500;
-            border-left: 5px solid #38A169;
+            border-left: 4px solid #38A169;
             transition: var(--transition);
+            font-size: 0.9rem;
         }
 
         body.dark-mode .confirmation-message {
@@ -1352,7 +1383,7 @@
         /* شێوازی نوێ بۆ Loading */
         .loading {
             text-align: center;
-            padding: 4rem;
+            padding: 3rem 1rem;
             color: var(--primary-color);
         }
 
@@ -1361,13 +1392,13 @@
         }
 
         .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid var(--gray-color);
-            border-top: 4px solid var(--secondary-color);
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--gray-color);
+            border-top: 3px solid var(--secondary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 1rem;
         }
 
         body.dark-mode .loading-spinner {
@@ -1383,18 +1414,19 @@
         /* شێوازی نوێ بۆ Notifications */
         .notification {
             position: fixed;
-            top: 100px;
-            right: 30px;
-            padding: 1.2rem 1.8rem;
-            border-radius: 15px;
+            top: 80px;
+            right: 15px;
+            padding: 1rem;
+            border-radius: 12px;
             color: white;
             z-index: 2000;
             animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
+            gap: 0.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            font-size: 0.9rem;
         }
 
         @keyframes slideIn {
@@ -1404,318 +1436,27 @@
 
         .success-notification {
             background: var(--success-color);
-            border-left: 5px solid #2C7A7B;
+            border-left: 4px solid #2C7A7B;
         }
 
         .error-notification {
             background: var(--danger-color);
-            border-left: 5px solid #C53030;
+            border-left: 4px solid #C53030;
         }
 
         .warning-notification {
             background: var(--warning-color);
-            border-left: 5px solid #DD6B20;
-        }
-
-        /* شێوازی نوێ بۆ Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            header {
-                padding: 1rem;
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-            
-            .logo h1 {
-                font-size: 1.4rem;
-            }
-            
-            .welcome-text {
-                font-size: 0.9rem;
-            }
-            
-            .admin-login-btn {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.9rem;
-            }
-            
-            .search-section {
-                padding: 1.5rem;
-                margin-top: 8rem;
-            }
-            
-            .search-box input {
-                padding: 1rem 1.2rem;
-                padding-right: 3rem;
-                font-size: 1rem;
-            }
-            
-            .genre-btn {
-                padding: 0.8rem 1.5rem;
-                font-size: 1rem;
-            }
-            
-            .genre-list.active {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .books-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 1rem;
-                padding: 0.5rem;
-            }
-            
-            .book-card {
-                border-radius: 15px;
-            }
-            
-            .book-image {
-                height: 200px;
-            }
-            
-            .book-info {
-                padding: 1rem;
-            }
-            
-            .book-title {
-                font-size: 1rem;
-            }
-            
-            .book-genre {
-                font-size: 0.8rem;
-            }
-            
-            .section-header h2 {
-                font-size: 1.8rem;
-            }
-            
-            .section-header p {
-                font-size: 1rem;
-            }
-            
-            /* دەستکاری: ئامارەکان بکە یەک ڕیز لەسەر مۆبایل */
-            .stats-container {
-                grid-template-columns: 1fr !important;
-                gap: 1rem;
-            }
-            
-            .stat-card {
-                padding: 1.5rem;
-            }
-            
-            .stat-number {
-                font-size: 2rem;
-            }
-            
-            .stat-label {
-                font-size: 0.8rem;
-            }
-            
-            .admin-actions {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .admin-action-btn {
-                padding: 1rem;
-                font-size: 0.9rem;
-            }
-            
-            .modal-content {
-                padding: 1.5rem;
-                width: 95%;
-            }
-            
-            .book-details {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .book-details h2 {
-                font-size: 1.5rem;
-            }
-            
-            .form-buttons {
-                flex-direction: column;
-                gap: 0.8rem;
-            }
-            
-            .submit-btn, .cancel-btn {
-                padding: 0.8rem 1.5rem;
-                font-size: 0.9rem;
-            }
-            
-            /* تابلەکان */
-            .admin-table-container {
-                padding: 1rem;
-                overflow-x: auto;
-            }
-            
-            .admin-table {
-                font-size: 0.8rem;
-            }
-            
-            .admin-table th,
-            .admin-table td {
-                padding: 0.8rem;
-            }
-            
-            .action-btn {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.8rem;
-                margin-left: 0.3rem;
-            }
-            
-            /* لیستی دڵخوازەکان */
-            .wishlist-sidebar {
-                width: 100%;
-                right: -100%;
-            }
-            
-            .wishlist-toggle {
-                bottom: 160px;
-                left: 15px;
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-            
-            .dark-mode-toggle {
-                bottom: 90px;
-                left: 15px;
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-            
-            .wishlist-item {
-                padding: 0.8rem;
-                gap: 0.8rem;
-            }
-            
-            .wishlist-item-image {
-                width: 50px;
-                height: 65px;
-            }
-            
-            .wishlist-item-title {
-                font-size: 0.85rem;
-            }
-            
-            .wishlist-item-author {
-                font-size: 0.75rem;
-            }
-            
-            /* Footer */
-            footer {
-                padding: 2rem 1rem;
-                margin-top: 4rem;
-            }
-            
-            footer h3 {
-                font-size: 1.2rem;
-            }
-            
-            footer p {
-                font-size: 0.9rem;
-            }
-            
-            /* داڕشاوەکان بۆ تابلەکان */
-            .admin-table th:nth-child(1),
-            .admin-table td:nth-child(1),
-            .admin-table th:nth-child(6),
-            .admin-table td:nth-child(6),
-            .admin-table th:nth-child(7),
-            .admin-table td:nth-child(7),
-            .admin-table th:nth-child(8),
-            .admin-table td:nth-child(8) {
-                display: none;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .books-grid {
-                grid-template-columns: 1fr !important;
-            }
-            
-            .genre-list.active {
-                grid-template-columns: 1fr;
-            }
-            
-            .section-header h2 {
-                font-size: 1.5rem;
-            }
-            
-            .section-header p {
-                font-size: 0.9rem;
-            }
-            
-            .admin-table th:nth-child(3),
-            .admin-table td:nth-child(3),
-            .admin-table th:nth-child(4),
-            .admin-table td:nth-child(4) {
-                display: none;
-            }
-            
-            .book-details h2 {
-                font-size: 1.3rem;
-            }
-            
-            .modal-content {
-                padding: 1.2rem;
-            }
-            
-            .search-section {
-                margin-top: 10rem;
-            }
-            
-            .logo h1 {
-                font-size: 1.2rem;
-            }
-            
-            .welcome-text {
-                font-size: 0.8rem;
-            }
-        }
-
-        @media (max-width: 320px) {
-            .container {
-                padding: 0.8rem;
-            }
-            
-            .search-section {
-                padding: 1.2rem;
-            }
-            
-            .books-grid {
-                gap: 0.8rem;
-            }
-            
-            .book-image {
-                height: 180px;
-            }
-            
-            .stat-card {
-                padding: 1.2rem;
-            }
-            
-            .stat-number {
-                font-size: 1.8rem;
-            }
+            border-left: 4px solid #DD6B20;
         }
 
         /* شێوازی نوێ بۆ Scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
             background: var(--gray-color);
-            border-radius: 5px;
+            border-radius: 4px;
         }
 
         body.dark-mode ::-webkit-scrollbar-track {
@@ -1724,7 +1465,7 @@
 
         ::-webkit-scrollbar-thumb {
             background: var(--secondary-color);
-            border-radius: 5px;
+            border-radius: 4px;
         }
 
         body.dark-mode ::-webkit-scrollbar-thumb {
@@ -1742,28 +1483,30 @@
         /* شێوازی نوێ بۆ Animations */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-5px); }
         }
 
         .floating {
             animation: float 3s ease-in-out infinite;
         }
 
-        /* شێوازی نوێ بۆ Cards Statistics */
+        /* دەستکاری: ئامارەکان بکە یەک ڕیز لەسەر مۆبایل */
         .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .stat-card {
             background: white;
-            padding: 2rem;
-            border-radius: 15px;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
             box-shadow: var(--shadow);
             text-align: center;
             transition: var(--transition);
+            flex: 1;
+            min-width: 0;
         }
 
         body.dark-mode .stat-card {
@@ -1772,7 +1515,7 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
         }
 
@@ -1781,10 +1524,10 @@
         }
 
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--primary-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
 
         body.dark-mode .stat-number {
@@ -1793,9 +1536,9 @@
 
         .stat-label {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         body.dark-mode .stat-label {
@@ -1805,7 +1548,7 @@
         /* شێوازی نوێ بۆ Empty State */
         .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 3rem 1rem;
             color: #718096;
         }
 
@@ -1814,9 +1557,9 @@
         }
 
         .empty-state i {
-            font-size: 4rem;
+            font-size: 3rem;
             color: #CBD5E0;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         body.dark-mode .empty-state i {
@@ -1824,8 +1567,8 @@
         }
 
         .empty-state h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
             color: #4A5568;
         }
 
@@ -1836,10 +1579,12 @@
         /* شێوازی نوێ بۆ Tabs */
         .tabs {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
+            gap: 0.3rem;
+            margin-bottom: 1.5rem;
             border-bottom: 2px solid var(--gray-color);
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.3rem;
+            overflow-x: auto;
+            white-space: nowrap;
         }
 
         body.dark-mode .tabs {
@@ -1847,14 +1592,16 @@
         }
 
         .tab-btn {
-            padding: 0.8rem 1.5rem;
+            padding: 0.6rem 1rem;
             background: none;
             border: none;
-            border-radius: 10px 10px 0 0;
+            border-radius: 8px 8px 0 0;
             cursor: pointer;
             font-weight: 600;
             color: #718096;
             transition: var(--transition);
+            font-size: 0.85rem;
+            flex-shrink: 0;
         }
 
         body.dark-mode .tab-btn {
@@ -1883,9 +1630,9 @@
         /* شێوازی نوێ بۆ Badge */
         .badge {
             display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -1930,8 +1677,8 @@
             background: white;
             border: 2px solid var(--gray-color);
             border-top: none;
-            border-radius: 0 0 15px 15px;
-            max-height: 200px;
+            border-radius: 0 0 12px 12px;
+            max-height: 150px;
             overflow-y: auto;
             display: none;
             z-index: 100;
@@ -1951,10 +1698,11 @@
         }
         
         .suggestion-item {
-            padding: 0.8rem 1.5rem;
+            padding: 0.6rem 1rem;
             cursor: pointer;
             border-bottom: 1px solid var(--gray-color);
             transition: var(--transition);
+            font-size: 0.9rem;
         }
 
         body.dark-mode .suggestion-item {
@@ -1974,17 +1722,18 @@
         }
 
         /* ====== DARK MODE TOGGLE BUTTON ====== */
+        /* دەستکاری: بچووک بکەرەوە */
         .dark-mode-toggle {
             position: fixed;
-            bottom: 90px;
-            left: 20px;
-            width: 56px;
-            height: 56px;
+            bottom: 80px;
+            left: 15px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             border: none;
             background: var(--primary-color);
             color: white;
-            font-size: 22px;
+            font-size: 18px;
             cursor: pointer;
             box-shadow: var(--shadow);
             transition: transform 0.2s, background 0.3s;
@@ -2007,18 +1756,21 @@
         }
 
         /* ====== WISHLIST SIDEBAR ====== */
+        /* دەستکاری: هەتا نیوەی شاشە و چووکییەکە */
         .wishlist-sidebar {
             position: fixed;
             top: 0;
-            right: -400px;
-            width: 380px;
-            height: 100vh;
+            right: -100%;
+            width: 100%;
+            height: 50vh;
+            max-height: 400px;
             background: white;
             z-index: 1500;
             transition: var(--transition);
             box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
+            border-radius: 20px 0 0 20px;
         }
 
         body.dark-mode .wishlist-sidebar {
@@ -2033,10 +1785,11 @@
         .wishlist-header {
             background: var(--gradient);
             color: white;
-            padding: 1.5rem;
+            padding: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 20px 0 0 0;
         }
 
         body.dark-mode .wishlist-header {
@@ -2045,7 +1798,7 @@
 
         .wishlist-header h3 {
             margin: 0;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -2055,10 +1808,10 @@
             background: none;
             border: none;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2073,12 +1826,12 @@
         .wishlist-content {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         .wishlist-empty {
             text-align: center;
-            padding: 3rem 1rem;
+            padding: 2rem 1rem;
             color: #718096;
         }
 
@@ -2089,12 +1842,12 @@
         .wishlist-item {
             display: flex;
             align-items: center;
-            padding: 1rem;
-            border-radius: 10px;
+            padding: 0.8rem;
+            border-radius: 8px;
             background: var(--light-color);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             transition: var(--transition);
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         body.dark-mode .wishlist-item {
@@ -2102,31 +1855,39 @@
         }
 
         .wishlist-item:hover {
-            transform: translateX(-5px);
+            transform: translateX(-3px);
             box-shadow: var(--shadow);
         }
 
         .wishlist-item-image {
-            width: 60px;
-            height: 80px;
+            width: 50px;
+            height: 65px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 6px;
+            flex-shrink: 0;
         }
 
         .wishlist-item-info {
             flex: 1;
+            min-width: 0;
         }
 
         .wishlist-item-title {
             font-weight: 600;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .wishlist-item-author {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #666;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         body.dark-mode .wishlist-item-author {
@@ -2135,7 +1896,7 @@
 
         .wishlist-item-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         .wishlist-remove-btn {
@@ -2143,14 +1904,15 @@
             border: none;
             color: var(--danger-color);
             cursor: pointer;
-            font-size: 1rem;
-            width: 30px;
-            height: 30px;
+            font-size: 0.9rem;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             transition: var(--transition);
+            flex-shrink: 0;
         }
 
         .wishlist-remove-btn:hover {
@@ -2165,11 +1927,12 @@
             background: var(--gradient);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: var(--transition);
+            flex-shrink: 0;
         }
 
         body.dark-mode .wishlist-borrow-btn {
@@ -2182,17 +1945,18 @@
         }
 
         /* ====== WISHLIST TOGGLE BUTTON ====== */
+        /* دەستکاری: بچووک بکەرەوە */
         .wishlist-toggle {
             position: fixed;
-            bottom: 160px;
-            left: 20px;
-            width: 56px;
-            height: 56px;
+            bottom: 140px;
+            left: 15px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             border: none;
             background: linear-gradient(135deg, #f56565 0%, #ed8936 100%);
             color: white;
-            font-size: 22px;
+            font-size: 18px;
             cursor: pointer;
             box-shadow: var(--shadow);
             transition: transform 0.2s, background 0.3s;
@@ -2216,9 +1980,9 @@
             right: -5px;
             background: var(--danger-color);
             color: white;
-            font-size: 0.7rem;
-            width: 22px;
-            height: 22px;
+            font-size: 0.65rem;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -2233,13 +1997,13 @@
         /* شێوازی نوێ بۆ کتێبی پەسەندکراو */
         .book-status-badge {
             position: absolute;
-            top: 60px;
-            left: 15px;
+            top: 45px;
+            left: 10px;
             background: linear-gradient(135deg, #38b2ac 0%, #0d9488 100%);
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
             font-weight: 600;
             z-index: 100;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
@@ -2275,6 +2039,343 @@
         body.dark-mode .borrow-btn.disabled {
             background: #475569;
         }
+
+        /* ====== RESPONSIVE DESIGN ====== */
+        /* بۆ شاشە گەورەکان */
+        @media (min-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+            
+            header {
+                padding: 1rem 2rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .welcome-text {
+                font-size: 1.1rem;
+            }
+            
+            .admin-login-btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .search-section {
+                padding: 2.5rem;
+                margin-top: 6rem;
+            }
+            
+            .search-box input {
+                padding: 1.2rem 1.5rem;
+                padding-right: 3.5rem;
+                font-size: 1.1rem;
+            }
+            
+            .genre-btn {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 2rem;
+                padding: 1rem;
+            }
+            
+            .book-image {
+                height: 300px;
+            }
+            
+            .book-info {
+                padding: 1.5rem;
+            }
+            
+            .book-title {
+                font-size: 1.2rem;
+            }
+            
+            .book-genre {
+                font-size: 0.9rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2.5rem;
+            }
+            
+            .section-header p {
+                font-size: 1.1rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(3, 1fr);
+                flex-direction: row;
+                gap: 1.5rem;
+            }
+            
+            .stat-card {
+                padding: 2rem;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.9rem;
+            }
+            
+            .admin-actions {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .admin-action-btn {
+                padding: 1.2rem;
+                font-size: 1rem;
+            }
+            
+            .modal-content {
+                padding: 2.5rem;
+                width: 90%;
+                max-width: 800px;
+            }
+            
+            .book-details {
+                grid-template-columns: 1fr 2fr;
+                display: grid;
+            }
+            
+            .book-details h2 {
+                font-size: 2rem;
+            }
+            
+            .form-buttons {
+                flex-direction: row;
+                gap: 1rem;
+            }
+            
+            .submit-btn, .cancel-btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+            
+            .wishlist-sidebar {
+                width: 380px;
+                height: 100vh;
+                max-height: none;
+                right: -400px;
+            }
+            
+            .dark-mode-toggle {
+                width: 56px;
+                height: 56px;
+                font-size: 22px;
+                bottom: 90px;
+                left: 20px;
+            }
+            
+            .wishlist-toggle {
+                width: 56px;
+                height: 56px;
+                font-size: 22px;
+                bottom: 160px;
+                left: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            
+            .book-image {
+                height: 200px;
+            }
+            
+            .genre-list.active {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section-header p {
+                font-size: 0.9rem;
+            }
+            
+            .search-section {
+                margin-top: 7rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.1rem;
+            }
+            
+            .welcome-text {
+                font-size: 0.75rem;
+            }
+            
+            .admin-login-btn {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .container {
+                padding: 0.8rem;
+            }
+            
+            .search-section {
+                padding: 1.2rem;
+            }
+            
+            .books-grid {
+                gap: 0.8rem;
+            }
+            
+            .book-image {
+                height: 180px;
+            }
+            
+            .stat-card {
+                padding: 1.2rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .genre-btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* بۆ تابلەت لە مۆبایل */
+        .mobile-table-view {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .admin-table-container {
+                padding: 0.5rem;
+            }
+            
+            .admin-table {
+                min-width: 100%;
+            }
+            
+            .admin-table th,
+            .admin-table td {
+                padding: 0.6rem;
+                font-size: 0.8rem;
+            }
+            
+            .admin-table th:nth-child(1),
+            .admin-table td:nth-child(1),
+            .admin-table th:nth-child(6),
+            .admin-table td:nth-child(6),
+            .admin-table th:nth-child(7),
+            .admin-table td:nth-child(7),
+            .admin-table th:nth-child(8),
+            .admin-table td:nth-child(8) {
+                display: none;
+            }
+            
+            .action-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+                margin-left: 0.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-table th:nth-child(3),
+            .admin-table td:nth-child(3),
+            .admin-table th:nth-child(4),
+            .admin-table td:nth-child(4) {
+                display: none;
+            }
+        }
+
+        /* باشترکردنی گشتی */
+        body {
+            font-size: 14px;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+        }
+
+        /* باشترکردنی چوونی ژوورەوە */
+        .login-box {
+            margin: 0 auto;
+        }
+
+        /* باشترکردنی فۆرمەکان */
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* باشترکردنی دوگمەکان */
+        button {
+            touch-action: manipulation;
+        }
+
+        /* باشترکردنی وێنەکان */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* باشترکردنی نواندنی کتێب */
+        .book-card {
+            break-inside: avoid;
+        }
+
+        /* باشترکردنی نواندنی تێکست */
+        .truncate-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* باشترکردنی کلیککردن */
+        @media (hover: none) {
+            .book-card:hover {
+                transform: none;
+            }
+            
+            .genre-item:hover {
+                background: var(--light-color);
+                color: var(--text-color);
+                transform: none;
+            }
+            
+            body.dark-mode .genre-item:hover {
+                background: #0f172a;
+                color: var(--dark-text);
+            }
+            
+            .genre-item.active {
+                background: var(--secondary-color);
+                color: white;
+            }
+            
+            body.dark-mode .genre-item.active {
+                background: var(--dark-primary);
+            }
+        }
     </style>
 </head>
 <body>
@@ -2299,11 +2400,10 @@
         </div>
         <div class="wishlist-content" id="wishlistContent">
             <div class="wishlist-empty" id="emptyWishlist">
-                <i class="fas fa-heart-broken" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <i class="fas fa-heart-broken" style="font-size: 2rem; margin-bottom: 0.8rem;"></i>
                 <h3>لیستی دڵخوازەکانت بەتاڵە</h3>
                 <p>کتێبەکانی خۆزەشت کلیکی "❤️" بکە بۆ زیادکردنیان</p>
             </div>
-            <!-- ئایتمەکانی لیستی دڵخوازەکان لێرە دانەدراون -->
         </div>
     </div>
 
@@ -2354,7 +2454,7 @@
                 <p>دۆزینەوەی کتێبی دلخوازەکانت لە کتێبخانەی سەردەمیمان</p>
             </div>
             
-            <!-- دەستکاری: تەنها ئەم سیانە مایەنەوە -->
+            <!-- دەستکاری: ئامارەکان بکە یەک ڕیز لەسەر مۆبایل -->
             <div class="stats-container" id="statsContainer">
                 <div class="stat-card">
                     <div class="stat-number" id="totalBooks">0</div>
@@ -2379,7 +2479,7 @@
         </section>
 
         <section class="registration-form" id="registrationForm">
-            <h2 style="color: var(--primary-color); margin-bottom: 2rem;">📝 تۆمارکردنی داواکاری کتێب</h2>
+            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">📝 تۆمارکردنی داواکاری کتێب</h2>
             <form id="studentRegistrationForm">
                 <div class="form-group">
                     <label for="regStudentName"><i class="fas fa-user"></i> ناوی سیانی</label>
@@ -2424,9 +2524,7 @@
     <div class="modal" id="bookDetailsModal">
         <div class="modal-content">
             <span class="close-modal" id="closeBookModal">&times;</span>
-            <div class="book-details" id="bookDetailsContent">
-                <!-- وردەکارییەکانی کتێب لێرە دانەدراون -->
-            </div>
+            <div class="book-details" id="bookDetailsContent"></div>
         </div>
     </div>
 
@@ -2465,7 +2563,6 @@
             <p>بەڕێوەبردنی کتێبەکان و داواکاریەکانی خوێندکاران</p>
         </div>
         
-        <!-- دەستکاری: تەنها ئەم سیانە مایەنەوە لە ئەدمین پانێڵ -->
         <div class="stats-container">
             <div class="stat-card">
                 <div class="stat-number" id="adminTotalBooks">0</div>
@@ -2500,10 +2597,10 @@
         </div>
 
         <div id="bookManagementSection">
-            <div class="section-header" style="margin-bottom: 2rem;">
+            <div class="section-header" style="margin-bottom: 1.5rem;">
                 <h3>📚 بەڕێوەبردنی کتێبەکان</h3>
             </div>
-            <div class="search-box" style="margin-bottom: 2rem;">
+            <div class="search-box" style="margin-bottom: 1.5rem;">
                 <input type="text" id="adminSearchInput" placeholder="گەڕان بۆ کتێب...">
                 <i class="fas fa-search"></i>
                 <div class="search-suggestions" id="adminSearchSuggestions"></div>
@@ -2520,15 +2617,13 @@
                             <th>کردارەکان</th>
                         </tr>
                     </thead>
-                    <tbody id="adminBooksTable">
-                        <!-- کتێبەکان بۆ بەڕێوەبردنی ئەدمین لێرە دانەدراون -->
-                    </tbody>
+                    <tbody id="adminBooksTable"></tbody>
                 </table>
             </div>
         </div>
 
         <div id="registeredStudentsSection" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                 <div class="section-header" style="margin: 0;">
                     <h3>👥 خوێندکارە داواکارەکان</h3>
                 </div>
@@ -2545,7 +2640,7 @@
                 </div>
             </div>
             
-            <div class="search-box" style="margin-bottom: 2rem;">
+            <div class="search-box" style="margin-bottom: 1.5rem;">
                 <input type="text" id="studentSearchInput" placeholder="گەڕان بۆ خوێندکار...">
                 <i class="fas fa-search"></i>
                 <div class="search-suggestions" id="studentSearchSuggestions"></div>
@@ -2565,20 +2660,18 @@
                             <th>کردارەکان</th>
                         </tr>
                     </thead>
-                    <tbody id="registeredStudentsTable">
-                        <!-- خوێندکارە تۆمارکراوەکان لێرە دانەدراون -->
-                    </tbody>
+                    <tbody id="registeredStudentsTable"></tbody>
                 </table>
             </div>
         </div>
 
         <div id="returnBookSection" style="display: none;">
-            <div class="section-header" style="margin-bottom: 2rem;">
+            <div class="section-header" style="margin-bottom: 1.5rem;">
                 <h3>🔄 گەڕاندنەوەی کتێب</h3>
                 <p>نیشاندانی کتێبە وەرگیراوەکان و گەڕاندنەوەیەکیان</p>
             </div>
             
-            <div class="search-box" style="margin-bottom: 2rem;">
+            <div class="search-box" style="margin-bottom: 1.5rem;">
                 <input type="text" id="returnSearchInput" placeholder="گەڕان بۆ کتێب یان خوێندکار...">
                 <i class="fas fa-search"></i>
                 <div class="search-suggestions" id="returnSearchSuggestions"></div>
@@ -2597,9 +2690,7 @@
                             <th>کردارەکان</th>
                         </tr>
                     </thead>
-                    <tbody id="returnBooksTable">
-                        <!-- کتێبە وەرگیراوەکان لێرە دانەدراون -->
-                    </tbody>
+                    <tbody id="returnBooksTable"></tbody>
                 </table>
             </div>
         </div>
@@ -2637,7 +2728,7 @@
                 </div>
                 <div class="form-group">
                     <label for="bookSummary"><i class="fas fa-align-left"></i> کورتەی کتێب</label>
-                    <textarea id="bookSummary" rows="5" placeholder="کورتەیەک دەربارەی ناوەڕۆکی کتێبەکە بنووسە..." required></textarea>
+                    <textarea id="bookSummary" rows="4" placeholder="کورتەیەک دەربارەی ناوەڕۆکی کتێبەکە بنووسە..." required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="bookImage"><i class="fas fa-image"></i> لینکی وێنەی کتێب</label>
@@ -2658,13 +2749,13 @@
 
     <footer>
         <div class="footer-content">
-            <h3 style="color: white; margin-bottom: 1.5rem;">کتێبخانەی کۆلێژی سڵاحەدین</h3>
+            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.2rem;">کتێبخانەی کۆلێژی سڵاحەدین</h3>
             <p><i class="fas fa-map-marker-alt"></i> هەولێر، کۆلێژی سڵاحەدین - بەشی زمان</p>
             <p><i class="fas fa-envelope"></i> library@salahaddin.edu.krd</p>
             <p><i class="fas fa-phone"></i> ٠٧٥٠ ١٢٣ ٤٥٦٧</p>
-            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                 <p>© ٢٠٢٤ کتێبخانەی کۆلێژی سڵاحەدین - بەشی زمان. هەموو مافەکان پارێزراون.</p>
-                <p style="color: #CBD5E0; font-size: 0.9rem; margin-top: 0.5rem;">
+                <p style="color: #CBD5E0; font-size: 0.85rem; margin-top: 0.5rem;">
                     <i class="fas fa-heart" style="color: #F56565;"></i> دروستکراوە بە خۆشەویستی بۆ خوێندکارانی کوردستان
                 </p>
             </div>
@@ -2844,7 +2935,6 @@
             searchInput.addEventListener('input', (e) => {
                 currentSearch = e.target.value.toLowerCase();
                 
-                // پێشنیارەکانی گەڕان
                 if (currentSearch.trim() !== '') {
                     showSearchSuggestions(currentSearch, searchSuggestions);
                 } else {
@@ -3024,12 +3114,12 @@
             const wishlistCount = wishlist.length;
             const borrowedBooksCount = approvedRequests.length;
             
-            // Update main page statistics - تەنها سیانە
+            // Update main page statistics
             document.getElementById('totalBooks').textContent = totalBooks;
             document.getElementById('wishlistTotal').textContent = wishlistCount;
             document.getElementById('borrowedBooks').textContent = borrowedBooksCount;
             
-            // Update admin statistics - تەنها سیانە
+            // Update admin statistics
             document.getElementById('adminTotalBooks').textContent = totalBooks;
             const pendingCount = allRequests.filter(r => !r.pasand).length;
             document.getElementById('adminPendingRequests').textContent = pendingCount;
@@ -3123,7 +3213,7 @@
                         <div class="book-title">${book.naw}</div>
                         <div class="book-genre"><i class="fas fa-user-edit"></i> ${book.author || 'نەناسراو'}</div>
                         <div class="book-genre"><i class="fas fa-tag"></i> ${book.zhanar}</div>
-                        ${isBorrowed ? '<div style="color: var(--danger-color); font-size: 0.9rem; margin-top: 0.5rem;"><i class="fas fa-info-circle"></i> پێشتر داوا کراە چاوەڕوان بە</div>' : ''}
+                        ${isBorrowed ? '<div style="color: var(--danger-color); font-size: 0.8rem; margin-top: 0.5rem;"><i class="fas fa-info-circle"></i> پێشتر داوا کراە چاوەڕوان بە</div>' : ''}
                     </div>
                 `;
                 
@@ -3159,7 +3249,7 @@
             
             const bookDetailsContent = document.getElementById('bookDetailsContent');
             bookDetailsContent.innerHTML = `
-                <div style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                     <h2>${book.naw}</h2>
                     <span class="badge" style="background: var(--accent-color); color: var(--dark-color);">${book.zhanar}</span>
                 </div>
@@ -3167,32 +3257,32 @@
                 <img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'}" alt="${book.naw}">
                 
                 <div>
-                    <div style="background: var(--light-color); padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem;">
-                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> زانیاری کتێب</h3>
+                    <div style="background: var(--light-color); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 0.8rem;"><i class="fas fa-info-circle"></i> زانیاری کتێب</h3>
                         <p><strong>نووسەر:</strong> ${book.author || 'نەناسراو'}</p>
                         <p><strong>ژانەر:</strong> ${book.zhanar}</p>
                         ${book.createdAt ? `<p><strong>بەرواری زیادکردن:</strong> ${new Date(book.createdAt).toLocaleDateString('ku')}</p>` : ''}
                     </div>
                     
                     ${book.kurta ? `
-                    <div style="background: var(--light-color); padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem;">
-                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-align-left"></i> کورتە</h3>
+                    <div style="background: var(--light-color); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 0.8rem;"><i class="fas fa-align-left"></i> کورتە</h3>
                         <p>${book.kurta}</p>
                     </div>
                     ` : ''}
                     
                     ${isBorrowed ? `
-                    <div style="background: #FEF3C7; padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem; border-left: 5px solid #D97706;">
-                        <h3 style="color: #92400E; margin-bottom: 1rem;"><i class="fas fa-exclamation-triangle"></i> ئاگاداری</h3>
+                    <div style="background: #FEF3C7; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #D97706;">
+                        <h3 style="color: #92400E; margin-bottom: 0.8rem;"><i class="fas fa-exclamation-triangle"></i> ئاگاداری</h3>
                         <p style="color: #92400E;">پێشتر داوا کراە چاوەڕوان بە!</p>
-                        <p style="color: #92400E; font-size: 0.9rem; margin-top: 0.5rem;">ئەم کتێبە پێشتر وەرگیراوە! تکایە چاوەڕوانی گەڕاندنەوەی بە.</p>
-                        <p style="color: #92400E; font-size: 0.9rem; margin-top: 0.5rem;">ئەگەر پێویستت بەم کتێبە بوو، دەتوانیت زیادیکەی بکەیت بۆ لیستی دڵخوازەکان.</p>
+                        <p style="color: #92400E; font-size: 0.85rem; margin-top: 0.5rem;">ئەم کتێبە پێشتر وەرگیراوە! تکایە چاوەڕوانی گەڕاندنەوەی بە.</p>
+                        <p style="color: #92400E; font-size: 0.85rem; margin-top: 0.5rem;">ئەگەر پێویستت بەم کتێبە بوو، دەتوانیت زیادیکەی بکەیت بۆ لیستی دڵخوازەکان.</p>
                     </div>
                     ` : ''}
                     
                     ${hasPending && !isBorrowed ? `
-                    <div style="background: #DBEAFE; padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem; border-left: 5px solid #3B82F6;">
-                        <h3 style="color: #1E40AF; margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> زانیاری</h3>
+                    <div style="background: #DBEAFE; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #3B82F6;">
+                        <h3 style="color: #1E40AF; margin-bottom: 0.8rem;"><i class="fas fa-info-circle"></i> زانیاری</h3>
                         <p style="color: #1E40AF;">ئەم کتێبە داواکاری چاوەڕوانی هەیە.</p>
                     </div>
                     ` : ''}
@@ -3379,7 +3469,7 @@
                     <div class="wishlist-item-info">
                         <div class="wishlist-item-title">${item.title}</div>
                         <div class="wishlist-item-author">${item.author}</div>
-                        ${isBorrowed ? '<div style="color: var(--danger-color); font-size: 0.8rem; margin-bottom: 0.5rem;"><i class="fas fa-info-circle"></i> پێشتر داوا کراە چاوەڕوان بە</div>' : ''}
+                        ${isBorrowed ? '<div style="color: var(--danger-color); font-size: 0.75rem; margin-bottom: 0.4rem;"><i class="fas fa-info-circle"></i> پێشتر داوا کراە چاوەڕوان بە</div>' : ''}
                         <div class="wishlist-item-actions">
                             <button class="wishlist-remove-btn" data-id="${item.id}">
                                 <i class="fas fa-trash"></i>
@@ -3446,7 +3536,7 @@
 
         // Display registered students from Firebase دوم
         async function displayRegisteredStudentsFromFirebase(searchTerm = '') {
-            registeredStudentsTable.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 3rem;"><div class="loading-spinner"></div></td></tr>';
+            registeredStudentsTable.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem;"><div class="loading-spinner"></div></td></tr>';
             
             try {
                 if (!window.firebase2Functions || !window.firebase2Functions.getAllRequests) {
@@ -3481,7 +3571,7 @@
                 console.error('Error loading students from Firebase دوم:', error);
                 registeredStudentsTable.innerHTML = `
                     <tr>
-                        <td colspan="8" style="text-align: center; padding: 3rem;">
+                        <td colspan="8" style="text-align: center; padding: 2rem;">
                             <div class="empty-state">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 <h3>هەڵە ڕوویدا</h3>
@@ -3506,7 +3596,7 @@
                 
                 registeredStudentsTable.innerHTML = `
                     <tr>
-                        <td colspan="8" style="text-align: center; padding: 3rem;">
+                        <td colspan="8" style="text-align: center; padding: 2rem;">
                             <div class="empty-state">
                                 <i class="fas fa-inbox"></i>
                                 <h3>${noDataText}</h3>
@@ -3598,7 +3688,7 @@
             if (filteredRequests.length === 0) {
                 returnBooksTable.innerHTML = `
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 3rem;">
+                        <td colspan="7" style="text-align: center; padding: 2rem;">
                             <div class="empty-state">
                                 <i class="fas fa-book"></i>
                                 <h3>هیچ کتێبێک وەرگیراو نیە</h3>
@@ -3844,7 +3934,7 @@
             if (filteredBooks.length === 0) {
                 adminBooksTable.innerHTML = `
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 3rem;">
+                        <td colspan="6" style="text-align: center; padding: 2rem;">
                             <div class="empty-state">
                                 <i class="fas fa-book"></i>
                                 <h3>هیچ کتێبێک نەدۆزرایەوە</h3>
@@ -3873,7 +3963,7 @@
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'}" alt="${book.naw}" style="width: 60px; height: 80px; object-fit: cover; border-radius: 8px;"></td>
+                    <td><img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'}" alt="${book.naw}" style="width: 50px; height: 70px; object-fit: cover; border-radius: 6px;"></td>
                     <td><strong>${book.naw}</strong></td>
                     <td>${book.author || 'نەناسراو'}</td>
                     <td><span class="badge">${book.zhanar}</span></td>
