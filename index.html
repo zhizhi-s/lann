@@ -737,12 +737,6 @@
             align-items: start;
         }
 
-        @media (max-width: 768px) {
-            .book-details {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .book-details img {
             width: 100%;
             border-radius: 15px;
@@ -1436,40 +1430,281 @@
                 text-align: center;
             }
             
+            .logo h1 {
+                font-size: 1.4rem;
+            }
+            
+            .welcome-text {
+                font-size: 0.9rem;
+            }
+            
+            .admin-login-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
             .search-section {
                 padding: 1.5rem;
                 margin-top: 8rem;
             }
             
+            .search-box input {
+                padding: 1rem 1.2rem;
+                padding-right: 3rem;
+                font-size: 1rem;
+            }
+            
+            .genre-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .genre-list.active {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
             .books-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 1.5rem;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 1rem;
+                padding: 0.5rem;
+            }
+            
+            .book-card {
+                border-radius: 15px;
+            }
+            
+            .book-image {
+                height: 200px;
+            }
+            
+            .book-info {
+                padding: 1rem;
+            }
+            
+            .book-title {
+                font-size: 1rem;
+            }
+            
+            .book-genre {
+                font-size: 0.8rem;
+            }
+            
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-header p {
+                font-size: 1rem;
+            }
+            
+            /* دەستکاری: ئامارەکان بکە یەک ڕیز لەسەر مۆبایل */
+            .stats-container {
+                grid-template-columns: 1fr !important;
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .stat-label {
+                font-size: 0.8rem;
             }
             
             .admin-actions {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .admin-action-btn {
+                padding: 1rem;
+                font-size: 0.9rem;
             }
             
             .modal-content {
                 padding: 1.5rem;
+                width: 95%;
+            }
+            
+            .book-details {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .book-details h2 {
+                font-size: 1.5rem;
             }
             
             .form-buttons {
                 flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .submit-btn, .cancel-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            /* تابلەکان */
+            .admin-table-container {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+            
+            .admin-table {
+                font-size: 0.8rem;
+            }
+            
+            .admin-table th,
+            .admin-table td {
+                padding: 0.8rem;
+            }
+            
+            .action-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                margin-left: 0.3rem;
+            }
+            
+            /* لیستی دڵخوازەکان */
+            .wishlist-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .wishlist-toggle {
+                bottom: 160px;
+                left: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .dark-mode-toggle {
+                bottom: 90px;
+                left: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .wishlist-item {
+                padding: 0.8rem;
+                gap: 0.8rem;
+            }
+            
+            .wishlist-item-image {
+                width: 50px;
+                height: 65px;
+            }
+            
+            .wishlist-item-title {
+                font-size: 0.85rem;
+            }
+            
+            .wishlist-item-author {
+                font-size: 0.75rem;
+            }
+            
+            /* Footer */
+            footer {
+                padding: 2rem 1rem;
+                margin-top: 4rem;
+            }
+            
+            footer h3 {
+                font-size: 1.2rem;
+            }
+            
+            footer p {
+                font-size: 0.9rem;
+            }
+            
+            /* داڕشاوەکان بۆ تابلەکان */
+            .admin-table th:nth-child(1),
+            .admin-table td:nth-child(1),
+            .admin-table th:nth-child(6),
+            .admin-table td:nth-child(6),
+            .admin-table th:nth-child(7),
+            .admin-table td:nth-child(7),
+            .admin-table th:nth-child(8),
+            .admin-table td:nth-child(8) {
+                display: none;
             }
         }
 
         @media (max-width: 480px) {
             .books-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .section-header h2 {
-                font-size: 2rem;
+                grid-template-columns: 1fr !important;
             }
             
             .genre-list.active {
                 grid-template-columns: 1fr;
+            }
+            
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section-header p {
+                font-size: 0.9rem;
+            }
+            
+            .admin-table th:nth-child(3),
+            .admin-table td:nth-child(3),
+            .admin-table th:nth-child(4),
+            .admin-table td:nth-child(4) {
+                display: none;
+            }
+            
+            .book-details h2 {
+                font-size: 1.3rem;
+            }
+            
+            .modal-content {
+                padding: 1.2rem;
+            }
+            
+            .search-section {
+                margin-top: 10rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+            
+            .welcome-text {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .container {
+                padding: 0.8rem;
+            }
+            
+            .search-section {
+                padding: 1.2rem;
+            }
+            
+            .books-grid {
+                gap: 0.8rem;
+            }
+            
+            .book-image {
+                height: 180px;
+            }
+            
+            .stat-card {
+                padding: 1.2rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
             }
         }
 
