@@ -1,0 +1,4000 @@
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کتێبخانەی کۆلێژی سڵاحەدین - بەشی زمان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase Import -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, getDocs, getDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyDldHXuM8uPbgOT-hxRHk5e7YnSkKn0pHI",
+            authDomain: "lanuage-slahaddin.firebaseapp.com",
+            projectId: "lanuage-slahaddin",
+            storageBucket: "lanuage-slahaddin.firebasestorage.app",
+            messagingSenderId: "887991955360",
+            appId: "1:887991955360:web:e23481e92a29e91578fec5",
+            measurementId: "G-GWLZDH54WL"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        
+        // Export Firebase functions to global scope
+        window.firebase = {
+            db,
+            collection,
+            addDoc,
+            updateDoc,
+            deleteDoc,
+            doc,
+            getDocs,
+            getDoc,
+            query,
+            where,
+            orderBy
+        };
+        
+        console.log("Firebase loaded successfully!");
+    </script>
+    
+    <!-- Firebase Import برای سیستم درخواست کتاب -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, updateDoc, deleteDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+        const firebaseConfig2 = {
+            apiKey: "AIzaSyAQFvCjl4gFzWNwo-FrzDH1gcoOL-3J01c",
+            authDomain: "zhi-zhi-6bf65.firebaseapp.com",
+            projectId: "zhi-zhi-6bf65",
+            storageBucket: "zhi-zhi-6bf65.firebasestorage.app",
+            messagingSenderId: "132021379654",
+            appId: "1:132021379654:web:07e6f4d152a3d8e9436047",
+            measurementId: "G-9TVLKJH8BY"
+        };
+
+        // Initialize Firebase دوم
+        const app2 = initializeApp(firebaseConfig2, "app2");
+        const db2 = getFirestore(app2);
+
+        // Export Firebase دوم functions to global scope
+        window.firebase2 = {
+            db: db2,
+            setDoc,
+            updateDoc,
+            deleteDoc,
+            doc,
+            getDocs,
+            collection
+        };
+        
+        console.log("Firebase دوم برای سیستم درخواست کتاب loaded successfully!");
+        
+        // ----------------------------
+        // زیادکردنی داواکاری کتێب بۆ داتابەیس دوم
+        async function addRequest(request) {
+            try {
+                await setDoc(doc(db2, "Language", request.id), request);
+                console.log("داواکاری زیادکرا بۆ داتابەیس دوم:", request.name);
+                return true;
+            } catch (error) {
+                console.error("هەڵە ڕوودا لە زیادکردن بۆ داتابەیس دوم:", error);
+                return false;
+            }
+        }
+
+        // ----------------------------
+        // قبووڵکردنی داواکاری (پەسەند) بۆ داتابەیس دوم
+        async function approveRequest(id) {
+            try {
+                const entryRef = doc(db2, "Language", id);
+                await updateDoc(entryRef, { pasand: true });
+                console.log("داواکاری قبووڵکرا لە داتابەیس دوم:", id);
+                return true;
+            } catch (error) {
+                console.error("هەڵە ڕوودا لە قبووڵکردن لە داتابەیس دوم:", error);
+                return false;
+            }
+        }
+
+        // ----------------------------
+        // سڕینەوەی داواکاری بۆ داتابەیس دوم
+        async function rejectRequest(id) {
+            try {
+                await deleteDoc(doc(db2, "Language", id));
+                console.log("داواکاری بیسڕدرایەوە لە داتابەیس دوم:", id);
+                return true;
+            } catch (error) {
+                console.error("هەڵە ڕوودا لە سڕینەوە لە داتابەیس دوم:", error);
+                return false;
+            }
+        }
+        
+        // ----------------------------
+        // وەرگرتنی هەموو داواکاریەکان لە داتابەیس دوم
+        async function getAllRequests() {
+            try {
+                const querySnapshot = await getDocs(collection(db2, "Language"));
+                const requests = [];
+                querySnapshot.forEach((doc) => {
+                    requests.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                console.log(`وەرگیرا ${requests.length} داواکاری لە داتابەیس دوم`);
+                return requests;
+            } catch (error) {
+                console.error("هەڵە ڕوودا لە وەرگرتنی داواکاریەکان لە داتابەیس دوم:", error);
+                return [];
+            }
+        }
+        
+        // Export functions to global scope
+        window.firebase2Functions = {
+            addRequest,
+            approveRequest,
+            rejectRequest,
+            getAllRequests
+        };
+        
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary-color: #0F4C75;
+            --secondary-color: #3282B8;
+            --accent-color: #BBE1FA;
+            --light-color: #F9FBFF;
+            --dark-color: #1B262C;
+            --gray-color: #E8EAED;
+            --text-color: #2D3748;
+            --success-color: #38B2AC;
+            --warning-color: #ED8936;
+            --danger-color: #F56565;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --gradient: linear-gradient(135deg, #0F4C75 0%, #3282B8 100%);
+            --gradient-accent: linear-gradient(135deg, #3282B8 0%, #BBE1FA 100%);
+            
+            /* Colors for Dark Mode */
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --dark-text: #e5e7eb;
+            --dark-border: #334155;
+            --dark-primary: #4f46e5;
+            --dark-secondary: #22c55e;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        /* شێوازی نوێ بۆ Header */
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        body.dark-mode header {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .welcome-text {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-mode .welcome-text {
+            color: #93c5fd;
+        }
+
+        .admin-login-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .admin-login-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* شێوازی نوێ بۆ Search Section */
+        .search-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin: 6rem auto 3rem;
+            max-width: 900px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .search-section {
+            background: var(--dark-card);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        body.dark-mode .search-section::before {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        .search-box {
+            width: 100%;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            padding-right: 3.5rem;
+            border: 2px solid var(--gray-color);
+            border-radius: 15px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            background: var(--light-color);
+            color: var(--text-color);
+        }
+
+        body.dark-mode .search-box input {
+            background: #0f172a;
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(50, 130, 184, 0.1);
+        }
+
+        body.dark-mode .search-box input:focus {
+            border-color: var(--dark-primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
+        body.dark-mode .search-box i {
+            color: var(--dark-primary);
+        }
+
+        .genre-section {
+            width: 100%;
+            text-align: center;
+        }
+
+        .genre-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(15, 76, 117, 0.3);
+        }
+
+        body.dark-mode .genre-btn {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .genre-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(15, 76, 117, 0.4);
+        }
+
+        body.dark-mode .genre-btn:hover {
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.6);
+        }
+
+        .genre-list {
+            display: none;
+            background: white;
+            border: 2px solid var(--gray-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            max-height: 350px;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.3s ease;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .genre-list {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .genre-list.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .genre-item {
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 10px;
+            text-align: center;
+            transition: var(--transition);
+            background: var(--light-color);
+            border: 1px solid transparent;
+        }
+
+        body.dark-mode .genre-item {
+            background: #0f172a;
+            color: var(--dark-text);
+        }
+
+        .genre-item:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+            border-color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(50, 130, 184, 0.2);
+        }
+
+        body.dark-mode .genre-item:hover {
+            background: var(--dark-primary);
+            border-color: var(--dark-primary);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .genre-item.active {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        body.dark-mode .genre-item.active {
+            background: var(--dark-primary);
+            border-color: var(--dark-primary);
+        }
+
+        /* شێوازی نوێ بۆ Books Section */
+        .books-section {
+            margin: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        body.dark-mode .section-header h2 {
+            color: var(--dark-primary);
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-accent);
+            border-radius: 2px;
+        }
+
+        body.dark-mode .section-header h2::after {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #22c55e 100%);
+        }
+
+        .section-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        body.dark-mode .section-header p {
+            color: #cbd5e1;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        body.dark-mode .book-card {
+            background: var(--dark-card);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        body.dark-mode .book-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        body.dark-mode .book-card::before {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        .book-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            position: relative;
+        }
+
+        .book-card:hover .book-image {
+            transform: scale(1.05);
+        }
+
+        .book-info {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* دەستکاری بوون بۆ ژانەری سەر کتێبەکان */
+        .book-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(15, 76, 117, 0.95);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 100;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-mode .book-badge {
+            background: rgba(79, 70, 229, 0.95);
+        }
+
+        .book-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        body.dark-mode .book-title {
+            color: var(--dark-text);
+        }
+
+        .book-genre {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .book-genre {
+            color: var(--dark-primary);
+        }
+
+        /* دوگمەی زیادکردنی کتێب بۆ لیستی دڵخوازەکان */
+        .add-to-wishlist-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--danger-color);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            z-index: 100;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .add-to-wishlist-btn {
+            background: rgba(30, 41, 59, 0.9);
+            color: #fca5a5;
+        }
+
+        .add-to-wishlist-btn:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        body.dark-mode .add-to-wishlist-btn:hover {
+            background: #dc2626;
+        }
+
+        .add-to-wishlist-btn.in-wishlist {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        body.dark-mode .add-to-wishlist-btn.in-wishlist {
+            background: #dc2626;
+        }
+
+        /* شێوازی نوێ بۆ Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.4s ease;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .modal-content {
+            background: var(--dark-card);
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+            background: var(--light-color);
+        }
+
+        body.dark-mode .close-modal {
+            color: var(--dark-primary);
+            background: #0f172a;
+        }
+
+        .close-modal:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        body.dark-mode .close-modal:hover {
+            background: var(--dark-primary);
+        }
+
+        .book-details {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .book-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .book-details img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        body.dark-mode .book-details img {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .book-details h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        body.dark-mode .book-details h2 {
+            color: var(--dark-primary);
+        }
+
+        .book-details p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        body.dark-mode .book-details p {
+            color: #cbd5e1;
+        }
+
+        .book-details strong {
+            color: var(--dark-color);
+        }
+
+        body.dark-mode .book-details strong {
+            color: var(--dark-text);
+        }
+
+        .borrow-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            width: 100%;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .borrow-btn {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        .borrow-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15, 76, 117, 0.4);
+        }
+
+        body.dark-mode .borrow-btn:hover {
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+        }
+
+        /* دوگمەی زیادکردن بۆ لیستی دڵخوازەکان لە ناو مۆدال */
+        .wishlist-btn {
+            background: linear-gradient(135deg, #f56565 0%, #ed8936 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            width: 100%;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .wishlist-btn {
+            background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);
+        }
+
+        .wishlist-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 101, 101, 0.4);
+        }
+
+        body.dark-mode .wishlist-btn:hover {
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+        }
+
+        .wishlist-btn.in-wishlist {
+            background: linear-gradient(135deg, #38b2ac 0%, #0d9488 100%);
+        }
+
+        body.dark-mode .wishlist-btn.in-wishlist {
+            background: linear-gradient(135deg, #0d9488 0%, #065f46 100%);
+        }
+
+        /* شێوازی نوێ بۆ Forms */
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 1rem;
+        }
+
+        body.dark-mode .form-group label {
+            color: var(--dark-text);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--gray-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--light-color);
+            color: var(--text-color);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select,
+        body.dark-mode .form-group textarea {
+            background: #0f172a;
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(50, 130, 184, 0.1);
+        }
+
+        body.dark-mode .form-group input:focus,
+        body.dark-mode .form-group select:focus,
+        body.dark-mode .form-group textarea:focus {
+            border-color: var(--dark-primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+        }
+
+        .submit-btn, .cancel-btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            flex: 1;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn {
+            background: var(--gradient);
+            color: white;
+        }
+
+        body.dark-mode .submit-btn {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15, 76, 117, 0.4);
+        }
+
+        body.dark-mode .submit-btn:hover {
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.4);
+        }
+
+        .cancel-btn {
+            background: #718096;
+            color: white;
+        }
+
+        body.dark-mode .cancel-btn {
+            background: #475569;
+        }
+
+        .cancel-btn:hover {
+            background: #4A5568;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(113, 128, 150, 0.4);
+        }
+
+        /* شێوازی نوێ بۆ Admin Panel */
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .admin-action-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1.2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            box-shadow: var(--shadow);
+        }
+
+        body.dark-mode .admin-action-btn {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .admin-action-btn.secondary {
+            background: #4FD1C7;
+        }
+
+        body.dark-mode .admin-action-btn.secondary {
+            background: #0d9488;
+        }
+
+        .admin-action-btn.danger {
+            background: #FC8181;
+        }
+
+        body.dark-mode .admin-action-btn.danger {
+            background: #dc2626;
+        }
+
+        .admin-table-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .admin-table-container {
+            background: var(--dark-card);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .admin-table {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .admin-table th {
+            background: var(--gradient);
+            color: white;
+            padding: 1.2rem;
+            text-align: right;
+            font-weight: 600;
+            border: none;
+        }
+
+        body.dark-mode .admin-table th {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        .admin-table td {
+            padding: 1.2rem;
+            text-align: right;
+            border-bottom: 1px solid var(--gray-color);
+            background: white;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .admin-table td {
+            background: var(--dark-card);
+            border-bottom-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .admin-table tr:hover td {
+            background: var(--light-color);
+        }
+
+        body.dark-mode .admin-table tr:hover td {
+            background: #1e293b;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .edit-btn {
+            background: var(--accent-color);
+            color: var(--dark-color);
+        }
+
+        body.dark-mode .edit-btn {
+            background: #4338ca;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #9BCFE8;
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .edit-btn:hover {
+            background: #3730a3;
+        }
+
+        .delete-btn {
+            background: #FED7D7;
+            color: #C53030;
+        }
+
+        body.dark-mode .delete-btn {
+            background: #7f1d1d;
+            color: #fca5a5;
+        }
+
+        .delete-btn:hover {
+            background: #FEB2B2;
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .delete-btn:hover {
+            background: #991b1b;
+        }
+
+        .approve-btn {
+            background: #C6F6D5;
+            color: #276749;
+        }
+
+        body.dark-mode .approve-btn {
+            background: #065f46;
+            color: #86efac;
+        }
+
+        .approve-btn:hover {
+            background: #9AE6B4;
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .approve-btn:hover {
+            background: #047857;
+        }
+
+        .reject-btn {
+            background: #FEFCBF;
+            color: #975A16;
+        }
+
+        body.dark-mode .reject-btn {
+            background: #854d0e;
+            color: #fde047;
+        }
+
+        .reject-btn:hover {
+            background: #FAF089;
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .reject-btn:hover {
+            background: #a16207;
+        }
+
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        body.dark-mode .status-pending {
+            background: #92400E;
+            color: #fef3c7;
+        }
+
+        .status-approved {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        body.dark-mode .status-approved {
+            background: #065F46;
+            color: #d1fae5;
+        }
+
+        .status-rejected {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        body.dark-mode .status-rejected {
+            background: #991B1B;
+            color: #fee2e2;
+        }
+
+        /* شێوازی نوێ بۆ Login Box */
+        .login-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .login-box {
+            background: var(--dark-card);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        body.dark-mode .login-box::before {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        .login-box h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2.5rem;
+            font-size: 2rem;
+        }
+
+        body.dark-mode .login-box h2 {
+            color: var(--dark-primary);
+        }
+
+        .error-message {
+            background: #FED7D7;
+            color: #C53030;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+            font-weight: 500;
+        }
+
+        body.dark-mode .error-message {
+            background: #7f1d1d;
+            color: #fca5a5;
+        }
+
+        /* شێوازی نوێ بۆ Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 6rem;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        body.dark-mode footer {
+            background: #0f172a;
+            border-top: 2px solid var(--dark-border);
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        body.dark-mode footer::before {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: #CBD5E0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* شێوازی نوێ بۆ Registration Form */
+        .registration-form {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-top: 3rem;
+            display: none;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .registration-form {
+            background: var(--dark-card);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .registration-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        body.dark-mode .registration-form::before {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        .registration-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .confirmation-message {
+            background: #C6F6D5;
+            color: #065F46;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 1.5rem;
+            text-align: center;
+            display: none;
+            font-weight: 500;
+            border-left: 5px solid #38A169;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .confirmation-message {
+            background: #065f46;
+            color: #86efac;
+            border-left-color: #10b981;
+        }
+
+        .confirmation-message.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* شێوازی نوێ بۆ Loading */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .loading {
+            color: var(--dark-primary);
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--gray-color);
+            border-top: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        body.dark-mode .loading-spinner {
+            border-color: var(--dark-border);
+            border-top-color: var(--dark-primary);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* شێوازی نوێ بۆ Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            padding: 1.2rem 1.8rem;
+            border-radius: 15px;
+            color: white;
+            z-index: 2000;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .success-notification {
+            background: var(--success-color);
+            border-left: 5px solid #2C7A7B;
+        }
+
+        .error-notification {
+            background: var(--danger-color);
+            border-left: 5px solid #C53030;
+        }
+
+        .warning-notification {
+            background: var(--warning-color);
+            border-left: 5px solid #DD6B20;
+        }
+
+        /* شێوازی نوێ بۆ Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .search-section {
+                padding: 1.5rem;
+                margin-top: 8rem;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .admin-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .genre-list.active {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* شێوازی نوێ بۆ Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-color);
+            border-radius: 5px;
+        }
+
+        body.dark-mode ::-webkit-scrollbar-track {
+            background: var(--dark-border);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 5px;
+        }
+
+        body.dark-mode ::-webkit-scrollbar-thumb {
+            background: var(--dark-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        body.dark-mode ::-webkit-scrollbar-thumb:hover {
+            background: #3730a3;
+        }
+
+        /* شێوازی نوێ بۆ Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* شێوازی نوێ بۆ Cards Statistics */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .stat-card {
+            background: var(--dark-card);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        body.dark-mode .stat-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .stat-number {
+            color: var(--dark-primary);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        body.dark-mode .stat-label {
+            color: #cbd5e1;
+        }
+
+        /* شێوازی نوێ بۆ Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #718096;
+        }
+
+        body.dark-mode .empty-state {
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #CBD5E0;
+            margin-bottom: 1.5rem;
+        }
+
+        body.dark-mode .empty-state i {
+            color: #475569;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4A5568;
+        }
+
+        body.dark-mode .empty-state h3 {
+            color: #cbd5e1;
+        }
+
+        /* شێوازی نوێ بۆ Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--gray-color);
+            padding-bottom: 0.5rem;
+        }
+
+        body.dark-mode .tabs {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: #718096;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .tab-btn {
+            color: #94a3b8;
+        }
+
+        .tab-btn.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        body.dark-mode .tab-btn.active {
+            background: var(--dark-primary);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: var(--gray-color);
+            color: var(--dark-color);
+        }
+
+        body.dark-mode .tab-btn:hover:not(.active) {
+            background: #1e293b;
+            color: var(--dark-text);
+        }
+
+        /* شێوازی نوێ بۆ Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-new {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        body.dark-mode .badge-new {
+            background: #92400E;
+            color: #fef3c7;
+        }
+
+        .badge-popular {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        body.dark-mode .badge-popular {
+            background: #1e40af;
+            color: #dbeafe;
+        }
+
+        .badge-featured {
+            background: #FCE7F3;
+            color: #9D174D;
+        }
+
+        body.dark-mode .badge-featured {
+            background: #9d174d;
+            color: #fce7f3;
+        }
+        
+        /* شێوازی نوێ بۆ داتالست گەڕان */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid var(--gray-color);
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .search-suggestions {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-suggestions.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        .suggestion-item {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 1px solid var(--gray-color);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .suggestion-item {
+            border-bottom-color: var(--dark-border);
+        }
+        
+        .suggestion-item:hover {
+            background: var(--light-color);
+        }
+
+        body.dark-mode .suggestion-item:hover {
+            background: #1e293b;
+        }
+        
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        /* ====== DARK MODE TOGGLE BUTTON ====== */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary-color);
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, background 0.3s;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:active {
+            transform: scale(0.9);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            background: var(--dark-secondary);
+        }
+
+        .dark-mode-toggle i {
+            transition: transform 0.3s ease;
+        }
+
+        /* ====== WISHLIST SIDEBAR ====== */
+        .wishlist-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: white;
+            z-index: 1500;
+            transition: var(--transition);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode .wishlist-sidebar {
+            background: var(--dark-card);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .wishlist-sidebar.active {
+            right: 0;
+        }
+
+        .wishlist-header {
+            background: var(--gradient);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.dark-mode .wishlist-header {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        .wishlist-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .close-wishlist {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .close-wishlist:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .wishlist-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .wishlist-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #718096;
+        }
+
+        body.dark-mode .wishlist-empty {
+            color: #94a3b8;
+        }
+
+        .wishlist-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 10px;
+            background: var(--light-color);
+            margin-bottom: 1rem;
+            transition: var(--transition);
+            gap: 1rem;
+        }
+
+        body.dark-mode .wishlist-item {
+            background: #0f172a;
+        }
+
+        .wishlist-item:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .wishlist-item-image {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .wishlist-item-info {
+            flex: 1;
+        }
+
+        .wishlist-item-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .wishlist-item-author {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .wishlist-item-author {
+            color: #94a3b8;
+        }
+
+        .wishlist-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .wishlist-remove-btn {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 1rem;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .wishlist-remove-btn:hover {
+            background: #FED7D7;
+        }
+
+        body.dark-mode .wishlist-remove-btn:hover {
+            background: #7f1d1d;
+        }
+
+        .wishlist-borrow-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .wishlist-borrow-btn {
+            background: linear-gradient(135deg, var(--dark-primary) 0%, #3730a3 100%);
+        }
+
+        .wishlist-borrow-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(50, 130, 184, 0.2);
+        }
+
+        /* ====== WISHLIST TOGGLE BUTTON ====== */
+        .wishlist-toggle {
+            position: fixed;
+            bottom: 160px;
+            left: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #f56565 0%, #ed8936 100%);
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, background 0.3s;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wishlist-toggle:active {
+            transform: scale(0.9);
+        }
+
+        .wishlist-toggle i {
+            transition: transform 0.3s ease;
+        }
+
+        .wishlist-count-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 0.7rem;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        body.dark-mode .wishlist-count-badge {
+            background: #dc2626;
+        }
+
+        /* شێوازی نوێ بۆ کتێبی پەسەندکراو */
+        .book-status-badge {
+            position: absolute;
+            top: 60px;
+            left: 15px;
+            background: linear-gradient(135deg, #38b2ac 0%, #0d9488 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 100;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-mode .book-status-badge {
+            background: linear-gradient(135deg, #0d9488 0%, #065f46 100%);
+        }
+
+        .book-card.disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .book-card.disabled:hover {
+            transform: none;
+            box-shadow: var(--shadow);
+        }
+
+        .borrow-btn.disabled {
+            background: #CBD5E0;
+            cursor: not-allowed;
+        }
+
+        .borrow-btn.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        body.dark-mode .borrow-btn.disabled {
+            background: #475569;
+        }
+    </style>
+</head>
+<body>
+    <!-- داڕک مۆد تووگڵ -->
+    <button id="darkModeToggle" class="dark-mode-toggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- دوگمەی لیستی دڵخوازەکان -->
+    <button id="wishlistToggle" class="wishlist-toggle">
+        <i class="fas fa-heart"></i>
+        <span class="wishlist-count-badge" id="wishlistCount">0</span>
+    </button>
+
+    <!-- لیستی دڵخوازەکان -->
+    <div class="wishlist-sidebar" id="wishlistSidebar">
+        <div class="wishlist-header">
+            <h3><i class="fas fa-heart"></i> لیستی دڵخوازەکانم</h3>
+            <button class="close-wishlist" id="closeWishlist">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="wishlist-content" id="wishlistContent">
+            <div class="wishlist-empty" id="emptyWishlist">
+                <i class="fas fa-heart-broken" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h3>لیستی دڵخوازەکانت بەتاڵە</h3>
+                <p>کتێبەکانی خۆزەشت کلیکی "❤️" بکە بۆ زیادکردنیان</p>
+            </div>
+            <!-- ئایتمەکانی لیستی دڵخوازەکان لێرە دانەدراون -->
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <h1>
+                <span>کتێبخانەی کۆلێژی سڵاحەدین</span>
+                <span class="welcome-text">بەشی زمان - سەرچاوەی زانست و زانیاری</span>
+            </h1>
+        </div>
+        <button class="admin-login-btn" id="adminLoginBtn">
+            <i class="fas fa-user-shield"></i> چوونە ژوورەوەی ئەدمین
+        </button>
+    </header>
+
+    <div class="container">
+        <section class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="گەڕان بۆ کتێب، نووسەر، یان بەش...">
+                <i class="fas fa-search"></i>
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+            
+            <div class="genre-section">
+                <button class="genre-btn" id="genreToggleBtn">
+                    <i class="fas fa-filter"></i> فیلتەر بە ژانەر
+                </button>
+                <div class="genre-list" id="genreList">
+                    <div class="genre-item active" data-genre="all">📚 هەموو کتێبەکان</div>
+                    <div class="genre-item" data-genre="مێژوو">📜 مێژوو</div>
+                    <div class="genre-item" data-genre="ڕۆمان">📖 ڕۆمان</div>
+                    <div class="genre-item" data-genre="ئاینی">🕌 ئاینی</div>
+                    <div class="genre-item" data-genre="سیاسی">🏛️ سیاسی</div>
+                    <div class="genre-item" data-genre="فێرکاری زمان">🗣️ فێرکاری زمان</div>
+                    <div class="genre-item" data-genre="فێرکاری تەکنەلۆژیا">💻 فێرکاری تەکنەلۆژیا</div>
+                    <div class="genre-item" data-genre="ترسناک">👻 ترسناک</div>
+                    <div class="genre-item" data-genre="زانستی">🔬 زانستی</div>
+                    <div class="genre-item" data-genre="فەلسەفە">🧠 فەلسەفە</div>
+                    <div class="genre-item" data-genre="هونەری">🎨 هونەری</div>
+                    <div class="genre-item" data-genre="تەندروستی">🏥 تەندروستی</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="books-section">
+            <div class="section-header">
+                <h2 id="booksSectionTitle">کتێبە نوێیەکان</h2>
+                <p>دۆزینەوەی کتێبی دلخوازەکانت لە کتێبخانەی سەردەمیمان</p>
+            </div>
+            
+            <!-- دەستکاری: تەنها ئەم سیانە مایەنەوە -->
+            <div class="stats-container" id="statsContainer">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalBooks">0</div>
+                    <div class="stat-label">کۆی کتێبەکان</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="borrowedBooks">0</div>
+                    <div class="stat-label">کتێبە وەرگیراوەکان</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="wishlistTotal">0</div>
+                    <div class="stat-label">کتێب لە لیستی من</div>
+                </div>
+            </div>
+
+            <div class="books-grid" id="booksGrid">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>بارکردنی کتێبەکان...</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="registration-form" id="registrationForm">
+            <h2 style="color: var(--primary-color); margin-bottom: 2rem;">📝 تۆمارکردنی داواکاری کتێب</h2>
+            <form id="studentRegistrationForm">
+                <div class="form-group">
+                    <label for="regStudentName"><i class="fas fa-user"></i> ناوی سیانی</label>
+                    <input type="text" id="regStudentName" placeholder="ناوی تەواوی خۆت بنووسە" required>
+                </div>
+                <div class="form-group">
+                    <label for="regDepartment"><i class="fas fa-building"></i> ناوی بەش</label>
+                    <input type="text" id="regDepartment" placeholder="ناوی بەشی خوێندن" required>
+                </div>
+                <div class="form-group">
+                    <label for="regStage"><i class="fas fa-graduation-cap"></i> قۆناغی خوێندن</label>
+                    <select id="regStage" required>
+                        <option value="">-- قۆناغ هەڵبژێرە --</option>
+                        <option value="یەکەم">یەکەم</option>
+                        <option value="دووەم">دووەم</option>
+                        <option value="سێیەم">سێیەم</option>
+                        <option value="چوارەم">چوارەم</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="regPhoneNumber"><i class="fas fa-phone"></i> ژمارەی مۆبایل</label>
+                    <input type="tel" id="regPhoneNumber" placeholder="٠٧٠٠ ١٢٣ ٤٥٦٧" required>
+                </div>
+                <input type="hidden" id="regBookId">
+                <input type="hidden" id="regBookTitle">
+                <div class="form-buttons">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> ناردنی داواکاری
+                    </button>
+                    <button type="button" class="cancel-btn" id="cancelRegistrationBtn">
+                        <i class="fas fa-times"></i> هەڵوەشاندنەوە
+                    </button>
+                </div>
+            </form>
+            <div class="confirmation-message" id="confirmationMessage">
+                <i class="fas fa-check-circle"></i> داواکاریەکەت بە سەرکەوتوویی نێردرا! چاوەڕوانی پەسەندکردنی ئەدمین بە
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="bookDetailsModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeBookModal">&times;</span>
+            <div class="book-details" id="bookDetailsContent">
+                <!-- وردەکارییەکانی کتێب لێرە دانەدراون -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeLoginModal">&times;</span>
+            <h2>🔐 چوونە ژوورەوەی ئەدمین</h2>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminUsername"><i class="fas fa-user-circle"></i> ناوی بەکارهێنەر</label>
+                    <input type="text" id="adminUsername" placeholder="ناوی بەکارهێنەر بنووسە" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword"><i class="fas fa-lock"></i> وشەی نهێنی</label>
+                    <input type="password" id="adminPassword" placeholder="وشەی نهێنی بنووسە" required>
+                </div>
+                <div class="error-message" id="loginError">
+                    <i class="fas fa-exclamation-triangle"></i> ناوی بەکارهێنەر یان وشەی نهێنی هەڵەیە
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-sign-in-alt"></i> چوونە ژوورەوە
+                    </button>
+                    <button type="button" class="cancel-btn" id="cancelLoginBtn">
+                        <i class="fas fa-times"></i> هەڵوەشاندنەوە
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="container" id="adminPanel" style="display: none;">
+        <div class="section-header">
+            <h2>⚙️ پەڕەی بەڕێوەبردنی ئەدمین</h2>
+            <p>بەڕێوەبردنی کتێبەکان و داواکاریەکانی خوێندکاران</p>
+        </div>
+        
+        <!-- دەستکاری: تەنها ئەم سیانە مایەنەوە لە ئەدمین پانێڵ -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="adminTotalBooks">0</div>
+                <div class="stat-label">کۆی کتێبەکان</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="adminPendingRequests">0</div>
+                <div class="stat-label">داواکاری چاوەڕوان</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="adminApprovedRequests">0</div>
+                <div class="stat-label">کتێبە وەرگیراوەکان</div>
+            </div>
+        </div>
+        
+        <div class="admin-actions">
+            <button class="admin-action-btn" id="addBookBtn">
+                <i class="fas fa-plus-circle"></i> زیادکردنی کتێبی نوێ
+            </button>
+            <button class="admin-action-btn" id="viewRegisteredStudentsBtn">
+                <i class="fas fa-users-cog"></i> خوێندکارە داواکارەکان
+            </button>
+            <button class="admin-action-btn secondary" id="viewBooksBtn">
+                <i class="fas fa-book"></i> بینینی کتێبەکان
+            </button>
+            <button class="admin-action-btn" id="returnBookBtn">
+                <i class="fas fa-undo-alt"></i> گەڕاندنەوەی کتێب
+            </button>
+            <button class="admin-action-btn danger" id="backToMainBtn">
+                <i class="fas fa-arrow-left"></i> گەڕانەوە بۆ پەڕەی سەرەکی
+            </button>
+        </div>
+
+        <div id="bookManagementSection">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h3>📚 بەڕێوەبردنی کتێبەکان</h3>
+            </div>
+            <div class="search-box" style="margin-bottom: 2rem;">
+                <input type="text" id="adminSearchInput" placeholder="گەڕان بۆ کتێب...">
+                <i class="fas fa-search"></i>
+                <div class="search-suggestions" id="adminSearchSuggestions"></div>
+            </div>
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>وێنە</th>
+                            <th>ناوی کتێب</th>
+                            <th>نووسەر</th>
+                            <th>ژانەر</th>
+                            <th>بارودۆخ</th>
+                            <th>کردارەکان</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminBooksTable">
+                        <!-- کتێبەکان بۆ بەڕێوەبردنی ئەدمین لێرە دانەدراون -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="registeredStudentsSection" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div class="section-header" style="margin: 0;">
+                    <h3>👥 خوێندکارە داواکارەکان</h3>
+                </div>
+                <div class="tabs">
+                    <button class="tab-btn active" id="showPendingBtn">
+                        <i class="fas fa-clock"></i> چاوەڕوان
+                    </button>
+                    <button class="tab-btn" id="showApprovedBtn">
+                        <i class="fas fa-check-circle"></i> وەرگیراوەکان
+                    </button>
+                    <button class="tab-btn" id="showReturnedBtn">
+                        <i class="fas fa-undo-alt"></i> گەڕێندراوەکان
+                    </button>
+                </div>
+            </div>
+            
+            <div class="search-box" style="margin-bottom: 2rem;">
+                <input type="text" id="studentSearchInput" placeholder="گەڕان بۆ خوێندکار...">
+                <i class="fas fa-search"></i>
+                <div class="search-suggestions" id="studentSearchSuggestions"></div>
+            </div>
+            
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ناوی سیانی</th>
+                            <th>بەش</th>
+                            <th>قۆناغ</th>
+                            <th>مۆبایل</th>
+                            <th>کتێب</th>
+                            <th>بەرواری داواکردن</th>
+                            <th>بارودۆخ</th>
+                            <th>کردارەکان</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registeredStudentsTable">
+                        <!-- خوێندکارە تۆمارکراوەکان لێرە دانەدراون -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="returnBookSection" style="display: none;">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h3>🔄 گەڕاندنەوەی کتێب</h3>
+                <p>نیشاندانی کتێبە وەرگیراوەکان و گەڕاندنەوەیەکیان</p>
+            </div>
+            
+            <div class="search-box" style="margin-bottom: 2rem;">
+                <input type="text" id="returnSearchInput" placeholder="گەڕان بۆ کتێب یان خوێندکار...">
+                <i class="fas fa-search"></i>
+                <div class="search-suggestions" id="returnSearchSuggestions"></div>
+            </div>
+            
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ناوی سیانی</th>
+                            <th>بەش</th>
+                            <th>مۆبایل</th>
+                            <th>کتێب</th>
+                            <th>بەرواری وەرگرتن</th>
+                            <th>ماوەی وەرگرتن</th>
+                            <th>کردارەکان</th>
+                        </tr>
+                    </thead>
+                    <tbody id="returnBooksTable">
+                        <!-- کتێبە وەرگیراوەکان لێرە دانەدراون -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="bookFormModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeBookFormModal">&times;</span>
+            <h2 id="bookFormTitle">📖 زیادکردنی کتێبی نوێ</h2>
+            <form id="bookForm">
+                <div class="form-group">
+                    <label for="bookTitle"><i class="fas fa-heading"></i> ناوی کتێب</label>
+                    <input type="text" id="bookTitle" placeholder="ناوی کتێب بنووسە" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookAuthor"><i class="fas fa-user-edit"></i> ناوی نووسەر</label>
+                    <input type="text" id="bookAuthor" placeholder="ناوی نووسەر بنووسە" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookGenre"><i class="fas fa-tags"></i> ژانەری کتێب</label>
+                    <select id="bookGenre" required>
+                        <option value="">-- ژانەر هەڵبژێرە --</option>
+                        <option value="مێژوو">مێژوو</option>
+                        <option value="ڕۆمان">ڕۆمان</option>
+                        <option value="ئاینی">ئاینی</option>
+                        <option value="سیاسی">سیاسی</option>
+                        <option value="فێرکاری زمان">فێرکاری زمان</option>
+                        <option value="فێرکاری تەکنەلۆژیا">فێرکاری تەکنەلۆژیا</option>
+                        <option value="ترسناک">ترسناک</option>
+                        <option value="زانستی">زانستی</option>
+                        <option value="فەلسەفە">فەلسەفە</option>
+                        <option value="هونەری">هونەری</option>
+                        <option value="تەندروستی">تەندروستی</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bookSummary"><i class="fas fa-align-left"></i> کورتەی کتێب</label>
+                    <textarea id="bookSummary" rows="5" placeholder="کورتەیەک دەربارەی ناوەڕۆکی کتێبەکە بنووسە..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="bookImage"><i class="fas fa-image"></i> لینکی وێنەی کتێب</label>
+                    <input type="text" id="bookImage" placeholder="لینکی وێنە (URL)" required>
+                </div>
+                <input type="hidden" id="bookId">
+                <div class="form-buttons">
+                    <button type="submit" class="submit-btn" id="bookFormSubmitBtn">
+                        <i class="fas fa-save"></i> پاشەکەوت
+                    </button>
+                    <button type="button" class="cancel-btn" id="cancelBookFormBtn">
+                        <i class="fas fa-times"></i> هەڵوەشاندنەوە
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3 style="color: white; margin-bottom: 1.5rem;">کتێبخانەی کۆلێژی سڵاحەدین</h3>
+            <p><i class="fas fa-map-marker-alt"></i> هەولێر، کۆلێژی سڵاحەدین - بەشی زمان</p>
+            <p><i class="fas fa-envelope"></i> library@salahaddin.edu.krd</p>
+            <p><i class="fas fa-phone"></i> ٠٧٥٠ ١٢٣ ٤٥٦٧</p>
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <p>© ٢٠٢٤ کتێبخانەی کۆلێژی سڵاحەدین - بەشی زمان. هەموو مافەکان پارێزراون.</p>
+                <p style="color: #CBD5E0; font-size: 0.9rem; margin-top: 0.5rem;">
+                    <i class="fas fa-heart" style="color: #F56565;"></i> دروستکراوە بە خۆشەویستی بۆ خوێندکارانی کوردستان
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // داڕک مۆد تووگڵ
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeIcon = darkModeToggle.querySelector('i');
+        
+        // بارکردنی هەڵبژاردەی پێشوو
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeIcon.className = 'fas fa-sun';
+        }
+        
+        // گۆڕینی داڕک مۆد
+        darkModeToggle.onclick = () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                darkModeIcon.className = 'fas fa-sun';
+                showNotification('🌙 داڕک مۆد چالاککرا', 'success');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeIcon.className = 'fas fa-moon';
+                showNotification('☀️ ڕووناک مۆد چالاککرا', 'success');
+            }
+        };
+        
+        // DOM Elements
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminLoginModal = document.getElementById('adminLoginModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
+        const cancelLoginBtn = document.getElementById('cancelLoginBtn');
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const loginError = document.getElementById('loginError');
+        
+        const adminPanel = document.getElementById('adminPanel');
+        const backToMainBtn = document.getElementById('backToMainBtn');
+        const viewBooksBtn = document.getElementById('viewBooksBtn');
+        const returnBookBtn = document.getElementById('returnBookBtn');
+        
+        const genreToggleBtn = document.getElementById('genreToggleBtn');
+        const genreList = document.getElementById('genreList');
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        
+        const booksGrid = document.getElementById('booksGrid');
+        const booksSectionTitle = document.getElementById('booksSectionTitle');
+        const statsContainer = document.getElementById('statsContainer');
+        
+        const bookDetailsModal = document.getElementById('bookDetailsModal');
+        const closeBookModal = document.getElementById('closeBookModal');
+        
+        const registrationForm = document.getElementById('registrationForm');
+        const studentRegistrationForm = document.getElementById('studentRegistrationForm');
+        const cancelRegistrationBtn = document.getElementById('cancelRegistrationBtn');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+        
+        const bookFormModal = document.getElementById('bookFormModal');
+        const closeBookFormModal = document.getElementById('closeBookFormModal');
+        const cancelBookFormBtn = document.getElementById('cancelBookFormBtn');
+        const bookForm = document.getElementById('bookForm');
+        const bookFormTitle = document.getElementById('bookFormTitle');
+        const bookFormSubmitBtn = document.getElementById('bookFormSubmitBtn');
+        
+        const addBookBtn = document.getElementById('addBookBtn');
+        const viewRegisteredStudentsBtn = document.getElementById('viewRegisteredStudentsBtn');
+        const showPendingBtn = document.getElementById('showPendingBtn');
+        const showApprovedBtn = document.getElementById('showApprovedBtn');
+        const showReturnedBtn = document.getElementById('showReturnedBtn');
+        
+        const bookManagementSection = document.getElementById('bookManagementSection');
+        const registeredStudentsSection = document.getElementById('registeredStudentsSection');
+        const returnBookSection = document.getElementById('returnBookSection');
+        
+        const adminBooksTable = document.getElementById('adminBooksTable');
+        const registeredStudentsTable = document.getElementById('registeredStudentsTable');
+        const returnBooksTable = document.getElementById('returnBooksTable');
+        const adminSearchInput = document.getElementById('adminSearchInput');
+        const adminSearchSuggestions = document.getElementById('adminSearchSuggestions');
+        const studentSearchInput = document.getElementById('studentSearchInput');
+        const studentSearchSuggestions = document.getElementById('studentSearchSuggestions');
+        const returnSearchInput = document.getElementById('returnSearchInput');
+        const returnSearchSuggestions = document.getElementById('returnSearchSuggestions');
+
+        // لیستی دڵخوازەکان - Elements
+        const wishlistToggle = document.getElementById('wishlistToggle');
+        const wishlistSidebar = document.getElementById('wishlistSidebar');
+        const closeWishlist = document.getElementById('closeWishlist');
+        const wishlistContent = document.getElementById('wishlistContent');
+        const emptyWishlist = document.getElementById('emptyWishlist');
+        const wishlistCount = document.getElementById('wishlistCount');
+        const wishlistTotalStat = document.getElementById('wishlistTotal');
+        const borrowedBooksStat = document.getElementById('borrowedBooks');
+        const totalBooksStat = document.getElementById('totalBooks');
+
+        // Application State
+        let currentUser = null;
+        let books = [];
+        let allRequests = [];
+        let approvedRequests = [];
+        let wishlist = [];
+        let currentGenre = 'all';
+        let currentSearch = '';
+        let editingBookId = null;
+        let currentStudentView = 'pending';
+
+        // Admin Credentials
+        const ADMIN_USERNAME = '1981Language2026';
+        const ADMIN_PASSWORD = 'S1981S';
+
+        // Status Types
+        const STATUS = {
+            PENDING: 'pending',
+            APPROVED: 'approved',
+            RETURNED: 'returned',
+            REJECTED: 'rejected'
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async function() {
+            if (!window.firebase) {
+                booksGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>هەڵە ڕوویدا لە بارکردنی سەرچاوەکان</h3><p>تکایە دووبارە هەوڵبدەرەوە یان پەیوەندی بکە بە بەڕێوەبەرەوە</p></div>';
+                return;
+            }
+            
+            setupEventListeners();
+            loadWishlistFromLocalStorage();
+            await loadBooksFromFirebase();
+            await loadAllRequests();
+            displayBooks();
+            updateWishlistCount();
+            updateWishlistUI();
+        });
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Admin login
+            adminLoginBtn.addEventListener('click', () => {
+                adminLoginModal.classList.add('active');
+            });
+            
+            closeLoginModal.addEventListener('click', () => {
+                adminLoginModal.classList.remove('active');
+                loginError.style.display = 'none';
+            });
+            
+            cancelLoginBtn.addEventListener('click', () => {
+                adminLoginModal.classList.remove('active');
+                loginError.style.display = 'none';
+            });
+            
+            adminLoginForm.addEventListener('submit', handleAdminLogin);
+            
+            // Genre toggle
+            genreToggleBtn.addEventListener('click', () => {
+                genreList.classList.toggle('active');
+            });
+            
+            // Genre selection
+            document.querySelectorAll('.genre-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.genre-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    currentGenre = item.getAttribute('data-genre');
+                    booksSectionTitle.textContent = currentGenre === 'all' ? 'کتێبە نوێیەکان' : `کتێبەکانی ${currentGenre}`;
+                    genreList.classList.remove('active');
+                    displayBooks();
+                });
+            });
+            
+            // Search functionality
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value.toLowerCase();
+                
+                // پێشنیارەکانی گەڕان
+                if (currentSearch.trim() !== '') {
+                    showSearchSuggestions(currentSearch, searchSuggestions);
+                } else {
+                    searchSuggestions.classList.remove('active');
+                }
+                
+                displayBooks();
+            });
+            
+            // کلیک دەرەوە بۆ داخستنی پێشنیارەکان
+            document.addEventListener('click', (e) => {
+                if (!searchSuggestions.contains(e.target) && e.target !== searchInput) {
+                    searchSuggestions.classList.remove('active');
+                }
+                if (!adminSearchSuggestions.contains(e.target) && e.target !== adminSearchInput) {
+                    adminSearchSuggestions.classList.remove('active');
+                }
+                if (!studentSearchSuggestions.contains(e.target) && e.target !== studentSearchInput) {
+                    studentSearchSuggestions.classList.remove('active');
+                }
+                if (!returnSearchSuggestions.contains(e.target) && e.target !== returnSearchInput) {
+                    returnSearchSuggestions.classList.remove('active');
+                }
+                if (!wishlistSidebar.contains(e.target) && e.target !== wishlistToggle && !wishlistToggle.contains(e.target)) {
+                    wishlistSidebar.classList.remove('active');
+                }
+            });
+            
+            // Close modals
+            closeBookModal.addEventListener('click', () => {
+                bookDetailsModal.classList.remove('active');
+            });
+            
+            closeBookFormModal.addEventListener('click', () => {
+                bookFormModal.classList.remove('active');
+                resetBookForm();
+            });
+            
+            cancelRegistrationBtn.addEventListener('click', () => {
+                registrationForm.classList.remove('active');
+                studentRegistrationForm.reset();
+                confirmationMessage.classList.remove('active');
+            });
+            
+            cancelBookFormBtn.addEventListener('click', () => {
+                bookFormModal.classList.remove('active');
+                resetBookForm();
+            });
+            
+            // لیستی دڵخوازەکان
+            wishlistToggle.addEventListener('click', () => {
+                wishlistSidebar.classList.toggle('active');
+            });
+            
+            closeWishlist.addEventListener('click', () => {
+                wishlistSidebar.classList.remove('active');
+            });
+            
+            // Student registration form submission
+            studentRegistrationForm.addEventListener('submit', handleStudentRegistration);
+            
+            // Book form submission
+            bookForm.addEventListener('submit', handleBookFormSubmit);
+            
+            // Admin panel navigation
+            backToMainBtn.addEventListener('click', () => {
+                adminPanel.style.display = 'none';
+                document.querySelector('.container').style.display = 'block';
+            });
+            
+            viewBooksBtn.addEventListener('click', () => {
+                bookManagementSection.style.display = 'block';
+                registeredStudentsSection.style.display = 'none';
+                returnBookSection.style.display = 'none';
+                displayAdminBooks();
+            });
+            
+            addBookBtn.addEventListener('click', () => {
+                showBookForm();
+            });
+            
+            viewRegisteredStudentsBtn.addEventListener('click', async () => {
+                bookManagementSection.style.display = 'none';
+                registeredStudentsSection.style.display = 'block';
+                returnBookSection.style.display = 'none';
+                currentStudentView = 'pending';
+                updateStudentViewButtons();
+                await displayRegisteredStudentsFromFirebase();
+            });
+            
+            returnBookBtn.addEventListener('click', () => {
+                bookManagementSection.style.display = 'none';
+                registeredStudentsSection.style.display = 'none';
+                returnBookSection.style.display = 'block';
+                displayReturnBooks();
+            });
+            
+            // Student view toggle buttons
+            showPendingBtn.addEventListener('click', async () => {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                showPendingBtn.classList.add('active');
+                currentStudentView = 'pending';
+                await displayRegisteredStudentsFromFirebase();
+            });
+            
+            showApprovedBtn.addEventListener('click', async () => {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                showApprovedBtn.classList.add('active');
+                currentStudentView = 'approved';
+                await displayRegisteredStudentsFromFirebase();
+            });
+            
+            showReturnedBtn.addEventListener('click', async () => {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                showReturnedBtn.classList.add('active');
+                currentStudentView = 'returned';
+                await displayRegisteredStudentsFromFirebase();
+            });
+            
+            // Admin search
+            adminSearchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                if (searchTerm.trim() !== '') {
+                    showSearchSuggestions(searchTerm, adminSearchSuggestions);
+                } else {
+                    adminSearchSuggestions.classList.remove('active');
+                }
+                
+                displayAdminBooks(searchTerm);
+            });
+            
+            // Student search
+            studentSearchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                if (searchTerm.trim() !== '') {
+                    showStudentSearchSuggestions(searchTerm);
+                } else {
+                    studentSearchSuggestions.classList.remove('active');
+                }
+                
+                displayRegisteredStudents(searchTerm);
+            });
+            
+            // Return search
+            returnSearchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                displayReturnBooks(searchTerm);
+            });
+        }
+
+        // Load all requests from Firebase دوم
+        async function loadAllRequests() {
+            try {
+                if (!window.firebase2Functions || !window.firebase2Functions.getAllRequests) {
+                    throw new Error("Firebase دوم functions not loaded");
+                }
+                
+                allRequests = await window.firebase2Functions.getAllRequests();
+                approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
+                
+                console.log(`Loaded ${allRequests.length} total requests, ${approvedRequests.length} approved requests`);
+                
+                updateStatistics();
+                
+            } catch (error) {
+                console.error('Error loading requests:', error);
+                allRequests = [];
+                approvedRequests = [];
+            }
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const totalBooks = books.length;
+            const wishlistCount = wishlist.length;
+            const borrowedBooksCount = approvedRequests.length;
+            
+            // Update main page statistics - تەنها سیانە
+            document.getElementById('totalBooks').textContent = totalBooks;
+            document.getElementById('wishlistTotal').textContent = wishlistCount;
+            document.getElementById('borrowedBooks').textContent = borrowedBooksCount;
+            
+            // Update admin statistics - تەنها سیانە
+            document.getElementById('adminTotalBooks').textContent = totalBooks;
+            const pendingCount = allRequests.filter(r => !r.pasand).length;
+            document.getElementById('adminPendingRequests').textContent = pendingCount;
+            document.getElementById('adminApprovedRequests').textContent = borrowedBooksCount;
+        }
+
+        // Check if a book is currently borrowed
+        function isBookBorrowed(bookTitle) {
+            return approvedRequests.some(request => 
+                request.bookTitle === bookTitle && request.pasand === true && !request.returned
+            );
+        }
+
+        // Check if a book has pending requests
+        function hasPendingRequests(bookTitle) {
+            return allRequests.some(request => 
+                request.bookTitle === bookTitle && !request.pasand
+            );
+        }
+
+        // Load books from Firebase
+        async function loadBooksFromFirebase() {
+            try {
+                booksGrid.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>بارکردنی کتێبەکان...</p></div>';
+                
+                const querySnapshot = await window.firebase.getDocs(
+                    window.firebase.collection(window.firebase.db, 'books')
+                );
+                
+                books = [];
+                querySnapshot.forEach((doc) => {
+                    books.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                console.log(`Loaded ${books.length} books from Firebase`);
+                
+                if (books.length === 0) {
+                    await addSampleBooks();
+                }
+                
+            } catch (error) {
+                console.error('Error loading books from Firebase:', error);
+                booksGrid.innerHTML = '<div class="empty-state"><i class="fas fa-book"></i><h3>هیچ کتێبێک نەدۆزرایەوە</h3><p>یەکەم کتێبەکەت زیاد بکە</p></div>';
+                loadBooksFromLocalStorage();
+            }
+        }
+
+        // Display books in main page
+        function displayBooks() {
+            booksGrid.innerHTML = '';
+            
+            let filteredBooks = books;
+            
+            if (currentGenre !== 'all') {
+                filteredBooks = filteredBooks.filter(book => book.zhanar === currentGenre);
+            }
+            
+            if (currentSearch) {
+                filteredBooks = filteredBooks.filter(book => 
+                    book.naw.toLowerCase().includes(currentSearch) ||
+                    (book.author && book.author.toLowerCase().includes(currentSearch)) ||
+                    (book.kurta && book.kurta.toLowerCase().includes(currentSearch)) ||
+                    (book.zhanar && book.zhanar.toLowerCase().includes(currentSearch))
+                );
+            }
+            
+            if (filteredBooks.length === 0) {
+                booksGrid.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><h3>هیچ کتێبێک نەدۆزرایەوە</h3><p>گەڕانەکەت بگۆڕە یان ژانەرێکی تر هەڵبژێرە</p></div>';
+                return;
+            }
+            
+            filteredBooks.forEach(book => {
+                const isInWishlist = wishlist.some(item => item.id === book.id);
+                const isBorrowed = isBookBorrowed(book.naw);
+                const hasPending = hasPendingRequests(book.naw);
+                
+                const bookCard = document.createElement('div');
+                bookCard.className = `book-card floating`;
+                bookCard.innerHTML = `
+                    <div class="book-badge">${book.zhanar}</div>
+                    ${isBorrowed ? '<div class="book-status-badge">📖 وەرگیراوە</div>' : ''}
+                    ${hasPending && !isBorrowed ? '<div class="book-status-badge" style="background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);">⏳ چاوەڕوان</div>' : ''}
+                    <button class="add-to-wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}" data-id="${book.id}" data-title="${book.naw}" data-author="${book.author || 'نەناسراو'}" data-image="${book.linkewena}">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'}" alt="${book.naw}" class="book-image">
+                    <div class="book-info">
+                        <div class="book-title">${book.naw}</div>
+                        <div class="book-genre"><i class="fas fa-user-edit"></i> ${book.author || 'نەناسراو'}</div>
+                        <div class="book-genre"><i class="fas fa-tag"></i> ${book.zhanar}</div>
+                        ${isBorrowed ? '<div style="color: var(--danger-color); font-size: 0.9rem; margin-top: 0.5rem;"><i class="fas fa-info-circle"></i> پێشتر داوا کراە چاوەڕوان بە</div>' : ''}
+                    </div>
+                `;
+                
+                // هەموو کتێبەکان کلیک دەکرێن بۆ بینینی وردەکاری
+                bookCard.addEventListener('click', (e) => {
+                    if (!e.target.closest('.add-to-wishlist-btn')) {
+                        showBookDetails(book);
+                    }
+                });
+                
+                booksGrid.appendChild(bookCard);
+            });
+            
+            // Add event listeners to wishlist buttons
+            document.querySelectorAll('.add-to-wishlist-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const bookId = btn.getAttribute('data-id');
+                    const bookTitle = btn.getAttribute('data-title');
+                    const bookAuthor = btn.getAttribute('data-author');
+                    const bookImage = btn.getAttribute('data-image');
+                    
+                    toggleWishlist(bookId, bookTitle, bookAuthor, bookImage);
+                });
+            });
+        }
+
+        // Show book details modal
+        function showBookDetails(book) {
+            const isInWishlist = wishlist.some(item => item.id === book.id);
+            const isBorrowed = isBookBorrowed(book.naw);
+            const hasPending = hasPendingRequests(book.naw);
+            
+            const bookDetailsContent = document.getElementById('bookDetailsContent');
+            bookDetailsContent.innerHTML = `
+                <div style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>${book.naw}</h2>
+                    <span class="badge" style="background: var(--accent-color); color: var(--dark-color);">${book.zhanar}</span>
+                </div>
+                
+                <img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'}" alt="${book.naw}">
+                
+                <div>
+                    <div style="background: var(--light-color); padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> زانیاری کتێب</h3>
+                        <p><strong>نووسەر:</strong> ${book.author || 'نەناسراو'}</p>
+                        <p><strong>ژانەر:</strong> ${book.zhanar}</p>
+                        ${book.createdAt ? `<p><strong>بەرواری زیادکردن:</strong> ${new Date(book.createdAt).toLocaleDateString('ku')}</p>` : ''}
+                    </div>
+                    
+                    ${book.kurta ? `
+                    <div style="background: var(--light-color); padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-align-left"></i> کورتە</h3>
+                        <p>${book.kurta}</p>
+                    </div>
+                    ` : ''}
+                    
+                    ${isBorrowed ? `
+                    <div style="background: #FEF3C7; padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem; border-left: 5px solid #D97706;">
+                        <h3 style="color: #92400E; margin-bottom: 1rem;"><i class="fas fa-exclamation-triangle"></i> ئاگاداری</h3>
+                        <p style="color: #92400E;">پێشتر داوا کراە چاوەڕوان بە!</p>
+                        <p style="color: #92400E; font-size: 0.9rem; margin-top: 0.5rem;">ئەم کتێبە پێشتر وەرگیراوە! تکایە چاوەڕوانی گەڕاندنەوەی بە.</p>
+                        <p style="color: #92400E; font-size: 0.9rem; margin-top: 0.5rem;">ئەگەر پێویستت بەم کتێبە بوو، دەتوانیت زیادیکەی بکەیت بۆ لیستی دڵخوازەکان.</p>
+                    </div>
+                    ` : ''}
+                    
+                    ${hasPending && !isBorrowed ? `
+                    <div style="background: #DBEAFE; padding: 1.5rem; border-radius: 15px; margin-bottom: 2rem; border-left: 5px solid #3B82F6;">
+                        <h3 style="color: #1E40AF; margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> زانیاری</h3>
+                        <p style="color: #1E40AF;">ئەم کتێبە داواکاری چاوەڕوانی هەیە.</p>
+                    </div>
+                    ` : ''}
+                    
+                    <button class="wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}" id="modalWishlistBtn" data-id="${book.id}" data-title="${book.naw}" data-author="${book.author || 'نەناسراو'}" data-image="${book.linkewena}">
+                        <i class="fas fa-heart"></i> ${isInWishlist ? 'لابردنی لە لیستی دڵخوازەکان' : 'زیادکردنی بۆ لیستی دڵخوازەکان'}
+                    </button>
+                    
+                    ${!isBorrowed ? `
+                    <button class="borrow-btn" id="borrowBookBtn" data-id="${book.id}" data-title="${book.naw}">
+                        <i class="fas fa-book-reader"></i> داواکردنی کتێب
+                    </button>
+                    ` : ''}
+                </div>
+            `;
+            
+            bookDetailsModal.classList.add('active');
+            
+            // Add event listener to wishlist button in modal
+            document.getElementById('modalWishlistBtn').addEventListener('click', (e) => {
+                const bookId = e.target.closest('button').getAttribute('data-id');
+                const bookTitle = e.target.closest('button').getAttribute('data-title');
+                const bookAuthor = e.target.closest('button').getAttribute('data-author');
+                const bookImage = e.target.closest('button').getAttribute('data-image');
+                
+                toggleWishlist(bookId, bookTitle, bookAuthor, bookImage);
+            });
+            
+            // Add event listener to register button if not borrowed
+            if (!isBorrowed) {
+                document.getElementById('borrowBookBtn').addEventListener('click', (e) => {
+                    const bookId = e.target.getAttribute('data-id');
+                    const bookTitle = e.target.getAttribute('data-title');
+                    bookDetailsModal.classList.remove('active');
+                    showRegistrationForm(bookId, bookTitle);
+                });
+            }
+        }
+
+        // Handle student registration for book borrowing
+        async function handleStudentRegistration(e) {
+            e.preventDefault();
+            
+            const studentName = document.getElementById('regStudentName').value;
+            const department = document.getElementById('regDepartment').value;
+            const stage = document.getElementById('regStage').value;
+            const phoneNumber = document.getElementById('regPhoneNumber').value;
+            const bookId = document.getElementById('regBookId').value;
+            const bookTitle = document.getElementById('regBookTitle').value;
+            
+            // Check if book is already borrowed
+            if (isBookBorrowed(bookTitle)) {
+                showNotification('❌ پێشتر داوا کراە چاوەڕوان بە! تکایە کتێبێکی تر هەڵبژێرە.', 'error');
+                registrationForm.classList.remove('active');
+                return;
+            }
+            
+            // Check if user already has a pending request for this book
+            const userPendingRequest = allRequests.find(request => 
+                request.name === studentName && 
+                request.bookTitle === bookTitle && 
+                !request.pasand
+            );
+            
+            if (userPendingRequest) {
+                showNotification('❌ تۆ پێشتر داواکاریت بۆ ئەم کتێبە ناردووە و چاوەڕوانی پەسەندکردنی.', 'warning');
+                registrationForm.classList.remove('active');
+                return;
+            }
+            
+            const requestForSecondDB = {
+                id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                name: studentName,
+                stage: stage,
+                department: department,
+                number: phoneNumber,
+                dawa: true,
+                pasand: false,
+                bookTitle: bookTitle,
+                bookId: bookId,
+                requestDate: new Date().toISOString(),
+                returned: false
+            };
+            
+            try {
+                if (window.firebase2Functions && window.firebase2Functions.addRequest) {
+                    const success = await window.firebase2Functions.addRequest(requestForSecondDB);
+                    
+                    if (success) {
+                        // Add to local state
+                        allRequests.push(requestForSecondDB);
+                        
+                        studentRegistrationForm.reset();
+                        confirmationMessage.classList.add('active');
+                        
+                        showNotification('✅ داواکاریەکەت بە سەرکەوتوویی نێردرا!', 'success');
+                        
+                        setTimeout(() => {
+                            registrationForm.classList.remove('active');
+                            confirmationMessage.classList.remove('active');
+                        }, 3000);
+                        
+                        // Refresh books display
+                        displayBooks();
+                        updateStatistics();
+                    } else {
+                        throw new Error("Failed to save to database");
+                    }
+                } else {
+                    throw new Error("Database functions not available");
+                }
+                
+            } catch (error) {
+                console.error('Error saving student request:', error);
+                showNotification('❌ هەڵە ڕوویدا لە ناردنی داواکاری. تکایە دووبارە هەوڵبدەرەوە.', 'error');
+            }
+        }
+
+        // لیستی دڵخوازەکان - تووشکردن
+        function toggleWishlist(bookId, bookTitle, bookAuthor, bookImage) {
+            const existingIndex = wishlist.findIndex(item => item.id === bookId);
+            
+            if (existingIndex !== -1) {
+                // لابردنی لە لیستی دڵخوازەکان
+                wishlist.splice(existingIndex, 1);
+                showNotification('📖 کتێبەکە لابرا لە لیستی دڵخوازەکان', 'warning');
+            } else {
+                // زیادکردنی بۆ لیستی دڵخوازەکان
+                wishlist.push({
+                    id: bookId,
+                    title: bookTitle,
+                    author: bookAuthor,
+                    image: bookImage,
+                    addedAt: new Date().toISOString()
+                });
+                showNotification('❤️ کتێبەکە زیادکرا بۆ لیستی دڵخوازەکان', 'success');
+            }
+            
+            // پاشەکەوتکردنی لیستەکە
+            saveWishlistToLocalStorage();
+            
+            // نوێکردنی لیستەکە
+            updateWishlistUI();
+            updateWishlistCount();
+            displayBooks(); // نوێکردنی دوگمەکانی دڵ لەسەر کتێبەکان
+            updateModalWishlistButton(bookId); // نوێکردنی مۆدال
+        }
+
+        // پاشەکەوتکردنی لیستی دڵخوازەکان
+        function saveWishlistToLocalStorage() {
+            localStorage.setItem('libraryWishlist', JSON.stringify(wishlist));
+        }
+
+        // بارکردنی لیستی دڵخوازەکان
+        function loadWishlistFromLocalStorage() {
+            const savedWishlist = localStorage.getItem('libraryWishlist');
+            if (savedWishlist) {
+                wishlist = JSON.parse(savedWishlist);
+                console.log(`Loaded ${wishlist.length} items from wishlist`);
+            } else {
+                wishlist = [];
+                console.log('No saved wishlist found, starting with empty wishlist');
+            }
+        }
+
+        // نوێکردنی لیستی دڵخوازەکان
+        function updateWishlistUI() {
+            wishlistContent.innerHTML = '';
+            
+            if (wishlist.length === 0) {
+                emptyWishlist.style.display = 'block';
+                return;
+            }
+            
+            emptyWishlist.style.display = 'none';
+            
+            wishlist.forEach(item => {
+                const isBorrowed = isBookBorrowed(item.title);
+                
+                const wishlistItem = document.createElement('div');
+                wishlistItem.className = 'wishlist-item';
+                wishlistItem.innerHTML = `
+                    <img src="${item.image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'}" alt="${item.title}" class="wishlist-item-image">
+                    <div class="wishlist-item-info">
+                        <div class="wishlist-item-title">${item.title}</div>
+                        <div class="wishlist-item-author">${item.author}</div>
+                        ${isBorrowed ? '<div style="color: var(--danger-color); font-size: 0.8rem; margin-bottom: 0.5rem;"><i class="fas fa-info-circle"></i> پێشتر داوا کراە چاوەڕوان بە</div>' : ''}
+                        <div class="wishlist-item-actions">
+                            <button class="wishlist-remove-btn" data-id="${item.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            ${!isBorrowed ? `<button class="wishlist-borrow-btn" data-id="${item.id}" data-title="${item.title}">
+                                <i class="fas fa-book-reader"></i> داواکردن
+                            </button>` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                wishlistContent.appendChild(wishlistItem);
+            });
+            
+            // Event listeners for wishlist items
+            document.querySelectorAll('.wishlist-remove-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const bookId = btn.getAttribute('data-id');
+                    const bookItem = wishlist.find(item => item.id === bookId);
+                    
+                    if (bookItem) {
+                        wishlist = wishlist.filter(item => item.id !== bookId);
+                        saveWishlistToLocalStorage();
+                        updateWishlistUI();
+                        updateWishlistCount();
+                        displayBooks();
+                        updateModalWishlistButton(bookId);
+                        
+                        showNotification('🗑️ کتێبەکە لابرا لە لیستی دڵخوازەکان', 'warning');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.wishlist-borrow-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const bookId = btn.getAttribute('data-id');
+                    const bookTitle = btn.getAttribute('data-title');
+                    
+                    wishlistSidebar.classList.remove('active');
+                    showRegistrationForm(bookId, bookTitle);
+                });
+            });
+        }
+
+        // نوێکردنی دوگمەی مۆدالی وردەکاری کتێب
+        function updateModalWishlistButton(bookId) {
+            const modalWishlistBtn = document.getElementById('modalWishlistBtn');
+            if (modalWishlistBtn && modalWishlistBtn.getAttribute('data-id') === bookId) {
+                const isInWishlist = wishlist.some(item => item.id === bookId);
+                modalWishlistBtn.innerHTML = `<i class="fas fa-heart"></i> ${isInWishlist ? 'لابردنی لە لیستی دڵخوازەکان' : 'زیادکردنی بۆ لیستی دڵخوازەکان'}`;
+                modalWishlistBtn.classList.toggle('in-wishlist', isInWishlist);
+            }
+        }
+
+        // نوێکردنی ژمارەی لیستی دڵخوازەکان
+        function updateWishlistCount() {
+            const count = wishlist.length;
+            wishlistCount.textContent = count;
+            wishlistTotalStat.textContent = count;
+            
+            // نوێکردنی ئاماری سەرەکی
+            updateStatistics();
+        }
+
+        // Display registered students from Firebase دوم
+        async function displayRegisteredStudentsFromFirebase(searchTerm = '') {
+            registeredStudentsTable.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 3rem;"><div class="loading-spinner"></div></td></tr>';
+            
+            try {
+                if (!window.firebase2Functions || !window.firebase2Functions.getAllRequests) {
+                    throw new Error("Firebase دوم functions not loaded");
+                }
+                
+                await loadAllRequests(); // Refresh requests
+                
+                let filteredRequests = allRequests;
+                
+                if (currentStudentView === 'pending') {
+                    filteredRequests = allRequests.filter(request => !request.pasand);
+                } else if (currentStudentView === 'approved') {
+                    filteredRequests = allRequests.filter(request => request.pasand === true && !request.returned);
+                } else if (currentStudentView === 'returned') {
+                    filteredRequests = allRequests.filter(request => request.returned === true);
+                }
+                
+                if (searchTerm) {
+                    filteredRequests = filteredRequests.filter(request => 
+                        (request.name && request.name.toLowerCase().includes(searchTerm)) ||
+                        (request.department && request.department.toLowerCase().includes(searchTerm)) ||
+                        (request.bookTitle && request.bookTitle.toLowerCase().includes(searchTerm)) ||
+                        (request.stage && request.stage.toLowerCase().includes(searchTerm)) ||
+                        (request.number && request.number.includes(searchTerm))
+                    );
+                }
+                
+                displayRegisteredStudentsTable(filteredRequests);
+                
+            } catch (error) {
+                console.error('Error loading students from Firebase دوم:', error);
+                registeredStudentsTable.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 3rem;">
+                            <div class="empty-state">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>هەڵە ڕوویدا</h3>
+                                <p>ناتوانرێت زانیاریەکان باربکرێن</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Display registered students table
+        function displayRegisteredStudentsTable(requests) {
+            registeredStudentsTable.innerHTML = '';
+            
+            if (requests.length === 0) {
+                const noDataText = currentStudentView === 'pending' 
+                    ? 'هیچ داواکارییەکی چاوەڕوان نەکراوە' 
+                    : currentStudentView === 'approved'
+                    ? 'هیچ کتێبێک وەرگیراو نیە'
+                    : 'هیچ کتێبێک گەڕێندراوەتەوە نیە';
+                
+                registeredStudentsTable.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 3rem;">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <h3>${noDataText}</h3>
+                                <p>کاتێک داواکاری نوێ هات، لێرە دەردەکەون</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            requests.forEach(request => {
+                const statusText = request.returned ? 'گەڕێندراوەتەوە' : 
+                                 request.pasand ? 'وەرگیراوە' : 'چاوەڕوان';
+                const statusClass = request.returned ? 'status-rejected' : 
+                                  request.pasand ? 'status-approved' : 'status-pending';
+                const date = request.requestDate ? new Date(request.requestDate).toLocaleDateString('ku') : 
+                           (request.createdAt ? new Date(request.createdAt).toLocaleDateString('ku') : 'نەزانراو');
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${request.name || '---'}</strong></td>
+                    <td>${request.department || '---'}</td>
+                    <td><span class="badge">${request.stage || '---'}</span></td>
+                    <td>${request.number || request.phoneNumber || '---'}</td>
+                    <td><em>${request.bookTitle || 'هیچ کتێبێک'}</em></td>
+                    <td>${date}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        ${!request.pasand ? 
+                            `<button class="action-btn approve-btn" data-id="${request.id}"><i class="fas fa-check"></i> پەسەندکردن</button>
+                             <button class="action-btn reject-btn" data-id="${request.id}"><i class="fas fa-times"></i> ڕەتکردنەوە</button>` 
+                            : request.pasand && !request.returned ?
+                            `<button class="action-btn reject-btn" data-id="${request.id}" data-action="return"><i class="fas fa-undo-alt"></i> گەڕاندنەوە</button>`
+                            : ''}
+                        <button class="action-btn delete-btn" data-id="${request.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
+                    </td>
+                `;
+                
+                registeredStudentsTable.appendChild(row);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.approve-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await approveStudentRequest(requestId);
+                });
+            });
+            
+            document.querySelectorAll('.reject-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    const action = btn.getAttribute('data-action');
+                    
+                    if (action === 'return') {
+                        await returnBook(requestId);
+                    } else {
+                        await rejectStudentRequest(requestId);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await deleteStudentRequest(requestId);
+                });
+            });
+        }
+
+        // Display return books table
+        function displayReturnBooks(searchTerm = '') {
+            returnBooksTable.innerHTML = '';
+            
+            let filteredRequests = allRequests.filter(request => 
+                request.pasand === true && !request.returned
+            );
+            
+            if (searchTerm) {
+                filteredRequests = filteredRequests.filter(request => 
+                    (request.name && request.name.toLowerCase().includes(searchTerm)) ||
+                    (request.department && request.department.toLowerCase().includes(searchTerm)) ||
+                    (request.bookTitle && request.bookTitle.toLowerCase().includes(searchTerm)) ||
+                    (request.number && request.number.includes(searchTerm))
+                );
+            }
+            
+            if (filteredRequests.length === 0) {
+                returnBooksTable.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 3rem;">
+                            <div class="empty-state">
+                                <i class="fas fa-book"></i>
+                                <h3>هیچ کتێبێک وەرگیراو نیە</h3>
+                                <p>هەموو کتێبەکان بەردەستن</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            filteredRequests.forEach(request => {
+                const requestDate = request.requestDate ? new Date(request.requestDate) : 
+                                  request.createdAt ? new Date(request.createdAt) : new Date();
+                const daysPassed = Math.floor((new Date() - requestDate) / (1000 * 60 * 60 * 24));
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${request.name || '---'}</strong></td>
+                    <td>${request.department || '---'}</td>
+                    <td>${request.number || request.phoneNumber || '---'}</td>
+                    <td><em>${request.bookTitle || 'هیچ کتێبێک'}</em></td>
+                    <td>${requestDate.toLocaleDateString('ku')}</td>
+                    <td><span class="badge ${daysPassed > 14 ? 'badge-featured' : 'badge-popular'}">${daysPassed} ڕۆژ</span></td>
+                    <td>
+                        <button class="action-btn approve-btn" data-id="${request.id}" data-action="return"><i class="fas fa-undo-alt"></i> گەڕاندنەوە</button>
+                        <button class="action-btn delete-btn" data-id="${request.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
+                    </td>
+                `;
+                
+                returnBooksTable.appendChild(row);
+            });
+            
+            // Add event listeners to return buttons
+            document.querySelectorAll('.approve-btn[data-action="return"]').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await returnBook(requestId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await deleteStudentRequest(requestId);
+                });
+            });
+        }
+
+        // Approve student request
+        async function approveStudentRequest(requestId) {
+            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە پەسەند بکەیت؟')) {
+                try {
+                    if (window.firebase2Functions && window.firebase2Functions.approveRequest) {
+                        const success = await window.firebase2Functions.approveRequest(requestId);
+                        
+                        if (success) {
+                            // Update local state
+                            const requestIndex = allRequests.findIndex(r => r.id === requestId);
+                            if (requestIndex !== -1) {
+                                allRequests[requestIndex].pasand = true;
+                                allRequests[requestIndex].approvedDate = new Date().toISOString();
+                            }
+                            
+                            approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
+                            
+                            await displayRegisteredStudentsFromFirebase();
+                            displayBooks(); // Update book status on main page
+                            updateStatistics();
+                            showNotification('✅ داواکاریەکە پەسەندکرا و کتێبەکە وەرگیرا', 'success');
+                        } else {
+                            throw new Error("Failed to approve request");
+                        }
+                    } else {
+                        throw new Error("Database functions not available");
+                    }
+                    
+                } catch (error) {
+                    console.error('Error approving request:', error);
+                    showNotification('❌ هەڵە ڕوویدا لە پەسەندکردنی داواکاری', 'error');
+                }
+            }
+        }
+
+        // Return book
+        async function returnBook(requestId) {
+            if (confirm('ئایا دڵنیای کە ئەم کتێبە گەڕێندراوەتەوە؟')) {
+                try {
+                    const request = allRequests.find(r => r.id === requestId);
+                    if (!request) {
+                        throw new Error("Request not found");
+                    }
+                    
+                    // Update in Firebase دوم
+                    const entryRef = window.firebase2.doc(window.firebase2.db, "Language", requestId);
+                    await window.firebase2.updateDoc(entryRef, { 
+                        returned: true,
+                        returnDate: new Date().toISOString()
+                    });
+                    
+                    // Update local state
+                    const requestIndex = allRequests.findIndex(r => r.id === requestId);
+                    if (requestIndex !== -1) {
+                        allRequests[requestIndex].returned = true;
+                        allRequests[requestIndex].returnDate = new Date().toISOString();
+                    }
+                    
+                    approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
+                    
+                    // Refresh displays
+                    await displayRegisteredStudentsFromFirebase();
+                    displayReturnBooks();
+                    displayBooks(); // Update book status on main page
+                    updateStatistics();
+                    showNotification('✅ کتێبەکە بە سەرکەوتوویی گەڕێندرایەوە', 'success');
+                    
+                } catch (error) {
+                    console.error('Error returning book:', error);
+                    showNotification('❌ هەڵە ڕوویدا لە گەڕاندنەوەی کتێب', 'error');
+                }
+            }
+        }
+
+        // Delete student request (سڕینەوەی داواکاری)
+        async function deleteStudentRequest(requestId) {
+            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە بسڕیتەوە؟')) {
+                try {
+                    const request = allRequests.find(r => r.id === requestId);
+                    if (!request) {
+                        throw new Error("Request not found");
+                    }
+                    
+                    // Delete from Firebase دوم
+                    if (window.firebase2Functions && window.firebase2Functions.rejectRequest) {
+                        await window.firebase2Functions.rejectRequest(requestId);
+                    }
+                    
+                    // Remove from local state
+                    allRequests = allRequests.filter(r => r.id !== requestId);
+                    
+                    // If it was an approved request, update approvedRequests
+                    if (request.pasand && !request.returned) {
+                        approvedRequests = allRequests.filter(r => r.pasand === true && !r.returned);
+                    }
+                    
+                    // Refresh displays
+                    await displayRegisteredStudentsFromFirebase();
+                    displayReturnBooks();
+                    displayBooks(); // Update book status on main page
+                    updateStatistics();
+                    showNotification('🗑️ داواکاریەکە بە سەرکەوتوویی سڕدرایەوە', 'success');
+                    
+                } catch (error) {
+                    console.error('Error deleting request:', error);
+                    showNotification('❌ هەڵە ڕوویدا لە سڕینەوەی داواکاری', 'error');
+                }
+            }
+        }
+
+        // Reject student request
+        async function rejectStudentRequest(requestId) {
+            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە ڕەت بکەیتەوە؟')) {
+                try {
+                    const request = allRequests.find(r => r.id === requestId);
+                    if (!request) {
+                        throw new Error("Request not found");
+                    }
+                    
+                    // Delete from Firebase دوم
+                    if (window.firebase2Functions && window.firebase2Functions.rejectRequest) {
+                        await window.firebase2Functions.rejectRequest(requestId);
+                    }
+                    
+                    // Remove from local state
+                    allRequests = allRequests.filter(r => r.id !== requestId);
+                    
+                    // Refresh displays
+                    await displayRegisteredStudentsFromFirebase();
+                    displayBooks(); // Update book status on main page
+                    updateStatistics();
+                    showNotification('❌ داواکاریەکە ڕەتکرایەوە', 'success');
+                    
+                } catch (error) {
+                    console.error('Error rejecting request:', error);
+                    showNotification('❌ هەڵە ڕوویدا لە ڕەتکردنەوەی داواکاری', 'error');
+                }
+            }
+        }
+
+        // Show registration form
+        function showRegistrationForm(bookId, bookTitle) {
+            document.getElementById('regBookId').value = bookId;
+            document.getElementById('regBookTitle').value = bookTitle;
+            registrationForm.classList.add('active');
+            confirmationMessage.classList.remove('active');
+            studentRegistrationForm.reset();
+            
+            // Scroll to registration form
+            registrationForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Handle admin login
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                currentUser = { username, role: 'admin' };
+                adminLoginModal.classList.remove('active');
+                adminLoginForm.reset();
+                loginError.style.display = 'none';
+                
+                // Show admin panel
+                document.querySelector('.container').style.display = 'none';
+                adminPanel.style.display = 'block';
+                
+                // Load admin data
+                displayAdminBooks();
+                displayRegisteredStudentsFromFirebase();
+                
+                showNotification('✅ بە سەرکەوتوویی چووتە ژوورەوە وەک ئەدمین', 'success');
+            } else {
+                loginError.style.display = 'block';
+            }
+        }
+
+        // Display admin books
+        function displayAdminBooks(searchTerm = '') {
+            adminBooksTable.innerHTML = '';
+            
+            let filteredBooks = books;
+            
+            if (searchTerm) {
+                filteredBooks = filteredBooks.filter(book => 
+                    book.naw.toLowerCase().includes(searchTerm) ||
+                    (book.author && book.author.toLowerCase().includes(searchTerm)) ||
+                    (book.zhanar && book.zhanar.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            if (filteredBooks.length === 0) {
+                adminBooksTable.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 3rem;">
+                            <div class="empty-state">
+                                <i class="fas fa-book"></i>
+                                <h3>هیچ کتێبێک نەدۆزرایەوە</h3>
+                                <p>کتێبێکی نوێ زیاد بکە</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            filteredBooks.forEach(book => {
+                const isBorrowed = isBookBorrowed(book.naw);
+                const hasPending = hasPendingRequests(book.naw);
+                
+                let statusText = 'بەردەستە';
+                let statusClass = 'status-approved';
+                
+                if (isBorrowed) {
+                    statusText = 'وەرگیراوە';
+                    statusClass = 'status-pending';
+                } else if (hasPending) {
+                    statusText = 'چاوەڕوان';
+                    statusClass = 'status-pending';
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'}" alt="${book.naw}" style="width: 60px; height: 80px; object-fit: cover; border-radius: 8px;"></td>
+                    <td><strong>${book.naw}</strong></td>
+                    <td>${book.author || 'نەناسراو'}</td>
+                    <td><span class="badge">${book.zhanar}</span></td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${book.id}"><i class="fas fa-edit"></i> دەستکاری</button>
+                        <button class="action-btn delete-btn" data-id="${book.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
+                    </td>
+                `;
+                
+                adminBooksTable.appendChild(row);
+            });
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const bookId = e.target.closest('button').getAttribute('data-id');
+                    editBook(bookId);
+                });
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const bookId = e.target.closest('button').getAttribute('data-id');
+                    deleteBook(bookId);
+                });
+            });
+        }
+
+        // Show book form for adding/editing
+        function showBookForm(book = null) {
+            editingBookId = book ? book.id : null;
+            
+            if (book) {
+                bookFormTitle.textContent = '📝 دەستکاریکردنی کتێب';
+                document.getElementById('bookId').value = book.id;
+                document.getElementById('bookTitle').value = book.naw;
+                document.getElementById('bookAuthor').value = book.author || '';
+                document.getElementById('bookGenre').value = book.zhanar || '';
+                document.getElementById('bookSummary').value = book.kurta || '';
+                document.getElementById('bookImage').value = book.linkewena || '';
+                bookFormSubmitBtn.innerHTML = '<i class="fas fa-save"></i> نوێکردنەوە';
+            } else {
+                bookFormTitle.textContent = '📖 زیادکردنی کتێبی نوێ';
+                resetBookForm();
+                bookFormSubmitBtn.innerHTML = '<i class="fas fa-save"></i> پاشەکەوت';
+            }
+            
+            bookFormModal.classList.add('active');
+        }
+
+        // Reset book form
+        function resetBookForm() {
+            bookForm.reset();
+            document.getElementById('bookId').value = '';
+            editingBookId = null;
+        }
+
+        // Handle book form submission
+        async function handleBookFormSubmit(e) {
+            e.preventDefault();
+            
+            const bookData = {
+                naw: document.getElementById('bookTitle').value,
+                author: document.getElementById('bookAuthor').value,
+                zhanar: document.getElementById('bookGenre').value,
+                kurta: document.getElementById('bookSummary').value,
+                linkewena: document.getElementById('bookImage').value,
+                createdAt: new Date().toISOString()
+            };
+            
+            try {
+                if (editingBookId) {
+                    // Update existing book
+                    const bookRef = window.firebase.doc(window.firebase.db, 'books', editingBookId);
+                    await window.firebase.updateDoc(bookRef, bookData);
+                    
+                    // Update local state
+                    const bookIndex = books.findIndex(b => b.id === editingBookId);
+                    if (bookIndex !== -1) {
+                        books[bookIndex] = { ...books[bookIndex], ...bookData };
+                    }
+                    
+                    showNotification('✅ کتێبەکە بە سەرکەوتوویی نوێکرایەوە', 'success');
+                } else {
+                    // Add new book
+                    const docRef = await window.firebase.addDoc(
+                        window.firebase.collection(window.firebase.db, 'books'),
+                        bookData
+                    );
+                    
+                    // Add to local state
+                    books.push({
+                        id: docRef.id,
+                        ...bookData
+                    });
+                    
+                    showNotification('✅ کتێبەکە بە سەرکەوتوویی زیادکرا', 'success');
+                }
+                
+                // Close modal and refresh
+                bookFormModal.classList.remove('active');
+                resetBookForm();
+                displayBooks();
+                displayAdminBooks();
+                updateStatistics();
+                
+            } catch (error) {
+                console.error('Error saving book:', error);
+                showNotification('❌ هەڵە ڕوویدا لە پاشەکەوتکردنی کتێب', 'error');
+            }
+        }
+
+        // Edit book
+        function editBook(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                showBookForm(book);
+            }
+        }
+
+        // Delete book
+        async function deleteBook(bookId) {
+            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم کتێبە بسڕیتەوە؟')) {
+                try {
+                    // Check if book has any pending or approved requests
+                    const bookTitle = books.find(b => b.id === bookId)?.naw;
+                    const hasRequests = allRequests.some(r => r.bookTitle === bookTitle);
+                    
+                    if (hasRequests) {
+                        if (!confirm('ئەم کتێبە داواکاری هەیە. ئایا هێشتا دەتەوێت بسڕیتەوە؟')) {
+                            return;
+                        }
+                    }
+                    
+                    // Delete from Firebase
+                    const bookRef = window.firebase.doc(window.firebase.db, 'books', bookId);
+                    await window.firebase.deleteDoc(bookRef);
+                    
+                    // Remove from local state
+                    books = books.filter(b => b.id !== bookId);
+                    
+                    // Remove from wishlist
+                    wishlist = wishlist.filter(item => item.id !== bookId);
+                    saveWishlistToLocalStorage();
+                    updateWishlistCount();
+                    updateWishlistUI();
+                    
+                    // Refresh displays
+                    displayBooks();
+                    displayAdminBooks();
+                    updateStatistics();
+                    
+                    showNotification('🗑️ کتێبەکە بە سەرکەوتوویی سڕدرایەوە', 'success');
+                    
+                } catch (error) {
+                    console.error('Error deleting book:', error);
+                    showNotification('❌ هەڵە ڕوویدا لە سڕینەوەی کتێب', 'error');
+                }
+            }
+        }
+
+        // Show search suggestions
+        function showSearchSuggestions(searchTerm, suggestionsContainer) {
+            const filteredBooks = books.filter(book => 
+                book.naw.toLowerCase().includes(searchTerm) ||
+                (book.author && book.author.toLowerCase().includes(searchTerm)) ||
+                (book.zhanar && book.zhanar.toLowerCase().includes(searchTerm))
+            );
+            
+            suggestionsContainer.innerHTML = '';
+            
+            if (filteredBooks.length === 0) {
+                suggestionsContainer.innerHTML = '<div class="suggestion-item">هیچ کتێبێک نەدۆزرایەوە</div>';
+            } else {
+                filteredBooks.slice(0, 5).forEach(book => {
+                    const suggestion = document.createElement('div');
+                    suggestion.className = 'suggestion-item';
+                    suggestion.innerHTML = `
+                        <strong>${book.naw}</strong><br>
+                        <small>${book.author || 'نەناسراو'} - ${book.zhanar}</small>
+                    `;
+                    suggestion.addEventListener('click', () => {
+                        searchInput.value = book.naw;
+                        currentSearch = book.naw.toLowerCase();
+                        suggestionsContainer.classList.remove('active');
+                        displayBooks();
+                        showBookDetails(book);
+                    });
+                    suggestionsContainer.appendChild(suggestion);
+                });
+            }
+            
+            suggestionsContainer.classList.add('active');
+        }
+
+        // Show student search suggestions
+        function showStudentSearchSuggestions(searchTerm) {
+            const filteredRequests = allRequests.filter(request => 
+                (request.name && request.name.toLowerCase().includes(searchTerm)) ||
+                (request.department && request.department.toLowerCase().includes(searchTerm)) ||
+                (request.bookTitle && request.bookTitle.toLowerCase().includes(searchTerm))
+            );
+            
+            studentSearchSuggestions.innerHTML = '';
+            
+            if (filteredRequests.length === 0) {
+                studentSearchSuggestions.innerHTML = '<div class="suggestion-item">هیچ خوێندکارێک نەدۆزرایەوە</div>';
+            } else {
+                filteredRequests.slice(0, 5).forEach(request => {
+                    const suggestion = document.createElement('div');
+                    suggestion.className = 'suggestion-item';
+                    suggestion.innerHTML = `
+                        <strong>${request.name}</strong><br>
+                        <small>${request.department} - ${request.bookTitle}</small>
+                    `;
+                    suggestion.addEventListener('click', () => {
+                        studentSearchInput.value = request.name;
+                        studentSearchSuggestions.classList.remove('active');
+                        displayRegisteredStudents(request.name.toLowerCase());
+                    });
+                    studentSearchSuggestions.appendChild(suggestion);
+                });
+            }
+            
+            studentSearchSuggestions.classList.add('active');
+        }
+
+        // Display registered students with search
+        function displayRegisteredStudents(searchTerm = '') {
+            let filteredRequests = allRequests;
+            
+            if (currentStudentView === 'pending') {
+                filteredRequests = allRequests.filter(request => !request.pasand);
+            } else if (currentStudentView === 'approved') {
+                filteredRequests = allRequests.filter(request => request.pasand === true && !request.returned);
+            } else if (currentStudentView === 'returned') {
+                filteredRequests = allRequests.filter(request => request.returned === true);
+            }
+            
+            if (searchTerm) {
+                filteredRequests = filteredRequests.filter(request => 
+                    (request.name && request.name.toLowerCase().includes(searchTerm)) ||
+                    (request.department && request.department.toLowerCase().includes(searchTerm)) ||
+                    (request.bookTitle && request.bookTitle.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            displayRegisteredStudentsTable(filteredRequests);
+        }
+
+        // Update student view buttons
+        function updateStudentViewButtons() {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (currentStudentView === 'pending') {
+                showPendingBtn.classList.add('active');
+            } else if (currentStudentView === 'approved') {
+                showApprovedBtn.classList.add('active');
+            } else if (currentStudentView === 'returned') {
+                showReturnedBtn.classList.add('active');
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}-notification`;
+            
+            let icon = 'fas fa-check-circle';
+            if (type === 'error') icon = 'fas fa-exclamation-circle';
+            if (type === 'warning') icon = 'fas fa-exclamation-triangle';
+            
+            notification.innerHTML = `
+                <i class="${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) reverse';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 400);
+            }, 5000);
+        }
+
+        // Load books from local storage (fallback)
+        function loadBooksFromLocalStorage() {
+            const savedBooks = localStorage.getItem('libraryBooks');
+            if (savedBooks) {
+                books = JSON.parse(savedBooks);
+                console.log(`Loaded ${books.length} books from local storage`);
+            } else {
+                books = [];
+                console.log('No saved books found, starting with empty library');
+            }
+        }
+
+        // Add sample books
+        async function addSampleBooks() {
+            const sampleBooks = [
+                {
+                    naw: 'مێژووی کورد',
+                    author: 'د. کەمال مەزھەر',
+                    zhanar: 'مێژوو',
+                    kurta: 'کتێبێکی دەقی زانستیە کە مێژووی کورد و کوردستان باس دەکات',
+                    linkewena: 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+                },
+                {
+                    naw: 'ڕۆمانی شەوانی بەغدا',
+                    author: 'نووسەر نەناسراو',
+                    zhanar: 'ڕۆمان',
+                    kurta: 'ڕۆمانێکی سەردەمی مۆدێرن کە چیرۆکەکەی لە شاری بەغدادە',
+                    linkewena: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+                },
+                {
+                    naw: 'فێرکاری زمانی ئینگلیزی',
+                    author: 'د. سەلام ناوخۆش',
+                    zhanar: 'فێرکاری زمان',
+                    kurta: 'کتێبێک بۆ فێربوونی زمانی ئینگلیزی بە شێوەیەکی سادە',
+                    linkewena: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+                }
+            ];
+            
+            try {
+                for (const book of sampleBooks) {
+                    const docRef = await window.firebase.addDoc(
+                        window.firebase.collection(window.firebase.db, 'books'),
+                        {
+                            ...book,
+                            createdAt: new Date().toISOString()
+                        }
+                    );
+                    books.push({
+                        id: docRef.id,
+                        ...book,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+                console.log('Sample books added to Firebase');
+            } catch (error) {
+                console.error('Error adding sample books:', error);
+                // Save to local storage as fallback
+                books = sampleBooks.map((book, index) => ({
+                    id: `book_${index}`,
+                    ...book,
+                    createdAt: new Date().toISOString()
+                }));
+                localStorage.setItem('libraryBooks', JSON.stringify(books));
+            }
+        }
+    </script>
+</body>
+</html>
