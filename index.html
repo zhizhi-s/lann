@@ -293,7 +293,108 @@
             margin: 0 auto;
             padding: 1rem;
             margin-top: 70px;
-            min-height: calc(100vh - 70px);
+            margin-bottom: 70px; /* فەرامۆش مەکە بۆ جێگای ناوەڕاستی Bottom Navigation */
+            min-height: calc(100vh - 140px); /* هەردوو header و bottom nav */
+        }
+
+        /* ====== BOTTOM NAVIGATION BAR ====== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--gray-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.5rem 0;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            height: 70px;
+        }
+
+        body.dark-mode .bottom-nav {
+            background: var(--dark-card);
+            border-top-color: var(--dark-border);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+            max-width: 33.33%;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        body.dark-mode .nav-item {
+            color: var(--dark-text);
+        }
+
+        .nav-item.active {
+            background: var(--light-color);
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .nav-item.active {
+            background: var(--dark-bg);
+            color: var(--dark-primary);
+        }
+
+        .nav-item:hover {
+            background: var(--light-color);
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .nav-item:hover {
+            background: var(--dark-bg);
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-text {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* بادج بۆ کتێبە وەرگیراوەکان */
+        .borrowed-badge {
+            position: absolute;
+            top: -3px;
+            right: 20px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 0.6rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .borrowed-badge {
+            border-color: var(--dark-card);
         }
 
         /* ====== SEARCH SECTION ====== */
@@ -901,6 +1002,7 @@
         #adminPanel {
             margin-top: 70px;
             padding: 1rem;
+            margin-bottom: 70px; /* فەرامۆش مەکە بۆ جێگای ناوەڕاستی Bottom Navigation */
         }
 
         .admin-actions {
@@ -1237,64 +1339,147 @@
             white-space: nowrap;
         }
 
-        /* ====== TOGGLE BUTTONS - بازسازی کامل ====== */
-        .dark-mode-toggle,
-        .wishlist-toggle {
+        /* ====== BORROWED BOOKS SIDEBAR ====== */
+        .borrowed-sidebar {
             position: fixed;
-            left: 15px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
+            top: 0;
+            left: -100%;
+            width: 85%;
+            max-width: 320px;
+            height: 100vh;
+            background: white;
+            z-index: 1500;
+            transition: var(--transition);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            border-radius: 0;
+        }
+
+        body.dark-mode .borrowed-sidebar {
+            background: var(--dark-card);
+        }
+
+        .borrowed-sidebar.active {
+            left: 0;
+        }
+
+        .borrowed-header {
+            background: linear-gradient(135deg, #38B2AC 0%, #0D9488 100%);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0;
+        }
+
+        .borrowed-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .close-borrowed {
+            background: none;
             border: none;
             color: white;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* اضافه کردن دایره کامل */
-            padding: 0;
-            overflow: hidden;
-        }
-
-        .dark-mode-toggle {
-            bottom: 85px;
-            background: var(--primary-color);
-        }
-
-        .dark-mode-toggle i,
-        .wishlist-toggle i {
             font-size: 1.1rem;
-        }
-
-        .wishlist-toggle {
-            bottom: 135px;
-            background: linear-gradient(135deg, #f56565 0%, #ed8936 100%);
-        }
-
-        .wishlist-count-badge {
-            position: absolute;
-            top: -3px;
-            right: -3px;
-            background: var(--danger-color);
-            color: white;
-            font-size: 0.6rem;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            transition: var(--transition);
         }
 
-        body.dark-mode .wishlist-count-badge {
-            border-color: var(--dark-card);
+        .borrowed-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .borrowed-empty {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #718096;
+        }
+
+        .borrowed-empty i {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            color: #CBD5E0;
+        }
+
+        .borrowed-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            border-radius: 8px;
+            background: var(--light-color);
+            margin-bottom: 0.7rem;
+            transition: var(--transition);
+            gap: 0.8rem;
+        }
+
+        body.dark-mode .borrowed-item {
+            background: #0f172a;
+        }
+
+        .borrowed-item-image {
+            width: 50px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .borrowed-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .borrowed-item-title {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .borrowed-item-author {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .borrowed-item-date {
+            font-size: 0.7rem;
+            color: #718096;
+        }
+
+        .borrowed-item-status {
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            display: inline-block;
+        }
+
+        .status-borrowed {
+            background: #D1FAE5;
+            color: #065F46;
         }
 
         /* ====== FOOTER ====== */
@@ -1306,6 +1491,7 @@
             margin-top: 2rem;
             position: relative;
             font-size: 0.85rem;
+            margin-bottom: 70px; /* فەرامۆش مەکە بۆ جێگای ناوەڕاستی Bottom Navigation */
         }
 
         body.dark-mode footer {
@@ -1552,26 +1738,25 @@
                 top: 35px;
             }
             
-            /* ====== TOGGLE BUTTONS - دایره کامل ====== */
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                width: 42px;
-                height: 42px;
-                font-size: 15px;
-                border-radius: 50%;
+            /* ====== BOTTOM NAVIGATION ====== */
+            .bottom-nav {
+                height: 65px;
             }
             
-            .dark-mode-toggle i,
-            .wishlist-toggle i {
-                font-size: 1rem;
+            .nav-icon {
+                font-size: 1.1rem;
             }
             
-            .wishlist-count-badge {
+            .nav-text {
+                font-size: 0.65rem;
+            }
+            
+            .borrowed-badge {
+                font-size: 0.55rem;
                 width: 16px;
                 height: 16px;
-                font-size: 0.55rem;
                 top: -2px;
-                right: -2px;
+                right: 15px;
             }
         }
 
@@ -1632,11 +1817,12 @@
                 max-width: 55px;
             }
             
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                width: 40px;
-                height: 40px;
-                font-size: 14px;
+            .bottom-nav {
+                height: 60px;
+            }
+            
+            .nav-text {
+                font-size: 0.6rem;
             }
         }
 
@@ -1750,29 +1936,9 @@
                 width: 90%;
             }
             
-            /* دوگمەکان - دایره کامل */
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                width: 42px;
-                height: 42px;
-                font-size: 15px;
-                border-radius: 50%;
-            }
-            
-            .dark-mode-toggle {
-                bottom: 80px;
-                left: 12px;
-            }
-            
-            .wishlist-toggle {
-                bottom: 130px;
-                left: 12px;
-            }
-            
-            .wishlist-count-badge {
-                font-size: 0.5rem;
-                width: 16px;
-                height: 16px;
+            /* لیستی وەرگیراوەکان */
+            .borrowed-sidebar {
+                width: 90%;
             }
         }
 
@@ -1819,6 +1985,7 @@
                 max-width: 1200px;
                 padding: 2rem;
                 margin-top: 80px;
+                margin-bottom: 80px; /* فەرامۆش مەکە بۆ جێگای ناوەڕاستی Bottom Navigation */
             }
             
             header {
@@ -1906,36 +2073,29 @@
                 width: 380px;
             }
             
-            /* TOGGLE BUTTONS - دایره کامل برای دسکتاپ */
-            .dark-mode-toggle {
-                width: 50px;
-                height: 50px;
-                font-size: 18px;
-                bottom: 100px;
-                left: 20px;
-                border-radius: 50%;
+            .borrowed-sidebar {
+                width: 380px;
             }
             
-            .wishlist-toggle {
-                width: 50px;
-                height: 50px;
-                font-size: 18px;
-                bottom: 160px;
-                left: 20px;
-                border-radius: 50%;
+            /* BOTTOM NAVIGATION FOR TABLET/DESKTOP */
+            .bottom-nav {
+                height: 75px;
             }
             
-            .dark-mode-toggle i,
-            .wishlist-toggle i {
-                font-size: 1.2rem;
+            .nav-icon {
+                font-size: 1.3rem;
             }
             
-            .wishlist-count-badge {
+            .nav-text {
+                font-size: 0.8rem;
+            }
+            
+            .borrowed-badge {
                 font-size: 0.7rem;
                 width: 20px;
                 height: 20px;
                 top: -4px;
-                right: -4px;
+                right: 25px;
             }
         }
 
@@ -1998,20 +2158,16 @@
                 top: 32px;
             }
             
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                width: 38px;
-                height: 38px;
-                font-size: 13px;
-                left: 10px;
+            .bottom-nav {
+                height: 58px;
             }
             
-            .dark-mode-toggle {
-                bottom: 75px;
+            .nav-icon {
+                font-size: 1rem;
             }
             
-            .wishlist-toggle {
-                bottom: 120px;
+            .nav-text {
+                font-size: 0.58rem;
             }
         }
 
@@ -2041,11 +2197,16 @@
                 color: white !important;
             }
             
+            .nav-item:hover {
+                transform: none !important;
+            }
+            
             /* باشترکردنی کلیکی دوگمەکان لەسەر مۆبایل */
             button, 
             .book-card,
             .genre-item,
-            .action-btn {
+            .action-btn,
+            .nav-item {
                 min-height: 44px; /* دەستپێگەیشتن باشتر */
             }
             
@@ -2126,32 +2287,34 @@
                 -webkit-text-size-adjust: 100%; /* ڕێگری لە گۆڕینی قەبارەی فۆنت */
             }
         }
-
-        /* ====== باشترکردنی شوێنەکانی دوگمەکان لەسەر مۆبایل ====== */
-        @media (max-width: 767px) {
-            .dark-mode-toggle {
-                bottom: 85px;
-                left: 15px;
-            }
-            
-            .wishlist-toggle {
-                bottom: 135px;
-                left: 15px;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- داڕک مۆد تووگڵ -->
-    <button id="darkModeToggle" class="dark-mode-toggle">
-        <i class="fas fa-moon"></i>
-    </button>
-
-    <!-- دوگمەی لیستی دڵخوازەکان -->
-    <button id="wishlistToggle" class="wishlist-toggle">
-        <i class="fas fa-heart"></i>
-        <span class="wishlist-count-badge" id="wishlistCount">0</span>
-    </button>
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item" id="navDarkMode">
+            <div class="nav-icon">
+                <i class="fas fa-moon" id="darkModeIcon"></i>
+            </div>
+            <div class="nav-text">داڕک مۆد</div>
+        </a>
+        
+        <a href="#" class="nav-item" id="navWishlist">
+            <div class="nav-icon">
+                <i class="fas fa-heart"></i>
+                <span class="borrowed-badge" id="navWishlistCount">0</span>
+            </div>
+            <div class="nav-text">دڵخوازەکانم</div>
+        </a>
+        
+        <a href="#" class="nav-item" id="navBorrowed">
+            <div class="nav-icon">
+                <i class="fas fa-book-reader"></i>
+                <span class="borrowed-badge" id="navBorrowedCount">0</span>
+            </div>
+            <div class="nav-text">وەرگیراوەکانم</div>
+        </a>
+    </nav>
 
     <!-- لیستی دڵخوازەکان -->
     <div class="wishlist-sidebar" id="wishlistSidebar">
@@ -2166,6 +2329,23 @@
                 <i class="fas fa-heart-broken"></i>
                 <h3>لیستی دڵخوازەکانت بەتاڵە</h3>
                 <p>کتێبەکانی خۆزەشت کلیکی "❤️" بکە بۆ زیادکردنیان</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- لیستی وەرگیراوەکان -->
+    <div class="borrowed-sidebar" id="borrowedSidebar">
+        <div class="borrowed-header">
+            <h3><i class="fas fa-book-reader"></i> وەرگیراوەکانم</h3>
+            <button class="close-borrowed" id="closeBorrowed">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="borrowed-content" id="borrowedContent">
+            <div class="borrowed-empty" id="emptyBorrowed">
+                <i class="fas fa-book"></i>
+                <h3>هیچ کتێبێک وەرتنەگرتووە</h3>
+                <p>کتێبێک داوا بکە و چاوەڕوانی پەسەندکردنی ئەدمین بە</p>
             </div>
         </div>
     </div>
@@ -2546,31 +2726,24 @@
     </footer>
 
     <script>
-        // داڕک مۆد تووگڵ
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const darkModeIcon = darkModeToggle.querySelector('i');
+        // DOM Elements for Bottom Navigation
+        const navDarkMode = document.getElementById('navDarkMode');
+        const darkModeIcon = document.getElementById('darkModeIcon');
+        const navWishlist = document.getElementById('navWishlist');
+        const navBorrowed = document.getElementById('navBorrowed');
+        const navWishlistCount = document.getElementById('navWishlistCount');
+        const navBorrowedCount = document.getElementById('navBorrowedCount');
         
-        // بارکردنی هەڵبژاردەی پێشوو
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            darkModeIcon.className = 'fas fa-sun';
-        }
+        const wishlistSidebar = document.getElementById('wishlistSidebar');
+        const closeWishlist = document.getElementById('closeWishlist');
+        const wishlistContent = document.getElementById('wishlistContent');
+        const emptyWishlist = document.getElementById('emptyWishlist');
         
-        // گۆڕینی داڕک مۆد
-        darkModeToggle.onclick = () => {
-            document.body.classList.toggle('dark-mode');
-            
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-                darkModeIcon.className = 'fas fa-sun';
-                showNotification('🌙 داڕک مۆد چالاککرا', 'success');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-                darkModeIcon.className = 'fas fa-moon';
-                showNotification('☀️ ڕووناک مۆد چالاککرا', 'success');
-            }
-        };
-        
+        const borrowedSidebar = document.getElementById('borrowedSidebar');
+        const closeBorrowed = document.getElementById('closeBorrowed');
+        const borrowedContent = document.getElementById('borrowedContent');
+        const emptyBorrowed = document.getElementById('emptyBorrowed');
+
         // DOM Elements
         const adminLoginBtn = document.getElementById('adminLoginBtn');
         const adminLoginModal = document.getElementById('adminLoginModal');
@@ -2629,17 +2802,6 @@
         const returnSearchInput = document.getElementById('returnSearchInput');
         const returnSearchSuggestions = document.getElementById('returnSearchSuggestions');
 
-        // لیستی دڵخوازەکان - Elements
-        const wishlistToggle = document.getElementById('wishlistToggle');
-        const wishlistSidebar = document.getElementById('wishlistSidebar');
-        const closeWishlist = document.getElementById('closeWishlist');
-        const wishlistContent = document.getElementById('wishlistContent');
-        const emptyWishlist = document.getElementById('emptyWishlist');
-        const wishlistCount = document.getElementById('wishlistCount');
-        const wishlistTotalStat = document.getElementById('wishlistTotal');
-        const borrowedBooksStat = document.getElementById('borrowedBooks');
-        const totalBooksStat = document.getElementById('totalBooks');
-
         // Application State
         let currentUser = null;
         let books = [];
@@ -2677,10 +2839,36 @@
             displayBooks();
             updateWishlistCount();
             updateWishlistUI();
+            updateBorrowedBooksUI();
         });
 
         // Set up event listeners
         function setupEventListeners() {
+            // Bottom Navigation
+            navDarkMode.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleDarkMode();
+            });
+            
+            navWishlist.addEventListener('click', (e) => {
+                e.preventDefault();
+                wishlistSidebar.classList.add('active');
+            });
+            
+            navBorrowed.addEventListener('click', (e) => {
+                e.preventDefault();
+                borrowedSidebar.classList.add('active');
+                updateBorrowedBooksUI();
+            });
+            
+            closeWishlist.addEventListener('click', () => {
+                wishlistSidebar.classList.remove('active');
+            });
+            
+            closeBorrowed.addEventListener('click', () => {
+                borrowedSidebar.classList.remove('active');
+            });
+            
             // Admin login
             adminLoginBtn.addEventListener('click', () => {
                 adminLoginModal.classList.add('active');
@@ -2742,8 +2930,11 @@
                 if (!returnSearchSuggestions.contains(e.target) && e.target !== returnSearchInput) {
                     returnSearchSuggestions.classList.remove('active');
                 }
-                if (!wishlistSidebar.contains(e.target) && e.target !== wishlistToggle && !wishlistToggle.contains(e.target)) {
+                if (!wishlistSidebar.contains(e.target) && e.target !== navWishlist && !navWishlist.contains(e.target)) {
                     wishlistSidebar.classList.remove('active');
+                }
+                if (!borrowedSidebar.contains(e.target) && e.target !== navBorrowed && !navBorrowed.contains(e.target)) {
+                    borrowedSidebar.classList.remove('active');
                 }
             });
             
@@ -2765,15 +2956,6 @@
             cancelBookFormBtn.addEventListener('click', () => {
                 bookFormModal.classList.remove('active');
                 resetBookForm();
-            });
-            
-            // لیستی دڵخوازەکان
-            wishlistToggle.addEventListener('click', () => {
-                wishlistSidebar.classList.toggle('active');
-            });
-            
-            closeWishlist.addEventListener('click', () => {
-                wishlistSidebar.classList.remove('active');
             });
             
             // Student registration form submission
@@ -2870,6 +3052,27 @@
             });
         }
 
+        // داڕک مۆد تووگڵ
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                darkModeIcon.className = 'fas fa-sun';
+                showNotification('🌙 داڕک مۆد چالاککرا', 'success');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeIcon.className = 'fas fa-moon';
+                showNotification('☀️ ڕووناک مۆد چالاککرا', 'success');
+            }
+        }
+
+        // بارکردنی هەڵبژاردەی پێشوو
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeIcon.className = 'fas fa-sun';
+        }
+
         // گەڕان بۆ پەڕەی سەرەکی
         function goToMainPage() {
             mainPage.style.display = 'block';
@@ -2924,6 +3127,10 @@
             document.getElementById('wishlistTotal').textContent = wishlistCount;
             document.getElementById('borrowedBooks').textContent = borrowedBooksCount;
             
+            // Update bottom navigation badges
+            navWishlistCount.textContent = wishlistCount;
+            navBorrowedCount.textContent = borrowedBooksCount;
+            
             // Update admin statistics
             document.getElementById('adminTotalBooks').textContent = totalBooks;
             const pendingCount = allRequests.filter(r => !r.pasand).length;
@@ -2943,6 +3150,51 @@
             return allRequests.some(request => 
                 request.bookTitle === bookTitle && !request.pasand
             );
+        }
+
+        // لیستی وەرگیراوەکان
+        function getMyBorrowedBooks() {
+            // لێرەدا ئێمە هەموو کتێبە وەرگیراوەکان دەگەڕێنینەوە
+            // لە ڕاستیدا ئەمە پێویستە بە ناوی بەکارهێنەرەوە بگەڕێت
+            // بەڵام لەم نموونەیەدا هەموو کتێبە وەرگیراوەکان دەگەڕێنینەوە
+            return approvedRequests.filter(request => request.pasand === true && !request.returned);
+        }
+
+        // نوێکردنی لیستی وەرگیراوەکان
+        function updateBorrowedBooksUI() {
+            borrowedContent.innerHTML = '';
+            
+            const myBorrowedBooks = getMyBorrowedBooks();
+            
+            if (myBorrowedBooks.length === 0) {
+                emptyBorrowed.style.display = 'block';
+                return;
+            }
+            
+            emptyBorrowed.style.display = 'none';
+            
+            myBorrowedBooks.forEach(request => {
+                const book = books.find(b => b.naw === request.bookTitle);
+                const requestDate = request.requestDate ? new Date(request.requestDate) : 
+                                  request.createdAt ? new Date(request.createdAt) : new Date();
+                const daysPassed = Math.floor((new Date() - requestDate) / (1000 * 60 * 60 * 24));
+                
+                const borrowedItem = document.createElement('div');
+                borrowedItem.className = 'borrowed-item';
+                borrowedItem.innerHTML = `
+                    <img src="${book?.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'}" alt="${request.bookTitle}" class="borrowed-item-image">
+                    <div class="borrowed-item-info">
+                        <div class="borrowed-item-title">${request.bookTitle}</div>
+                        <div class="borrowed-item-author">${book?.author || 'نەناسراو'}</div>
+                        <div class="borrowed-item-date">بەرواری داواکردن: ${requestDate.toLocaleDateString('ku')}</div>
+                        <div class="borrowed-item-status status-borrowed">
+                            وەرگیراوە لە ${daysPassed} ڕۆژ پێش ئێستا
+                        </div>
+                    </div>
+                `;
+                
+                borrowedContent.appendChild(borrowedItem);
+            });
         }
 
         // Load books from Firebase
@@ -3231,8 +3483,8 @@
         // نوێکردنی ژمارەی لیستی دڵخوازەکان
         function updateWishlistCount() {
             const count = wishlist.length;
-            wishlistCount.textContent = count;
-            wishlistTotalStat.textContent = count;
+            navWishlistCount.textContent = count;
+            document.getElementById('wishlistTotal').textContent = count;
             
             // نوێکردنی ئاماری سەرەکی
             updateStatistics();
@@ -3504,6 +3756,7 @@
                         // نوێکردنی لیستی کتێبەکان
                         displayBooks();
                         updateStatistics();
+                        updateBorrowedBooksUI();
                     } else {
                         throw new Error("Failed to save to database");
                     }
@@ -3537,6 +3790,7 @@
                             await displayRegisteredStudentsFromFirebase();
                             displayBooks(); // Update book status on main page
                             updateStatistics();
+                            updateBorrowedBooksUI();
                             showNotification('✅ داواکاریەکە پەسەندکرا و کتێبەکە وەرگیرا', 'success');
                         } else {
                             throw new Error("Failed to approve request");
@@ -3582,6 +3836,7 @@
                     displayReturnBooks();
                     displayBooks(); // Update book status on main page
                     updateStatistics();
+                    updateBorrowedBooksUI();
                     showNotification('✅ کتێبەکە بە سەرکەوتوویی گەڕێندرایەوە', 'success');
                     
                 } catch (error) {
@@ -3618,6 +3873,7 @@
                     displayReturnBooks();
                     displayBooks(); // Update book status on main page
                     updateStatistics();
+                    updateBorrowedBooksUI();
                     showNotification('🗑️ داواکاریەکە بە سەرکەوتوویی سڕدرایەوە', 'success');
                     
                 } catch (error) {
@@ -3648,6 +3904,7 @@
                     await displayRegisteredStudentsFromFirebase();
                     displayBooks(); // Update book status on main page
                     updateStatistics();
+                    updateBorrowedBooksUI();
                     showNotification('❌ داواکاریەکە ڕەتکرایەوە', 'success');
                     
                 } catch (error) {
