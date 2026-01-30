@@ -1642,7 +1642,7 @@
             /* ====== پشتبەستن بە Floating Buttons ====== */
             .dark-mode-toggle,
             .wishlist-toggle {
-                display: flex !important;
+                display: none !important; /* لە مۆبایل نابنوێنرێن چونکە لە Mobile Bottom Bar هەیانە */
             }
             
             /* ====== باشترکردنی لیستی دڵخوازەکان لەسەر مۆبایل ====== */
@@ -1696,20 +1696,19 @@
             
             /* ====== باشترکردنی Dark Mode لەسەر مۆبایل ====== */
             .dark-mode-toggle {
-                bottom: 100px;
-                background: linear-gradient(135deg, var(--primary-color) 0%, #1e3a8a 100%);
+                display: none !important;
             }
             
             body.dark-mode .dark-mode-toggle {
-                background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+                display: none !important;
             }
             
             .wishlist-toggle {
-                bottom: 160px;
+                display: none !important;
             }
             
             body.dark-mode .wishlist-toggle {
-                background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);
+                display: none !important;
             }
         }
 
@@ -1772,19 +1771,7 @@
             
             .dark-mode-toggle,
             .wishlist-toggle {
-                width: 40px;
-                height: 40px;
-                font-size: 14px;
-            }
-            
-            .dark-mode-toggle {
-                bottom: 95px;
-                left: 12px;
-            }
-            
-            .wishlist-toggle {
-                bottom: 150px;
-                left: 12px;
+                display: none !important;
             }
             
             .mobile-bottom-bar {
@@ -1931,20 +1918,7 @@
             /* دوگمەکان - دایره کامل */
             .dark-mode-toggle,
             .wishlist-toggle {
-                width: 42px;
-                height: 42px;
-                font-size: 15px;
-                border-radius: 50%;
-            }
-            
-            .dark-mode-toggle {
-                bottom: 90px;
-                left: 12px;
-            }
-            
-            .wishlist-toggle {
-                bottom: 140px;
-                left: 12px;
+                display: none !important;
             }
             
             .wishlist-count-badge {
@@ -2007,19 +1981,7 @@
             /* نوێکردنی دوگمەکان */
             .dark-mode-toggle,
             .wishlist-toggle {
-                width: 45px;
-                height: 45px;
-                font-size: 16px;
-            }
-            
-            .dark-mode-toggle {
-                bottom: 95px;
-                left: 15px;
-            }
-            
-            .wishlist-toggle {
-                bottom: 150px;
-                left: 15px;
+                display: none !important;
             }
             
             /* Mobile Bottom Bar */
@@ -2129,6 +2091,7 @@
                 bottom: 100px;
                 left: 20px;
                 border-radius: 50%;
+                display: flex !important;
             }
             
             .wishlist-toggle {
@@ -2138,6 +2101,7 @@
                 bottom: 160px;
                 left: 20px;
                 border-radius: 50%;
+                display: flex !important;
             }
             
             .dark-mode-toggle i,
@@ -2220,18 +2184,7 @@
             
             .dark-mode-toggle,
             .wishlist-toggle {
-                width: 38px;
-                height: 38px;
-                font-size: 13px;
-                left: 10px;
-            }
-            
-            .dark-mode-toggle {
-                bottom: 85px;
-            }
-            
-            .wishlist-toggle {
-                bottom: 130px;
+                display: none !important;
             }
             
             .mobile-bottom-bar {
@@ -2363,13 +2316,11 @@
         /* ====== باشترکردنی شوێنەکانی دوگمەکان لەسەر مۆبایل ====== */
         @media (max-width: 767px) {
             .dark-mode-toggle {
-                bottom: 85px;
-                left: 15px;
+                display: none !important;
             }
             
             .wishlist-toggle {
-                bottom: 135px;
-                left: 15px;
+                display: none !important;
             }
             
             .mobile-bottom-bar {
@@ -3596,9 +3547,15 @@
             if (isMobile) {
                 // نمایش Mobile Bottom Bar
                 mobileBottomBar.style.display = 'block';
+                // نیشان نەدانی Floating Buttons لە مۆبایل
+                darkModeToggle.style.display = 'none';
+                wishlistToggle.style.display = 'none';
             } else {
                 // نیشان نەدانی Mobile Bottom Bar
                 mobileBottomBar.style.display = 'none';
+                // نیشاندانی Floating Buttons لە دسکتاپ
+                darkModeToggle.style.display = 'flex';
+                wishlistToggle.style.display = 'flex';
                 wishlistSidebar.classList.remove('active');
             }
         }
