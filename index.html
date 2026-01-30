@@ -2182,7 +2182,8 @@
         </button>
     </header>
 
-    <div class="container">
+    <!-- پەڕەی سەرەکی (بەشی کتێبەکان) -->
+    <div class="container" id="mainPage">
         <section class="search-section">
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="گەڕان بۆ کتێب، نووسەر، یان بەش...">
@@ -2240,47 +2241,72 @@
                 </div>
             </div>
         </section>
+    </div>
 
-        <section class="registration-form" id="registrationForm">
-            <h2 style="color: var(--primary-color); margin-bottom: 1.2rem;">📝 تۆمارکردنی داواکاری کتێب</h2>
-            <form id="studentRegistrationForm">
-                <div class="form-group">
-                    <label for="regStudentName"><i class="fas fa-user"></i> ناوی سیانی</label>
-                    <input type="text" id="regStudentName" placeholder="ناوی تەواوی خۆت بنووسە" required>
+    <!-- پەڕەی تۆمارکردنی داواکاری کتێب -->
+    <div class="container" id="registrationPage" style="display: none;">
+        <div class="section-header">
+            <h2>📝 تۆمارکردنی داواکاری کتێب</h2>
+            <p>زانیاریەکانت پڕ بکە بۆ داواکردنی کتێب</p>
+        </div>
+        
+        <div style="max-width: 600px; margin: 0 auto; padding: 1rem;">
+            <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow);">
+                <form id="studentRegistrationForm">
+                    <div class="form-group">
+                        <label for="regStudentName"><i class="fas fa-user"></i> ناوی سیانی</label>
+                        <input type="text" id="regStudentName" placeholder="ناوی تەواوی خۆت بنووسە" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regDepartment"><i class="fas fa-building"></i> ناوی بەش</label>
+                        <input type="text" id="regDepartment" placeholder="ناوی بەشی خوێندن" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regStage"><i class="fas fa-graduation-cap"></i> قۆناغی خوێندن</label>
+                        <select id="regStage" required>
+                            <option value="">-- قۆناغ هەڵبژێرە --</option>
+                            <option value="یەکەم">یەکەم</option>
+                            <option value="دووەم">دووەم</option>
+                            <option value="سێیەم">سێیەم</option>
+                            <option value="چوارەم">چوارەم</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhoneNumber"><i class="fas fa-phone"></i> ژمارەی مۆبایل</label>
+                        <input type="tel" id="regPhoneNumber" placeholder="٠٧٠٠ ١٢٣ ٤٥٦٧" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regBookTitle"><i class="fas fa-book"></i> ناوی کتێب</label>
+                        <input type="text" id="regBookTitle" placeholder="ناوی کتێبی داواکراو بنووسە" required>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> ناردنی داواکاری
+                        </button>
+                        <button type="button" class="cancel-btn" id="backToMainPageBtn">
+                            <i class="fas fa-arrow-left"></i> گەڕانەوە بۆ پەڕەی سەرەکی
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="confirmationMessage" style="display: none; background: #D1FAE5; color: #065F46; padding: 1rem; border-radius: 8px; margin-top: 1.5rem; border-right: 4px solid #10B981;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-check-circle" style="font-size: 1.2rem;"></i>
+                        <div>
+                            <h4 style="margin: 0 0 0.3rem 0;">✅ داواکاریەکەت بە سەرکەوتوویی نێردرا!</h4>
+                            <p style="margin: 0; font-size: 0.9rem;">چاوەڕوانی پەسەندکردنی ئەدمین بە</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="regDepartment"><i class="fas fa-building"></i> ناوی بەش</label>
-                    <input type="text" id="regDepartment" placeholder="ناوی بەشی خوێندن" required>
-                </div>
-                <div class="form-group">
-                    <label for="regStage"><i class="fas fa-graduation-cap"></i> قۆناغی خوێندن</label>
-                    <select id="regStage" required>
-                        <option value="">-- قۆناغ هەڵبژێرە --</option>
-                        <option value="یەکەم">یەکەم</option>
-                        <option value="دووەم">دووەم</option>
-                        <option value="سێیەم">سێیەم</option>
-                        <option value="چوارەم">چوارەم</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="regPhoneNumber"><i class="fas fa-phone"></i> ژمارەی مۆبایل</label>
-                    <input type="tel" id="regPhoneNumber" placeholder="٠٧٠٠ ١٢٣ ٤٥٦٧" required>
-                </div>
-                <input type="hidden" id="regBookId">
-                <input type="hidden" id="regBookTitle">
-                <div class="form-buttons">
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i> ناردنی داواکاری
-                    </button>
-                    <button type="button" class="cancel-btn" id="cancelRegistrationBtn">
-                        <i class="fas fa-times"></i> هەڵوەشاندنەوە
-                    </button>
-                </div>
-            </form>
-            <div class="confirmation-message" id="confirmationMessage">
-                <i class="fas fa-check-circle"></i> داواکاریەکەت بە سەرکەوتوویی نێردرا! چاوەڕوانی پەسەندکردنی ئەدمین بە
             </div>
-        </section>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button id="quickBackToBooksBtn" class="admin-action-btn secondary" style="width: 100%; max-width: 300px; margin: 0 auto;">
+                    <i class="fas fa-book"></i> بینینی کتێبەکان
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Modals -->
@@ -2304,7 +2330,7 @@
                     <label for="adminPassword"><i class="fas fa-lock"></i> وشەی نهێنی</label>
                     <input type="password" id="adminPassword" placeholder="وشەی نهێنی بنووسە" required>
                 </div>
-                <div class="error-message" id="loginError">
+                <div class="error-message" id="loginError" style="display: none;">
                     <i class="fas fa-exclamation-triangle"></i> ناوی بەکارهێنەر یان وشەی نهێنی هەڵەیە
                 </div>
                 <div class="form-buttons">
@@ -2576,9 +2602,11 @@
         const bookDetailsModal = document.getElementById('bookDetailsModal');
         const closeBookModal = document.getElementById('closeBookModal');
         
-        const registrationForm = document.getElementById('registrationForm');
+        const registrationPage = document.getElementById('registrationPage');
+        const mainPage = document.getElementById('mainPage');
         const studentRegistrationForm = document.getElementById('studentRegistrationForm');
-        const cancelRegistrationBtn = document.getElementById('cancelRegistrationBtn');
+        const backToMainPageBtn = document.getElementById('backToMainPageBtn');
+        const quickBackToBooksBtn = document.getElementById('quickBackToBooksBtn');
         const confirmationMessage = document.getElementById('confirmationMessage');
         
         const bookFormModal = document.getElementById('bookFormModal');
@@ -2656,6 +2684,9 @@
             displayBooks();
             updateWishlistCount();
             updateWishlistUI();
+            
+            // زیادکردنی دوگمەی "داواکردنی کتێب" لەسەر هێدەر
+            addRegistrationButtonToHeader();
         });
 
         // Set up event listeners
@@ -2736,10 +2767,13 @@
                 resetBookForm();
             });
             
-            cancelRegistrationBtn.addEventListener('click', () => {
-                registrationForm.classList.remove('active');
-                studentRegistrationForm.reset();
-                confirmationMessage.classList.remove('active');
+            // Back to main page from registration
+            backToMainPageBtn.addEventListener('click', () => {
+                goToMainPage();
+            });
+            
+            quickBackToBooksBtn.addEventListener('click', () => {
+                goToMainPage();
             });
             
             cancelBookFormBtn.addEventListener('click', () => {
@@ -2765,7 +2799,7 @@
             // Admin panel navigation
             backToMainBtn.addEventListener('click', () => {
                 adminPanel.style.display = 'none';
-                document.querySelector('.container').style.display = 'block';
+                mainPage.style.display = 'block';
             });
             
             viewBooksBtn.addEventListener('click', () => {
@@ -2848,6 +2882,46 @@
                 const searchTerm = e.target.value.toLowerCase();
                 displayReturnBooks(searchTerm);
             });
+        }
+
+        // زیادکردنی دوگمەی "داواکردنی کتێب" لەسەر هێدەر
+        function addRegistrationButtonToHeader() {
+            const header = document.querySelector('header');
+            const adminBtn = document.getElementById('adminLoginBtn');
+            
+            const regBtn = document.createElement('button');
+            regBtn.className = 'admin-login-btn';
+            regBtn.style.marginLeft = '0.5rem'; // بۆ ئەوەی لە چەپەی دووگمەی ئەدمین بێت
+            regBtn.style.background = 'linear-gradient(135deg, #38B2AC 0%, #319795 100%)';
+            regBtn.innerHTML = '<i class="fas fa-book-reader"></i> داواکردنی کتێب';
+            
+            regBtn.addEventListener('click', () => {
+                goToRegistrationPage();
+            });
+            
+            header.insertBefore(regBtn, adminBtn);
+        }
+
+        // گەڕان بۆ پەڕەی سەرەکی
+        function goToMainPage() {
+            mainPage.style.display = 'block';
+            registrationPage.style.display = 'none';
+            adminPanel.style.display = 'none';
+            resetRegistrationForm();
+        }
+
+        // گەڕان بۆ پەڕەی تۆمارکردن
+        function goToRegistrationPage() {
+            mainPage.style.display = 'none';
+            registrationPage.style.display = 'block';
+            adminPanel.style.display = 'none';
+            resetRegistrationForm();
+        }
+
+        // پاککردنەوەی فۆڕمی تۆمارکردن
+        function resetRegistrationForm() {
+            studentRegistrationForm.reset();
+            confirmationMessage.style.display = 'none';
         }
 
         // Load all requests from Firebase دوم
@@ -3035,7 +3109,7 @@
                     </button>
                     
                     ${!isBorrowed ? `
-                    <button class="borrow-btn" id="borrowBookBtn" data-id="${book.id}" data-title="${book.naw}" style="background: var(--gradient); color: white; border: none; padding: 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; margin-top: 0.8rem; width: 100%; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <button class="borrow-btn" id="borrowBookBtn" data-id="${book.id}" style="background: var(--gradient); color: white; border: none; padding: 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; margin-top: 0.8rem; width: 100%; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                         <i class="fas fa-book-reader"></i> داواکردنی کتێب
                     </button>
                     ` : ''}
@@ -3057,90 +3131,9 @@
             // Add event listener to register button if not borrowed
             if (!isBorrowed) {
                 document.getElementById('borrowBookBtn').addEventListener('click', (e) => {
-                    const bookId = e.target.getAttribute('data-id');
-                    const bookTitle = e.target.getAttribute('data-title');
                     bookDetailsModal.classList.remove('active');
-                    showRegistrationForm(bookId, bookTitle);
+                    goToRegistrationPage();
                 });
-            }
-        }
-
-        // Handle student registration for book borrowing
-        async function handleStudentRegistration(e) {
-            e.preventDefault();
-            
-            const studentName = document.getElementById('regStudentName').value;
-            const department = document.getElementById('regDepartment').value;
-            const stage = document.getElementById('regStage').value;
-            const phoneNumber = document.getElementById('regPhoneNumber').value;
-            const bookId = document.getElementById('regBookId').value;
-            const bookTitle = document.getElementById('regBookTitle').value;
-            
-            // Check if book is already borrowed
-            if (isBookBorrowed(bookTitle)) {
-                showNotification('❌ پێشتر داوا کراە چاوەڕوان بە! تکایە کتێبێکی تر هەڵبژێرە.', 'error');
-                registrationForm.classList.remove('active');
-                return;
-            }
-            
-            // Check if user already has a pending request for this book
-            const userPendingRequest = allRequests.find(request => 
-                request.name === studentName && 
-                request.bookTitle === bookTitle && 
-                !request.pasand
-            );
-            
-            if (userPendingRequest) {
-                showNotification('❌ تۆ پێشتر داواکاریت بۆ ئەم کتێبە ناردووە و چاوەڕوانی پەسەندکردنی.', 'warning');
-                registrationForm.classList.remove('active');
-                return;
-            }
-            
-            const requestForSecondDB = {
-                id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                name: studentName,
-                stage: stage,
-                department: department,
-                number: phoneNumber,
-                dawa: true,
-                pasand: false,
-                bookTitle: bookTitle,
-                bookId: bookId,
-                requestDate: new Date().toISOString(),
-                returned: false
-            };
-            
-            try {
-                if (window.firebase2Functions && window.firebase2Functions.addRequest) {
-                    const success = await window.firebase2Functions.addRequest(requestForSecondDB);
-                    
-                    if (success) {
-                        // Add to local state
-                        allRequests.push(requestForSecondDB);
-                        
-                        studentRegistrationForm.reset();
-                        confirmationMessage.classList.add('active');
-                        
-                        showNotification('✅ داواکاریەکەت بە سەرکەوتوویی نێردرا!', 'success');
-                        
-                        setTimeout(() => {
-                            registrationForm.classList.remove('active');
-                            confirmationMessage.classList.remove('active');
-                        }, 3000);
-                        
-                        // Refresh books display
-                        displayBooks();
-                        updateStatistics();
-                    } else {
-                        throw new Error("Failed to save to database");
-                    }
-                } else {
-                    throw new Error("Database functions not available");
-                }
-                
-            } catch (error) {
-                console.error('Error saving student request:', error);
-                showNotification('❌ هەڵە ڕوویدا لە ناردنی داواکاری. تکایە دووبارە هەوڵبدەرەوە.', 'error');
             }
         }
 
@@ -3252,7 +3245,7 @@
                     const bookTitle = btn.getAttribute('data-title');
                     
                     wishlistSidebar.classList.remove('active');
-                    showRegistrationForm(bookId, bookTitle);
+                    goToRegistrationPage();
                 });
             });
         }
@@ -3481,6 +3474,81 @@
             });
         }
 
+        // Handle student registration for book borrowing
+        async function handleStudentRegistration(e) {
+            e.preventDefault();
+            
+            const studentName = document.getElementById('regStudentName').value;
+            const department = document.getElementById('regDepartment').value;
+            const stage = document.getElementById('regStage').value;
+            const phoneNumber = document.getElementById('regPhoneNumber').value;
+            const bookTitle = document.getElementById('regBookTitle').value;
+            
+            // Check if book is already borrowed
+            if (isBookBorrowed(bookTitle)) {
+                showNotification('❌ پێشتر داوا کراە چاوەڕوان بە! تکایە کتێبێکی تر هەڵبژێرە.', 'error');
+                return;
+            }
+            
+            // Check if user already has a pending request for this book
+            const userPendingRequest = allRequests.find(request => 
+                request.name === studentName && 
+                request.bookTitle === bookTitle && 
+                !request.pasand
+            );
+            
+            if (userPendingRequest) {
+                showNotification('❌ تۆ پێشتر داواکاریت بۆ ئەم کتێبە ناردووە و چاوەڕوانی پەسەندکردنی.', 'warning');
+                return;
+            }
+            
+            const requestForSecondDB = {
+                id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                name: studentName,
+                stage: stage,
+                department: department,
+                number: phoneNumber,
+                dawa: true,
+                pasand: false,
+                bookTitle: bookTitle,
+                requestDate: new Date().toISOString(),
+                returned: false
+            };
+            
+            try {
+                if (window.firebase2Functions && window.firebase2Functions.addRequest) {
+                    const success = await window.firebase2Functions.addRequest(requestForSecondDB);
+                    
+                    if (success) {
+                        // Add to local state
+                        allRequests.push(requestForSecondDB);
+                        
+                        // نیشاندانی پەیامی سەرکەوتن
+                        confirmationMessage.style.display = 'block';
+                        studentRegistrationForm.reset();
+                        
+                        showNotification('✅ داواکاریەکەت بە سەرکەوتوویی نێردرا!', 'success');
+                        
+                        setTimeout(() => {
+                            goToMainPage();
+                        }, 3000);
+                        
+                        // نوێکردنی لیستی کتێبەکان
+                        displayBooks();
+                        updateStatistics();
+                    } else {
+                        throw new Error("Failed to save to database");
+                    }
+                } else {
+                    throw new Error("Database functions not available");
+                }
+                
+            } catch (error) {
+                console.error('Error saving student request:', error);
+                showNotification('❌ هەڵە ڕوویدا لە ناردنی داواکاری. تکایە دووبارە هەوڵبدەرەوە.', 'error');
+            }
+        }
+
         // Approve student request
         async function approveStudentRequest(requestId) {
             if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە پەسەند بکەیت؟')) {
@@ -3621,18 +3689,6 @@
             }
         }
 
-        // Show registration form
-        function showRegistrationForm(bookId, bookTitle) {
-            document.getElementById('regBookId').value = bookId;
-            document.getElementById('regBookTitle').value = bookTitle;
-            registrationForm.classList.add('active');
-            confirmationMessage.classList.remove('active');
-            studentRegistrationForm.reset();
-            
-            // Scroll to registration form
-            registrationForm.scrollIntoView({ behavior: 'smooth' });
-        }
-
         // Handle admin login
         function handleAdminLogin(e) {
             e.preventDefault();
@@ -3647,7 +3703,8 @@
                 loginError.style.display = 'none';
                 
                 // Show admin panel
-                document.querySelector('.container').style.display = 'none';
+                mainPage.style.display = 'none';
+                registrationPage.style.display = 'none';
                 adminPanel.style.display = 'block';
                 
                 // Load admin data
