@@ -294,6 +294,7 @@
             padding: 1rem;
             margin-top: 70px;
             min-height: calc(100vh - 70px);
+            padding-bottom: 80px; /* بۆ ئەوەی Footer Navigation نەپوشێت لەسەر ناوەڕۆک */
         }
 
         /* ====== SEARCH SECTION ====== */
@@ -549,7 +550,7 @@
             color: #cbd5e1;
         }
 
-        /* ====== BOOKS GRID - بازسازی کامل ====== */
+        /* ====== BOOKS GRID ====== */
         .books-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -568,7 +569,6 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            /* کاهش ارتفاع کارت برای موبایل */
             max-height: 290px;
         }
 
@@ -593,7 +593,7 @@
 
         .book-image {
             width: 100%;
-            height: 150px; /* کاهش ارتفاع عکس برای موبایل */
+            height: 150px;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
@@ -607,7 +607,6 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            /* کاهش ارتفاع قسمت اطلاعات */
             min-height: 100px;
         }
 
@@ -632,10 +631,9 @@
             background: rgba(79, 70, 229, 0.95);
         }
 
-        /* نشان وضعیت امانت کتاب */
         .book-status-badge {
             position: absolute;
-            top: 40px; /* زیر نشان ژانر قرار می‌گیرد */
+            top: 40px;
             right: 8px;
             background: linear-gradient(135deg, #f56565 0%, #ed8936 100%);
             color: white;
@@ -662,9 +660,9 @@
             font-weight: 700;
             margin-bottom: 0.3rem;
             color: var(--dark-color);
-            font-size: 0.9rem; /* کاهش سایز فونت برای موبایل */
+            font-size: 0.9rem;
             line-height: 1.3;
-            height: 2.2em; /* کاهش ارتفاع */
+            height: 2.2em;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -698,7 +696,7 @@
 
         .book-genre {
             color: #666;
-            font-size: 0.7rem; /* کاهش سایز فونت */
+            font-size: 0.7rem;
             margin-bottom: 0.3rem;
             display: flex;
             align-items: center;
@@ -714,6 +712,82 @@
 
         .book-genre i {
             font-size: 0.65rem;
+        }
+
+        /* ====== FOOTER NAVIGATION - لەسەر هەموو ئامێرێک ====== */
+        .footer-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--gray-color);
+            padding: 0.5rem 0.8rem;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        body.dark-mode .footer-navigation {
+            background: var(--dark-card);
+            border-top-color: var(--dark-border);
+        }
+
+        .footer-nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 0.7rem;
+            gap: 0.3rem;
+            padding: 0.5rem 0.3rem;
+            flex: 1;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        body.dark-mode .footer-nav-btn {
+            color: var(--dark-text);
+        }
+
+        .footer-nav-btn i {
+            font-size: 1.2rem;
+        }
+
+        .footer-nav-btn.active {
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .footer-nav-btn.active {
+            color: var(--dark-primary);
+        }
+
+        .footer-nav-badge {
+            position: absolute;
+            top: -2px;
+            right: 20px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 0.6rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .footer-nav-badge {
+            border-color: var(--dark-card);
         }
 
         /* ====== MODALS ====== */
@@ -901,6 +975,7 @@
         #adminPanel {
             margin-top: 70px;
             padding: 1rem;
+            padding-bottom: 80px;
         }
 
         .admin-actions {
@@ -1237,163 +1312,6 @@
             white-space: nowrap;
         }
 
-        /* ====== TOGGLE BUTTONS - بازسازی کامل برای موبایل ====== */
-        .dark-mode-toggle,
-        .wishlist-toggle {
-            position: fixed;
-            left: 15px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            overflow: hidden;
-            background: var(--primary-color);
-        }
-
-        .dark-mode-toggle {
-            bottom: 85px;
-            background: var(--primary-color);
-        }
-
-        .dark-mode-toggle i,
-        .wishlist-toggle i {
-            font-size: 1.1rem;
-        }
-
-        .wishlist-toggle {
-            bottom: 135px;
-            background: linear-gradient(135deg, #f56565 0%, #ed8936 100%);
-        }
-
-        .wishlist-count-badge {
-            position: absolute;
-            top: -3px;
-            right: -3px;
-            background: var(--danger-color);
-            color: white;
-            font-size: 0.6rem;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        body.dark-mode .wishlist-count-badge {
-            border-color: var(--dark-card);
-        }
-
-        /* ====== FIXED BOTTOM BAR FOR MOBILE - چاککردنی نوێ ====== */
-        .mobile-bottom-bar {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid var(--gray-color);
-            padding: 0.5rem 1rem;
-            z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        body.dark-mode .mobile-bottom-bar {
-            background: var(--dark-card);
-            border-top-color: var(--dark-border);
-        }
-
-        .mobile-bottom-bar-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .mobile-bottom-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            font-size: 0.7rem;
-            gap: 0.3rem;
-            padding: 0.5rem 0.3rem;
-            flex: 1;
-            transition: var(--transition);
-        }
-
-        body.dark-mode .mobile-bottom-btn {
-            color: var(--dark-text);
-        }
-
-        .mobile-bottom-btn i {
-            font-size: 1.2rem;
-        }
-
-        .mobile-bottom-btn.active {
-            color: var(--primary-color);
-        }
-
-        body.dark-mode .mobile-bottom-btn.active {
-            color: var(--dark-primary);
-        }
-
-        /* ====== FOOTER ====== */
-        footer {
-            background: var(--dark-color);
-            color: white;
-            text-align: center;
-            padding: 1.5rem 1rem;
-            margin-top: 2rem;
-            position: relative;
-            font-size: 0.85rem;
-        }
-
-        body.dark-mode footer {
-            background: #0f172a;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient);
-        }
-
-        footer p {
-            margin: 0.4rem 0;
-            color: #CBD5E0;
-            font-size: 0.85rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        footer i {
-            margin-left: 0.5rem;
-        }
-
         /* ====== UTILITY CLASSES ====== */
         .empty-state {
             text-align: center;
@@ -1533,6 +1451,223 @@
             background: var(--dark-primary);
         }
 
+        /* ====== صفحه تایبەت بۆ تۆمارکردنی داواکاری کتێب ====== */
+        .registration-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 70px 1rem 80px 1rem;
+        }
+
+        body.dark-mode .registration-page {
+            background: var(--dark-bg);
+        }
+
+        .registration-page.active {
+            display: block;
+        }
+
+        .registration-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-color);
+        }
+
+        body.dark-mode .registration-header {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .registration-header h2 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        body.dark-mode .registration-header h2 {
+            color: var(--dark-primary);
+        }
+
+        .close-registration {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .close-registration {
+            color: var(--dark-primary);
+        }
+
+        .close-registration:hover {
+            background: var(--gray-color);
+        }
+
+        body.dark-mode .close-registration:hover {
+            background: var(--dark-border);
+        }
+
+        .registration-form-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        body.dark-mode .registration-form-container {
+            background: var(--dark-card);
+        }
+
+        /* ====== صفحه لیستی وەرگیراوەکانم ====== */
+        .borrowed-books-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 70px 1rem 80px 1rem;
+        }
+
+        body.dark-mode .borrowed-books-page {
+            background: var(--dark-bg);
+        }
+
+        .borrowed-books-page.active {
+            display: block;
+        }
+
+        .borrowed-books-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-color);
+        }
+
+        body.dark-mode .borrowed-books-header {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .borrowed-books-header h2 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        body.dark-mode .borrowed-books-header h2 {
+            color: var(--dark-primary);
+        }
+
+        .close-borrowed-books {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .close-borrowed-books {
+            color: var(--dark-primary);
+        }
+
+        .close-borrowed-books:hover {
+            background: var(--gray-color);
+        }
+
+        body.dark-mode .close-borrowed-books:hover {
+            background: var(--dark-border);
+        }
+
+        .borrowed-books-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .borrowed-book-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            border-right: 4px solid var(--secondary-color);
+        }
+
+        body.dark-mode .borrowed-book-card {
+            background: var(--dark-card);
+            border-right-color: var(--dark-primary);
+        }
+
+        .borrowed-book-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .borrowed-book-title {
+            color: var(--dark-primary);
+        }
+
+        .borrowed-book-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .borrowed-book-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-borrowed {
+            background: #C6F6D5;
+            color: #065F46;
+        }
+
+        body.dark-mode .status-borrowed {
+            background: #065F46;
+            color: #C6F6D5;
+        }
+
+        .status-pending-approval {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        body.dark-mode .status-pending-approval {
+            background: #92400E;
+            color: #FEF3C7;
+        }
+
         /* ====== بازسازی کامل برای موبایل ====== */
         @media (max-width: 767px) {
             .stats-container {
@@ -1569,11 +1704,11 @@
             }
             
             .book-card {
-                max-height: 260px; /* کاهش بیشتر ارتفاع برای موبایل */
+                max-height: 260px;
             }
             
             .book-image {
-                height: 130px; /* کاهش ارتفاع عکس */
+                height: 130px;
             }
             
             .book-info {
@@ -1593,56 +1728,20 @@
             }
             
             .book-genre {
-                font-size: 0.65rem; /* کاهش سایز فونت ژانەر */
+                font-size: 0.65rem;
                 margin-bottom: 0.2rem;
             }
             
             .book-badge {
-                font-size: 0.5rem; /* کاهش بیشتر سایز فونت ژانەر */
+                font-size: 0.5rem;
                 padding: 0.2rem 0.4rem;
             }
             
             .book-status-badge {
-                font-size: 0.45rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
+                font-size: 0.45rem;
                 padding: 0.2rem 0.3rem;
                 max-width: 60px;
                 top: 35px;
-            }
-            
-            /* ====== نوێکردنی TOGGLE BUTTONS - بۆ مۆبایل ====== */
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                width: 42px;
-                height: 42px;
-                font-size: 15px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            .dark-mode-toggle i,
-            .wishlist-toggle i {
-                font-size: 1rem;
-            }
-            
-            .wishlist-count-badge {
-                width: 16px;
-                height: 16px;
-                font-size: 0.55rem;
-                top: -2px;
-                right: -2px;
-            }
-            
-            /* ====== زیادکردنی Mobile Bottom Bar ====== */
-            .mobile-bottom-bar {
-                display: block;
-            }
-            
-            /* ====== پشتبەستن بە Floating Buttons ====== */
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                display: none !important; /* لە مۆبایل نابنوێنرێن چونکە لە Mobile Bottom Bar هەیانە */
             }
             
             /* ====== باشترکردنی لیستی دڵخوازەکان لەسەر مۆبایل ====== */
@@ -1694,21 +1793,26 @@
                 margin-top: 0.5rem;
             }
             
-            /* ====== باشترکردنی Dark Mode لەسەر مۆبایل ====== */
-            .dark-mode-toggle {
-                display: none !important;
+            /* ====== باشترکردنی Footer Navigation لەسەر مۆبایل ====== */
+            .footer-navigation {
+                padding: 0.5rem 0.5rem;
             }
             
-            body.dark-mode .dark-mode-toggle {
-                display: none !important;
+            .footer-nav-btn {
+                font-size: 0.65rem;
+                padding: 0.4rem 0.2rem;
             }
             
-            .wishlist-toggle {
-                display: none !important;
+            .footer-nav-btn i {
+                font-size: 1.1rem;
             }
             
-            body.dark-mode .wishlist-toggle {
-                display: none !important;
+            .footer-nav-badge {
+                font-size: 0.55rem;
+                width: 16px;
+                height: 16px;
+                top: -2px;
+                right: 15px;
             }
         }
 
@@ -1755,35 +1859,30 @@
             }
             
             .book-genre {
-                font-size: 0.62rem; /* کاهش بیشتر سایز فونت ژانەر */
+                font-size: 0.62rem;
             }
             
             .book-badge {
-                font-size: 0.48rem; /* کاهش بیشتر سایز فونت ژانەر */
+                font-size: 0.48rem;
                 padding: 0.18rem 0.35rem;
             }
             
             .book-status-badge {
-                font-size: 0.42rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
+                font-size: 0.42rem;
                 padding: 0.18rem 0.3rem;
                 max-width: 55px;
             }
             
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                display: none !important;
+            .footer-navigation {
+                padding: 0.4rem 0.4rem;
             }
             
-            .mobile-bottom-bar {
-                padding: 0.5rem 0.8rem;
+            .footer-nav-btn {
+                font-size: 0.6rem;
+                padding: 0.3rem 0.1rem;
             }
             
-            .mobile-bottom-btn {
-                font-size: 0.65rem;
-                padding: 0.4rem 0.2rem;
-            }
-            
-            .mobile-bottom-btn i {
+            .footer-nav-btn i {
                 font-size: 1rem;
             }
         }
@@ -1836,13 +1935,11 @@
                 font-size: 0.8rem;
             }
             
-            /* ئامارەکان - 3 colom لە تەنیشت یەک */
             .stats-container {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 0.5rem;
             }
             
-            /* کتێبەکان - کاهش ارتفاع کارت */
             .books-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 0.5rem;
@@ -1871,18 +1968,17 @@
             }
             
             .book-genre {
-                font-size: 0.68rem; /* کاهش سایز فونت ژانەر */
+                font-size: 0.68rem;
             }
             
             .book-badge {
-                font-size: 0.52rem; /* کاهش بیشتر سایز فونت ژانەر */
+                font-size: 0.52rem;
             }
             
             .book-status-badge {
-                font-size: 0.48rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
+                font-size: 0.48rem;
             }
             
-            /* پەڕەی ئەدمین */
             .admin-actions {
                 grid-template-columns: 1fr;
                 gap: 0.6rem;
@@ -1893,7 +1989,6 @@
                 font-size: 0.75rem;
             }
             
-            /* لیستی دڵخوازەکان - چاککردنی نوێ */
             .wishlist-sidebar {
                 width: 100%;
                 max-width: 100%;
@@ -1915,29 +2010,15 @@
                 padding: 0.8rem;
             }
             
-            /* دوگمەکان - دایره کامل */
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                display: none !important;
+            .footer-navigation {
+                padding: 0.5rem 0.6rem;
             }
             
-            .wishlist-count-badge {
-                font-size: 0.5rem;
-                width: 16px;
-                height: 16px;
+            .footer-nav-btn {
+                font-size: 0.65rem;
             }
             
-            /* Mobile Bottom Bar */
-            .mobile-bottom-bar {
-                display: block;
-                padding: 0.5rem 0.8rem;
-            }
-            
-            .mobile-bottom-btn {
-                font-size: 0.7rem;
-            }
-            
-            .mobile-bottom-btn i {
+            .footer-nav-btn i {
                 font-size: 1.1rem;
             }
         }
@@ -1967,26 +2048,19 @@
             }
             
             .book-genre {
-                font-size: 0.72rem; /* کاهش سایز فونت ژانەر */
+                font-size: 0.72rem;
             }
             
             .book-badge {
-                font-size: 0.58rem; /* کاهش سایز فونت ژانەر */
+                font-size: 0.58rem;
             }
             
             .book-status-badge {
-                font-size: 0.53rem; /* کاهش سایز فونت وەرگیراوە */
+                font-size: 0.53rem;
             }
             
-            /* نوێکردنی دوگمەکان */
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                display: none !important;
-            }
-            
-            /* Mobile Bottom Bar */
-            .mobile-bottom-bar {
-                display: none; /* لە تەبلێت نابنوێنرێت */
+            .footer-navigation {
+                padding: 0.6rem 0.8rem;
             }
         }
 
@@ -2064,15 +2138,15 @@
             }
             
             .book-genre {
-                font-size: 0.8rem; /* سایز فونت ژانەر برای دسکتاپ */
+                font-size: 0.8rem;
             }
             
             .book-badge {
-                font-size: 0.65rem; /* سایز فونت ژانەر برای دسکتاپ */
+                font-size: 0.65rem;
             }
             
             .book-status-badge {
-                font-size: 0.6rem; /* سایز فونت وەرگیراوە برای دسکتاپ */
+                font-size: 0.6rem;
             }
             
             .admin-actions {
@@ -2083,49 +2157,22 @@
                 width: 380px;
             }
             
-            /* TOGGLE BUTTONS - دایره کامل برای دسکتاپ */
-            .dark-mode-toggle {
-                width: 50px;
-                height: 50px;
-                font-size: 18px;
-                bottom: 100px;
-                left: 20px;
-                border-radius: 50%;
-                display: flex !important;
+            .footer-navigation {
+                padding: 0.6rem 1rem;
             }
             
-            .wishlist-toggle {
-                width: 50px;
-                height: 50px;
-                font-size: 18px;
-                bottom: 160px;
-                left: 20px;
-                border-radius: 50%;
-                display: flex !important;
+            .footer-nav-btn {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.3rem;
             }
             
-            .dark-mode-toggle i,
-            .wishlist-toggle i {
-                font-size: 1.2rem;
-            }
-            
-            .wishlist-count-badge {
-                font-size: 0.7rem;
-                width: 20px;
-                height: 20px;
-                top: -4px;
-                right: -4px;
-            }
-            
-            /* Mobile Bottom Bar - لە دسکتاپ نابنوێنرێت */
-            .mobile-bottom-bar {
-                display: none;
+            .footer-nav-btn i {
+                font-size: 1.3rem;
             }
         }
 
         /* ====== پشتگیری باشتر بۆ شاشە بچووکەکان ====== */
         @media (max-width: 320px) {
-            /* تەلەفۆنە زۆر بچووکەکان */
             .stats-container {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 0.3rem;
@@ -2167,36 +2214,31 @@
             }
             
             .book-genre {
-                font-size: 0.6rem; /* کاهش بیشتر سایز فونت ژانەر */
+                font-size: 0.6rem;
             }
             
             .book-badge {
-                font-size: 0.46rem; /* کاهش بیشتر سایز فونت ژانەر */
+                font-size: 0.46rem;
                 padding: 0.16rem 0.3rem;
             }
             
             .book-status-badge {
-                font-size: 0.4rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
+                font-size: 0.4rem;
                 padding: 0.16rem 0.25rem;
                 max-width: 50px;
                 top: 32px;
             }
             
-            .dark-mode-toggle,
-            .wishlist-toggle {
-                display: none !important;
+            .footer-navigation {
+                padding: 0.3rem 0.4rem;
             }
             
-            .mobile-bottom-bar {
-                padding: 0.4rem 0.6rem;
-            }
-            
-            .mobile-bottom-btn {
-                font-size: 0.6rem;
+            .footer-nav-btn {
+                font-size: 0.55rem;
                 padding: 0.3rem 0.1rem;
             }
             
-            .mobile-bottom-btn i {
+            .footer-nav-btn i {
                 font-size: 0.9rem;
             }
         }
@@ -2227,12 +2269,11 @@
                 color: white !important;
             }
             
-            /* باشترکردنی کلیکی دوگمەکان لەسەر مۆبایل */
             button, 
             .book-card,
             .genre-item,
             .action-btn {
-                min-height: 44px; /* دەستپێگەیشتن باشتر */
+                min-height: 44px;
             }
             
             .genre-item {
@@ -2309,22 +2350,7 @@
             .book-title,
             .book-genre,
             .stat-label {
-                -webkit-text-size-adjust: 100%; /* ڕێگری لە گۆڕینی قەبارەی فۆنت */
-            }
-        }
-
-        /* ====== باشترکردنی شوێنەکانی دوگمەکان لەسەر مۆبایل ====== */
-        @media (max-width: 767px) {
-            .dark-mode-toggle {
-                display: none !important;
-            }
-            
-            .wishlist-toggle {
-                display: none !important;
-            }
-            
-            .mobile-bottom-bar {
-                display: block;
+                -webkit-text-size-adjust: 100%;
             }
         }
 
@@ -2342,38 +2368,29 @@
     </style>
 </head>
 <body>
-    <!-- داڕک مۆد تووگڵ -->
-    <button id="darkModeToggle" class="dark-mode-toggle">
-        <i class="fas fa-moon"></i>
-    </button>
-
-    <!-- دوگمەی لیستی دڵخوازەکان -->
-    <button id="wishlistToggle" class="wishlist-toggle">
-        <i class="fas fa-heart"></i>
-        <span class="wishlist-count-badge" id="wishlistCount">0</span>
-    </button>
-
-    <!-- Mobile Bottom Bar -->
-    <div class="mobile-bottom-bar" id="mobileBottomBar">
-        <div class="mobile-bottom-bar-content">
-            <button class="mobile-bottom-btn" id="mobileHomeBtn">
-                <i class="fas fa-home"></i>
-                <span>سەرەکی</span>
-            </button>
-            <button class="mobile-bottom-btn" id="mobileSearchBtn">
-                <i class="fas fa-search"></i>
-                <span>گەڕان</span>
-            </button>
-            <button class="mobile-bottom-btn active" id="mobileWishlistBtn">
-                <i class="fas fa-heart"></i>
-                <span>دڵخوازەکان</span>
-                <span class="wishlist-count-badge" id="mobileWishlistCount">0</span>
-            </button>
-            <button class="mobile-bottom-btn" id="mobileDarkModeBtn">
-                <i class="fas fa-moon"></i>
-                <span>دۆخی تاریک</span>
-            </button>
-        </div>
+    <!-- Footer Navigation - لەسەر هەموو ئامێرێک -->
+    <div class="footer-navigation" id="footerNavigation">
+        <button class="footer-nav-btn active" id="navHomeBtn">
+            <i class="fas fa-home"></i>
+            <span>سەرەکی</span>
+        </button>
+        <button class="footer-nav-btn" id="navSearchBtn">
+            <i class="fas fa-search"></i>
+            <span>گەڕان</span>
+        </button>
+        <button class="footer-nav-btn" id="navWishlistBtn">
+            <i class="fas fa-heart"></i>
+            <span>دڵخوازەکان</span>
+            <span class="footer-nav-badge" id="navWishlistCount">0</span>
+        </button>
+        <button class="footer-nav-btn" id="navDarkModeBtn">
+            <i class="fas fa-moon"></i>
+            <span>دۆخی تاریک</span>
+        </button>
+        <button class="footer-nav-btn" id="navBorrowedBtn">
+            <i class="fas fa-book-reader"></i>
+            <span>وەرگیراوەکانم</span>
+        </button>
     </div>
 
     <!-- لیستی دڵخوازەکان -->
@@ -2389,6 +2406,71 @@
                 <i class="fas fa-heart-broken"></i>
                 <h3>لیستی دڵخوازەکانت بەتاڵە</h3>
                 <p>کتێبەکانی خۆزەشت کلیکی "❤️" بکە بۆ زیادکردنیان</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحه تایبەت بۆ تۆمارکردنی داواکاری کتێب -->
+    <div class="registration-page" id="registrationPage">
+        <div class="registration-header">
+            <h2><i class="fas fa-book-reader"></i> تۆمارکردنی داواکاری کتێب</h2>
+            <button class="close-registration" id="closeRegistrationPage">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="registration-form-container">
+            <form id="studentRegistrationForm">
+                <div class="form-group">
+                    <label for="regStudentName"><i class="fas fa-user"></i> ناوی سیانی</label>
+                    <input type="text" id="regStudentName" placeholder="ناوی تەواوی خۆت بنووسە" required>
+                </div>
+                <div class="form-group">
+                    <label for="regDepartment"><i class="fas fa-building"></i> ناوی بەش</label>
+                    <input type="text" id="regDepartment" placeholder="ناوی بەشی خوێندن" required>
+                </div>
+                <div class="form-group">
+                    <label for="regStage"><i class="fas fa-graduation-cap"></i> قۆناغی خوێندن</label>
+                    <select id="regStage" required>
+                        <option value="">-- قۆناغ هەڵبژێرە --</option>
+                        <option value="یەکەم">یەکەم</option>
+                        <option value="دووەم">دووەم</option>
+                        <option value="سێیەم">سێیەم</option>
+                        <option value="چوارەم">چوارەم</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="regPhoneNumber"><i class="fas fa-phone"></i> ژمارەی مۆبایل</label>
+                    <input type="tel" id="regPhoneNumber" placeholder="٠٧٠٠ ١٢٣ ٤٥٦٧" required>
+                </div>
+                <input type="hidden" id="regBookId">
+                <input type="hidden" id="regBookTitle">
+                <div class="form-buttons">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> ناردنی داواکاری
+                    </button>
+                </div>
+            </form>
+            <div class="confirmation-message" id="confirmationMessage" style="display: none; background: #D1FAE5; color: #065F46; padding: 1rem; border-radius: 8px; margin-top: 1rem; border-right: 4px solid #10B981;">
+                <i class="fas fa-check-circle"></i> داواکاریەکەت بە سەرکەوتوویی نێردرا! چاوەڕوانی پەسەندکردنی ئەدمین بە
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحه لیستی وەرگیراوەکانم -->
+    <div class="borrowed-books-page" id="borrowedBooksPage">
+        <div class="borrowed-books-header">
+            <h2><i class="fas fa-book-reader"></i> لیستی وەرگیراوەکانم</h2>
+            <button class="close-borrowed-books" id="closeBorrowedBooksPage">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="borrowed-books-list" id="borrowedBooksList">
+            <div class="empty-state">
+                <i class="fas fa-book"></i>
+                <h3>هیچ کتێبێک وەرنەگرتووە</h3>
+                <p>کتێبێک داوا بکە بۆ بینینی لێرە</p>
             </div>
         </div>
     </div>
@@ -2440,7 +2522,7 @@
                 <p>دۆزینەوەی کتێبی دلخوازەکانت لە کتێبخانەی سەردەمیمان</p>
             </div>
             
-            <!-- ئامارەکان - 1 rows 3 colom -->
+            <!-- ئامارەکان -->
             <div class="stats-container" id="statsContainer">
                 <div class="stat-card">
                     <div class="stat-number" id="totalBooks">0</div>
@@ -2461,47 +2543,6 @@
                     <div class="loading-spinner"></div>
                     <p>بارکردنی کتێبەکان...</p>
                 </div>
-            </div>
-        </section>
-
-        <section class="registration-form" id="registrationForm">
-            <h2 style="color: var(--primary-color); margin-bottom: 1.2rem;">📝 تۆمارکردنی داواکاری کتێب</h2>
-            <form id="studentRegistrationForm">
-                <div class="form-group">
-                    <label for="regStudentName"><i class="fas fa-user"></i> ناوی سیانی</label>
-                    <input type="text" id="regStudentName" placeholder="ناوی تەواوی خۆت بنووسە" required>
-                </div>
-                <div class="form-group">
-                    <label for="regDepartment"><i class="fas fa-building"></i> ناوی بەش</label>
-                    <input type="text" id="regDepartment" placeholder="ناوی بەشی خوێندن" required>
-                </div>
-                <div class="form-group">
-                    <label for="regStage"><i class="fas fa-graduation-cap"></i> قۆناغی خوێندن</label>
-                    <select id="regStage" required>
-                        <option value="">-- قۆناغ هەڵبژێرە --</option>
-                        <option value="یەکەم">یەکەم</option>
-                        <option value="دووەم">دووەم</option>
-                        <option value="سێیەم">سێیەم</option>
-                        <option value="چوارەم">چوارەم</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="regPhoneNumber"><i class="fas fa-phone"></i> ژمارەی مۆبایل</label>
-                    <input type="tel" id="regPhoneNumber" placeholder="٠٧٠٠ ١٢٣ ٤٥٦٧" required>
-                </div>
-                <input type="hidden" id="regBookId">
-                <input type="hidden" id="regBookTitle">
-                <div class="form-buttons">
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i> ناردنی داواکاری
-                    </button>
-                    <button type="button" class="cancel-btn" id="cancelRegistrationBtn">
-                        <i class="fas fa-times"></i> هەڵوەشاندنەوە
-                    </button>
-                </div>
-            </form>
-            <div class="confirmation-message" id="confirmationMessage">
-                <i class="fas fa-check-circle"></i> داواکاریەکەت بە سەرکەوتوویی نێردرا! چاوەڕوانی پەسەندکردنی ئەدمین بە
             </div>
         </section>
     </div>
@@ -2733,59 +2774,7 @@
         </div>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <h3 style="color: white; margin-bottom: 0.8rem; font-size: 1.1rem;">کتێبخانەی کۆلێژی سڵاحەدین</h3>
-            <p><i class="fas fa-map-marker-alt"></i> هەولێر، کۆلێژی سڵاحەدین - بەشی زمان</p>
-            <p><i class="fas fa-envelope"></i> library@salahaddin.edu.krd</p>
-            <p><i class="fas fa-phone"></i> ٠٧٥٠ ١٢٣ ٤٥٦٧</p>
-            <div style="margin-top: 1.2rem; padding-top: 0.8rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                <p>© ٢٠٢٤ کتێبخانەی کۆلێژی سڵاحەدین - بەشی زمان. هەموو مافەکان پارێزراون.</p>
-                <p style="color: #CBD5E0; font-size: 0.8rem; margin-top: 0.5rem;">
-                    <i class="fas fa-heart" style="color: #F56565;"></i> دروستکراوە بە خۆشەویستی بۆ خوێندکارانی کوردستان
-                </p>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        // داڕک مۆد تووگڵ
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const darkModeIcon = darkModeToggle.querySelector('i');
-        const mobileDarkModeBtn = document.getElementById('mobileDarkModeBtn');
-        const mobileWishlistBtn = document.getElementById('mobileWishlistBtn');
-        const mobileHomeBtn = document.getElementById('mobileHomeBtn');
-        const mobileSearchBtn = document.getElementById('mobileSearchBtn');
-        const mobileBottomBar = document.getElementById('mobileBottomBar');
-        const mobileWishlistCount = document.getElementById('mobileWishlistCount');
-        
-        // بارکردنی هەڵبژاردەی پێشوو
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            darkModeIcon.className = 'fas fa-sun';
-            mobileDarkModeBtn.innerHTML = '<i class="fas fa-sun"></i><span>دۆخی ڕووناک</span>';
-        }
-        
-        // گۆڕینی داڕک مۆد
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-                darkModeIcon.className = 'fas fa-sun';
-                mobileDarkModeBtn.innerHTML = '<i class="fas fa-sun"></i><span>دۆخی ڕووناک</span>';
-                showNotification('🌙 داڕک مۆد چالاککرا', 'success');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-                darkModeIcon.className = 'fas fa-moon';
-                mobileDarkModeBtn.innerHTML = '<i class="fas fa-moon"></i><span>دۆخی تاریک</span>';
-                showNotification('☀️ ڕووناک مۆد چالاککرا', 'success');
-            }
-        }
-        
-        darkModeToggle.onclick = toggleDarkMode;
-        mobileDarkModeBtn.onclick = toggleDarkMode;
-        
         // DOM Elements
         const adminLoginBtn = document.getElementById('adminLoginBtn');
         const adminLoginModal = document.getElementById('adminLoginModal');
@@ -2811,9 +2800,7 @@
         const bookDetailsModal = document.getElementById('bookDetailsModal');
         const closeBookModal = document.getElementById('closeBookModal');
         
-        const registrationForm = document.getElementById('registrationForm');
         const studentRegistrationForm = document.getElementById('studentRegistrationForm');
-        const cancelRegistrationBtn = document.getElementById('cancelRegistrationBtn');
         const confirmationMessage = document.getElementById('confirmationMessage');
         
         const bookFormModal = document.getElementById('bookFormModal');
@@ -2844,15 +2831,31 @@
         const returnSearchSuggestions = document.getElementById('returnSearchSuggestions');
 
         // لیستی دڵخوازەکان - Elements
-        const wishlistToggle = document.getElementById('wishlistToggle');
         const wishlistSidebar = document.getElementById('wishlistSidebar');
         const closeWishlist = document.getElementById('closeWishlist');
         const wishlistContent = document.getElementById('wishlistContent');
         const emptyWishlist = document.getElementById('emptyWishlist');
-        const wishlistCount = document.getElementById('wishlistCount');
+        const navWishlistCount = document.getElementById('navWishlistCount');
         const wishlistTotalStat = document.getElementById('wishlistTotal');
         const borrowedBooksStat = document.getElementById('borrowedBooks');
         const totalBooksStat = document.getElementById('totalBooks');
+
+        // Footer Navigation - Elements
+        const footerNavigation = document.getElementById('footerNavigation');
+        const navHomeBtn = document.getElementById('navHomeBtn');
+        const navSearchBtn = document.getElementById('navSearchBtn');
+        const navWishlistBtn = document.getElementById('navWishlistBtn');
+        const navDarkModeBtn = document.getElementById('navDarkModeBtn');
+        const navBorrowedBtn = document.getElementById('navBorrowedBtn');
+
+        // صفحه تایبەت بۆ تۆمارکردنی داواکاری کتێب - Elements
+        const registrationPage = document.getElementById('registrationPage');
+        const closeRegistrationPage = document.getElementById('closeRegistrationPage');
+
+        // صفحه لیستی وەرگیراوەکانم - Elements
+        const borrowedBooksPage = document.getElementById('borrowedBooksPage');
+        const closeBorrowedBooksPage = document.getElementById('closeBorrowedBooksPage');
+        const borrowedBooksList = document.getElementById('borrowedBooksList');
 
         // Application State
         let currentUser = null;
@@ -2864,18 +2867,11 @@
         let currentSearch = '';
         let editingBookId = null;
         let currentStudentView = 'pending';
+        let currentPage = 'home'; // 'home', 'search', 'wishlist', 'darkmode', 'borrowed'
 
         // Admin Credentials
         const ADMIN_USERNAME = '1981Language2026';
         const ADMIN_PASSWORD = 'S1981S';
-
-        // Status Types
-        const STATUS = {
-            PENDING: 'pending',
-            APPROVED: 'approved',
-            RETURNED: 'returned',
-            REJECTED: 'rejected'
-        };
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', async function() {
@@ -2891,10 +2887,10 @@
             displayBooks();
             updateWishlistCount();
             updateWishlistUI();
+            updateBorrowedBooksList();
             
-            // پێداچوونەوەی تووشکردنی مۆبایل
-            checkMobileView();
-            window.addEventListener('resize', checkMobileView);
+            // Set active page
+            setActivePage('home');
         });
 
         // Set up event listeners
@@ -2960,7 +2956,7 @@
                 if (!returnSearchSuggestions.contains(e.target) && e.target !== returnSearchInput) {
                     returnSearchSuggestions.classList.remove('active');
                 }
-                if (!wishlistSidebar.contains(e.target) && e.target !== wishlistToggle && !wishlistToggle.contains(e.target) && e.target !== mobileWishlistBtn && !mobileWishlistBtn.contains(e.target)) {
+                if (!wishlistSidebar.contains(e.target) && e.target !== navWishlistBtn && !navWishlistBtn.contains(e.target)) {
                     wishlistSidebar.classList.remove('active');
                 }
             });
@@ -2975,10 +2971,16 @@
                 resetBookForm();
             });
             
-            cancelRegistrationBtn.addEventListener('click', () => {
-                registrationForm.classList.remove('active');
+            closeRegistrationPage.addEventListener('click', () => {
+                registrationPage.classList.remove('active');
                 studentRegistrationForm.reset();
-                confirmationMessage.classList.remove('active');
+                confirmationMessage.style.display = 'none';
+                setActivePage('home');
+            });
+            
+            closeBorrowedBooksPage.addEventListener('click', () => {
+                borrowedBooksPage.classList.remove('active');
+                setActivePage('home');
             });
             
             cancelBookFormBtn.addEventListener('click', () => {
@@ -2987,32 +2989,34 @@
             });
             
             // لیستی دڵخوازەکان
-            wishlistToggle.addEventListener('click', () => {
-                wishlistSidebar.classList.toggle('active');
-                updateMobileBottomBar();
-            });
-            
             closeWishlist.addEventListener('click', () => {
                 wishlistSidebar.classList.remove('active');
-                updateMobileBottomBar();
             });
             
-            // Mobile bottom bar navigation
-            mobileWishlistBtn.addEventListener('click', () => {
-                wishlistSidebar.classList.toggle('active');
-                updateMobileBottomBar();
-            });
-            
-            mobileHomeBtn.addEventListener('click', () => {
-                // Scroll to top
+            // Footer Navigation
+            navHomeBtn.addEventListener('click', () => {
+                setActivePage('home');
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
             });
             
-            mobileSearchBtn.addEventListener('click', () => {
+            navSearchBtn.addEventListener('click', () => {
+                setActivePage('search');
                 searchInput.focus();
+            });
+            
+            navWishlistBtn.addEventListener('click', () => {
+                wishlistSidebar.classList.toggle('active');
+            });
+            
+            navDarkModeBtn.addEventListener('click', () => {
+                toggleDarkMode();
+            });
+            
+            navBorrowedBtn.addEventListener('click', () => {
+                showBorrowedBooksPage();
             });
             
             // Student registration form submission
@@ -3025,6 +3029,7 @@
             backToMainBtn.addEventListener('click', () => {
                 adminPanel.style.display = 'none';
                 document.querySelector('.container').style.display = 'block';
+                setActivePage('home');
             });
             
             viewBooksBtn.addEventListener('click', () => {
@@ -3109,6 +3114,56 @@
             });
         }
 
+        // Set active page in footer navigation
+        function setActivePage(page) {
+            currentPage = page;
+            
+            // Clear all active states
+            document.querySelectorAll('.footer-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Set active state
+            switch(page) {
+                case 'home':
+                    navHomeBtn.classList.add('active');
+                    break;
+                case 'search':
+                    navSearchBtn.classList.add('active');
+                    break;
+                case 'wishlist':
+                    navWishlistBtn.classList.add('active');
+                    break;
+                case 'darkmode':
+                    navDarkModeBtn.classList.add('active');
+                    break;
+                case 'borrowed':
+                    navBorrowedBtn.classList.add('active');
+                    break;
+            }
+        }
+
+        // گۆڕینی داڕک مۆد
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                navDarkModeBtn.innerHTML = '<i class="fas fa-sun"></i><span>دۆخی ڕووناک</span>';
+                showNotification('🌙 داڕک مۆد چالاککرا', 'success');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                navDarkModeBtn.innerHTML = '<i class="fas fa-moon"></i><span>دۆخی تاریک</span>';
+                showNotification('☀️ ڕووناک مۆد چالاککرا', 'success');
+            }
+            
+            // بارکردنی هەڵبژاردەی پێشوو
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+                navDarkModeBtn.innerHTML = '<i class="fas fa-sun"></i><span>دۆخی ڕووناک</span>';
+            }
+        }
+
         // Load all requests from Firebase دوم
         async function loadAllRequests() {
             try {
@@ -3122,6 +3177,7 @@
                 console.log(`Loaded ${allRequests.length} total requests, ${approvedRequests.length} approved requests`);
                 
                 updateStatistics();
+                updateBorrowedBooksList();
                 
             } catch (error) {
                 console.error('Error loading requests:', error);
@@ -3147,16 +3203,15 @@
             document.getElementById('adminPendingRequests').textContent = pendingCount;
             document.getElementById('adminApprovedRequests').textContent = borrowedBooksCount;
             
-            // Update mobile wishlist count
+            // Update navigation wishlist count
             updateWishlistCount();
         }
 
         // نوێکردنی ژمارەی لیستی دڵخوازەکان
         function updateWishlistCount() {
             const count = wishlist.length;
-            wishlistCount.textContent = count;
+            navWishlistCount.textContent = count;
             wishlistTotalStat.textContent = count;
-            mobileWishlistCount.textContent = count;
             
             // نوێکردنی ئاماری سەرەکی
             updateStatistics();
@@ -3333,9 +3388,86 @@
                     const bookId = e.target.getAttribute('data-id');
                     const bookTitle = e.target.getAttribute('data-title');
                     bookDetailsModal.classList.remove('active');
-                    showRegistrationForm(bookId, bookTitle);
+                    showRegistrationPage(bookId, bookTitle);
                 });
             }
+        }
+
+        // Show registration page
+        function showRegistrationPage(bookId, bookTitle) {
+            document.getElementById('regBookId').value = bookId;
+            document.getElementById('regBookTitle').value = bookTitle;
+            registrationPage.classList.add('active');
+            confirmationMessage.style.display = 'none';
+            studentRegistrationForm.reset();
+            
+            setActivePage('borrowed');
+        }
+
+        // Show borrowed books page
+        function showBorrowedBooksPage() {
+            borrowedBooksPage.classList.add('active');
+            updateBorrowedBooksList();
+            setActivePage('borrowed');
+        }
+
+        // Update borrowed books list
+        function updateBorrowedBooksList() {
+            borrowedBooksList.innerHTML = '';
+            
+            // Get user's phone number from localStorage if exists
+            const userPhone = localStorage.getItem('userPhone');
+            if (!userPhone) {
+                borrowedBooksList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>تکایە یەکەم جار کتێبێک داوا بکە</h3>
+                        <p>بۆ بینینی لیستی وەرگیراوەکانت</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Filter user's requests
+            const userRequests = allRequests.filter(request => 
+                request.number === userPhone || request.phoneNumber === userPhone
+            );
+            
+            if (userRequests.length === 0) {
+                borrowedBooksList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-book"></i>
+                        <h3>هیچ کتێبێک وەرنەگرتووە</h3>
+                        <p>کتێبێک داوا بکە بۆ بینینی لێرە</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            userRequests.forEach(request => {
+                const statusText = request.returned ? 'گەڕێندراوەتەوە' : 
+                                 request.pasand ? 'وەرگیراوە' : 'چاوەڕوان';
+                const statusClass = request.returned ? 'status-rejected' : 
+                                  request.pasand ? 'status-borrowed' : 'status-pending-approval';
+                const date = request.requestDate ? new Date(request.requestDate).toLocaleDateString('ku') : 
+                           (request.createdAt ? new Date(request.createdAt).toLocaleDateString('ku') : 'نەزانراو');
+                
+                const bookCard = document.createElement('div');
+                bookCard.className = 'borrowed-book-card';
+                bookCard.innerHTML = `
+                    <div class="borrowed-book-title">${request.bookTitle || 'هیچ کتێبێک'}</div>
+                    <div class="borrowed-book-info">
+                        <span><i class="fas fa-calendar"></i> ${date}</span>
+                        <span class="borrowed-book-status ${statusClass}">${statusText}</span>
+                    </div>
+                    ${request.pasand && !request.returned ? 
+                        `<div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                            <i class="fas fa-clock"></i> چاوەڕوانی گەڕاندنەوە
+                        </div>` : ''}
+                `;
+                
+                borrowedBooksList.appendChild(bookCard);
+            });
         }
 
         // Handle student registration for book borrowing
@@ -3349,23 +3481,24 @@
             const bookId = document.getElementById('regBookId').value;
             const bookTitle = document.getElementById('regBookTitle').value;
             
+            // Save user phone for future reference
+            localStorage.setItem('userPhone', phoneNumber);
+            
             // Check if book is already borrowed
             if (isBookBorrowed(bookTitle)) {
                 showNotification('❌ پێشتر داوا کراە چاوەڕوان بە! تکایە کتێبێکی تر هەڵبژێرە.', 'error');
-                registrationForm.classList.remove('active');
                 return;
             }
             
             // Check if user already has a pending request for this book
             const userPendingRequest = allRequests.find(request => 
-                request.name === studentName && 
+                (request.number === phoneNumber || request.phoneNumber === phoneNumber) && 
                 request.bookTitle === bookTitle && 
                 !request.pasand
             );
             
             if (userPendingRequest) {
                 showNotification('❌ تۆ پێشتر داواکاریت بۆ ئەم کتێبە ناردووە و چاوەڕوانی پەسەندکردنی.', 'warning');
-                registrationForm.classList.remove('active');
                 return;
             }
             
@@ -3392,18 +3525,20 @@
                         allRequests.push(requestForSecondDB);
                         
                         studentRegistrationForm.reset();
-                        confirmationMessage.classList.add('active');
+                        confirmationMessage.style.display = 'block';
                         
                         showNotification('✅ داواکاریەکەت بە سەرکەوتوویی نێردرا!', 'success');
                         
                         setTimeout(() => {
-                            registrationForm.classList.remove('active');
-                            confirmationMessage.classList.remove('active');
+                            registrationPage.classList.remove('active');
+                            confirmationMessage.style.display = 'none';
+                            setActivePage('home');
                         }, 3000);
                         
                         // Refresh books display
                         displayBooks();
                         updateStatistics();
+                        updateBorrowedBooksList();
                     } else {
                         throw new Error("Failed to save to database");
                     }
@@ -3525,8 +3660,7 @@
                     const bookTitle = btn.getAttribute('data-title');
                     
                     wishlistSidebar.classList.remove('active');
-                    updateMobileBottomBar();
-                    showRegistrationForm(bookId, bookTitle);
+                    showRegistrationPage(bookId, bookTitle);
                 });
             });
         }
@@ -3538,42 +3672,6 @@
                 const isInWishlist = wishlist.some(item => item.id === bookId);
                 modalWishlistBtn.innerHTML = `<i class="fas fa-heart"></i> ${isInWishlist ? 'لابردنی لە لیستی دڵخوازەکان' : 'زیادکردنی بۆ لیستی دڵخوازەکان'}`;
                 modalWishlistBtn.classList.toggle('in-wishlist', isInWishlist);
-            }
-        }
-
-        // Check mobile view
-        function checkMobileView() {
-            const isMobile = window.innerWidth <= 767;
-            if (isMobile) {
-                // نمایش Mobile Bottom Bar
-                mobileBottomBar.style.display = 'block';
-                // نیشان نەدانی Floating Buttons لە مۆبایل
-                darkModeToggle.style.display = 'none';
-                wishlistToggle.style.display = 'none';
-            } else {
-                // نیشان نەدانی Mobile Bottom Bar
-                mobileBottomBar.style.display = 'none';
-                // نیشاندانی Floating Buttons لە دسکتاپ
-                darkModeToggle.style.display = 'flex';
-                wishlistToggle.style.display = 'flex';
-                wishlistSidebar.classList.remove('active');
-            }
-        }
-
-        // Update mobile bottom bar state
-        function updateMobileBottomBar() {
-            const isWishlistOpen = wishlistSidebar.classList.contains('active');
-            
-            // Clear all active states
-            document.querySelectorAll('.mobile-bottom-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Set active state based on current view
-            if (isWishlistOpen) {
-                mobileWishlistBtn.classList.add('active');
-            } else {
-                mobileHomeBtn.classList.add('active');
             }
         }
 
@@ -4127,6 +4225,7 @@
                             await displayRegisteredStudentsFromFirebase();
                             displayBooks(); // Update book status on main page
                             updateStatistics();
+                            updateBorrowedBooksList();
                             showNotification('✅ داواکاریەکە پەسەندکرا و کتێبەکە وەرگیرا', 'success');
                         } else {
                             throw new Error("Failed to approve request");
@@ -4172,6 +4271,7 @@
                     displayReturnBooks();
                     displayBooks(); // Update book status on main page
                     updateStatistics();
+                    updateBorrowedBooksList();
                     showNotification('✅ کتێبەکە بە سەرکەوتوویی گەڕێندرایەوە', 'success');
                     
                 } catch (error) {
@@ -4208,6 +4308,7 @@
                     displayReturnBooks();
                     displayBooks(); // Update book status on main page
                     updateStatistics();
+                    updateBorrowedBooksList();
                     showNotification('🗑️ داواکاریەکە بە سەرکەوتوویی سڕدرایەوە', 'success');
                     
                 } catch (error) {
@@ -4238,6 +4339,7 @@
                     await displayRegisteredStudentsFromFirebase();
                     displayBooks(); // Update book status on main page
                     updateStatistics();
+                    updateBorrowedBooksList();
                     showNotification('❌ داواکاریەکە ڕەتکرایەوە', 'success');
                     
                 } catch (error) {
@@ -4245,18 +4347,6 @@
                     showNotification('❌ هەڵە ڕوویدا لە ڕەتکردنەوەی داواکاری', 'error');
                 }
             }
-        }
-
-        // Show registration form
-        function showRegistrationForm(bookId, bookTitle) {
-            document.getElementById('regBookId').value = bookId;
-            document.getElementById('regBookTitle').value = bookTitle;
-            registrationForm.classList.add('active');
-            confirmationMessage.classList.remove('active');
-            studentRegistrationForm.reset();
-            
-            // Scroll to registration form
-            registrationForm.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Update student view buttons
