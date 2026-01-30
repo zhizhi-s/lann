@@ -2300,12 +2300,6 @@
                     </div>
                 </div>
             </div>
-            
-            <div style="text-align: center; margin-top: 2rem;">
-                <button id="quickBackToBooksBtn" class="admin-action-btn secondary" style="width: 100%; max-width: 300px; margin: 0 auto;">
-                    <i class="fas fa-book"></i> بینینی کتێبەکان
-                </button>
-            </div>
         </div>
     </div>
 
@@ -2606,7 +2600,6 @@
         const mainPage = document.getElementById('mainPage');
         const studentRegistrationForm = document.getElementById('studentRegistrationForm');
         const backToMainPageBtn = document.getElementById('backToMainPageBtn');
-        const quickBackToBooksBtn = document.getElementById('quickBackToBooksBtn');
         const confirmationMessage = document.getElementById('confirmationMessage');
         
         const bookFormModal = document.getElementById('bookFormModal');
@@ -2684,9 +2677,6 @@
             displayBooks();
             updateWishlistCount();
             updateWishlistUI();
-            
-            // زیادکردنی دوگمەی "داواکردنی کتێب" لەسەر هێدەر
-            addRegistrationButtonToHeader();
         });
 
         // Set up event listeners
@@ -2769,10 +2759,6 @@
             
             // Back to main page from registration
             backToMainPageBtn.addEventListener('click', () => {
-                goToMainPage();
-            });
-            
-            quickBackToBooksBtn.addEventListener('click', () => {
                 goToMainPage();
             });
             
@@ -2884,24 +2870,6 @@
             });
         }
 
-        // زیادکردنی دوگمەی "داواکردنی کتێب" لەسەر هێدەر
-        function addRegistrationButtonToHeader() {
-            const header = document.querySelector('header');
-            const adminBtn = document.getElementById('adminLoginBtn');
-            
-            const regBtn = document.createElement('button');
-            regBtn.className = 'admin-login-btn';
-            regBtn.style.marginLeft = '0.5rem'; // بۆ ئەوەی لە چەپەی دووگمەی ئەدمین بێت
-            regBtn.style.background = 'linear-gradient(135deg, #38B2AC 0%, #319795 100%)';
-            regBtn.innerHTML = '<i class="fas fa-book-reader"></i> داواکردنی کتێب';
-            
-            regBtn.addEventListener('click', () => {
-                goToRegistrationPage();
-            });
-            
-            header.insertBefore(regBtn, adminBtn);
-        }
-
         // گەڕان بۆ پەڕەی سەرەکی
         function goToMainPage() {
             mainPage.style.display = 'block';
@@ -2910,7 +2878,7 @@
             resetRegistrationForm();
         }
 
-        // گەڕان بۆ پەڕەی تۆمارکردن
+        // گەڕان بۆ پەڕەی تۆمارکردن (لە مۆدالی وردەکاری کتێبەوە)
         function goToRegistrationPage() {
             mainPage.style.display = 'none';
             registrationPage.style.display = 'block';
