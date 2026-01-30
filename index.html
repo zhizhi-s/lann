@@ -1237,7 +1237,7 @@
             white-space: nowrap;
         }
 
-        /* ====== TOGGLE BUTTONS - بازسازی کامل ====== */
+        /* ====== TOGGLE BUTTONS - بازسازی کامل برای موبایل ====== */
         .dark-mode-toggle,
         .wishlist-toggle {
             position: fixed;
@@ -1255,9 +1255,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* اضافه کردن دایره کامل */
             padding: 0;
             overflow: hidden;
+            background: var(--primary-color);
         }
 
         .dark-mode-toggle {
@@ -1295,6 +1295,63 @@
 
         body.dark-mode .wishlist-count-badge {
             border-color: var(--dark-card);
+        }
+
+        /* ====== FIXED BOTTOM BAR FOR MOBILE - چاککردنی نوێ ====== */
+        .mobile-bottom-bar {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--gray-color);
+            padding: 0.5rem 1rem;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .mobile-bottom-bar {
+            background: var(--dark-card);
+            border-top-color: var(--dark-border);
+        }
+
+        .mobile-bottom-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-bottom-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 0.7rem;
+            gap: 0.3rem;
+            padding: 0.5rem 0.3rem;
+            flex: 1;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .mobile-bottom-btn {
+            color: var(--dark-text);
+        }
+
+        .mobile-bottom-btn i {
+            font-size: 1.2rem;
+        }
+
+        .mobile-bottom-btn.active {
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .mobile-bottom-btn.active {
+            color: var(--dark-primary);
         }
 
         /* ====== FOOTER ====== */
@@ -1552,13 +1609,16 @@
                 top: 35px;
             }
             
-            /* ====== TOGGLE BUTTONS - دایره کامل ====== */
+            /* ====== نوێکردنی TOGGLE BUTTONS - بۆ مۆبایل ====== */
             .dark-mode-toggle,
             .wishlist-toggle {
                 width: 42px;
                 height: 42px;
                 font-size: 15px;
                 border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
             .dark-mode-toggle i,
@@ -1572,6 +1632,84 @@
                 font-size: 0.55rem;
                 top: -2px;
                 right: -2px;
+            }
+            
+            /* ====== زیادکردنی Mobile Bottom Bar ====== */
+            .mobile-bottom-bar {
+                display: block;
+            }
+            
+            /* ====== پشتبەستن بە Floating Buttons ====== */
+            .dark-mode-toggle,
+            .wishlist-toggle {
+                display: flex !important;
+            }
+            
+            /* ====== باشترکردنی لیستی دڵخوازەکان لەسەر مۆبایل ====== */
+            .wishlist-sidebar {
+                width: 100%;
+                max-width: 100%;
+                border-radius: 20px 20px 0 0;
+                top: auto;
+                bottom: -100%;
+                right: 0;
+                height: 85vh;
+                transition: bottom 0.3s ease;
+            }
+            
+            .wishlist-sidebar.active {
+                bottom: 0;
+                right: 0;
+            }
+            
+            .wishlist-header {
+                border-radius: 20px 20px 0 0;
+                padding: 1.2rem 1rem;
+            }
+            
+            .wishlist-header h3 {
+                font-size: 1.2rem;
+            }
+            
+            .wishlist-content {
+                padding: 1rem;
+            }
+            
+            .wishlist-item {
+                padding: 1rem;
+                border-radius: 12px;
+                margin-bottom: 0.8rem;
+            }
+            
+            .wishlist-item-image {
+                width: 60px;
+                height: 80px;
+            }
+            
+            .wishlist-item-title {
+                font-size: 0.9rem;
+            }
+            
+            .wishlist-item-actions {
+                margin-top: 0.5rem;
+            }
+            
+            /* ====== باشترکردنی Dark Mode لەسەر مۆبایل ====== */
+            .dark-mode-toggle {
+                bottom: 100px;
+                background: linear-gradient(135deg, var(--primary-color) 0%, #1e3a8a 100%);
+            }
+            
+            body.dark-mode .dark-mode-toggle {
+                background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+            }
+            
+            .wishlist-toggle {
+                bottom: 160px;
+            }
+            
+            body.dark-mode .wishlist-toggle {
+                background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);
             }
         }
 
@@ -1637,6 +1775,29 @@
                 width: 40px;
                 height: 40px;
                 font-size: 14px;
+            }
+            
+            .dark-mode-toggle {
+                bottom: 95px;
+                left: 12px;
+            }
+            
+            .wishlist-toggle {
+                bottom: 150px;
+                left: 12px;
+            }
+            
+            .mobile-bottom-bar {
+                padding: 0.5rem 0.8rem;
+            }
+            
+            .mobile-bottom-btn {
+                font-size: 0.65rem;
+                padding: 0.4rem 0.2rem;
+            }
+            
+            .mobile-bottom-btn i {
+                font-size: 1rem;
             }
         }
 
@@ -1745,9 +1906,26 @@
                 font-size: 0.75rem;
             }
             
-            /* لیستی دڵخوازەکان */
+            /* لیستی دڵخوازەکان - چاککردنی نوێ */
             .wishlist-sidebar {
-                width: 90%;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 20px 20px 0 0;
+                top: auto;
+                bottom: -100%;
+                height: 80vh;
+            }
+            
+            .wishlist-sidebar.active {
+                bottom: 0;
+            }
+            
+            .wishlist-header {
+                border-radius: 20px 20px 0 0;
+            }
+            
+            .wishlist-item {
+                padding: 0.8rem;
             }
             
             /* دوگمەکان - دایره کامل */
@@ -1760,12 +1938,12 @@
             }
             
             .dark-mode-toggle {
-                bottom: 80px;
+                bottom: 90px;
                 left: 12px;
             }
             
             .wishlist-toggle {
-                bottom: 130px;
+                bottom: 140px;
                 left: 12px;
             }
             
@@ -1773,6 +1951,20 @@
                 font-size: 0.5rem;
                 width: 16px;
                 height: 16px;
+            }
+            
+            /* Mobile Bottom Bar */
+            .mobile-bottom-bar {
+                display: block;
+                padding: 0.5rem 0.8rem;
+            }
+            
+            .mobile-bottom-btn {
+                font-size: 0.7rem;
+            }
+            
+            .mobile-bottom-btn i {
+                font-size: 1.1rem;
             }
         }
 
@@ -1810,6 +2002,29 @@
             
             .book-status-badge {
                 font-size: 0.53rem; /* کاهش سایز فونت وەرگیراوە */
+            }
+            
+            /* نوێکردنی دوگمەکان */
+            .dark-mode-toggle,
+            .wishlist-toggle {
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+            
+            .dark-mode-toggle {
+                bottom: 95px;
+                left: 15px;
+            }
+            
+            .wishlist-toggle {
+                bottom: 150px;
+                left: 15px;
+            }
+            
+            /* Mobile Bottom Bar */
+            .mobile-bottom-bar {
+                display: none; /* لە تەبلێت نابنوێنرێت */
             }
         }
 
@@ -1937,6 +2152,11 @@
                 top: -4px;
                 right: -4px;
             }
+            
+            /* Mobile Bottom Bar - لە دسکتاپ نابنوێنرێت */
+            .mobile-bottom-bar {
+                display: none;
+            }
         }
 
         /* ====== پشتگیری باشتر بۆ شاشە بچووکەکان ====== */
@@ -2007,11 +2227,24 @@
             }
             
             .dark-mode-toggle {
-                bottom: 75px;
+                bottom: 85px;
             }
             
             .wishlist-toggle {
-                bottom: 120px;
+                bottom: 130px;
+            }
+            
+            .mobile-bottom-bar {
+                padding: 0.4rem 0.6rem;
+            }
+            
+            .mobile-bottom-btn {
+                font-size: 0.6rem;
+                padding: 0.3rem 0.1rem;
+            }
+            
+            .mobile-bottom-btn i {
+                font-size: 0.9rem;
             }
         }
 
@@ -2138,6 +2371,22 @@
                 bottom: 135px;
                 left: 15px;
             }
+            
+            .mobile-bottom-bar {
+                display: block;
+            }
+        }
+
+        /* ====== پاشەکەوتکردنی شێوازی لیستی دڵخوازەکان لەسەر مۆبایل ====== */
+        @media (max-width: 767px) {
+            .wishlist-sidebar {
+                border-radius: 20px 20px 0 0;
+                box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.15);
+            }
+            
+            body.dark-mode .wishlist-sidebar {
+                box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.3);
+            }
         }
     </style>
 </head>
@@ -2152,6 +2401,29 @@
         <i class="fas fa-heart"></i>
         <span class="wishlist-count-badge" id="wishlistCount">0</span>
     </button>
+
+    <!-- Mobile Bottom Bar -->
+    <div class="mobile-bottom-bar" id="mobileBottomBar">
+        <div class="mobile-bottom-bar-content">
+            <button class="mobile-bottom-btn" id="mobileHomeBtn">
+                <i class="fas fa-home"></i>
+                <span>سەرەکی</span>
+            </button>
+            <button class="mobile-bottom-btn" id="mobileSearchBtn">
+                <i class="fas fa-search"></i>
+                <span>گەڕان</span>
+            </button>
+            <button class="mobile-bottom-btn active" id="mobileWishlistBtn">
+                <i class="fas fa-heart"></i>
+                <span>دڵخوازەکان</span>
+                <span class="wishlist-count-badge" id="mobileWishlistCount">0</span>
+            </button>
+            <button class="mobile-bottom-btn" id="mobileDarkModeBtn">
+                <i class="fas fa-moon"></i>
+                <span>دۆخی تاریک</span>
+            </button>
+        </div>
+    </div>
 
     <!-- لیستی دڵخوازەکان -->
     <div class="wishlist-sidebar" id="wishlistSidebar">
@@ -2529,27 +2801,39 @@
         // داڕک مۆد تووگڵ
         const darkModeToggle = document.getElementById('darkModeToggle');
         const darkModeIcon = darkModeToggle.querySelector('i');
+        const mobileDarkModeBtn = document.getElementById('mobileDarkModeBtn');
+        const mobileWishlistBtn = document.getElementById('mobileWishlistBtn');
+        const mobileHomeBtn = document.getElementById('mobileHomeBtn');
+        const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+        const mobileBottomBar = document.getElementById('mobileBottomBar');
+        const mobileWishlistCount = document.getElementById('mobileWishlistCount');
         
         // بارکردنی هەڵبژاردەی پێشوو
         if (localStorage.getItem('darkMode') === 'enabled') {
             document.body.classList.add('dark-mode');
             darkModeIcon.className = 'fas fa-sun';
+            mobileDarkModeBtn.innerHTML = '<i class="fas fa-sun"></i><span>دۆخی ڕووناک</span>';
         }
         
         // گۆڕینی داڕک مۆد
-        darkModeToggle.onclick = () => {
+        function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             
             if (document.body.classList.contains('dark-mode')) {
                 localStorage.setItem('darkMode', 'enabled');
                 darkModeIcon.className = 'fas fa-sun';
+                mobileDarkModeBtn.innerHTML = '<i class="fas fa-sun"></i><span>دۆخی ڕووناک</span>';
                 showNotification('🌙 داڕک مۆد چالاککرا', 'success');
             } else {
                 localStorage.setItem('darkMode', 'disabled');
                 darkModeIcon.className = 'fas fa-moon';
+                mobileDarkModeBtn.innerHTML = '<i class="fas fa-moon"></i><span>دۆخی تاریک</span>';
                 showNotification('☀️ ڕووناک مۆد چالاککرا', 'success');
             }
-        };
+        }
+        
+        darkModeToggle.onclick = toggleDarkMode;
+        mobileDarkModeBtn.onclick = toggleDarkMode;
         
         // DOM Elements
         const adminLoginBtn = document.getElementById('adminLoginBtn');
@@ -2656,6 +2940,10 @@
             displayBooks();
             updateWishlistCount();
             updateWishlistUI();
+            
+            // پێداچوونەوەی تووشکردنی مۆبایل
+            checkMobileView();
+            window.addEventListener('resize', checkMobileView);
         });
 
         // Set up event listeners
@@ -2721,7 +3009,7 @@
                 if (!returnSearchSuggestions.contains(e.target) && e.target !== returnSearchInput) {
                     returnSearchSuggestions.classList.remove('active');
                 }
-                if (!wishlistSidebar.contains(e.target) && e.target !== wishlistToggle && !wishlistToggle.contains(e.target)) {
+                if (!wishlistSidebar.contains(e.target) && e.target !== wishlistToggle && !wishlistToggle.contains(e.target) && e.target !== mobileWishlistBtn && !mobileWishlistBtn.contains(e.target)) {
                     wishlistSidebar.classList.remove('active');
                 }
             });
@@ -2750,10 +3038,30 @@
             // لیستی دڵخوازەکان
             wishlistToggle.addEventListener('click', () => {
                 wishlistSidebar.classList.toggle('active');
+                updateMobileBottomBar();
             });
             
             closeWishlist.addEventListener('click', () => {
                 wishlistSidebar.classList.remove('active');
+                updateMobileBottomBar();
+            });
+            
+            // Mobile bottom bar navigation
+            mobileWishlistBtn.addEventListener('click', () => {
+                wishlistSidebar.classList.toggle('active');
+                updateMobileBottomBar();
+            });
+            
+            mobileHomeBtn.addEventListener('click', () => {
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            mobileSearchBtn.addEventListener('click', () => {
+                searchInput.focus();
             });
             
             // Student registration form submission
@@ -2874,12 +3182,12 @@
         // Update statistics
         function updateStatistics() {
             const totalBooks = books.length;
-            const wishlistCount = wishlist.length;
+            const wishlistCountValue = wishlist.length;
             const borrowedBooksCount = approvedRequests.length;
             
             // Update main page statistics
             document.getElementById('totalBooks').textContent = totalBooks;
-            document.getElementById('wishlistTotal').textContent = wishlistCount;
+            document.getElementById('wishlistTotal').textContent = wishlistCountValue;
             document.getElementById('borrowedBooks').textContent = borrowedBooksCount;
             
             // Update admin statistics
@@ -2887,6 +3195,20 @@
             const pendingCount = allRequests.filter(r => !r.pasand).length;
             document.getElementById('adminPendingRequests').textContent = pendingCount;
             document.getElementById('adminApprovedRequests').textContent = borrowedBooksCount;
+            
+            // Update mobile wishlist count
+            updateWishlistCount();
+        }
+
+        // نوێکردنی ژمارەی لیستی دڵخوازەکان
+        function updateWishlistCount() {
+            const count = wishlist.length;
+            wishlistCount.textContent = count;
+            wishlistTotalStat.textContent = count;
+            mobileWishlistCount.textContent = count;
+            
+            // نوێکردنی ئاماری سەرەکی
+            updateStatistics();
         }
 
         // Check if a book is currently borrowed
@@ -3252,6 +3574,7 @@
                     const bookTitle = btn.getAttribute('data-title');
                     
                     wishlistSidebar.classList.remove('active');
+                    updateMobileBottomBar();
                     showRegistrationForm(bookId, bookTitle);
                 });
             });
@@ -3267,370 +3590,34 @@
             }
         }
 
-        // نوێکردنی ژمارەی لیستی دڵخوازەکان
-        function updateWishlistCount() {
-            const count = wishlist.length;
-            wishlistCount.textContent = count;
-            wishlistTotalStat.textContent = count;
-            
-            // نوێکردنی ئاماری سەرەکی
-            updateStatistics();
-        }
-
-        // Display registered students from Firebase دوم
-        async function displayRegisteredStudentsFromFirebase(searchTerm = '') {
-            registeredStudentsTable.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem;"><div class="loading-spinner"></div></td></tr>';
-            
-            try {
-                if (!window.firebase2Functions || !window.firebase2Functions.getAllRequests) {
-                    throw new Error("Firebase دوم functions not loaded");
-                }
-                
-                await loadAllRequests(); // Refresh requests
-                
-                let filteredRequests = allRequests;
-                
-                if (currentStudentView === 'pending') {
-                    filteredRequests = allRequests.filter(request => !request.pasand);
-                } else if (currentStudentView === 'approved') {
-                    filteredRequests = allRequests.filter(request => request.pasand === true && !request.returned);
-                } else if (currentStudentView === 'returned') {
-                    filteredRequests = allRequests.filter(request => request.returned === true);
-                }
-                
-                if (searchTerm) {
-                    filteredRequests = filteredRequests.filter(request => 
-                        (request.name && request.name.toLowerCase().includes(searchTerm)) ||
-                        (request.department && request.department.toLowerCase().includes(searchTerm)) ||
-                        (request.bookTitle && request.bookTitle.toLowerCase().includes(searchTerm)) ||
-                        (request.stage && request.stage.toLowerCase().includes(searchTerm)) ||
-                        (request.number && request.number.includes(searchTerm))
-                    );
-                }
-                
-                displayRegisteredStudentsTable(filteredRequests);
-                
-            } catch (error) {
-                console.error('Error loading students from Firebase دوم:', error);
-                registeredStudentsTable.innerHTML = `
-                    <tr>
-                        <td colspan="8" style="text-align: center; padding: 2rem;">
-                            <div class="empty-state">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <h3>هەڵە ڕوویدا</h3>
-                                <p>ناتوانرێت زانیاریەکان باربکرێن</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+        // Check mobile view
+        function checkMobileView() {
+            const isMobile = window.innerWidth <= 767;
+            if (isMobile) {
+                // نمایش Mobile Bottom Bar
+                mobileBottomBar.style.display = 'block';
+            } else {
+                // نیشان نەدانی Mobile Bottom Bar
+                mobileBottomBar.style.display = 'none';
+                wishlistSidebar.classList.remove('active');
             }
         }
 
-        // Display registered students table
-        function displayRegisteredStudentsTable(requests) {
-            registeredStudentsTable.innerHTML = '';
+        // Update mobile bottom bar state
+        function updateMobileBottomBar() {
+            const isWishlistOpen = wishlistSidebar.classList.contains('active');
             
-            if (requests.length === 0) {
-                const noDataText = currentStudentView === 'pending' 
-                    ? 'هیچ داواکارییەکی چاوەڕوان نەکراوە' 
-                    : currentStudentView === 'approved'
-                    ? 'هیچ کتێبێک وەرگیراو نیە'
-                    : 'هیچ کتێبێک گەڕێندراوەتەوە نیە';
-                
-                registeredStudentsTable.innerHTML = `
-                    <tr>
-                        <td colspan="8" style="text-align: center; padding: 2rem;">
-                            <div class="empty-state">
-                                <i class="fas fa-inbox"></i>
-                                <h3>${noDataText}</h3>
-                                <p>کاتێک داواکاری نوێ هات، لێرە دەردەکەون</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            requests.forEach(request => {
-                const statusText = request.returned ? 'گەڕێندراوەتەوە' : 
-                                 request.pasand ? 'وەرگیراوە' : 'چاوەڕوان';
-                const statusClass = request.returned ? 'status-rejected' : 
-                                  request.pasand ? 'status-approved' : 'status-pending';
-                const date = request.requestDate ? new Date(request.requestDate).toLocaleDateString('ku') : 
-                           (request.createdAt ? new Date(request.createdAt).toLocaleDateString('ku') : 'نەزانراو');
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${request.name || '---'}</strong></td>
-                    <td>${request.department || '---'}</td>
-                    <td><span class="badge">${request.stage || '---'}</span></td>
-                    <td>${request.number || request.phoneNumber || '---'}</td>
-                    <td><em>${request.bookTitle || 'هیچ کتێبێک'}</em></td>
-                    <td>${date}</td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td>
-                        ${!request.pasand ? 
-                            `<button class="action-btn approve-btn" data-id="${request.id}"><i class="fas fa-check"></i> پەسەندکردن</button>
-                             <button class="action-btn reject-btn" data-id="${request.id}"><i class="fas fa-times"></i> ڕەتکردنەوە</button>` 
-                            : request.pasand && !request.returned ?
-                            `<button class="action-btn reject-btn" data-id="${request.id}" data-action="return"><i class="fas fa-undo-alt"></i> گەڕاندنەوە</button>`
-                            : ''}
-                        <button class="action-btn delete-btn" data-id="${request.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
-                    </td>
-                `;
-                
-                registeredStudentsTable.appendChild(row);
+            // Clear all active states
+            document.querySelectorAll('.mobile-bottom-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
             
-            // Add event listeners to action buttons
-            document.querySelectorAll('.approve-btn').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const requestId = e.target.closest('button').getAttribute('data-id');
-                    await approveStudentRequest(requestId);
-                });
-            });
-            
-            document.querySelectorAll('.reject-btn').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const requestId = e.target.closest('button').getAttribute('data-id');
-                    const action = btn.getAttribute('data-action');
-                    
-                    if (action === 'return') {
-                        await returnBook(requestId);
-                    } else {
-                        await rejectStudentRequest(requestId);
-                    }
-                });
-            });
-            
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const requestId = e.target.closest('button').getAttribute('data-id');
-                    await deleteStudentRequest(requestId);
-                });
-            });
-        }
-
-        // Display return books table
-        function displayReturnBooks(searchTerm = '') {
-            returnBooksTable.innerHTML = '';
-            
-            let filteredRequests = allRequests.filter(request => 
-                request.pasand === true && !request.returned
-            );
-            
-            if (searchTerm) {
-                filteredRequests = filteredRequests.filter(request => 
-                    (request.name && request.name.toLowerCase().includes(searchTerm)) ||
-                    (request.department && request.department.toLowerCase().includes(searchTerm)) ||
-                    (request.bookTitle && request.bookTitle.toLowerCase().includes(searchTerm)) ||
-                    (request.number && request.number.includes(searchTerm))
-                );
+            // Set active state based on current view
+            if (isWishlistOpen) {
+                mobileWishlistBtn.classList.add('active');
+            } else {
+                mobileHomeBtn.classList.add('active');
             }
-            
-            if (filteredRequests.length === 0) {
-                returnBooksTable.innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 2rem;">
-                            <div class="empty-state">
-                                <i class="fas fa-book"></i>
-                                <h3>هیچ کتێبێک وەرگیراو نیە</h3>
-                                <p>هەموو کتێبەکان بەردەستن</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            filteredRequests.forEach(request => {
-                const requestDate = request.requestDate ? new Date(request.requestDate) : 
-                                  request.createdAt ? new Date(request.createdAt) : new Date();
-                const daysPassed = Math.floor((new Date() - requestDate) / (1000 * 60 * 60 * 24));
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${request.name || '---'}</strong></td>
-                    <td>${request.department || '---'}</td>
-                    <td>${request.number || request.phoneNumber || '---'}</td>
-                    <td><em>${request.bookTitle || 'هیچ کتێبێک'}</em></td>
-                    <td>${requestDate.toLocaleDateString('ku')}</td>
-                    <td><span class="badge ${daysPassed > 14 ? 'badge-featured' : 'badge-popular'}">${daysPassed} ڕۆژ</span></td>
-                    <td>
-                        <button class="action-btn approve-btn" data-id="${request.id}" data-action="return"><i class="fas fa-undo-alt"></i> گەڕاندنەوە</button>
-                        <button class="action-btn delete-btn" data-id="${request.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
-                    </td>
-                `;
-                
-                returnBooksTable.appendChild(row);
-            });
-            
-            // Add event listeners to return buttons
-            document.querySelectorAll('.approve-btn[data-action="return"]').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const requestId = e.target.closest('button').getAttribute('data-id');
-                    await returnBook(requestId);
-                });
-            });
-            
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const requestId = e.target.closest('button').getAttribute('data-id');
-                    await deleteStudentRequest(requestId);
-                });
-            });
-        }
-
-        // Approve student request
-        async function approveStudentRequest(requestId) {
-            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە پەسەند بکەیت؟')) {
-                try {
-                    if (window.firebase2Functions && window.firebase2Functions.approveRequest) {
-                        const success = await window.firebase2Functions.approveRequest(requestId);
-                        
-                        if (success) {
-                            // Update local state
-                            const requestIndex = allRequests.findIndex(r => r.id === requestId);
-                            if (requestIndex !== -1) {
-                                allRequests[requestIndex].pasand = true;
-                                allRequests[requestIndex].approvedDate = new Date().toISOString();
-                            }
-                            
-                            approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
-                            
-                            await displayRegisteredStudentsFromFirebase();
-                            displayBooks(); // Update book status on main page
-                            updateStatistics();
-                            showNotification('✅ داواکاریەکە پەسەندکرا و کتێبەکە وەرگیرا', 'success');
-                        } else {
-                            throw new Error("Failed to approve request");
-                        }
-                    } else {
-                        throw new Error("Database functions not available");
-                    }
-                    
-                } catch (error) {
-                    console.error('Error approving request:', error);
-                    showNotification('❌ هەڵە ڕوویدا لە پەسەندکردنی داواکاری', 'error');
-                }
-            }
-        }
-
-        // Return book
-        async function returnBook(requestId) {
-            if (confirm('ئایا دڵنیای کە ئەم کتێبە گەڕێندراوەتەوە؟')) {
-                try {
-                    const request = allRequests.find(r => r.id === requestId);
-                    if (!request) {
-                        throw new Error("Request not found");
-                    }
-                    
-                    // Update in Firebase دوم
-                    const entryRef = window.firebase2.doc(window.firebase2.db, "Language", requestId);
-                    await window.firebase2.updateDoc(entryRef, { 
-                        returned: true,
-                        returnDate: new Date().toISOString()
-                    });
-                    
-                    // Update local state
-                    const requestIndex = allRequests.findIndex(r => r.id === requestId);
-                    if (requestIndex !== -1) {
-                        allRequests[requestIndex].returned = true;
-                        allRequests[requestIndex].returnDate = new Date().toISOString();
-                    }
-                    
-                    approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
-                    
-                    // Refresh displays
-                    await displayRegisteredStudentsFromFirebase();
-                    displayReturnBooks();
-                    displayBooks(); // Update book status on main page
-                    updateStatistics();
-                    showNotification('✅ کتێبەکە بە سەرکەوتوویی گەڕێندرایەوە', 'success');
-                    
-                } catch (error) {
-                    console.error('Error returning book:', error);
-                    showNotification('❌ هەڵە ڕوویدا لە گەڕاندنەوەی کتێب', 'error');
-                }
-            }
-        }
-
-        // Delete student request (سڕینەوەی داواکاری)
-        async function deleteStudentRequest(requestId) {
-            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە بسڕیتەوە؟')) {
-                try {
-                    const request = allRequests.find(r => r.id === requestId);
-                    if (!request) {
-                        throw new Error("Request not found");
-                    }
-                    
-                    // Delete from Firebase دوم
-                    if (window.firebase2Functions && window.firebase2Functions.rejectRequest) {
-                        await window.firebase2Functions.rejectRequest(requestId);
-                    }
-                    
-                    // Remove from local state
-                    allRequests = allRequests.filter(r => r.id !== requestId);
-                    
-                    // If it was an approved request, update approvedRequests
-                    if (request.pasand && !request.returned) {
-                        approvedRequests = allRequests.filter(r => r.pasand === true && !r.returned);
-                    }
-                    
-                    // Refresh displays
-                    await displayRegisteredStudentsFromFirebase();
-                    displayReturnBooks();
-                    displayBooks(); // Update book status on main page
-                    updateStatistics();
-                    showNotification('🗑️ داواکاریەکە بە سەرکەوتوویی سڕدرایەوە', 'success');
-                    
-                } catch (error) {
-                    console.error('Error deleting request:', error);
-                    showNotification('❌ هەڵە ڕوویدا لە سڕینەوەی داواکاری', 'error');
-                }
-            }
-        }
-
-        // Reject student request
-        async function rejectStudentRequest(requestId) {
-            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە ڕەت بکەیتەوە؟')) {
-                try {
-                    const request = allRequests.find(r => r.id === requestId);
-                    if (!request) {
-                        throw new Error("Request not found");
-                    }
-                    
-                    // Delete from Firebase دوم
-                    if (window.firebase2Functions && window.firebase2Functions.rejectRequest) {
-                        await window.firebase2Functions.rejectRequest(requestId);
-                    }
-                    
-                    // Remove from local state
-                    allRequests = allRequests.filter(r => r.id !== requestId);
-                    
-                    // Refresh displays
-                    await displayRegisteredStudentsFromFirebase();
-                    displayBooks(); // Update book status on main page
-                    updateStatistics();
-                    showNotification('❌ داواکاریەکە ڕەتکرایەوە', 'success');
-                    
-                } catch (error) {
-                    console.error('Error rejecting request:', error);
-                    showNotification('❌ هەڵە ڕوویدا لە ڕەتکردنەوەی داواکاری', 'error');
-                }
-            }
-        }
-
-        // Show registration form
-        function showRegistrationForm(bookId, bookTitle) {
-            document.getElementById('regBookId').value = bookId;
-            document.getElementById('regBookTitle').value = bookTitle;
-            registrationForm.classList.add('active');
-            confirmationMessage.classList.remove('active');
-            studentRegistrationForm.reset();
-            
-            // Scroll to registration form
-            registrationForm.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Handle admin login
@@ -3957,6 +3944,362 @@
             }
             
             displayRegisteredStudentsTable(filteredRequests);
+        }
+
+        // Display registered students table
+        function displayRegisteredStudentsTable(requests) {
+            registeredStudentsTable.innerHTML = '';
+            
+            if (requests.length === 0) {
+                const noDataText = currentStudentView === 'pending' 
+                    ? 'هیچ داواکارییەکی چاوەڕوان نەکراوە' 
+                    : currentStudentView === 'approved'
+                    ? 'هیچ کتێبێک وەرگیراو نیە'
+                    : 'هیچ کتێبێک گەڕێندراوەتەوە نیە';
+                
+                registeredStudentsTable.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 2rem;">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <h3>${noDataText}</h3>
+                                <p>کاتێک داواکاری نوێ هات، لێرە دەردەکەون</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            requests.forEach(request => {
+                const statusText = request.returned ? 'گەڕێندراوەتەوە' : 
+                                 request.pasand ? 'وەرگیراوە' : 'چاوەڕوان';
+                const statusClass = request.returned ? 'status-rejected' : 
+                                  request.pasand ? 'status-approved' : 'status-pending';
+                const date = request.requestDate ? new Date(request.requestDate).toLocaleDateString('ku') : 
+                           (request.createdAt ? new Date(request.createdAt).toLocaleDateString('ku') : 'نەزانراو');
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${request.name || '---'}</strong></td>
+                    <td>${request.department || '---'}</td>
+                    <td><span class="badge">${request.stage || '---'}</span></td>
+                    <td>${request.number || request.phoneNumber || '---'}</td>
+                    <td><em>${request.bookTitle || 'هیچ کتێبێک'}</em></td>
+                    <td>${date}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        ${!request.pasand ? 
+                            `<button class="action-btn approve-btn" data-id="${request.id}"><i class="fas fa-check"></i> پەسەندکردن</button>
+                             <button class="action-btn reject-btn" data-id="${request.id}"><i class="fas fa-times"></i> ڕەتکردنەوە</button>` 
+                            : request.pasand && !request.returned ?
+                            `<button class="action-btn reject-btn" data-id="${request.id}" data-action="return"><i class="fas fa-undo-alt"></i> گەڕاندنەوە</button>`
+                            : ''}
+                        <button class="action-btn delete-btn" data-id="${request.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
+                    </td>
+                `;
+                
+                registeredStudentsTable.appendChild(row);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.approve-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await approveStudentRequest(requestId);
+                });
+            });
+            
+            document.querySelectorAll('.reject-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    const action = btn.getAttribute('data-action');
+                    
+                    if (action === 'return') {
+                        await returnBook(requestId);
+                    } else {
+                        await rejectStudentRequest(requestId);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await deleteStudentRequest(requestId);
+                });
+            });
+        }
+
+        // Display registered students from Firebase دوم
+        async function displayRegisteredStudentsFromFirebase(searchTerm = '') {
+            registeredStudentsTable.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem;"><div class="loading-spinner"></div></td></tr>';
+            
+            try {
+                if (!window.firebase2Functions || !window.firebase2Functions.getAllRequests) {
+                    throw new Error("Firebase دوم functions not loaded");
+                }
+                
+                await loadAllRequests(); // Refresh requests
+                
+                let filteredRequests = allRequests;
+                
+                if (currentStudentView === 'pending') {
+                    filteredRequests = allRequests.filter(request => !request.pasand);
+                } else if (currentStudentView === 'approved') {
+                    filteredRequests = allRequests.filter(request => request.pasand === true && !request.returned);
+                } else if (currentStudentView === 'returned') {
+                    filteredRequests = allRequests.filter(request => request.returned === true);
+                }
+                
+                if (searchTerm) {
+                    filteredRequests = filteredRequests.filter(request => 
+                        (request.name && request.name.toLowerCase().includes(searchTerm)) ||
+                        (request.department && request.department.toLowerCase().includes(searchTerm)) ||
+                        (request.bookTitle && request.bookTitle.toLowerCase().includes(searchTerm)) ||
+                        (request.stage && request.stage.toLowerCase().includes(searchTerm)) ||
+                        (request.number && request.number.includes(searchTerm))
+                    );
+                }
+                
+                displayRegisteredStudentsTable(filteredRequests);
+                
+            } catch (error) {
+                console.error('Error loading students from Firebase دوم:', error);
+                registeredStudentsTable.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 2rem;">
+                            <div class="empty-state">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>هەڵە ڕوویدا</h3>
+                                <p>ناتوانرێت زانیاریەکان باربکرێن</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Display return books table
+        function displayReturnBooks(searchTerm = '') {
+            returnBooksTable.innerHTML = '';
+            
+            let filteredRequests = allRequests.filter(request => 
+                request.pasand === true && !request.returned
+            );
+            
+            if (searchTerm) {
+                filteredRequests = filteredRequests.filter(request => 
+                    (request.name && request.name.toLowerCase().includes(searchTerm)) ||
+                    (request.department && request.department.toLowerCase().includes(searchTerm)) ||
+                    (request.bookTitle && request.bookTitle.toLowerCase().includes(searchTerm)) ||
+                    (request.number && request.number.includes(searchTerm))
+                );
+            }
+            
+            if (filteredRequests.length === 0) {
+                returnBooksTable.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2rem;">
+                            <div class="empty-state">
+                                <i class="fas fa-book"></i>
+                                <h3>هیچ کتێبێک وەرگیراو نیە</h3>
+                                <p>هەموو کتێبەکان بەردەستن</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            filteredRequests.forEach(request => {
+                const requestDate = request.requestDate ? new Date(request.requestDate) : 
+                                  request.createdAt ? new Date(request.createdAt) : new Date();
+                const daysPassed = Math.floor((new Date() - requestDate) / (1000 * 60 * 60 * 24));
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${request.name || '---'}</strong></td>
+                    <td>${request.department || '---'}</td>
+                    <td>${request.number || request.phoneNumber || '---'}</td>
+                    <td><em>${request.bookTitle || 'هیچ کتێبێک'}</em></td>
+                    <td>${requestDate.toLocaleDateString('ku')}</td>
+                    <td><span class="badge ${daysPassed > 14 ? 'badge-featured' : 'badge-popular'}">${daysPassed} ڕۆژ</span></td>
+                    <td>
+                        <button class="action-btn approve-btn" data-id="${request.id}" data-action="return"><i class="fas fa-undo-alt"></i> گەڕاندنەوە</button>
+                        <button class="action-btn delete-btn" data-id="${request.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
+                    </td>
+                `;
+                
+                returnBooksTable.appendChild(row);
+            });
+            
+            // Add event listeners to return buttons
+            document.querySelectorAll('.approve-btn[data-action="return"]').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await returnBook(requestId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await deleteStudentRequest(requestId);
+                });
+            });
+        }
+
+        // Approve student request
+        async function approveStudentRequest(requestId) {
+            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە پەسەند بکەیت؟')) {
+                try {
+                    if (window.firebase2Functions && window.firebase2Functions.approveRequest) {
+                        const success = await window.firebase2Functions.approveRequest(requestId);
+                        
+                        if (success) {
+                            // Update local state
+                            const requestIndex = allRequests.findIndex(r => r.id === requestId);
+                            if (requestIndex !== -1) {
+                                allRequests[requestIndex].pasand = true;
+                                allRequests[requestIndex].approvedDate = new Date().toISOString();
+                            }
+                            
+                            approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
+                            
+                            await displayRegisteredStudentsFromFirebase();
+                            displayBooks(); // Update book status on main page
+                            updateStatistics();
+                            showNotification('✅ داواکاریەکە پەسەندکرا و کتێبەکە وەرگیرا', 'success');
+                        } else {
+                            throw new Error("Failed to approve request");
+                        }
+                    } else {
+                        throw new Error("Database functions not available");
+                    }
+                    
+                } catch (error) {
+                    console.error('Error approving request:', error);
+                    showNotification('❌ هەڵە ڕوویدا لە پەسەندکردنی داواکاری', 'error');
+                }
+            }
+        }
+
+        // Return book
+        async function returnBook(requestId) {
+            if (confirm('ئایا دڵنیای کە ئەم کتێبە گەڕێندراوەتەوە؟')) {
+                try {
+                    const request = allRequests.find(r => r.id === requestId);
+                    if (!request) {
+                        throw new Error("Request not found");
+                    }
+                    
+                    // Update in Firebase دوم
+                    const entryRef = window.firebase2.doc(window.firebase2.db, "Language", requestId);
+                    await window.firebase2.updateDoc(entryRef, { 
+                        returned: true,
+                        returnDate: new Date().toISOString()
+                    });
+                    
+                    // Update local state
+                    const requestIndex = allRequests.findIndex(r => r.id === requestId);
+                    if (requestIndex !== -1) {
+                        allRequests[requestIndex].returned = true;
+                        allRequests[requestIndex].returnDate = new Date().toISOString();
+                    }
+                    
+                    approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
+                    
+                    // Refresh displays
+                    await displayRegisteredStudentsFromFirebase();
+                    displayReturnBooks();
+                    displayBooks(); // Update book status on main page
+                    updateStatistics();
+                    showNotification('✅ کتێبەکە بە سەرکەوتوویی گەڕێندرایەوە', 'success');
+                    
+                } catch (error) {
+                    console.error('Error returning book:', error);
+                    showNotification('❌ هەڵە ڕوویدا لە گەڕاندنەوەی کتێب', 'error');
+                }
+            }
+        }
+
+        // Delete student request (سڕینەوەی داواکاری)
+        async function deleteStudentRequest(requestId) {
+            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە بسڕیتەوە؟')) {
+                try {
+                    const request = allRequests.find(r => r.id === requestId);
+                    if (!request) {
+                        throw new Error("Request not found");
+                    }
+                    
+                    // Delete from Firebase دوم
+                    if (window.firebase2Functions && window.firebase2Functions.rejectRequest) {
+                        await window.firebase2Functions.rejectRequest(requestId);
+                    }
+                    
+                    // Remove from local state
+                    allRequests = allRequests.filter(r => r.id !== requestId);
+                    
+                    // If it was an approved request, update approvedRequests
+                    if (request.pasand && !request.returned) {
+                        approvedRequests = allRequests.filter(r => r.pasand === true && !r.returned);
+                    }
+                    
+                    // Refresh displays
+                    await displayRegisteredStudentsFromFirebase();
+                    displayReturnBooks();
+                    displayBooks(); // Update book status on main page
+                    updateStatistics();
+                    showNotification('🗑️ داواکاریەکە بە سەرکەوتوویی سڕدرایەوە', 'success');
+                    
+                } catch (error) {
+                    console.error('Error deleting request:', error);
+                    showNotification('❌ هەڵە ڕوویدا لە سڕینەوەی داواکاری', 'error');
+                }
+            }
+        }
+
+        // Reject student request
+        async function rejectStudentRequest(requestId) {
+            if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە ڕەت بکەیتەوە؟')) {
+                try {
+                    const request = allRequests.find(r => r.id === requestId);
+                    if (!request) {
+                        throw new Error("Request not found");
+                    }
+                    
+                    // Delete from Firebase دوم
+                    if (window.firebase2Functions && window.firebase2Functions.rejectRequest) {
+                        await window.firebase2Functions.rejectRequest(requestId);
+                    }
+                    
+                    // Remove from local state
+                    allRequests = allRequests.filter(r => r.id !== requestId);
+                    
+                    // Refresh displays
+                    await displayRegisteredStudentsFromFirebase();
+                    displayBooks(); // Update book status on main page
+                    updateStatistics();
+                    showNotification('❌ داواکاریەکە ڕەتکرایەوە', 'success');
+                    
+                } catch (error) {
+                    console.error('Error rejecting request:', error);
+                    showNotification('❌ هەڵە ڕوویدا لە ڕەتکردنەوەی داواکاری', 'error');
+                }
+            }
+        }
+
+        // Show registration form
+        function showRegistrationForm(bookId, bookTitle) {
+            document.getElementById('regBookId').value = bookId;
+            document.getElementById('regBookTitle').value = bookTitle;
+            registrationForm.classList.add('active');
+            confirmationMessage.classList.remove('active');
+            studentRegistrationForm.reset();
+            
+            // Scroll to registration form
+            registrationForm.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Update student view buttons
