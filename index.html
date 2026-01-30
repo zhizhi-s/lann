@@ -617,9 +617,9 @@
             right: 8px;
             background: rgba(15, 76, 117, 0.95);
             color: white;
-            padding: 0.3rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.65rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.55rem;
             font-weight: 600;
             z-index: 10;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -639,16 +639,16 @@
             right: 8px;
             background: linear-gradient(135deg, #f56565 0%, #ed8936 100%);
             color: white;
-            padding: 0.3rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.6rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.5rem;
             font-weight: 600;
             z-index: 9;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             border: 1px solid white;
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            max-width: 80px;
+            max-width: 70px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -714,43 +714,6 @@
 
         .book-genre i {
             font-size: 0.65rem;
-        }
-
-        /* ====== WISHLIST BUTTON ====== */
-        .add-to-wishlist-btn {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--danger-color);
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            z-index: 10;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        body.dark-mode .add-to-wishlist-btn {
-            background: rgba(30, 41, 59, 0.9);
-            color: #fca5a5;
-        }
-
-        .add-to-wishlist-btn:hover {
-            background: var(--danger-color);
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .add-to-wishlist-btn.in-wishlist {
-            background: var(--danger-color);
-            color: white;
         }
 
         /* ====== MODALS ====== */
@@ -1578,14 +1541,14 @@
             }
             
             .book-badge {
-                font-size: 0.6rem; /* کاهش سایز فونت ژانەر */
-                padding: 0.2rem 0.5rem;
+                font-size: 0.5rem; /* کاهش بیشتر سایز فونت ژانەر */
+                padding: 0.2rem 0.4rem;
             }
             
             .book-status-badge {
-                font-size: 0.55rem; /* کاهش سایز فونت وەرگیراوە */
-                padding: 0.2rem 0.4rem;
-                max-width: 70px;
+                font-size: 0.45rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
+                padding: 0.2rem 0.3rem;
+                max-width: 60px;
                 top: 35px;
             }
             
@@ -1659,14 +1622,14 @@
             }
             
             .book-badge {
-                font-size: 0.58rem; /* کاهش بیشتر سایز فونت ژانەر */
-                padding: 0.18rem 0.4rem;
+                font-size: 0.48rem; /* کاهش بیشتر سایز فونت ژانەر */
+                padding: 0.18rem 0.35rem;
             }
             
             .book-status-badge {
-                font-size: 0.52rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
-                padding: 0.18rem 0.35rem;
-                max-width: 65px;
+                font-size: 0.42rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
+                padding: 0.18rem 0.3rem;
+                max-width: 55px;
             }
             
             .dark-mode-toggle,
@@ -1764,11 +1727,11 @@
             }
             
             .book-badge {
-                font-size: 0.65rem; /* کاهش سایز فونت ژانەر */
+                font-size: 0.52rem; /* کاهش بیشتر سایز فونت ژانەر */
             }
             
             .book-status-badge {
-                font-size: 0.6rem; /* کاهش سایز فونت وەرگیراوە */
+                font-size: 0.48rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
             }
             
             /* پەڕەی ئەدمین */
@@ -1842,11 +1805,11 @@
             }
             
             .book-badge {
-                font-size: 0.68rem; /* کاهش سایز فونت ژانەر */
+                font-size: 0.58rem; /* کاهش سایز فونت ژانەر */
             }
             
             .book-status-badge {
-                font-size: 0.63rem; /* کاهش سایز فونت وەرگیراوە */
+                font-size: 0.53rem; /* کاهش سایز فونت وەرگیراوە */
             }
         }
 
@@ -1928,11 +1891,11 @@
             }
             
             .book-badge {
-                font-size: 0.75rem; /* سایز فونت ژانەر برای دسکتاپ */
+                font-size: 0.65rem; /* سایز فونت ژانەر برای دسکتاپ */
             }
             
             .book-status-badge {
-                font-size: 0.7rem; /* سایز فونت وەرگیراوە برای دسکتاپ */
+                font-size: 0.6rem; /* سایز فونت وەرگیراوە برای دسکتاپ */
             }
             
             .admin-actions {
@@ -2024,14 +1987,14 @@
             }
             
             .book-badge {
-                font-size: 0.56rem; /* کاهش بیشتر سایز فونت ژانەر */
-                padding: 0.16rem 0.35rem;
+                font-size: 0.46rem; /* کاهش بیشتر سایز فونت ژانەر */
+                padding: 0.16rem 0.3rem;
             }
             
             .book-status-badge {
-                font-size: 0.5rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
-                padding: 0.16rem 0.3rem;
-                max-width: 60px;
+                font-size: 0.4rem; /* کاهش بیشتر سایز فونت وەرگیراوە */
+                padding: 0.16rem 0.25rem;
+                max-width: 50px;
                 top: 32px;
             }
             
@@ -2088,11 +2051,6 @@
             
             .genre-item {
                 padding: 0.8rem 0.5rem;
-            }
-            
-            .add-to-wishlist-btn {
-                width: 32px;
-                height: 32px;
             }
         }
 
@@ -3010,9 +2968,6 @@
                     <div class="book-badge">${book.zhanar}</div>
                     ${isBorrowed ? '<div class="book-status-badge">📖 وەرگیراوە</div>' : ''}
                     ${hasPending && !isBorrowed ? '<div class="book-status-badge" style="background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);">⏳ چاوەڕوان</div>' : ''}
-                    <button class="add-to-wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}" data-id="${book.id}" data-title="${book.naw}" data-author="${book.author || 'نەناسراو'}" data-image="${book.linkewena}">
-                        <i class="fas fa-heart"></i>
-                    </button>
                     <img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'}" alt="${book.naw}" class="book-image">
                     <div class="book-info">
                         <div class="book-title">${book.naw}</div>
@@ -3024,25 +2979,10 @@
                 
                 // هەموو کتێبەکان کلیک دەکرێن بۆ بینینی وردەکاری
                 bookCard.addEventListener('click', (e) => {
-                    if (!e.target.closest('.add-to-wishlist-btn')) {
-                        showBookDetails(book);
-                    }
+                    showBookDetails(book);
                 });
                 
                 booksGrid.appendChild(bookCard);
-            });
-            
-            // Add event listeners to wishlist buttons
-            document.querySelectorAll('.add-to-wishlist-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const bookId = btn.getAttribute('data-id');
-                    const bookTitle = btn.getAttribute('data-title');
-                    const bookAuthor = btn.getAttribute('data-author');
-                    const bookImage = btn.getAttribute('data-image');
-                    
-                    toggleWishlist(bookId, bookTitle, bookAuthor, bookImage);
-                });
             });
         }
 
