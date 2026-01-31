@@ -513,7 +513,7 @@
             color: #cbd5e1;
         }
 
-        /* ====== BOOKS GRID - بازسازی کامل ====== */
+        /* ====== BOOKS GRID ====== */
         .books-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -1676,6 +1676,7 @@
                 font-size: 0.42rem;
                 padding: 0.18rem 0.3rem;
                 max-width: 55px;
+                top: 35px;
             }
             
             .bottom-nav {
@@ -2424,9 +2425,6 @@
             <button class="admin-action-btn secondary" id="viewBooksBtn">
                 <i class="fas fa-book"></i> بینینی کتێبەکان
             </button>
-            <button class="admin-action-btn" id="returnBookBtn">
-                <i class="fas fa-undo-alt"></i> گەڕاندنەوەی کتێب
-            </button>
             <button class="admin-action-btn danger" id="backToMainBtn">
                 <i class="fas fa-arrow-left"></i> گەڕانەوە بۆ پەڕەی سەرەکی
             </button>
@@ -2500,36 +2498,6 @@
                 </table>
             </div>
         </div>
-
-        <div id="returnBookSection" style="display: none;">
-            <div class="section-header" style="margin-bottom: 1.2rem;">
-                <h3>🔄 گەڕاندنەوەی کتێب</h3>
-                <p>نیشاندانی کتێبە وەرگیراوەکان و گەڕاندنەوەیەکیان</p>
-            </div>
-            
-            <div class="search-box" style="margin-bottom: 1.2rem;">
-                <input type="text" id="returnSearchInput" placeholder="گەڕان بۆ کتێب یان خوێندکار...">
-                <i class="fas fa-search"></i>
-                <div class="search-suggestions" id="returnSearchSuggestions"></div>
-            </div>
-            
-            <div class="admin-table-container">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ناوی سیانی</th>
-                            <th>بەش</th>
-                            <th>مۆبایل</th>
-                            <th>کتێب</th>
-                            <th>بەرواری وەرگرتن</th>
-                            <th>ماوەی وەرگرتن</th>
-                            <th>کردارەکان</th>
-                        </tr>
-                    </thead>
-                    <tbody id="returnBooksTable"></tbody>
-                </table>
-            </div>
-        </div>
     </div>
 
     <div class="modal" id="bookFormModal">
@@ -2598,7 +2566,39 @@
         </div>
     </footer>
 
-    <script>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            getDocs, 
+            deleteDoc, 
+            doc, 
+            updateDoc, 
+            query, 
+            where,
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDldHXuM8uPbgOT-hxRHk5e7YnSkKn0pHI",
+            authDomain: "lanuage-slahaddin.firebaseapp.com",
+            projectId: "lanuage-slahaddin",
+            storageBucket: "lanuage-slahaddin.firebasestorage.app",
+            messagingSenderId: "887991955360",
+            appId: "1:887991955360:web:e23481e92a29e91578fec5",
+            measurementId: "G-GWLZDH54WL"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
         // DOM Elements for Bottom Navigation
         const navDarkMode = document.getElementById('navDarkMode');
         const darkModeIcon = document.getElementById('darkModeIcon');
@@ -2628,7 +2628,6 @@
         const adminPanel = document.getElementById('adminPanel');
         const backToMainBtn = document.getElementById('backToMainBtn');
         const viewBooksBtn = document.getElementById('viewBooksBtn');
-        const returnBookBtn = document.getElementById('returnBookBtn');
         
         const genreToggleBtn = document.getElementById('genreToggleBtn');
         const genreList = document.getElementById('genreList');
@@ -2663,17 +2662,13 @@
         
         const bookManagementSection = document.getElementById('bookManagementSection');
         const registeredStudentsSection = document.getElementById('registeredStudentsSection');
-        const returnBookSection = document.getElementById('returnBookSection');
         
         const adminBooksTable = document.getElementById('adminBooksTable');
         const registeredStudentsTable = document.getElementById('registeredStudentsTable');
-        const returnBooksTable = document.getElementById('returnBooksTable');
         const adminSearchInput = document.getElementById('adminSearchInput');
         const adminSearchSuggestions = document.getElementById('adminSearchSuggestions');
         const studentSearchInput = document.getElementById('studentSearchInput');
         const studentSearchSuggestions = document.getElementById('studentSearchSuggestions');
-        const returnSearchInput = document.getElementById('returnSearchInput');
-        const returnSearchSuggestions = document.getElementById('returnSearchSuggestions');
 
         // Application State
         let currentUser = null;
@@ -2702,17 +2697,17 @@
         document.addEventListener('DOMContentLoaded', async function() {
             setupEventListeners();
             loadWishlistFromLocalStorage();
-            loadBooksFromLocalStorage();
-            await loadAllRequests();
+            await loadBooksFromFirebase();
+            await loadAllRequestsFromFirebase();
             displayBooks();
             updateWishlistCount();
             updateWishlistUI();
             updateBorrowedBooksUI();
             
-            // تێستکردنی بادجەکان - نمایشی ژمارەی نموونەیی
+            // Update badges
             setTimeout(() => {
                 navWishlistCount.textContent = wishlist.length || 0;
-                navBorrowedCount.textContent = 3; // ژمارەی نموونەیی بۆ تێستکردن
+                navBorrowedCount.textContent = approvedRequests.length || 0;
             }, 500);
         });
 
@@ -2801,9 +2796,6 @@
                 if (!studentSearchSuggestions.contains(e.target) && e.target !== studentSearchInput) {
                     studentSearchSuggestions.classList.remove('active');
                 }
-                if (!returnSearchSuggestions.contains(e.target) && e.target !== returnSearchInput) {
-                    returnSearchSuggestions.classList.remove('active');
-                }
                 if (!wishlistSidebar.contains(e.target) && e.target !== navWishlist && !navWishlist.contains(e.target)) {
                     wishlistSidebar.classList.remove('active');
                 }
@@ -2847,7 +2839,6 @@
             viewBooksBtn.addEventListener('click', () => {
                 bookManagementSection.style.display = 'block';
                 registeredStudentsSection.style.display = 'none';
-                returnBookSection.style.display = 'none';
                 displayAdminBooks();
             });
             
@@ -2858,17 +2849,9 @@
             viewRegisteredStudentsBtn.addEventListener('click', async () => {
                 bookManagementSection.style.display = 'none';
                 registeredStudentsSection.style.display = 'block';
-                returnBookSection.style.display = 'none';
                 currentStudentView = 'pending';
                 updateStudentViewButtons();
                 await displayRegisteredStudentsFromFirebase();
-            });
-            
-            returnBookBtn.addEventListener('click', () => {
-                bookManagementSection.style.display = 'none';
-                registeredStudentsSection.style.display = 'none';
-                returnBookSection.style.display = 'block';
-                displayReturnBooks();
             });
             
             // Student view toggle buttons
@@ -2918,12 +2901,6 @@
                 
                 displayRegisteredStudents(searchTerm);
             });
-            
-            // Return search
-            returnSearchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                displayReturnBooks(searchTerm);
-            });
         }
 
         // داڕک مۆد تووگڵ
@@ -2969,45 +2946,122 @@
             confirmationMessage.style.display = 'none';
         }
 
-        // Load all requests from Firebase دوم
-        async function loadAllRequests() {
+        // Load books from Firebase
+        async function loadBooksFromFirebase() {
             try {
-                // لەم نموونەیەدا ئێمە ئینتەرنێت بەکارناهێنین، بۆیە داتای نموونەیی دروست دەکەین
-                allRequests = [
-                    {
-                        id: 'req_1',
-                        name: 'حسێن عەلی',
-                        department: 'زمان',
-                        stage: 'یەکەم',
-                        number: '07501234567',
-                        bookTitle: 'مێژووی کورد',
-                        pasand: true,
-                        requestDate: '2024-01-15',
-                        returned: false
-                    },
-                    {
-                        id: 'req_2',
-                        name: 'سارا محەممەد',
-                        department: 'زمان',
-                        stage: 'دووەم',
-                        number: '07507654321',
-                        bookTitle: 'ڕۆمانی شەوانی بەغدا',
-                        pasand: true,
-                        requestDate: '2024-01-20',
-                        returned: false
-                    },
-                    {
-                        id: 'req_3',
-                        name: 'عەبدوڵڵا کەریم',
-                        department: 'زمان',
-                        stage: 'سێیەم',
-                        number: '07509876543',
-                        bookTitle: 'فێرکاری زمانی ئینگلیزی',
-                        pasand: false,
-                        requestDate: '2024-01-25',
-                        returned: false
-                    }
-                ];
+                const querySnapshot = await getDocs(collection(db, "Slahaddin"));
+                books = [];
+                querySnapshot.forEach((doc) => {
+                    const bookData = doc.data();
+                    books.push({
+                        id: doc.id,
+                        naw: bookData.name || bookData.naw || "بێ ناو",
+                        author: bookData.authorName || bookData.author || "نەناسراو",
+                        zhanar: bookData.genre || bookData.zhanar || "هیچ",
+                        kurta: bookData.summary || bookData.kurta || "هیچ کورتەیەک نیە",
+                        linkewena: bookData.imgUrl || bookData.linkewena || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                        createdAt: bookData.createdAt || new Date().toISOString()
+                    });
+                });
+                
+                console.log(`Loaded ${books.length} books from Firebase`);
+                if (books.length === 0) {
+                    console.log("No books found in Firebase, adding sample books...");
+                    await addSampleBooks();
+                    await loadBooksFromFirebase(); // Reload after adding samples
+                }
+                
+            } catch (error) {
+                console.error('Error loading books from Firebase:', error);
+                // Fallback to local storage if Firebase fails
+                loadBooksFromLocalStorage();
+            }
+        }
+
+        // Add sample books to Firebase
+        async function addSampleBooks() {
+            const sampleBooks = [
+                {
+                    name: "مێژووی کورد",
+                    authorName: "د. کەمال مەزھەر",
+                    genre: "مێژوو",
+                    summary: "کتێبێکی دەقی زانستیە کە مێژووی کورد و کوردستان باس دەکات",
+                    imgUrl: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    name: "ڕۆمانی شەوانی بەغدا",
+                    authorName: "نووسەر نەناسراو",
+                    genre: "ڕۆمان",
+                    summary: "ڕۆمانێکی سەردەمی مۆدێرن کە چیرۆکەکەی لە شاری بەغدادە",
+                    imgUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    name: "فێرکاری زمانی ئینگلیزی",
+                    authorName: "د. سەلام ناوخۆش",
+                    genre: "فێرکاری زمان",
+                    summary: "کتێبێک بۆ فێربوونی زمانی ئینگلیزی بە شێوەیەکی سادە",
+                    imgUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    name: "فەلسەفەی ڕۆژئاوایی",
+                    authorName: "د. نەوزاد ئەحمەد",
+                    genre: "فەلسەفە",
+                    summary: "وتارێک لەسەر فەلسەفەی ڕۆژئاوایی و کاریگەریەکانی",
+                    imgUrl: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    name: "هونەری نەخشەکێشان",
+                    authorName: "سەلاح عەبدوڵڵا",
+                    genre: "هونەری",
+                    summary: "کتێبێک بۆ فێربوونی هونەری نەخشەکێشان",
+                    imgUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    name: "زانستی کۆمپیوتەر",
+                    authorName: "ئەحمەد عەلی",
+                    genre: "فێرکاری تەکنەلۆژیا",
+                    summary: "کتێبێک بۆ فێربوونی زانستی کۆمپیوتەر",
+                    imgUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            try {
+                for (const book of sampleBooks) {
+                    await addDoc(collection(db, "Slahaddin"), book);
+                }
+                console.log("Sample books added to Firebase");
+            } catch (error) {
+                console.error("Error adding sample books:", error);
+            }
+        }
+
+        // Load all requests from Firebase
+        async function loadAllRequestsFromFirebase() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "requests"));
+                allRequests = [];
+                querySnapshot.forEach((doc) => {
+                    const requestData = doc.data();
+                    allRequests.push({
+                        id: doc.id,
+                        name: requestData.name || requestData.studentName || "بێ ناو",
+                        department: requestData.department || "بێ بەش",
+                        stage: requestData.stage || "نەزانراو",
+                        number: requestData.phoneNumber || requestData.number || "نەزانراو",
+                        bookTitle: requestData.bookTitle || "بێ ناو",
+                        pasand: requestData.pasand || requestData.approved || false,
+                        requestDate: requestData.requestDate || new Date().toISOString(),
+                        returned: requestData.returned || false,
+                        approvedDate: requestData.approvedDate || null,
+                        returnDate: requestData.returnDate || null
+                    });
+                });
                 
                 approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
                 
@@ -3016,7 +3070,7 @@
                 updateStatistics();
                 
             } catch (error) {
-                console.error('Error loading requests:', error);
+                console.error('Error loading requests from Firebase:', error);
                 allRequests = [];
                 approvedRequests = [];
             }
@@ -3100,72 +3154,15 @@
             });
         }
 
-        // Load books from local storage
+        // Load books from local storage (fallback)
         function loadBooksFromLocalStorage() {
             const savedBooks = localStorage.getItem('libraryBooks');
             if (savedBooks) {
                 books = JSON.parse(savedBooks);
                 console.log(`Loaded ${books.length} books from local storage`);
             } else {
-                // Add sample books if no books exist
-                books = [
-                    {
-                        id: 'book_1',
-                        naw: 'مێژووی کورد',
-                        author: 'د. کەمال مەزھەر',
-                        zhanar: 'مێژوو',
-                        kurta: 'کتێبێکی دەقی زانستیە کە مێژووی کورد و کوردستان باس دەکات',
-                        linkewena: 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 'book_2',
-                        naw: 'ڕۆمانی شەوانی بەغدا',
-                        author: 'نووسەر نەناسراو',
-                        zhanar: 'ڕۆمان',
-                        kurta: 'ڕۆمانێکی سەردەمی مۆدێرن کە چیرۆکەکەی لە شاری بەغدادە',
-                        linkewena: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 'book_3',
-                        naw: 'فێرکاری زمانی ئینگلیزی',
-                        author: 'د. سەلام ناوخۆش',
-                        zhanar: 'فێرکاری زمان',
-                        kurta: 'کتێبێک بۆ فێربوونی زمانی ئینگلیزی بە شێوەیەکی سادە',
-                        linkewena: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 'book_4',
-                        naw: 'فەلسەفەی ڕۆژئاوایی',
-                        author: 'د. نەوزاد ئەحمەد',
-                        zhanar: 'فەلسەفە',
-                        kurta: 'وتارێک لەسەر فەلسەفەی ڕۆژئاوایی و کاریگەریەکانی',
-                        linkewena: 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 'book_5',
-                        naw: 'هونەری نەخشەکێشان',
-                        author: 'سەلاح عەبدوڵڵا',
-                        zhanar: 'هونەری',
-                        kurta: 'کتێبێک بۆ فێربوونی هونەری نەخشەکێشان',
-                        linkewena: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: 'book_6',
-                        naw: 'زانستی کۆمپیوتەر',
-                        author: 'ئەحمەد عەلی',
-                        zhanar: 'فێرکاری تەکنەلۆژیا',
-                        kurta: 'کتێبێک بۆ فێربوونی زانستی کۆمپیوتەر',
-                        linkewena: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
-                        createdAt: new Date().toISOString()
-                    }
-                ];
-                localStorage.setItem('libraryBooks', JSON.stringify(books));
-                console.log('Sample books added to local storage');
+                books = [];
+                console.log('No saved books found in local storage');
             }
         }
 
@@ -3432,12 +3429,12 @@
             updateStatistics();
         }
 
-        // Display registered students from Firebase دوم
+        // Display registered students from Firebase
         async function displayRegisteredStudentsFromFirebase(searchTerm = '') {
             registeredStudentsTable.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem;"><div class="loading-spinner"></div></td></tr>';
             
             try {
-                await loadAllRequests(); // Refresh requests
+                await loadAllRequestsFromFirebase(); // Refresh requests
                 
                 let filteredRequests = allRequests;
                 
@@ -3561,75 +3558,6 @@
             });
         }
 
-        // Display return books table
-        function displayReturnBooks(searchTerm = '') {
-            returnBooksTable.innerHTML = '';
-            
-            let filteredRequests = allRequests.filter(request => 
-                request.pasand === true && !request.returned
-            );
-            
-            if (searchTerm) {
-                filteredRequests = filteredRequests.filter(request => 
-                    (request.name && request.name.toLowerCase().includes(searchTerm)) ||
-                    (request.department && request.department.toLowerCase().includes(searchTerm)) ||
-                    (request.bookTitle && request.bookTitle.toLowerCase().includes(searchTerm)) ||
-                    (request.number && request.number.includes(searchTerm))
-                );
-            }
-            
-            if (filteredRequests.length === 0) {
-                returnBooksTable.innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 2rem;">
-                            <div class="empty-state">
-                                <i class="fas fa-book"></i>
-                                <h3>هیچ کتێبێک وەرگیراو نیە</h3>
-                                <p>هەموو کتێبەکان بەردەستن</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            filteredRequests.forEach(request => {
-                const requestDate = request.requestDate ? new Date(request.requestDate) : new Date();
-                const daysPassed = Math.floor((new Date() - requestDate) / (1000 * 60 * 60 * 24));
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${request.name || '---'}</strong></td>
-                    <td>${request.department || '---'}</td>
-                    <td>${request.number || '---'}</td>
-                    <td><em>${request.bookTitle || 'هیچ کتێبێک'}</em></td>
-                    <td>${requestDate.toLocaleDateString('ku')}</td>
-                    <td><span class="badge ${daysPassed > 14 ? 'badge-featured' : 'badge-popular'}">${daysPassed} ڕۆژ</span></td>
-                    <td>
-                        <button class="action-btn approve-btn" data-id="${request.id}" data-action="return"><i class="fas fa-undo-alt"></i> گەڕاندنەوە</button>
-                        <button class="action-btn delete-btn" data-id="${request.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
-                    </td>
-                `;
-                
-                returnBooksTable.appendChild(row);
-            });
-            
-            // Add event listeners to return buttons
-            document.querySelectorAll('.approve-btn[data-action="return"]').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const requestId = e.target.closest('button').getAttribute('data-id');
-                    await returnBook(requestId);
-                });
-            });
-            
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const requestId = e.target.closest('button').getAttribute('data-id');
-                    await deleteStudentRequest(requestId);
-                });
-            });
-        }
-
         // Handle student registration for book borrowing
         async function handleStudentRegistration(e) {
             e.preventDefault();
@@ -3659,21 +3587,19 @@
             }
             
             const newRequest = {
-                id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 name: studentName,
                 stage: stage,
                 department: department,
                 number: phoneNumber,
-                dawa: true,
-                pasand: false,
                 bookTitle: bookTitle,
+                pasand: false,
                 requestDate: new Date().toISOString(),
                 returned: false
             };
             
             try {
-                // Add to local state
-                allRequests.push(newRequest);
+                // Add to Firebase
+                const docRef = await addDoc(collection(db, "requests"), newRequest);
                 
                 // نیشاندانی پەیامی سەرکەوتن
                 confirmationMessage.style.display = 'block';
@@ -3686,6 +3612,7 @@
                 }, 3000);
                 
                 // نوێکردنی لیستی کتێبەکان
+                await loadAllRequestsFromFirebase();
                 displayBooks();
                 updateStatistics();
                 updateBorrowedBooksUI();
@@ -3700,16 +3627,14 @@
         async function approveStudentRequest(requestId) {
             if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە پەسەند بکەیت؟')) {
                 try {
-                    // Update local state
-                    const requestIndex = allRequests.findIndex(r => r.id === requestId);
-                    if (requestIndex !== -1) {
-                        allRequests[requestIndex].pasand = true;
-                        allRequests[requestIndex].approvedDate = new Date().toISOString();
-                    }
+                    // Update in Firebase
+                    const requestRef = doc(db, "requests", requestId);
+                    await updateDoc(requestRef, {
+                        pasand: true,
+                        approvedDate: new Date().toISOString()
+                    });
                     
-                    approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
-                    
-                    await displayRegisteredStudentsFromFirebase();
+                    await loadAllRequestsFromFirebase();
                     displayBooks();
                     updateStatistics();
                     updateBorrowedBooksUI();
@@ -3731,18 +3656,14 @@
                         throw new Error("Request not found");
                     }
                     
-                    // Update local state
-                    const requestIndex = allRequests.findIndex(r => r.id === requestId);
-                    if (requestIndex !== -1) {
-                        allRequests[requestIndex].returned = true;
-                        allRequests[requestIndex].returnDate = new Date().toISOString();
-                    }
+                    // Update in Firebase
+                    const requestRef = doc(db, "requests", requestId);
+                    await updateDoc(requestRef, {
+                        returned: true,
+                        returnDate: new Date().toISOString()
+                    });
                     
-                    approvedRequests = allRequests.filter(request => request.pasand === true && !request.returned);
-                    
-                    // Refresh displays
-                    await displayRegisteredStudentsFromFirebase();
-                    displayReturnBooks();
+                    await loadAllRequestsFromFirebase();
                     displayBooks();
                     updateStatistics();
                     updateBorrowedBooksUI();
@@ -3764,17 +3685,11 @@
                         throw new Error("Request not found");
                     }
                     
-                    // Remove from local state
-                    allRequests = allRequests.filter(r => r.id !== requestId);
-                    
-                    // If it was an approved request, update approvedRequests
-                    if (request.pasand && !request.returned) {
-                        approvedRequests = allRequests.filter(r => r.pasand === true && !r.returned);
-                    }
+                    // Delete from Firebase
+                    await deleteDoc(doc(db, "requests", requestId));
                     
                     // Refresh displays
-                    await displayRegisteredStudentsFromFirebase();
-                    displayReturnBooks();
+                    await loadAllRequestsFromFirebase();
                     displayBooks();
                     updateStatistics();
                     updateBorrowedBooksUI();
@@ -3791,16 +3706,11 @@
         async function rejectStudentRequest(requestId) {
             if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە ڕەت بکەیتەوە؟')) {
                 try {
-                    const request = allRequests.find(r => r.id === requestId);
-                    if (!request) {
-                        throw new Error("Request not found");
-                    }
-                    
-                    // Remove from local state
-                    allRequests = allRequests.filter(r => r.id !== requestId);
+                    // Delete the request
+                    await deleteDoc(doc(db, "requests", requestId));
                     
                     // Refresh displays
-                    await displayRegisteredStudentsFromFirebase();
+                    await loadAllRequestsFromFirebase();
                     displayBooks();
                     updateStatistics();
                     updateBorrowedBooksUI();
@@ -3952,37 +3862,30 @@
             e.preventDefault();
             
             const bookData = {
-                naw: document.getElementById('bookTitle').value,
-                author: document.getElementById('bookAuthor').value,
-                zhanar: document.getElementById('bookGenre').value,
-                kurta: document.getElementById('bookSummary').value,
-                linkewena: document.getElementById('bookImage').value,
+                name: document.getElementById('bookTitle').value,
+                authorName: document.getElementById('bookAuthor').value,
+                genre: document.getElementById('bookGenre').value,
+                summary: document.getElementById('bookSummary').value,
+                imgUrl: document.getElementById('bookImage').value,
                 createdAt: new Date().toISOString()
             };
             
             try {
                 if (editingBookId) {
-                    // Update existing book
-                    const bookIndex = books.findIndex(b => b.id === editingBookId);
-                    if (bookIndex !== -1) {
-                        books[bookIndex] = { ...books[bookIndex], ...bookData };
-                    }
+                    // Update existing book in Firebase
+                    const bookRef = doc(db, "Slahaddin", editingBookId);
+                    await updateDoc(bookRef, bookData);
                     
                     showNotification('✅ کتێبەکە بە سەرکەوتوویی نوێکرایەوە', 'success');
                 } else {
-                    // Add new book
-                    const newBook = {
-                        id: `book_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                        ...bookData
-                    };
-                    
-                    books.push(newBook);
+                    // Add new book to Firebase
+                    await addDoc(collection(db, "Slahaddin"), bookData);
                     
                     showNotification('✅ کتێبەکە بە سەرکەوتوویی زیادکرا', 'success');
                 }
                 
-                // Save to local storage
-                localStorage.setItem('libraryBooks', JSON.stringify(books));
+                // Refresh books from Firebase
+                await loadBooksFromFirebase();
                 
                 // Close modal and refresh
                 bookFormModal.classList.remove('active');
@@ -4019,8 +3922,8 @@
                         }
                     }
                     
-                    // Remove from local state
-                    books = books.filter(b => b.id !== bookId);
+                    // Delete from Firebase
+                    await deleteDoc(doc(db, "Slahaddin", bookId));
                     
                     // Remove from wishlist
                     wishlist = wishlist.filter(item => item.id !== bookId);
@@ -4028,8 +3931,8 @@
                     updateWishlistCount();
                     updateWishlistUI();
                     
-                    // Save to local storage
-                    localStorage.setItem('libraryBooks', JSON.stringify(books));
+                    // Refresh books from Firebase
+                    await loadBooksFromFirebase();
                     
                     // Refresh displays
                     displayBooks();
