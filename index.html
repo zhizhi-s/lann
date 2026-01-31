@@ -2673,7 +2673,7 @@
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="گەڕان بۆ کتێب، نووسەر، یان بەش...">
                 <i class="fas fa-search"></i>
-                <div class="search-suggestions" id="searchSuggestions"></div>
+                <div class="search-suggestions" id="searchSuggestions" style="position: absolute; top: 100%; right: 0; left: 0; background: white; border: 1px solid var(--gray-color); border-radius: 8px; margin-top: 5px; max-height: 250px; overflow-y: auto; display: none; z-index: 1000; box-shadow: var(--shadow);"></div>
             </div>
             
             <div class="genre-section">
@@ -2716,7 +2716,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="wishlistTotal">0</div>
-                    <div class="stat-label">کتێب لە لیستی من</div>
+                    <div class="stat-label">داواکاری چاوەڕوان</div>
                 </div>
             </div>
 
@@ -2759,7 +2759,7 @@
                     </div>
                     <div class="form-group">
                         <label for="regPhoneNumber"><i class="fas fa-phone"></i> ژمارەی مۆبایل</label>
-                        <input type="tel" id="regPhoneNumber" placeholder="0750 398 3598" required>
+                        <input type="tel" id="regPhoneNumber" placeholder="07501234567" required>
                     </div>
                     
                     <div class="form-buttons">
@@ -2867,7 +2867,7 @@
                 <div class="table-search-box">
                     <input type="text" id="adminSearchInput" placeholder="گەڕان بۆ کتێب...">
                     <i class="fas fa-search"></i>
-                    <div class="search-suggestions" id="adminSearchSuggestions"></div>
+                    <div class="search-suggestions" id="adminSearchSuggestions" style="position: absolute; top: 100%; right: 0; left: 0; background: white; border: 1px solid var(--gray-color); border-radius: 8px; margin-top: 5px; max-height: 250px; overflow-y: auto; display: none; z-index: 1000; box-shadow: var(--shadow);"></div>
                 </div>
             </div>
             
@@ -2914,7 +2914,7 @@
                 <div class="table-search-box">
                     <input type="text" id="studentSearchInput" placeholder="گەڕان بۆ خوێندکار...">
                     <i class="fas fa-search"></i>
-                    <div class="search-suggestions" id="studentSearchSuggestions"></div>
+                    <div class="search-suggestions" id="studentSearchSuggestions" style="position: absolute; top: 100%; right: 0; left: 0; background: white; border: 1px solid var(--gray-color); border-radius: 8px; margin-top: 5px; max-height: 250px; overflow-y: auto; display: none; z-index: 1000; box-shadow: var(--shadow);"></div>
                 </div>
             </div>
             
@@ -2999,7 +2999,7 @@
             <h3 style="color: white; margin-bottom: 0.8rem; font-size: 1.1rem;">کتێبخانەی کۆلێژی تەکنیکی شەقڵاوە</h3>
             <p><i class="fas fa-map-marker-alt"></i> شەقڵاوە، کۆلێژی تەکنیکی شەقڵاوە</p>
             <p><i class="fas fa-envelope"></i> zheargaylan2017@gmail.com</p>
-            <p><i class="fas fa-phone"></i> 0750 398 3598</p>
+            <p><i class="fas fa-phone"></i> 07503983598</p>
             <div style="margin-top: 1.2rem; padding-top: 0.8rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                 <p>© 2026 کتێبخانەی کۆلێژی تەکنیکی شەقڵاوە. هەموو مافەکان پارێزراون.</p>
                 <p style="color: #CBD5E0; font-size: 0.8rem; margin-top: 0.5rem;">
@@ -3225,7 +3225,7 @@
                 if (currentSearch.trim() !== '') {
                     showSearchSuggestions(currentSearch, searchSuggestions);
                 } else {
-                    searchSuggestions.classList.remove('active');
+                    searchSuggestions.style.display = 'none';
                 }
                 
                 displayBooks();
@@ -3234,13 +3234,13 @@
             // کلیک دەرەوە بۆ داخستنی پێشنیارەکان
             document.addEventListener('click', (e) => {
                 if (!searchSuggestions.contains(e.target) && e.target !== searchInput) {
-                    searchSuggestions.classList.remove('active');
+                    searchSuggestions.style.display = 'none';
                 }
                 if (!adminSearchSuggestions.contains(e.target) && e.target !== adminSearchInput) {
-                    adminSearchSuggestions.classList.remove('active');
+                    adminSearchSuggestions.style.display = 'none';
                 }
                 if (!studentSearchSuggestions.contains(e.target) && e.target !== studentSearchInput) {
-                    studentSearchSuggestions.classList.remove('active');
+                    studentSearchSuggestions.style.display = 'none';
                 }
                 if (!wishlistSidebar.contains(e.target) && e.target !== navWishlist && !navWishlist.contains(e.target)) {
                     wishlistSidebar.classList.remove('active');
@@ -3327,9 +3327,9 @@
                 const searchTerm = e.target.value.toLowerCase();
                 
                 if (searchTerm.trim() !== '') {
-                    showSearchSuggestions(searchTerm, adminSearchSuggestions);
+                    showAdminSearchSuggestions(searchTerm, adminSearchSuggestions);
                 } else {
-                    adminSearchSuggestions.classList.remove('active');
+                    adminSearchSuggestions.style.display = 'none';
                 }
                 
                 displayAdminBooks(searchTerm);
@@ -3342,7 +3342,7 @@
                 if (searchTerm.trim() !== '') {
                     showStudentSearchSuggestions(searchTerm);
                 } else {
-                    studentSearchSuggestions.classList.remove('active');
+                    studentSearchSuggestions.style.display = 'none';
                 }
                 
                 displayRegisteredStudents(searchTerm);
@@ -3534,19 +3534,18 @@
         // Update statistics
         function updateStatistics() {
             const totalBooks = books.length;
-            const wishlistCount = wishlist.length;
+            const pendingRequestsCount = allRequests.filter(r => !r.pasand).length;
             const borrowedBooksCount = approvedRequests.length;
             
             document.getElementById('totalBooks').textContent = totalBooks;
-            document.getElementById('wishlistTotal').textContent = wishlistCount;
+            document.getElementById('wishlistTotal').textContent = pendingRequestsCount; // Changed from wishlist count to pending requests count
             document.getElementById('borrowedBooks').textContent = borrowedBooksCount;
             
-            navWishlistCount.textContent = wishlistCount;
+            navWishlistCount.textContent = wishlist.length;
             navBorrowedCount.textContent = borrowedBooksCount;
             
             document.getElementById('adminTotalBooks').textContent = totalBooks;
-            const pendingCount = allRequests.filter(r => !r.pasand).length;
-            document.getElementById('adminPendingRequests').textContent = pendingCount;
+            document.getElementById('adminPendingRequests').textContent = pendingRequestsCount;
             document.getElementById('adminApprovedRequests').textContent = borrowedBooksCount;
         }
 
@@ -3873,7 +3872,6 @@
         function updateWishlistCount() {
             const count = wishlist.length;
             navWishlistCount.textContent = count;
-            document.getElementById('wishlistTotal').textContent = count;
             updateStatistics();
         }
 
@@ -4572,19 +4570,29 @@
             suggestionsContainer.innerHTML = '';
             
             if (filteredBooks.length === 0) {
-                suggestionsContainer.innerHTML = '<div class="suggestion-item">هیچ کتێبێک نەدۆزرایەوە</div>';
+                suggestionsContainer.innerHTML = '<div class="suggestion-item" style="padding: 10px; cursor: default; color: #666;">هیچ کتێبێک نەدۆزرایەوە</div>';
             } else {
                 filteredBooks.slice(0, 5).forEach(book => {
                     const suggestion = document.createElement('div');
                     suggestion.className = 'suggestion-item';
+                    suggestion.style.padding = '10px';
+                    suggestion.style.cursor = 'pointer';
+                    suggestion.style.borderBottom = '1px solid #f0f0f0';
+                    suggestion.style.transition = 'background-color 0.2s';
                     suggestion.innerHTML = `
                         <strong>${book.naw}</strong><br>
-                        <small>${book.author || 'نەناسراو'} - ${book.zhanar}</small>
+                        <small style="color: #666;">${book.author || 'نەناسراو'} - ${book.zhanar}</small>
                     `;
+                    suggestion.addEventListener('mouseover', () => {
+                        suggestion.style.backgroundColor = '#f5f5f5';
+                    });
+                    suggestion.addEventListener('mouseout', () => {
+                        suggestion.style.backgroundColor = 'white';
+                    });
                     suggestion.addEventListener('click', () => {
                         searchInput.value = book.naw;
                         currentSearch = book.naw.toLowerCase();
-                        suggestionsContainer.classList.remove('active');
+                        suggestionsContainer.style.display = 'none';
                         displayBooks();
                         showBookDetails(book);
                     });
@@ -4592,7 +4600,49 @@
                 });
             }
             
-            suggestionsContainer.classList.add('active');
+            suggestionsContainer.style.display = 'block';
+        }
+
+        // Show admin search suggestions
+        function showAdminSearchSuggestions(searchTerm, suggestionsContainer) {
+            const filteredBooks = books.filter(book => 
+                book.naw.toLowerCase().includes(searchTerm) ||
+                (book.author && book.author.toLowerCase().includes(searchTerm)) ||
+                (book.zhanar && book.zhanar.toLowerCase().includes(searchTerm))
+            );
+            
+            suggestionsContainer.innerHTML = '';
+            
+            if (filteredBooks.length === 0) {
+                suggestionsContainer.innerHTML = '<div class="suggestion-item" style="padding: 10px; cursor: default; color: #666;">هیچ کتێبێک نەدۆزرایەوە</div>';
+            } else {
+                filteredBooks.slice(0, 5).forEach(book => {
+                    const suggestion = document.createElement('div');
+                    suggestion.className = 'suggestion-item';
+                    suggestion.style.padding = '10px';
+                    suggestion.style.cursor = 'pointer';
+                    suggestion.style.borderBottom = '1px solid #f0f0f0';
+                    suggestion.style.transition = 'background-color 0.2s';
+                    suggestion.innerHTML = `
+                        <strong>${book.naw}</strong><br>
+                        <small style="color: #666;">${book.author || 'نەناسراو'} - ${book.zhanar}</small>
+                    `;
+                    suggestion.addEventListener('mouseover', () => {
+                        suggestion.style.backgroundColor = '#f5f5f5';
+                    });
+                    suggestion.addEventListener('mouseout', () => {
+                        suggestion.style.backgroundColor = 'white';
+                    });
+                    suggestion.addEventListener('click', () => {
+                        adminSearchInput.value = book.naw;
+                        suggestionsContainer.style.display = 'none';
+                        displayAdminBooks(book.naw.toLowerCase());
+                    });
+                    suggestionsContainer.appendChild(suggestion);
+                });
+            }
+            
+            suggestionsContainer.style.display = 'block';
         }
 
         // Show student search suggestions
@@ -4606,25 +4656,35 @@
             studentSearchSuggestions.innerHTML = '';
             
             if (filteredRequests.length === 0) {
-                studentSearchSuggestions.innerHTML = '<div class="suggestion-item">هیچ خوێندکارێک نەدۆزرایەوە</div>';
+                studentSearchSuggestions.innerHTML = '<div class="suggestion-item" style="padding: 10px; cursor: default; color: #666;">هیچ خوێندکارێک نەدۆزرایەوە</div>';
             } else {
                 filteredRequests.slice(0, 5).forEach(request => {
                     const suggestion = document.createElement('div');
                     suggestion.className = 'suggestion-item';
+                    suggestion.style.padding = '10px';
+                    suggestion.style.cursor = 'pointer';
+                    suggestion.style.borderBottom = '1px solid #f0f0f0';
+                    suggestion.style.transition = 'background-color 0.2s';
                     suggestion.innerHTML = `
                         <strong>${request.name}</strong><br>
-                        <small>${request.department} - ${request.bookTitle}</small>
+                        <small style="color: #666;">${request.department} - ${request.bookTitle}</small>
                     `;
+                    suggestion.addEventListener('mouseover', () => {
+                        suggestion.style.backgroundColor = '#f5f5f5';
+                    });
+                    suggestion.addEventListener('mouseout', () => {
+                        suggestion.style.backgroundColor = 'white';
+                    });
                     suggestion.addEventListener('click', () => {
                         studentSearchInput.value = request.name;
-                        studentSearchSuggestions.classList.remove('active');
+                        studentSearchSuggestions.style.display = 'none';
                         displayRegisteredStudents(request.name.toLowerCase());
                     });
                     studentSearchSuggestions.appendChild(suggestion);
                 });
             }
             
-            studentSearchSuggestions.classList.add('active');
+            studentSearchSuggestions.style.display = 'block';
         }
 
         // Display registered students with search
