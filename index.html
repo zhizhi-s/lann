@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>کتێبخانەی کۆلێژی سڵاحەدین - بەشی زمان</title>
+    <title>کتێبخانەی کۆلێژی تەکنیکی شەقڵاوە</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -926,7 +926,6 @@
             width: 100%;
             border-collapse: collapse;
             border-spacing: 0;
-            min-width: 600px;
             font-size: 0.85rem;
         }
 
@@ -947,7 +946,6 @@
             border-bottom: 1px solid var(--gray-color);
             background: white;
             transition: var(--transition);
-            white-space: nowrap;
         }
 
         body.dark-mode .admin-table td {
@@ -965,6 +963,77 @@
 
         body.dark-mode .admin-table tr:hover td {
             background: #1e293b;
+        }
+
+        /* ====== MOBILE FRIENDLY TABLES ====== */
+        /* برای نمایش بهتر در موبایل */
+        .mobile-friendly-table {
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 10px;
+            background: white;
+            box-shadow: var(--shadow);
+        }
+
+        body.dark-mode .mobile-friendly-table {
+            background: var(--dark-card);
+        }
+
+        .mobile-table-row {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-color);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .mobile-table-row {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .mobile-table-row:hover {
+            background: var(--light-color);
+        }
+
+        body.dark-mode .mobile-table-row:hover {
+            background: #1e293b;
+        }
+
+        .mobile-table-row:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-table-cell {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode .mobile-table-cell {
+            border-bottom-color: rgba(255,255,255,0.05);
+        }
+
+        .mobile-table-cell:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-table-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 100px;
+            margin-left: 0.5rem;
+        }
+
+        body.dark-mode .mobile-table-label {
+            color: var(--dark-primary);
+        }
+
+        .mobile-table-value {
+            flex: 1;
+            text-align: left;
+            word-break: break-word;
         }
 
         /* ====== ACTION BUTTONS ====== */
@@ -999,6 +1068,51 @@
         }
 
         .reject-btn {
+            background: #FEFCBF;
+            color: #975A16;
+        }
+
+        .mobile-action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+            justify-content: center;
+        }
+
+        .mobile-action-btn {
+            flex: 1;
+            min-width: 45%;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.7rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            text-align: center;
+        }
+
+        .mobile-edit-btn {
+            background: var(--accent-color);
+            color: var(--dark-color);
+        }
+
+        .mobile-delete-btn {
+            background: #FED7D7;
+            color: #C53030;
+        }
+
+        .mobile-approve-btn {
+            background: #C6F6D5;
+            color: #276749;
+        }
+
+        .mobile-reject-btn {
             background: #FEFCBF;
             color: #975A16;
         }
@@ -1619,6 +1733,73 @@
                 top: -2px;
                 right: 0px;
             }
+
+            /* ====== ADMIN TABLES FOR MOBILE ====== */
+            .admin-table-container {
+                padding: 0.5rem;
+            }
+
+            .admin-table {
+                display: none; /* نمایش جدول اصلی در موبایل غیرفعال */
+            }
+
+            .mobile-friendly-table {
+                display: block;
+            }
+
+            .mobile-table-row {
+                padding: 0.8rem;
+                margin-bottom: 0.8rem;
+                border: 1px solid var(--gray-color);
+                border-radius: 8px;
+            }
+
+            body.dark-mode .mobile-table-row {
+                border-color: var(--dark-border);
+            }
+
+            .mobile-table-cell {
+                padding: 0.4rem 0;
+            }
+
+            .mobile-table-label {
+                min-width: 80px;
+                font-size: 0.75rem;
+            }
+
+            .mobile-table-value {
+                font-size: 0.8rem;
+                text-align: right;
+            }
+
+            .mobile-action-buttons {
+                margin-top: 0.8rem;
+                gap: 0.4rem;
+            }
+
+            .mobile-action-btn {
+                min-width: 100%;
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            /* ====== TABS ====== */
+            .tabs {
+                gap: 0.2rem;
+            }
+
+            .tab-btn {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.7rem;
+            }
+
+            /* ====== BOOK MANAGEMENT ====== */
+            .book-image-thumb {
+                width: 40px;
+                height: 50px;
+                object-fit: cover;
+                border-radius: 5px;
+            }
         }
 
         /* ====== تەنها لە تەلەفۆنی بچووک (360px) ====== */
@@ -1692,6 +1873,24 @@
                 width: 15px;
                 height: 15px;
                 top: -2px;
+            }
+
+            .mobile-table-row {
+                padding: 0.6rem;
+            }
+
+            .mobile-table-label {
+                min-width: 70px;
+                font-size: 0.7rem;
+            }
+
+            .mobile-table-value {
+                font-size: 0.75rem;
+            }
+
+            .mobile-action-btn {
+                padding: 0.4rem;
+                font-size: 0.7rem;
             }
         }
 
@@ -1966,6 +2165,16 @@
                 top: -4px;
                 right: 0px;
             }
+
+            /* ====== ADMIN TABLES FOR DESKTOP ====== */
+            .mobile-friendly-table {
+                display: none; /* نمایش جدول موبایل در دسکتاپ غیرفعال */
+            }
+
+            .admin-table {
+                display: table; /* نمایش جدول اصلی در دسکتاپ فعال */
+                min-width: 600px;
+            }
         }
 
         /* ====== پشتگیری باشتر بۆ شاشە بچووکەکان ====== */
@@ -2044,6 +2253,19 @@
                 height: 14px;
                 top: -1px;
             }
+
+            .mobile-table-row {
+                padding: 0.5rem;
+            }
+
+            .mobile-table-label {
+                min-width: 60px;
+                font-size: 0.65rem;
+            }
+
+            .mobile-table-value {
+                font-size: 0.7rem;
+            }
         }
 
         /* ====== TOUCH OPTIMIZATIONS ====== */
@@ -2120,6 +2342,7 @@
                 font-size: 0.8rem;
             }
             
+            /* مخفی کردن ستون‌های اضافی در موبایل برای جدول اصلی */
             .admin-table th:nth-child(1),
             .admin-table td:nth-child(1),
             .admin-table th:nth-child(6),
@@ -2130,10 +2353,6 @@
             .admin-table td:nth-child(8) {
                 display: none;
             }
-            
-            .admin-table {
-                min-width: 500px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -2142,10 +2361,6 @@
             .admin-table th:nth-child(4),
             .admin-table td:nth-child(4) {
                 display: none;
-            }
-            
-            .admin-table {
-                min-width: 400px;
             }
         }
 
@@ -2160,6 +2375,222 @@
             .stat-label {
                 -webkit-text-size-adjust: 100%;
             }
+        }
+
+        /* ====== NEW STYLES FOR RESPONSIVE TABLES ====== */
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .table-search-box {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .table-search-box input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            padding-right: 2.5rem;
+            border: 1px solid var(--gray-color);
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        body.dark-mode .table-search-box input {
+            background: #0f172a;
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .table-search-box i {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+
+        /* ====== BOOK CARD IN ADMIN PANEL ====== */
+        .admin-book-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .admin-book-card {
+            background: var(--dark-card);
+        }
+
+        .admin-book-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .book-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .book-card-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--dark-color);
+            margin-bottom: 0.3rem;
+        }
+
+        body.dark-mode .book-card-title {
+            color: var(--dark-text);
+        }
+
+        .book-card-author {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+        }
+
+        body.dark-mode .book-card-author {
+            color: var(--dark-primary);
+        }
+
+        .book-card-genre {
+            display: inline-block;
+            background: var(--accent-color);
+            color: var(--dark-color);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+
+        .book-card-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .book-card-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.75rem;
+            margin-bottom: 0.2rem;
+        }
+
+        body.dark-mode .detail-label {
+            color: #cbd5e1;
+        }
+
+        .detail-value {
+            color: var(--text-color);
+        }
+
+        body.dark-mode .detail-value {
+            color: var(--dark-text);
+        }
+
+        /* ====== STUDENT REQUEST CARD ====== */
+        .student-request-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-right: 4px solid var(--primary-color);
+        }
+
+        body.dark-mode .student-request-card {
+            background: var(--dark-card);
+            border-right-color: var(--dark-primary);
+        }
+
+        .student-request-card.pending {
+            border-right-color: #ED8936;
+        }
+
+        .student-request-card.approved {
+            border-right-color: #38B2AC;
+        }
+
+        .student-request-card.returned {
+            border-right-color: #718096;
+        }
+
+        .student-request-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .request-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .request-student-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--dark-color);
+        }
+
+        body.dark-mode .request-student-name {
+            color: var(--dark-text);
+        }
+
+        .request-status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .request-card-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .request-book-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+        }
+
+        body.dark-mode .request-book-title {
+            color: var(--dark-primary);
+        }
+
+        .request-date {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        body.dark-mode .request-date {
+            color: #cbd5e1;
         }
     </style>
 </head>
@@ -2186,7 +2617,7 @@
                 <i class="fas fa-book-reader"></i>
                 <span class="borrowed-badge" id="navBorrowedCount">0</span>
             </div>
-            <div class="nav-text">وەرگیراوەکانم</div>
+            <div class="nav-text">وەرگیراوەکان</div>
         </a>
     </nav>
 
@@ -2210,7 +2641,7 @@
     <!-- لیستی وەرگیراوەکان -->
     <div class="borrowed-sidebar" id="borrowedSidebar">
         <div class="borrowed-header">
-            <h3><i class="fas fa-book-reader"></i> وەرگیراوەکانم</h3>
+            <h3><i class="fas fa-book-reader"></i> وەرگیراوەکان</h3>
             <button class="close-borrowed" id="closeBorrowed">
                 <i class="fas fa-times"></i>
             </button>
@@ -2227,8 +2658,8 @@
     <header>
         <div class="logo">
             <h1>
-                <span>کتێبخانەی کۆلێژی سڵاحەدین</span>
-                <span class="welcome-text">بەشی زمان - سەرچاوەی زانست و زانیاری</span>
+                <span>کتێبخانەی کۆلێژی تەکنیکی شەقڵاوە</span>
+                <span class="welcome-text">سەرچاوەی زانست و زانیاری</span>
             </h1>
         </div>
         <button class="admin-login-btn" id="adminLoginBtn">
@@ -2255,6 +2686,7 @@
                     <div class="genre-item" data-genre="ڕۆمان">📖 ڕۆمان</div>
                     <div class="genre-item" data-genre="ئاینی">🕌 ئاینی</div>
                     <div class="genre-item" data-genre="سیاسی">🏛️ سیاسی</div>
+                    <div class="genre-item" data-genre="خۆشەویستی">💖 خۆشەویستی</div>
                     <div class="genre-item" data-genre="فێرکاری زمان">🗣️ فێرکاری زمان</div>
                     <div class="genre-item" data-genre="فێرکاری تەکنەلۆژیا">💻 فێرکاری تەکنەلۆژیا</div>
                     <div class="genre-item" data-genre="ترسناک">👻 ترسناک</div>
@@ -2327,11 +2759,7 @@
                     </div>
                     <div class="form-group">
                         <label for="regPhoneNumber"><i class="fas fa-phone"></i> ژمارەی مۆبایل</label>
-                        <input type="tel" id="regPhoneNumber" placeholder="٠٧٠٠ ١٢٣ ٤٥٦٧" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="regBookTitle"><i class="fas fa-book"></i> ناوی کتێب</label>
-                        <input type="text" id="regBookTitle" placeholder="ناوی کتێبی داواکراو بنووسە" required>
+                        <input type="tel" id="regPhoneNumber" placeholder="0750 398 3598" required>
                     </div>
                     
                     <div class="form-buttons">
@@ -2434,12 +2862,17 @@
             <div class="section-header" style="margin-bottom: 1.2rem;">
                 <h3>📚 بەڕێوەبردنی کتێبەکان</h3>
             </div>
-            <div class="search-box" style="margin-bottom: 1.2rem;">
-                <input type="text" id="adminSearchInput" placeholder="گەڕان بۆ کتێب...">
-                <i class="fas fa-search"></i>
-                <div class="search-suggestions" id="adminSearchSuggestions"></div>
+            
+            <div class="table-header">
+                <div class="table-search-box">
+                    <input type="text" id="adminSearchInput" placeholder="گەڕان بۆ کتێب...">
+                    <i class="fas fa-search"></i>
+                    <div class="search-suggestions" id="adminSearchSuggestions"></div>
+                </div>
             </div>
+            
             <div class="admin-table-container">
+                <!-- جدول اصلی برای دسکتاپ -->
                 <table class="admin-table">
                     <thead>
                         <tr>
@@ -2453,6 +2886,9 @@
                     </thead>
                     <tbody id="adminBooksTable"></tbody>
                 </table>
+                
+                <!-- نمایش ریسپانسیو برای موبایل -->
+                <div class="mobile-friendly-table" id="mobileAdminBooksTable"></div>
             </div>
         </div>
 
@@ -2474,13 +2910,16 @@
                 </div>
             </div>
             
-            <div class="search-box" style="margin-bottom: 1.2rem;">
-                <input type="text" id="studentSearchInput" placeholder="گەڕان بۆ خوێندکار...">
-                <i class="fas fa-search"></i>
-                <div class="search-suggestions" id="studentSearchSuggestions"></div>
+            <div class="table-header">
+                <div class="table-search-box">
+                    <input type="text" id="studentSearchInput" placeholder="گەڕان بۆ خوێندکار...">
+                    <i class="fas fa-search"></i>
+                    <div class="search-suggestions" id="studentSearchSuggestions"></div>
+                </div>
             </div>
             
             <div class="admin-table-container">
+                <!-- جدول اصلی برای دسکتاپ -->
                 <table class="admin-table">
                     <thead>
                         <tr>
@@ -2496,6 +2935,9 @@
                     </thead>
                     <tbody id="registeredStudentsTable"></tbody>
                 </table>
+                
+                <!-- نمایش ریسپانسیو برای موبایل -->
+                <div class="mobile-friendly-table" id="mobileRegisteredStudentsTable"></div>
             </div>
         </div>
     </div>
@@ -2521,6 +2963,7 @@
                         <option value="ڕۆمان">ڕۆمان</option>
                         <option value="ئاینی">ئاینی</option>
                         <option value="سیاسی">سیاسی</option>
+                        <option value="خۆشەویستی">خۆشەویستی</option>
                         <option value="فێرکاری زمان">فێرکاری زمان</option>
                         <option value="فێرکاری تەکنەلۆژیا">فێرکاری تەکنەلۆژیا</option>
                         <option value="ترسناک">ترسناک</option>
@@ -2553,12 +2996,12 @@
 
     <footer>
         <div class="footer-content">
-            <h3 style="color: white; margin-bottom: 0.8rem; font-size: 1.1rem;">کتێبخانەی کۆلێژی سڵاحەدین</h3>
-            <p><i class="fas fa-map-marker-alt"></i> هەولێر، کۆلێژی سڵاحەدین - بەشی زمان</p>
-            <p><i class="fas fa-envelope"></i> library@salahaddin.edu.krd</p>
-            <p><i class="fas fa-phone"></i> ٠٧٥٠ ١٢٣ ٤٥٦٧</p>
+            <h3 style="color: white; margin-bottom: 0.8rem; font-size: 1.1rem;">کتێبخانەی کۆلێژی تەکنیکی شەقڵاوە</h3>
+            <p><i class="fas fa-map-marker-alt"></i> شەقڵاوە، کۆلێژی تەکنیکی شەقڵاوە</p>
+            <p><i class="fas fa-envelope"></i> zheargaylan2017@gmail.com</p>
+            <p><i class="fas fa-phone"></i> 0750 398 3598</p>
             <div style="margin-top: 1.2rem; padding-top: 0.8rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                <p>© ٢٠٢٤ کتێبخانەی کۆلێژی سڵاحەدین - بەشی زمان. هەموو مافەکان پارێزراون.</p>
+                <p>© 2026 کتێبخانەی کۆلێژی تەکنیکی شەقڵاوە. هەموو مافەکان پارێزراون.</p>
                 <p style="color: #CBD5E0; font-size: 0.8rem; margin-top: 0.5rem;">
                     <i class="fas fa-heart" style="color: #F56565;"></i> دروستکراوە بە خۆشەویستی بۆ خوێندکارانی کوردستان
                 </p>
@@ -2599,7 +3042,7 @@
         const analytics = getAnalytics(app);
         const db = getFirestore(app);
 
-        // DOM Elements for Bottom Navigation
+        // DOM Elements
         const navDarkMode = document.getElementById('navDarkMode');
         const darkModeIcon = document.getElementById('darkModeIcon');
         const navWishlist = document.getElementById('navWishlist');
@@ -2664,7 +3107,9 @@
         const registeredStudentsSection = document.getElementById('registeredStudentsSection');
         
         const adminBooksTable = document.getElementById('adminBooksTable');
+        const mobileAdminBooksTable = document.getElementById('mobileAdminBooksTable');
         const registeredStudentsTable = document.getElementById('registeredStudentsTable');
+        const mobileRegisteredStudentsTable = document.getElementById('mobileRegisteredStudentsTable');
         const adminSearchInput = document.getElementById('adminSearchInput');
         const adminSearchSuggestions = document.getElementById('adminSearchSuggestions');
         const studentSearchInput = document.getElementById('studentSearchInput');
@@ -2680,6 +3125,7 @@
         let currentSearch = '';
         let editingBookId = null;
         let currentStudentView = 'pending';
+        let currentSelectedBook = null;
 
         // Admin Credentials
         const ADMIN_USERNAME = '1981Language2026';
@@ -2930,14 +3376,16 @@
             registrationPage.style.display = 'none';
             adminPanel.style.display = 'none';
             resetRegistrationForm();
+            currentSelectedBook = null;
         }
 
-        // گەڕان بۆ پەڕەی تۆمارکردن (لە مۆدالی وردەکاری کتێبەوە)
-        function goToRegistrationPage() {
+        // گەڕان بۆ پەڕەی تۆمارکردن
+        function goToRegistrationPage(book = null) {
             mainPage.style.display = 'none';
             registrationPage.style.display = 'block';
             adminPanel.style.display = 'none';
             resetRegistrationForm();
+            currentSelectedBook = book;
         }
 
         // پاککردنەوەی فۆڕمی تۆمارکردن
@@ -2968,12 +3416,11 @@
                 if (books.length === 0) {
                     console.log("No books found in Firebase, adding sample books...");
                     await addSampleBooks();
-                    await loadBooksFromFirebase(); // Reload after adding samples
+                    await loadBooksFromFirebase();
                 }
                 
             } catch (error) {
                 console.error('Error loading books from Firebase:', error);
-                // Fallback to local storage if Firebase fails
                 loadBooksFromLocalStorage();
             }
         }
@@ -2995,6 +3442,14 @@
                     genre: "ڕۆمان",
                     summary: "ڕۆمانێکی سەردەمی مۆدێرن کە چیرۆکەکەی لە شاری بەغدادە",
                     imgUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    name: "چاوەڕێم بکە",
+                    authorName: "د. عەلی کەریم",
+                    genre: "خۆشەویستی",
+                    summary: "ڕۆمانێکی خۆشەویستی کە چیرۆکی خۆشەویستی لە نێوان دوو خوێندکار دەگێڕێتەوە",
+                    imgUrl: "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
                     createdAt: new Date().toISOString()
                 },
                 {
@@ -3082,16 +3537,13 @@
             const wishlistCount = wishlist.length;
             const borrowedBooksCount = approvedRequests.length;
             
-            // Update main page statistics
             document.getElementById('totalBooks').textContent = totalBooks;
             document.getElementById('wishlistTotal').textContent = wishlistCount;
             document.getElementById('borrowedBooks').textContent = borrowedBooksCount;
             
-            // Update bottom navigation badges
             navWishlistCount.textContent = wishlistCount;
             navBorrowedCount.textContent = borrowedBooksCount;
             
-            // Update admin statistics
             document.getElementById('adminTotalBooks').textContent = totalBooks;
             const pendingCount = allRequests.filter(r => !r.pasand).length;
             document.getElementById('adminPendingRequests').textContent = pendingCount;
@@ -3114,7 +3566,6 @@
 
         // لیستی وەرگیراوەکان
         function getMyBorrowedBooks() {
-            // لەم نموونەیەدا هەموو کتێبە وەرگیراوەکان دەگەڕێنینەوە
             return approvedRequests.filter(request => request.pasand === true && !request.returned);
         }
 
@@ -3144,6 +3595,9 @@
                         <div class="borrowed-item-title">${request.bookTitle}</div>
                         <div class="borrowed-item-author">${book?.author || 'نەناسراو'}</div>
                         <div class="borrowed-item-date">بەرواری داواکردن: ${requestDate.toLocaleDateString('ku')}</div>
+                        <div class="borrowed-item-date" style="color: var(--primary-color); font-weight: 600;">
+                            <i class="fas fa-user"></i> وەرگر: ${request.name}
+                        </div>
                         <div class="borrowed-item-status status-borrowed">
                             وەرگیراوە لە ${daysPassed} ڕۆژ پێش ئێستا
                         </div>
@@ -3210,7 +3664,6 @@
                     </div>
                 `;
                 
-                // هەموو کتێبەکان کلیک دەکرێن بۆ بینینی وردەکاری
                 bookCard.addEventListener('click', (e) => {
                     showBookDetails(book);
                 });
@@ -3268,7 +3721,7 @@
                     </button>
                     
                     ${!isBorrowed ? `
-                    <button class="borrow-btn" id="borrowBookBtn" data-id="${book.id}" style="background: var(--gradient); color: white; border: none; padding: 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; margin-top: 0.8rem; width: 100%; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <button class="borrow-btn" id="borrowBookBtn" data-id="${book.id}" data-title="${book.naw}" style="background: var(--gradient); color: white; border: none; padding: 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; margin-top: 0.8rem; width: 100%; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                         <i class="fas fa-book-reader"></i> داواکردنی کتێب
                     </button>
                     ` : ''}
@@ -3277,7 +3730,6 @@
             
             bookDetailsModal.classList.add('active');
             
-            // Add event listener to wishlist button in modal
             document.getElementById('modalWishlistBtn').addEventListener('click', (e) => {
                 const bookId = e.target.closest('button').getAttribute('data-id');
                 const bookTitle = e.target.closest('button').getAttribute('data-title');
@@ -3287,11 +3739,14 @@
                 toggleWishlist(bookId, bookTitle, bookAuthor, bookImage);
             });
             
-            // Add event listener to register button if not borrowed
             if (!isBorrowed) {
                 document.getElementById('borrowBookBtn').addEventListener('click', (e) => {
+                    const bookId = e.target.closest('button').getAttribute('data-id');
+                    const bookTitle = e.target.closest('button').getAttribute('data-title');
+                    const selectedBook = books.find(b => b.id === bookId);
+                    
                     bookDetailsModal.classList.remove('active');
-                    goToRegistrationPage();
+                    goToRegistrationPage(selectedBook);
                 });
             }
         }
@@ -3301,11 +3756,9 @@
             const existingIndex = wishlist.findIndex(item => item.id === bookId);
             
             if (existingIndex !== -1) {
-                // لابردنی لە لیستی دڵخوازەکان
                 wishlist.splice(existingIndex, 1);
                 showNotification('📖 کتێبەکە لابرا لە لیستی دڵخوازەکان', 'warning');
             } else {
-                // زیادکردنی بۆ لیستی دڵخوازەکان
                 wishlist.push({
                     id: bookId,
                     title: bookTitle,
@@ -3316,10 +3769,7 @@
                 showNotification('❤️ کتێبەکە زیادکرا بۆ لیستی دڵخوازەکان', 'success');
             }
             
-            // پاشەکەوتکردنی لیستەکە
             saveWishlistToLocalStorage();
-            
-            // نوێکردنی لیستەکە
             updateWishlistUI();
             updateWishlistCount();
             displayBooks();
@@ -3379,7 +3829,6 @@
                 wishlistContent.appendChild(wishlistItem);
             });
             
-            // Event listeners for wishlist items
             document.querySelectorAll('.wishlist-remove-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const bookId = btn.getAttribute('data-id');
@@ -3402,9 +3851,10 @@
                 btn.addEventListener('click', (e) => {
                     const bookId = btn.getAttribute('data-id');
                     const bookTitle = btn.getAttribute('data-title');
+                    const selectedBook = books.find(b => b.id === bookId);
                     
                     wishlistSidebar.classList.remove('active');
-                    goToRegistrationPage();
+                    goToRegistrationPage(selectedBook);
                 });
             });
         }
@@ -3424,17 +3874,151 @@
             const count = wishlist.length;
             navWishlistCount.textContent = count;
             document.getElementById('wishlistTotal').textContent = count;
-            
-            // نوێکردنی ئاماری سەرەکی
             updateStatistics();
         }
 
-        // Display registered students from Firebase
+        // Display admin books with responsive design
+        function displayAdminBooks(searchTerm = '') {
+            adminBooksTable.innerHTML = '';
+            mobileAdminBooksTable.innerHTML = '';
+            
+            let filteredBooks = books;
+            
+            if (searchTerm) {
+                filteredBooks = filteredBooks.filter(book => 
+                    book.naw.toLowerCase().includes(searchTerm) ||
+                    (book.author && book.author.toLowerCase().includes(searchTerm)) ||
+                    (book.zhanar && book.zhanar.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            if (filteredBooks.length === 0) {
+                const emptyMessage = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 2rem;">
+                            <div class="empty-state">
+                                <i class="fas fa-book"></i>
+                                <h3>هیچ کتێبێک نەدۆزرایەوە</h3>
+                                <p>کتێبێکی نوێ زیاد بکە</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                adminBooksTable.innerHTML = emptyMessage;
+                mobileAdminBooksTable.innerHTML = '<div class="empty-state"><i class="fas fa-book"></i><h3>هیچ کتێبێک نەدۆزرایەوە</h3><p>کتێبێکی نوێ زیاد بکە</p></div>';
+                return;
+            }
+            
+            // جدول دسکتاپ
+            filteredBooks.forEach(book => {
+                const isBorrowed = isBookBorrowed(book.naw);
+                const hasPending = hasPendingRequests(book.naw);
+                
+                let statusText = 'بەردەستە';
+                let statusClass = 'status-approved';
+                
+                if (isBorrowed) {
+                    statusText = 'وەرگیراوە';
+                    statusClass = 'status-pending';
+                } else if (hasPending) {
+                    statusText = 'چاوەڕوان';
+                    statusClass = 'status-pending';
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'}" alt="${book.naw}" style="width: 45px; height: 60px; object-fit: cover; border-radius: 5px;"></td>
+                    <td><strong>${book.naw}</strong></td>
+                    <td>${book.author || 'نەناسراو'}</td>
+                    <td><span class="badge">${book.zhanar}</span></td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${book.id}"><i class="fas fa-edit"></i> دەستکاری</button>
+                        <button class="action-btn delete-btn" data-id="${book.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
+                    </td>
+                `;
+                
+                adminBooksTable.appendChild(row);
+            });
+            
+            // نمایش ریسپانسیو برای موبایل
+            filteredBooks.forEach(book => {
+                const isBorrowed = isBookBorrowed(book.naw);
+                const hasPending = hasPendingRequests(book.naw);
+                
+                let statusText = 'بەردەستە';
+                let statusClass = 'status-approved';
+                
+                if (isBorrowed) {
+                    statusText = 'وەرگیراوە';
+                    statusClass = 'status-pending';
+                } else if (hasPending) {
+                    statusText = 'چاوەڕوان';
+                    statusClass = 'status-pending';
+                }
+                
+                const mobileRow = document.createElement('div');
+                mobileRow.className = 'mobile-table-row';
+                mobileRow.innerHTML = `
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">وێنە:</span>
+                        <span class="mobile-table-value">
+                            <img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'}" alt="${book.naw}" class="book-image-thumb">
+                        </span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">ناوی کتێب:</span>
+                        <span class="mobile-table-value"><strong>${book.naw}</strong></span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">نووسەر:</span>
+                        <span class="mobile-table-value">${book.author || 'نەناسراو'}</span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">ژانەر:</span>
+                        <span class="mobile-table-value"><span class="badge">${book.zhanar}</span></span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">بارودۆخ:</span>
+                        <span class="mobile-table-value"><span class="status-badge ${statusClass}">${statusText}</span></span>
+                    </div>
+                    <div class="mobile-action-buttons">
+                        <button class="mobile-action-btn mobile-edit-btn" data-id="${book.id}">
+                            <i class="fas fa-edit"></i> دەستکاری
+                        </button>
+                        <button class="mobile-action-btn mobile-delete-btn" data-id="${book.id}">
+                            <i class="fas fa-trash"></i> سڕینەوە
+                        </button>
+                    </div>
+                `;
+                
+                mobileAdminBooksTable.appendChild(mobileRow);
+            });
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-btn, .mobile-edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const bookId = e.target.closest('button').getAttribute('data-id');
+                    editBook(bookId);
+                });
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-btn, .mobile-delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const bookId = e.target.closest('button').getAttribute('data-id');
+                    deleteBook(bookId);
+                });
+            });
+        }
+
+        // Display registered students with responsive design
         async function displayRegisteredStudentsFromFirebase(searchTerm = '') {
             registeredStudentsTable.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem;"><div class="loading-spinner"></div></td></tr>';
+            mobileRegisteredStudentsTable.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>بارکردنی زانیاریەکان...</p></div>';
             
             try {
-                await loadAllRequestsFromFirebase(); // Refresh requests
+                await loadAllRequestsFromFirebase();
                 
                 let filteredRequests = allRequests;
                 
@@ -3457,10 +4041,11 @@
                 }
                 
                 displayRegisteredStudentsTable(filteredRequests);
+                displayMobileRegisteredStudentsTable(filteredRequests);
                 
             } catch (error) {
                 console.error('Error loading students:', error);
-                registeredStudentsTable.innerHTML = `
+                const errorMessage = `
                     <tr>
                         <td colspan="8" style="text-align: center; padding: 2rem;">
                             <div class="empty-state">
@@ -3471,10 +4056,12 @@
                         </td>
                     </tr>
                 `;
+                registeredStudentsTable.innerHTML = errorMessage;
+                mobileRegisteredStudentsTable.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>هەڵە ڕوویدا</h3><p>ناتوانرێت زانیاریەکان باربکرێن</p></div>';
             }
         }
 
-        // Display registered students table
+        // Display registered students table for desktop
         function displayRegisteredStudentsTable(requests) {
             registeredStudentsTable.innerHTML = '';
             
@@ -3529,7 +4116,95 @@
                 registeredStudentsTable.appendChild(row);
             });
             
-            // Add event listeners to action buttons
+            setupRequestActionButtons();
+        }
+
+        // Display mobile registered students table
+        function displayMobileRegisteredStudentsTable(requests) {
+            mobileRegisteredStudentsTable.innerHTML = '';
+            
+            if (requests.length === 0) {
+                const noDataText = currentStudentView === 'pending' 
+                    ? 'هیچ داواکارییەکی چاوەڕوان نەکراوە' 
+                    : currentStudentView === 'approved'
+                    ? 'هیچ کتێبێک وەرگیراو نیە'
+                    : 'هیچ کتێبێک گەڕێندراوەتەوە نیە';
+                
+                mobileRegisteredStudentsTable.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>${noDataText}</h3>
+                        <p>کاتێک داواکاری نوێ هات، لێرە دەردەکەون</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            requests.forEach(request => {
+                const statusText = request.returned ? 'گەڕێندراوەتەوە' : 
+                                 request.pasand ? 'وەرگیراوە' : 'چاوەڕوان';
+                const statusClass = request.returned ? 'status-rejected' : 
+                                  request.pasand ? 'status-approved' : 'status-pending';
+                const date = request.requestDate ? new Date(request.requestDate).toLocaleDateString('ku') : 'نەزانراو';
+                
+                const mobileRow = document.createElement('div');
+                mobileRow.className = `mobile-table-row student-request-card ${currentStudentView}`;
+                mobileRow.innerHTML = `
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">ناوی سیانی:</span>
+                        <span class="mobile-table-value"><strong>${request.name || '---'}</strong></span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">بەش:</span>
+                        <span class="mobile-table-value">${request.department || '---'}</span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">قۆناغ:</span>
+                        <span class="mobile-table-value"><span class="badge">${request.stage || '---'}</span></span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">مۆبایل:</span>
+                        <span class="mobile-table-value">${request.number || '---'}</span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">کتێب:</span>
+                        <span class="mobile-table-value"><em>${request.bookTitle || 'هیچ کتێبێک'}</em></span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">بەروار:</span>
+                        <span class="mobile-table-value">${date}</span>
+                    </div>
+                    <div class="mobile-table-cell">
+                        <span class="mobile-table-label">بارودۆخ:</span>
+                        <span class="mobile-table-value"><span class="status-badge ${statusClass}">${statusText}</span></span>
+                    </div>
+                    <div class="mobile-action-buttons">
+                        ${!request.pasand ? 
+                            `<button class="mobile-action-btn mobile-approve-btn" data-id="${request.id}">
+                                <i class="fas fa-check"></i> پەسەندکردن
+                            </button>
+                            <button class="mobile-action-btn mobile-reject-btn" data-id="${request.id}">
+                                <i class="fas fa-times"></i> ڕەتکردنەوە
+                            </button>` 
+                            : request.pasand && !request.returned ?
+                            `<button class="mobile-action-btn mobile-reject-btn" data-id="${request.id}" data-action="return">
+                                <i class="fas fa-undo-alt"></i> گەڕاندنەوە
+                            </button>`
+                            : ''}
+                        <button class="mobile-action-btn mobile-delete-btn" data-id="${request.id}">
+                            <i class="fas fa-trash"></i> سڕینەوە
+                        </button>
+                    </div>
+                `;
+                
+                mobileRegisteredStudentsTable.appendChild(mobileRow);
+            });
+            
+            setupMobileRequestActionButtons();
+        }
+
+        // Setup action buttons for desktop table
+        function setupRequestActionButtons() {
             document.querySelectorAll('.approve-btn').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
                     const requestId = e.target.closest('button').getAttribute('data-id');
@@ -3558,6 +4233,36 @@
             });
         }
 
+        // Setup action buttons for mobile table
+        function setupMobileRequestActionButtons() {
+            document.querySelectorAll('.mobile-approve-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await approveStudentRequest(requestId);
+                });
+            });
+            
+            document.querySelectorAll('.mobile-reject-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    const action = btn.getAttribute('data-action');
+                    
+                    if (action === 'return') {
+                        await returnBook(requestId);
+                    } else {
+                        await rejectStudentRequest(requestId);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.mobile-delete-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const requestId = e.target.closest('button').getAttribute('data-id');
+                    await deleteStudentRequest(requestId);
+                });
+            });
+        }
+
         // Handle student registration for book borrowing
         async function handleStudentRegistration(e) {
             e.preventDefault();
@@ -3566,15 +4271,20 @@
             const department = document.getElementById('regDepartment').value;
             const stage = document.getElementById('regStage').value;
             const phoneNumber = document.getElementById('regPhoneNumber').value;
-            const bookTitle = document.getElementById('regBookTitle').value;
             
-            // Check if book is already borrowed
+            let bookTitle = "";
+            if (currentSelectedBook) {
+                bookTitle = currentSelectedBook.naw;
+            } else {
+                showNotification('❌ تکایە یەکەم کتێبێک هەڵبژێرە بۆ داواکردن', 'error');
+                return;
+            }
+            
             if (isBookBorrowed(bookTitle)) {
                 showNotification('❌ پێشتر داوا کراە چاوەڕوان بە! تکایە کتێبێکی تر هەڵبژێرە.', 'error');
                 return;
             }
             
-            // Check if user already has a pending request for this book
             const userPendingRequest = allRequests.find(request => 
                 request.name === studentName && 
                 request.bookTitle === bookTitle && 
@@ -3598,10 +4308,8 @@
             };
             
             try {
-                // Add to Firebase
                 const docRef = await addDoc(collection(db, "requests"), newRequest);
                 
-                // نیشاندانی پەیامی سەرکەوتن
                 confirmationMessage.style.display = 'block';
                 studentRegistrationForm.reset();
                 
@@ -3611,7 +4319,6 @@
                     goToMainPage();
                 }, 3000);
                 
-                // نوێکردنی لیستی کتێبەکان
                 await loadAllRequestsFromFirebase();
                 displayBooks();
                 updateStatistics();
@@ -3627,7 +4334,6 @@
         async function approveStudentRequest(requestId) {
             if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە پەسەند بکەیت؟')) {
                 try {
-                    // Update in Firebase
                     const requestRef = doc(db, "requests", requestId);
                     await updateDoc(requestRef, {
                         pasand: true,
@@ -3656,7 +4362,6 @@
                         throw new Error("Request not found");
                     }
                     
-                    // Update in Firebase
                     const requestRef = doc(db, "requests", requestId);
                     await updateDoc(requestRef, {
                         returned: true,
@@ -3676,7 +4381,7 @@
             }
         }
 
-        // Delete student request (سڕینەوەی داواکاری)
+        // Delete student request
         async function deleteStudentRequest(requestId) {
             if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە بسڕیتەوە؟')) {
                 try {
@@ -3685,10 +4390,8 @@
                         throw new Error("Request not found");
                     }
                     
-                    // Delete from Firebase
                     await deleteDoc(doc(db, "requests", requestId));
                     
-                    // Refresh displays
                     await loadAllRequestsFromFirebase();
                     displayBooks();
                     updateStatistics();
@@ -3706,10 +4409,8 @@
         async function rejectStudentRequest(requestId) {
             if (confirm('ئایا دڵنیای کە دەتەوێت ئەم داواکاریە ڕەت بکەیتەوە؟')) {
                 try {
-                    // Delete the request
                     await deleteDoc(doc(db, "requests", requestId));
                     
-                    // Refresh displays
                     await loadAllRequestsFromFirebase();
                     displayBooks();
                     updateStatistics();
@@ -3736,12 +4437,10 @@
                 adminLoginForm.reset();
                 loginError.style.display = 'none';
                 
-                // Show admin panel
                 mainPage.style.display = 'none';
                 registrationPage.style.display = 'none';
                 adminPanel.style.display = 'block';
                 
-                // Load admin data
                 displayAdminBooks();
                 displayRegisteredStudentsFromFirebase();
                 
@@ -3749,83 +4448,6 @@
             } else {
                 loginError.style.display = 'block';
             }
-        }
-
-        // Display admin books
-        function displayAdminBooks(searchTerm = '') {
-            adminBooksTable.innerHTML = '';
-            
-            let filteredBooks = books;
-            
-            if (searchTerm) {
-                filteredBooks = filteredBooks.filter(book => 
-                    book.naw.toLowerCase().includes(searchTerm) ||
-                    (book.author && book.author.toLowerCase().includes(searchTerm)) ||
-                    (book.zhanar && book.zhanar.toLowerCase().includes(searchTerm))
-                );
-            }
-            
-            if (filteredBooks.length === 0) {
-                adminBooksTable.innerHTML = `
-                    <tr>
-                        <td colspan="6" style="text-align: center; padding: 2rem;">
-                            <div class="empty-state">
-                                <i class="fas fa-book"></i>
-                                <h3>هیچ کتێبێک نەدۆزرایەوە</h3>
-                                <p>کتێبێکی نوێ زیاد بکە</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            filteredBooks.forEach(book => {
-                const isBorrowed = isBookBorrowed(book.naw);
-                const hasPending = hasPendingRequests(book.naw);
-                
-                let statusText = 'بەردەستە';
-                let statusClass = 'status-approved';
-                
-                if (isBorrowed) {
-                    statusText = 'وەرگیراوە';
-                    statusClass = 'status-pending';
-                } else if (hasPending) {
-                    statusText = 'چاوەڕوان';
-                    statusClass = 'status-pending';
-                }
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><img src="${book.linkewena || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'}" alt="${book.naw}" style="width: 45px; height: 60px; object-fit: cover; border-radius: 5px;"></td>
-                    <td><strong>${book.naw}</strong></td>
-                    <td>${book.author || 'نەناسراو'}</td>
-                    <td><span class="badge">${book.zhanar}</span></td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td>
-                        <button class="action-btn edit-btn" data-id="${book.id}"><i class="fas fa-edit"></i> دەستکاری</button>
-                        <button class="action-btn delete-btn" data-id="${book.id}"><i class="fas fa-trash"></i> سڕینەوە</button>
-                    </td>
-                `;
-                
-                adminBooksTable.appendChild(row);
-            });
-            
-            // Add event listeners to edit buttons
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const bookId = e.target.closest('button').getAttribute('data-id');
-                    editBook(bookId);
-                });
-            });
-            
-            // Add event listeners to delete buttons
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const bookId = e.target.closest('button').getAttribute('data-id');
-                    deleteBook(bookId);
-                });
-            });
         }
 
         // Show book form for adding/editing
@@ -3872,22 +4494,18 @@
             
             try {
                 if (editingBookId) {
-                    // Update existing book in Firebase
                     const bookRef = doc(db, "Slahaddin", editingBookId);
                     await updateDoc(bookRef, bookData);
                     
                     showNotification('✅ کتێبەکە بە سەرکەوتوویی نوێکرایەوە', 'success');
                 } else {
-                    // Add new book to Firebase
                     await addDoc(collection(db, "Slahaddin"), bookData);
                     
                     showNotification('✅ کتێبەکە بە سەرکەوتوویی زیادکرا', 'success');
                 }
                 
-                // Refresh books from Firebase
                 await loadBooksFromFirebase();
                 
-                // Close modal and refresh
                 bookFormModal.classList.remove('active');
                 resetBookForm();
                 displayBooks();
@@ -3912,7 +4530,6 @@
         async function deleteBook(bookId) {
             if (confirm('ئایا دڵنیای کە دەتەوێت ئەم کتێبە بسڕیتەوە؟')) {
                 try {
-                    // Check if book has any pending or approved requests
                     const bookTitle = books.find(b => b.id === bookId)?.naw;
                     const hasRequests = allRequests.some(r => r.bookTitle === bookTitle);
                     
@@ -3922,19 +4539,15 @@
                         }
                     }
                     
-                    // Delete from Firebase
                     await deleteDoc(doc(db, "Slahaddin", bookId));
                     
-                    // Remove from wishlist
                     wishlist = wishlist.filter(item => item.id !== bookId);
                     saveWishlistToLocalStorage();
                     updateWishlistCount();
                     updateWishlistUI();
                     
-                    // Refresh books from Firebase
                     await loadBooksFromFirebase();
                     
-                    // Refresh displays
                     displayBooks();
                     displayAdminBooks();
                     updateStatistics();
@@ -4035,6 +4648,7 @@
             }
             
             displayRegisteredStudentsTable(filteredRequests);
+            displayMobileRegisteredStudentsTable(filteredRequests);
         }
 
         // Update student view buttons
@@ -4065,7 +4679,6 @@
             
             document.body.appendChild(notification);
             
-            // Remove notification after 5 seconds
             setTimeout(() => {
                 notification.style.animation = 'slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) reverse';
                 setTimeout(() => {
