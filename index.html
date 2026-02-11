@@ -90,6 +90,7 @@
             height: 52px;
             width: auto;
             flex-shrink: 0;
+            cursor: pointer;
         }
 
         .logo h1 {
@@ -2601,7 +2602,7 @@
 
     <header>
         <div class="logo">
-            <img src="https://epu.edu.iq/wp-content/uploads/2025/01/EPU-Logo-n2nnn7.png" alt="EPU Logo" class="epu-logo">
+            <img src="https://epu.edu.iq/wp-content/uploads/2025/01/EPU-Logo-n2nnn7.png" alt="EPU Logo" class="epu-logo" id="homeLogoBtn">
             <h1>
                 <span>کتێبخانەی کۆلێژی تەکنیکی شەقڵاوە</span>
                 <span class="welcome-text">سەرچاوەی زانست و زانیاری</span>
@@ -3052,6 +3053,9 @@
         const dateColumnHeader2 = document.getElementById('dateColumnHeader2');
         const dateColumnHeader3 = document.getElementById('dateColumnHeader3');
 
+        // هۆم بەتن بۆ ڕسمەکە
+        const homeLogoBtn = document.getElementById('homeLogoBtn');
+
         let currentUser = null;
         let books = [];
         let allRequests = [];
@@ -3263,6 +3267,11 @@
                 }
                 
                 displayRegisteredStudents(searchTerm);
+            });
+
+            // کلیک لە ڕسمەکە بۆ گەڕانەوە بۆ پەڕەی سەرەکی
+            homeLogoBtn.addEventListener('click', () => {
+                goToMainPage();
             });
         }
 
