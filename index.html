@@ -1400,6 +1400,33 @@
         }
     }
     
+    // ========== ئۆتۆماتیک نوێکردنەوەی تەنها کۆی گشتی خەرجی ئەمڕۆ لە کاتژمێر 2 شەو ==========
+    function scheduleMidnightRefresh() {
+        const now = new Date();
+        // کاتژمێر 2 شەو = 2:00:00
+        const target = new Date();
+        target.setHours(2, 0, 0, 0);
+        
+        // ئەگەر کاتی ئێستا لە 2 شەو تێپەڕیوە، بڕۆ بۆ سبەینێ
+        if (now >= target) {
+            target.setDate(target.getDate() + 1);
+        }
+        
+        const delay = target.getTime() - now.getTime();
+        
+        setTimeout(async () => {
+            // تەنها کۆی گشتی ئەمڕۆ نوێ دەکاتەوە، نەک کۆی گشتی خەرجی
+            const allItems = await fetchExpenses();
+            await updateTodayTotalCard(allItems);  // ← تەنها ئەمە (کۆی گشتی خەرجی ئەمڕۆ)
+            // دووبارە خۆ پلان دانەوە بۆ سبەینێ
+            scheduleMidnightRefresh();
+        }, delay);
+    }
+    
+    // دەستپێکردنی پلانی نوێکردنەوە
+    scheduleMidnightRefresh();
+    // ==========================================
+    
     document.getElementById('todayBtn').addEventListener('click', () => {
         currentFilterMode = "today";
         document.getElementById('todayBtn').classList.add('active');
