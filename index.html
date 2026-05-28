@@ -665,7 +665,7 @@
             text-decoration: underline;
         }
 
-        /* ============ ONLY MOBILE & SMALL SCREENS (max-width: 768px) - FULL RESPONSIVE FIX ============ */
+        /* ============ ONLY MOBILE & SMALL SCREENS (max-width: 768px) - EXPENSE CARDS SMALLER ============ */
         @media (max-width: 768px) {
             .container { padding: 8px; }
             .hero-header { padding: 12px 10px; border-radius: 24px; margin-bottom: 16px; }
@@ -693,15 +693,27 @@
             input[type="date"] { padding: 4px 8px; font-size: 0.65rem; }
             .filter-buttons { gap: 8px; justify-content: center; }
             .btn-filter { padding: 5px 12px; font-size: 0.65rem; border-radius: 25px; }
-            .expenses-grid { gap: 12px; }
-            .expense-card { padding: 10px; gap: 8px; border-left-width: 6px; border-radius: 18px; flex-direction: column; }
-            .expense-img { width: 50px; height: 50px; border-radius: 14px; }
-            .expense-info { min-width: 100%; text-align: center; }
-            .expense-info h3 { font-size: 0.9rem; }
-            .expense-info p { font-size: 0.65rem; margin: 2px 0; }
-            .expense-info small { font-size: 0.55rem; }
-            .expense-price { font-size: 0.85rem; padding: 3px 10px; }
-            .delete-btn { padding: 5px 12px; font-size: 0.65rem; }
+            .expenses-grid { gap: 10px; }
+            
+            /* بچووککردنەوەی کارتەکانی خەرجی بۆ مۆبایل */
+            .expense-card { 
+                padding: 8px 10px; 
+                gap: 8px; 
+                border-left-width: 4px; 
+                border-radius: 14px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            .expense-img { width: 40px; height: 40px; border-radius: 10px; }
+            .expense-info { flex: 1; min-width: calc(100% - 100px); text-align: left; }
+            .expense-info h3 { font-size: 0.75rem; margin-bottom: 2px; }
+            .expense-info p { font-size: 0.6rem; margin: 1px 0; }
+            .expense-info strong { font-size: 0.6rem; }
+            .expense-info small { font-size: 0.5rem; }
+            .expense-price { font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; margin-left: auto; }
+            .delete-btn { padding: 4px 10px; font-size: 0.6rem; width: auto; margin-top: 0; }
+            
             .modal-content { padding: 16px 14px; border-radius: 28px; width: 94%; }
             .modal-title { font-size: 1rem; margin-bottom: 8px; }
             .modal-img { max-height: 130px; border-radius: 22px; margin-bottom: 10px; }
@@ -727,13 +739,16 @@
             .image-caption { font-size: 0.65rem; padding: 4px 10px; }
         }
 
-        /* Extra small devices (480px and below) */
+        /* Extra small devices (480px and below) - even smaller cards */
         @media (max-width: 480px) {
             .hero-header h1 { font-size: 1rem; }
-            .total-amount { font-size: 0.9rem; }
+            .expense-card { padding: 6px 8px; border-left-width: 3px; }
+            .expense-img { width: 35px; height: 35px; border-radius: 8px; }
+            .expense-info h3 { font-size: 0.7rem; }
+            .expense-info p { font-size: 0.55rem; }
+            .expense-price { font-size: 0.65rem; padding: 2px 6px; }
             .today-total-amount { font-size: 0.8rem; }
-            .expense-info h3 { font-size: 0.8rem; }
-            .expense-price { font-size: 0.75rem; }
+            .total-amount { font-size: 0.9rem; }
         }
     </style>
 </head>
