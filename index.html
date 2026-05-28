@@ -623,6 +623,23 @@
             color: #e67e22;
         }
 
+        .helper-link {
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 0.75rem;
+            color: #e67e22;
+            text-decoration: none;
+            background: #fff0e0;
+            padding: 5px 12px;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .helper-link:hover {
+            background: #e67e22;
+            color: white;
+            text-decoration: underline;
+        }
+
         /* ============ ONLY MOBILE & SMALL SCREENS (max-width: 768px) - FULL RESPONSIVE FIX ============ */
         @media (max-width: 768px) {
             .container {
@@ -810,7 +827,6 @@
                 margin-top: 5px;
             }
             
-            /* Modal optimization for mobile */
             .modal-content {
                 padding: 20px 18px;
                 border-radius: 32px;
@@ -856,7 +872,6 @@
                 font-size: 0.85rem;
             }
             
-            /* Form pages mobile */
             .form-page, .login-page {
                 padding: 22px 18px;
                 margin: 20px auto;
@@ -894,7 +909,6 @@
                 margin-top: 15px;
             }
             
-            /* Background emojis smaller on mobile */
             body::before {
                 font-size: 40px;
                 bottom: 5px;
@@ -921,7 +935,6 @@
                 margin-left: 0;
             }
             
-            /* Fix for buttons wrapper when logged in */
             .login-buttons-wrapper > div {
                 width: 100%;
                 justify-content: center;
@@ -932,7 +945,6 @@
                 text-align: center;
             }
             
-            /* Make expense-card work better */
             .expense-card {
                 display: grid;
                 grid-template-columns: 55px 1fr auto;
@@ -962,12 +974,10 @@
                 margin-top: 8px;
             }
             
-            /* If no delete button, adjust */
             .expense-card:not(:has(.delete-btn)) {
                 grid-template-columns: 55px 1fr auto;
             }
             
-            /* Fix for full image modal on mobile */
             .full-image {
                 max-width: 95%;
                 max-height: 80%;
@@ -985,7 +995,6 @@
             }
         }
 
-        /* Extra small devices (480px and below) */
         @media (max-width: 480px) {
             .hero-header h1 {
                 font-size: 1.3rem;
@@ -1115,8 +1124,8 @@
     const COLLECTION_NAME = "xarje";
     const DOC_ID = "1CRssfrJepDusoQQcMh";
     
-    let isAdmin = false;        // بۆ زیادکردن (user:pop pass:32p)
-    let isDeleteMode = false;   // بۆ سڕینەوە (user:n4 pass:d4)
+    let isAdmin = false;
+    let isDeleteMode = false;
     let currentFilterMode = "today"; 
     let currentTotalRangeMode = "all";
     let totalDaysValue = null;
@@ -1348,7 +1357,6 @@
         });
     }
     
-    // ========== دوو جۆری لاگین ==========
     function showMainLoginPage() {
         document.getElementById('app').style.display = 'none';
         
@@ -1514,6 +1522,7 @@
             <div class="form-group">
                 <label>4. وێنە (لینکی وێنە):</label>
                 <input id="formWena" placeholder="https://example.com/food.jpg">
+                <a href="https://sigmawire.net/image-to-url-converter" target="_blank" class="helper-link">🔗 کلیک بکە بۆ ئامادەکردنی لینکی وێنە</a>
             </div>
             <button id="saveExpense" class="submit-btn">💾 ناردن و تۆمارکردن</button>
             <button id="closeForm" class="back-home">🏠 گەڕانەوە بۆ هۆم</button>
@@ -1610,7 +1619,6 @@
         }
     }
     
-    // ========== Event Listeners ==========
     document.getElementById('todayBtn').addEventListener('click', () => {
         currentFilterMode = "today";
         document.getElementById('todayBtn').classList.add('active');
