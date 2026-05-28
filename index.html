@@ -665,7 +665,7 @@
             text-decoration: underline;
         }
 
-        /* ============ ONLY MOBILE & SMALL SCREENS (max-width: 768px) ============ */
+        /* ============ دیزاینی نوێ بۆ مۆبایل و شاشە بچووکەکان ============ */
         @media (max-width: 768px) {
             .container { padding: 8px; }
             .hero-header { padding: 12px 10px; border-radius: 24px; margin-bottom: 16px; }
@@ -695,87 +695,135 @@
             .btn-filter { padding: 5px 12px; font-size: 0.65rem; border-radius: 25px; }
             .expenses-grid { gap: 12px; }
             
-            /* گۆڕانکاریەکان بۆ ناوەوەی کارتەکە - وێنە گەورەتر، زانیاری گەورەتر، نرخ لای چەپی ناوەڕاست */
+            /* دیزاینی نوێ بۆ کارتی زانیاری لەسەر مۆبایل - قەبارەی گونجاو و جوان */
             .expense-card { 
-                padding: 14px 12px; 
-                gap: 12px; 
-                border-left-width: 6px; 
+                background: linear-gradient(135deg, #ffffff 0%, #fffef7 100%);
                 border-radius: 20px;
+                padding: 12px;
+                border-left: none;
+                border: 1px solid #ffe0b5;
+                box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+                display: flex;
                 flex-direction: row;
-                flex-wrap: wrap;
                 align-items: center;
+                gap: 12px;
+                transition: all 0.2s ease;
             }
-            /* وێنە گەورەتر و چوارگۆشەی پڕ */
+            .expense-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                background: #ffffff;
+            }
+            
+            /* وێنەکە - قەبارەی مامناوەند و چوارگۆشەی خاو */
             .expense-img { 
-                width: 80px; 
-                height: 80px; 
+                width: 70px; 
+                height: 70px; 
                 border-radius: 16px; 
                 object-fit: cover;
+                border: 2px solid #f39c12;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                background: #fef5e8;
             }
+            
+            /* بەشی زانیاری */
             .expense-info { 
-                flex: 1; 
-                min-width: calc(100% - 100px); 
-                text-align: left;
-                padding: 0 5px;
+                flex: 1;
+                padding: 0;
             }
-            /* زانیاریەکان زۆر گەورەتر */
+            
+            /* ناوی سەرەکی - جوان و ڕوون */
             .expense-info h3 { 
-                font-size: 1.3rem; 
-                margin-bottom: 5px; 
+                font-size: 1rem; 
+                font-weight: 800; 
                 color: #c0392b;
-                font-weight: 800;
+                margin-bottom: 4px;
+                letter-spacing: -0.3px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
             }
+            .expense-info h3::before {
+                content: "👤";
+                font-size: 0.9rem;
+            }
+            
+            /* ناوی کاڵا */
             .expense-info p { 
-                font-size: 0.95rem; 
-                margin: 4px 0; 
+                font-size: 0.75rem; 
+                margin: 3px 0;
                 color: #7f8c8d;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+            .expense-info p:first-of-type::before {
+                content: "🍽️";
+                font-size: 0.7rem;
+            }
+            .expense-info p:last-of-type::before {
+                content: "💰";
+                font-size: 0.7rem;
             }
             .expense-info strong { 
-                font-size: 0.95rem; 
-            }
-            .expense-info small { 
-                font-size: 0.7rem; 
-                display: block; 
-                margin-top: 5px;
-                color: #95a5a6;
-            }
-            /* نرخەکە لای چەپی ناوەڕاست و گەورەتر */
-            .expense-price { 
-                font-size: 1.2rem; 
-                font-weight: 800;
-                padding: 5px 15px; 
-                border-radius: 30px; 
-                background: #fef5e8;
+                font-weight: 600;
                 color: #e67e22;
-                display: inline-block;
-                width: fit-content;
-                margin: 0;
-                align-self: center;
             }
+            
+            /* بەروار */
+            .expense-info small { 
+                font-size: 0.55rem; 
+                display: block;
+                margin-top: 4px;
+                color: #b87333;
+                background: #fff0e0;
+                display: inline-block;
+                padding: 2px 8px;
+                border-radius: 20px;
+            }
+            
+            /* نرخەکە - بەڵگەی نرخی دیار */
+            .expense-price { 
+                font-size: 0.9rem; 
+                font-weight: 800;
+                padding: 6px 12px;
+                border-radius: 30px;
+                background: linear-gradient(135deg, #e67e22, #f39c12);
+                color: white;
+                text-align: center;
+                white-space: nowrap;
+                box-shadow: 0 2px 6px rgba(230,126,34,0.3);
+                margin-left: auto;
+            }
+            
+            /* دوگمەی سڕینەوە */
             .delete-btn { 
-                padding: 6px 14px; 
-                font-size: 0.75rem; 
-                width: auto; 
-                margin-top: 0;
+                padding: 6px 12px; 
+                font-size: 0.7rem; 
                 background: #e74c3c;
                 color: white;
                 border: none;
-                border-radius: 40px;
+                border-radius: 30px;
                 cursor: pointer;
                 font-weight: bold;
+                transition: 0.2s;
+                white-space: nowrap;
+            }
+            .delete-btn:hover {
+                background: #c0392b;
+                transform: scale(0.97);
             }
             
-            /* ڕێکخستنی کارت بۆ مۆبایل */
+            /* ڕێکخستنی کارت بە گریـد */
             .expense-card {
                 display: grid;
-                grid-template-columns: 80px 1fr auto;
-                align-items: center;
+                grid-template-columns: 70px 1fr auto;
                 gap: 10px;
+                align-items: center;
             }
             .expense-img {
                 grid-row: span 2;
-                align-self: start;
-                margin-top: 5px;
+                align-self: center;
             }
             .expense-info {
                 grid-column: 2;
@@ -785,14 +833,18 @@
                 grid-column: 2;
                 grid-row: 2;
                 justify-self: start;
-                margin-top: 5px;
-                margin-bottom: 5px;
+                margin-top: 4px;
             }
             .delete-btn {
                 grid-column: 3;
                 grid-row: 1 / span 2;
                 align-self: center;
                 justify-self: end;
+            }
+            /* ئەگەر دوگمەی سڕینەوە نەبوو */
+            .expense-card:not(:has(.delete-btn)) .expense-price {
+                grid-row: 1;
+                align-self: center;
             }
             
             .modal-content { padding: 16px 14px; border-radius: 28px; width: 94%; }
@@ -820,17 +872,16 @@
             .image-caption { font-size: 0.65rem; padding: 4px 10px; }
         }
 
-        /* Extra small devices (480px and below) */
+        /* بۆ شاشەی زۆر بچووک */
         @media (max-width: 480px) {
-            .hero-header h1 { font-size: 1rem; }
-            .expense-card { grid-template-columns: 65px 1fr auto; gap: 8px; padding: 12px 10px; }
-            .expense-img { width: 65px; height: 65px; }
-            .expense-info h3 { font-size: 1.1rem; }
-            .expense-info p { font-size: 0.85rem; }
-            .expense-price { font-size: 1rem; padding: 3px 12px; }
-            .delete-btn { padding: 4px 10px; font-size: 0.65rem; }
-            .today-total-amount { font-size: 0.8rem; }
-            .total-amount { font-size: 0.9rem; }
+            .expense-card { grid-template-columns: 55px 1fr auto; gap: 8px; padding: 10px; }
+            .expense-img { width: 55px; height: 55px; border-radius: 12px; }
+            .expense-info h3 { font-size: 0.85rem; }
+            .expense-info p { font-size: 0.65rem; }
+            .expense-price { font-size: 0.75rem; padding: 4px 10px; }
+            .delete-btn { padding: 4px 10px; font-size: 0.6rem; }
+            .today-total-amount { font-size: 0.75rem; }
+            .total-amount { font-size: 0.85rem; }
         }
     </style>
 </head>
@@ -910,6 +961,7 @@
 </div>
 
 <script>
+    // Firebase configuration and app logic (unchanged)
     const firebaseConfig = {
         apiKey: "AIzaSyDpMvqqiMJF_bcoAOEC4gC9CJrvdDlJVMA",
         authDomain: "icepop-3ed45.firebaseapp.com",
@@ -1113,17 +1165,17 @@
         const showDeleteButtons = isDeleteMode;
         
         container.innerHTML = filtered.map(exp => {
-            const imageUrl = exp.wena && exp.wena.trim() !== "" ? escapeHtml(exp.wena) : "https://placehold.co/80x80?text=🍔";
+            const imageUrl = exp.wena && exp.wena.trim() !== "" ? escapeHtml(exp.wena) : "https://placehold.co/70x70?text=🍔";
             return `
             <div class="expense-card" data-id="${exp.id}" data-exp-data='${JSON.stringify(exp).replace(/'/g, "&#39;")}'>
-                <img class="expense-img" src="${imageUrl}" alt="وێنەی کاڵا" data-imgurl="${imageUrl}" data-itemname="${escapeHtml(exp.nawk)}" onerror="this.src='https://placehold.co/80x80?text=🍔'">
+                <img class="expense-img" src="${imageUrl}" alt="وێنەی کاڵا" data-imgurl="${imageUrl}" data-itemname="${escapeHtml(exp.nawk)}" onerror="this.src='https://placehold.co/70x70?text=🍔'">
                 <div class="expense-info">
                     <h3>${escapeHtml(exp.naw)}</h3>
-                    <p><strong>ناوی کاڵا:</strong> ${escapeHtml(exp.nawk)}</p>
-                    <p><strong>نرخ:</strong> ${Number(exp.nrx).toLocaleString()} دینار</p>
+                    <p><strong>${escapeHtml(exp.nawk)}</strong></p>
+                    <p><strong>${Number(exp.nrx).toLocaleString()}</strong> دینار</p>
                     <small>📅 ${exp.createdAt ? new Date(exp.createdAt).toLocaleDateString('ku-IR') : 'بەروار نییە'}</small>
                 </div>
-                <div class="expense-price">💰 ${Number(exp.nrx).toLocaleString()} IQD</div>
+                <div class="expense-price">💰 ${Number(exp.nrx).toLocaleString()}</div>
                 ${showDeleteButtons ? `<button class="delete-btn" onclick="event.stopPropagation(); handleDelete('${exp.id}')">🗑️ بسڕەوە</button>` : ''}
             </div>
         `}).join('');
@@ -1174,6 +1226,7 @@
         });
     }
     
+    // Login and form functions (same as before)
     function showMainLoginPage() {
         document.getElementById('app').style.display = 'none';
         const loginDiv = document.createElement('div');
