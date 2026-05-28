@@ -82,6 +82,7 @@
             margin-top: 8px;
         }
 
+        /* دوو دووگمەی لۆگین لە لای چەپ */
         .login-buttons-wrapper {
             display: flex;
             gap: 15px;
@@ -116,6 +117,7 @@
             background: #c0392b;
         }
 
+        /* کۆی گشتی کارت */
         .total-stats-section {
             background: white;
             border-radius: 48px;
@@ -161,34 +163,17 @@
             font-weight: bold;
         }
 
-        /* کۆی گشتی ئەمڕۆ - زیاد کراوە */
+        /* بەشی کۆی ئەمڕۆی زیادکراو */
         .today-total-section {
-            background: linear-gradient(135deg, #ffe6d5, #fff0e0);
-            border-radius: 40px;
-            padding: 12px 24px;
+            background: #fff0e0;
+            border-radius: 32px;
+            padding: 12px 20px;
             margin-top: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 12px;
-            border: 1px solid #ffce9e;
-        }
-        .today-total-label {
-            font-weight: bold;
-            color: #c0392b;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .today-total-amount {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #e67e22;
-            background: white;
-            padding: 5px 20px;
-            border-radius: 50px;
+            gap: 10px;
         }
 
         .range-filters {
@@ -381,6 +366,7 @@
             transform: scale(0.96);
         }
 
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -496,6 +482,7 @@
             cursor: pointer;
         }
 
+        /* Fullscreen image modal */
         .image-modal {
             display: none;
             position: fixed;
@@ -666,36 +653,403 @@
             text-decoration: underline;
         }
 
+        /* ============ ONLY MOBILE & SMALL SCREENS (max-width: 768px) - FULL RESPONSIVE FIX ============ */
         @media (max-width: 768px) {
-            .container { padding: 10px; }
-            .hero-header { padding: 18px 12px; border-radius: 28px; margin-bottom: 20px; }
-            .hero-header h1 { font-size: 1.6rem; }
-            .hero-header p { font-size: 0.75rem; }
-            .login-buttons-wrapper { justify-content: center; gap: 8px; }
-            .btn-login { padding: 8px 16px; font-size: 0.75rem; }
-            .total-stats-section { padding: 14px 16px; border-radius: 24px; }
-            .total-header { flex-direction: column; align-items: stretch; gap: 8px; }
-            .total-header h2 { font-size: 1rem; }
-            .total-amount { font-size: 1.4rem; }
-            .total-badge { font-size: 0.7rem; padding: 5px 12px; }
-            .today-total-section { padding: 10px 16px; }
-            .today-total-label { font-size: 0.85rem; }
-            .today-total-amount { font-size: 1.2rem; padding: 4px 14px; }
-            .range-filters { gap: 8px; justify-content: center; }
-            .range-btn { padding: 5px 12px; font-size: 0.7rem; }
-            .filter-section { padding: 14px 16px; flex-direction: column; gap: 12px; }
-            .expense-card { padding: 14px; gap: 10px; flex-direction: row; flex-wrap: wrap; }
-            .expense-img { width: 55px; height: 55px; }
-            .expense-info h3 { font-size: 1rem; }
-            .expense-price { font-size: 1rem; padding: 4px 12px; }
-            .modal-content { padding: 20px 18px; width: 92%; }
-            .form-page, .login-page { padding: 22px 18px; width: 94%; }
-            .helper-link { font-size: 0.65rem; }
+            .container {
+                padding: 10px;
+            }
+            
+            .hero-header {
+                padding: 18px 12px;
+                border-radius: 28px;
+                margin-bottom: 20px;
+            }
+            
+            .hero-header h1 {
+                font-size: 1.6rem;
+                text-shadow: 2px 2px 0 #d2691e;
+                letter-spacing: 1px;
+            }
+            
+            .hero-header p {
+                font-size: 0.75rem;
+                line-height: 1.3;
+                margin-top: 6px;
+            }
+            
+            .login-buttons-wrapper {
+                justify-content: center;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            
+            .btn-login {
+                padding: 8px 16px;
+                font-size: 0.75rem;
+                border-radius: 40px;
+            }
+            
+            .total-stats-section {
+                padding: 14px 16px;
+                border-radius: 24px;
+                margin-bottom: 20px;
+            }
+            
+            .total-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding-bottom: 10px;
+            }
+            
+            .total-header h2 {
+                font-size: 1rem;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .total-amount {
+                font-size: 1.4rem;
+            }
+            
+            .total-badge {
+                font-size: 0.7rem;
+                padding: 5px 12px;
+                text-align: center;
+                width: fit-content;
+                align-self: flex-start;
+            }
+
+            .today-total-section {
+                padding: 10px 14px;
+                margin-top: 10px;
+            }
+            
+            .range-filters {
+                gap: 8px;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            
+            .range-btn {
+                padding: 5px 12px;
+                font-size: 0.7rem;
+                border-radius: 40px;
+            }
+            
+            .custom-range {
+                padding: 3px 10px;
+                gap: 6px;
+            }
+            
+            .custom-range span {
+                font-size: 0.7rem;
+            }
+            
+            .custom-range input {
+                width: 50px;
+                padding: 5px;
+                font-size: 0.7rem;
+            }
+            
+            .apply-range {
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+            
+            .filter-section {
+                padding: 14px 16px;
+                border-radius: 28px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .date-filter {
+                justify-content: center;
+                gap: 8px;
+                padding: 6px 14px;
+                flex-wrap: wrap;
+            }
+            
+            .date-filter label {
+                font-size: 0.75rem;
+            }
+            
+            input[type="date"] {
+                padding: 5px 8px;
+                font-size: 0.75rem;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .btn-filter {
+                padding: 7px 16px;
+                font-size: 0.75rem;
+                border-radius: 30px;
+            }
+            
+            .expenses-grid {
+                gap: 14px;
+            }
+            
+            .expense-card {
+                padding: 14px;
+                gap: 10px;
+                border-left-width: 8px;
+                border-radius: 20px;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .expense-img {
+                width: 55px;
+                height: 55px;
+                border-radius: 16px;
+            }
+            
+            .expense-info {
+                flex: 1;
+                min-width: calc(100% - 70px);
+                text-align: left;
+            }
+            
+            .expense-info h3 {
+                font-size: 1rem;
+                margin-bottom: 4px;
+            }
+            
+            .expense-info p {
+                font-size: 0.7rem;
+                margin: 2px 0;
+            }
+            
+            .expense-info small {
+                font-size: 0.6rem;
+            }
+            
+            .expense-price {
+                font-size: 1rem;
+                padding: 4px 12px;
+                margin-left: auto;
+            }
+            
+            .delete-btn {
+                padding: 6px 14px;
+                font-size: 0.7rem;
+                width: 100%;
+                margin-top: 5px;
+            }
+            
+            .modal-content {
+                padding: 20px 18px;
+                border-radius: 32px;
+                width: 92%;
+            }
+            
+            .modal-title {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+            
+            .modal-img {
+                max-height: 160px;
+                border-radius: 28px;
+                margin-bottom: 14px;
+            }
+            
+            .modal-detail {
+                font-size: 0.85rem;
+                margin: 8px 0;
+                gap: 8px;
+                padding-bottom: 8px;
+            }
+            
+            .modal-label {
+                padding: 3px 10px;
+                font-size: 0.7rem;
+            }
+            
+            .modal-value {
+                font-size: 0.85rem;
+                word-break: break-word;
+            }
+            
+            .modal-price {
+                font-size: 1.2rem;
+                padding: 8px;
+                margin-top: 10px;
+            }
+            
+            .close-modal-btn {
+                padding: 8px 20px;
+                font-size: 0.85rem;
+            }
+            
+            .form-page, .login-page {
+                padding: 22px 18px;
+                margin: 20px auto;
+                width: 94%;
+                border-radius: 28px;
+            }
+            
+            .form-page h2, .login-page h2 {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+            }
+            
+            .form-group {
+                margin-bottom: 16px;
+            }
+            
+            .form-group label {
+                font-size: 0.85rem;
+            }
+            
+            .form-group input {
+                padding: 10px 14px;
+                font-size: 0.85rem;
+                border-radius: 40px;
+            }
+            
+            .submit-btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .back-home {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+                margin-top: 15px;
+            }
+            
+            body::before {
+                font-size: 40px;
+                bottom: 5px;
+                right: 5px;
+                opacity: 0.1;
+            }
+            
+            body::after {
+                font-size: 30px;
+                top: 8px;
+                left: 8px;
+                opacity: 0.05;
+            }
+            
+            footer {
+                font-size: 0.65rem;
+                margin-top: 25px;
+                padding-bottom: 15px;
+            }
+            
+            .admin-badge, .delete-badge {
+                font-size: 0.65rem;
+                padding: 4px 10px;
+                margin-left: 0;
+            }
+            
+            .login-buttons-wrapper > div {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .admin-badge, .delete-badge {
+                display: inline-block;
+                text-align: center;
+            }
+            
+            .expense-card {
+                display: grid;
+                grid-template-columns: 55px 1fr auto;
+                align-items: center;
+            }
+            
+            .expense-img {
+                grid-row: span 2;
+                align-self: center;
+            }
+            
+            .expense-info {
+                grid-column: 2;
+                grid-row: 1;
+            }
+            
+            .expense-price {
+                grid-column: 3;
+                grid-row: 1;
+                align-self: center;
+            }
+            
+            .delete-btn {
+                grid-column: 1 / -1;
+                grid-row: 2;
+                width: 100%;
+                margin-top: 8px;
+            }
+            
+            .expense-card:not(:has(.delete-btn)) {
+                grid-template-columns: 55px 1fr auto;
+            }
+            
+            .full-image {
+                max-width: 95%;
+                max-height: 80%;
+            }
+            
+            .close-image-btn {
+                top: 15px;
+                right: 20px;
+                font-size: 36px;
+            }
+            
+            .image-caption {
+                font-size: 0.8rem;
+                padding: 5px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .expense-card {
+                grid-template-columns: 50px 1fr auto;
+            }
+            
+            .expense-img {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .expense-info h3 {
+                font-size: 0.9rem;
+            }
+            
+            .expense-price {
+                font-size: 0.85rem;
+                padding: 3px 10px;
+            }
+            
+            .total-amount {
+                font-size: 1.2rem;
+            }
+            
+            .range-btn {
+                padding: 4px 10px;
+                font-size: 0.65rem;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container" id="app">
+    <!-- دوو دووگمەی لۆگین لە لای چەپ -->
     <div class="login-buttons-wrapper" id="loginButtonsWrapper">
         <button class="btn-login" id="loginMainBtn">🔐 Log In (Admin - زیادکردن)</button>
         <button class="btn-login delete-login" id="loginDeleteBtn">🗑️ Log In (Delete - سڕینەوە)</button>
@@ -705,16 +1059,24 @@
         <p>خەرجی ڕۆژانەی چێشتخانە (خواردنی خێرا) | کلیک لەسەر کارت یان وێنە بکە بۆ بینینی وردەکاری</p>
     </div>
 
+    <!-- کارتی کۆی گشتی + کۆی ئەمڕۆ + فلتەری ڕۆژانە -->
     <div class="total-stats-section" id="totalStatsCard">
         <div class="total-header">
             <h2>💰 کۆی گشتی خەرجی: <span id="totalSumAmount" class="total-amount">0</span> دینار</h2>
             <div class="total-badge" id="totalRangeLabel">هەموو خەرجیەکان</div>
         </div>
-        <!-- کۆی گشتی ئەمڕۆ زیاد کراوە -->
+        
+        <!-- بەشی کۆی ئەمڕۆی زیادکراو -->
         <div class="today-total-section">
-            <div class="today-total-label">📅 کۆی گشتی خەرجی ئەمڕۆ:</div>
-            <div class="today-total-amount" id="todayTotalAmount">0 دینار</div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 1.6rem;">📆</span>
+                <span style="font-weight: 700; color: #c0392b;">کۆی ئەمڕۆ:</span>
+                <span id="todayTotalAmount" style="font-size: 1.8rem; font-weight: 800; color: #e67e22;">0</span>
+                <span style="font-weight: 600;">دینار</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #b87333;" id="todayDateLabel"></div>
         </div>
+        
         <div class="range-filters">
             <button data-days="5" class="range-btn">📆 5 ڕۆژی کۆتایی</button>
             <button data-days="10" class="range-btn">📆 10 ڕۆژی کۆتایی</button>
@@ -746,8 +1108,11 @@
     <footer>🔥 ICE POP-ســیــســتــەمــێــک بــۆ خــەرجــی ڕۆژانــەی چــێــشــتــخــانــەی 
        <br> BY: Zhyar</br>
     </footer>
+    
+
 </div>
 
+<!-- Modal info structure -->
 <div id="infoModal" class="modal">
     <div class="modal-content">
         <button class="modal-close" id="closeModalBtn">&times;</button>
@@ -764,6 +1129,7 @@
     </div>
 </div>
 
+<!-- Fullscreen image modal for big picture -->
 <div id="fullImageModal" class="image-modal">
     <button class="close-image-btn" id="closeImageModalBtn">✖</button>
     <img id="fullScreenImage" class="full-image" src="" alt="وێنەی گەورە">
@@ -771,6 +1137,7 @@
 </div>
 
 <script>
+    // ========== Firebase Config ==========
     const firebaseConfig = {
         apiKey: "AIzaSyDpMvqqiMJF_bcoAOEC4gC9CJrvdDlJVMA",
         authDomain: "icepop-3ed45.firebaseapp.com",
@@ -795,6 +1162,32 @@
 
     function getTodayStr() {
         return new Date().toISOString().slice(0, 10);
+    }
+    
+    // هاوکار بۆ حسابکردنی کۆی ئەمڕۆ
+    function computeTodayTotal(expenses) {
+        const todayStr = getTodayStr();
+        return expenses.reduce((sum, exp) => {
+            const expDate = exp.createdAt ? exp.createdAt.slice(0, 10) : "";
+            if (expDate === todayStr) {
+                return sum + (Number(exp.nrx) || 0);
+            }
+            return sum;
+        }, 0);
+    }
+    
+    // نوێکردنەوەی کارتی کۆی ئەمڕۆ
+    async function updateTodayTotalCard() {
+        const allExpenses = await fetchExpenses();
+        const todayTotal = computeTodayTotal(allExpenses);
+        const todayTotalSpan = document.getElementById('todayTotalAmount');
+        const todayDateLabel = document.getElementById('todayDateLabel');
+        if (todayTotalSpan) todayTotalSpan.innerText = todayTotal.toLocaleString();
+        if (todayDateLabel) {
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('ku-IR');
+            todayDateLabel.innerText = `📅 ${formattedDate}`;
+        }
     }
     
     async function fetchExpenses() {
@@ -852,21 +1245,6 @@
         });
         return filtered.reduce((sum, e) => sum + (Number(e.nrx) || 0), 0);
     }
-
-    // ژماردنی کۆی گشتی ئەمڕۆ
-    function computeTodayTotal(expenses) {
-        const todayStr = getTodayStr();
-        const filtered = expenses.filter(exp => {
-            const expDate = exp.createdAt ? exp.createdAt.slice(0, 10) : "";
-            return expDate === todayStr;
-        });
-        return filtered.reduce((sum, e) => sum + (Number(e.nrx) || 0), 0);
-    }
-
-    async function updateTodayTotalCard(expensesAll) {
-        const todayTotal = computeTodayTotal(expensesAll);
-        document.getElementById('todayTotalAmount').innerText = todayTotal.toLocaleString() + " دینار";
-    }
     
     async function updateTotalCard(expensesAll) {
         let total = 0;
@@ -880,7 +1258,9 @@
         }
         document.getElementById('totalSumAmount').innerText = total.toLocaleString();
         document.getElementById('totalRangeLabel').innerText = label;
-        await updateTodayTotalCard(expensesAll);
+        
+        // هەروەها نوێکردنەوەی کۆی ئەمڕۆ
+        await updateTodayTotalCard();
     }
     
     function showFullscreenImage(imgUrl, title) {
@@ -1018,6 +1398,7 @@
         await renderExpenses();
         const allItems = await fetchExpenses();
         await updateTotalCard(allItems);
+        await updateTodayTotalCard();
     }
     
     window.handleDelete = async function(id) {
@@ -1038,30 +1419,43 @@
     
     function showMainLoginPage() {
         document.getElementById('app').style.display = 'none';
+        
         const loginDiv = document.createElement('div');
         loginDiv.id = 'loginPage';
         loginDiv.className = 'login-page';
         loginDiv.innerHTML = `
             <h2>🔑 چوونە ژوورەوەی بەڕێوەبەر (زیادکردن)</h2>
-            <div class="form-group"><label>👤 ناوی بەکارهێنەر (User)</label><input type="text" id="loginUser" placeholder="user"></div>
-            <div class="form-group"><label>🔒 پاسۆرد (Password)</label><input type="password" id="loginPass" placeholder="password"></div>
+            <div class="form-group">
+                <label>👤 ناوی بەکارهێنەر (User)</label>
+                <input type="text" id="loginUser" placeholder="user">
+            </div>
+            <div class="form-group">
+                <label>🔒 پاسۆرد (Password)</label>
+                <input type="password" id="loginPass" placeholder="password">
+            </div>
             <button id="submitLogin" class="submit-btn">✅ لاگین کردن</button>
             <button id="closeLogin" class="back-home">🏠 گەڕانەوە بۆ هۆم</button>
         `;
         document.body.appendChild(loginDiv);
+        
         document.getElementById('submitLogin').addEventListener('click', () => {
             const user = document.getElementById('loginUser').value;
             const pass = document.getElementById('loginPass').value;
+            
             if (user === 'pop' && pass === '32p') {
-                isAdmin = true; isDeleteMode = false;
-                alert('✅ لاگین سەرکەوتوو!');
+                isAdmin = true;
+                isDeleteMode = false;
+                alert('✅ لاگین سەرکەوتوو! ئێستا دەتوانیت خەرجی زیاد بکەیت.');
                 loginDiv.remove();
                 document.getElementById('app').style.display = 'block';
                 updateAdminUI();
                 renderExpensesAndTotal();
                 showExpenseForm();
-            } else { alert('❌ هەڵە! user=pop و password=32p'); }
+            } else {
+                alert('❌ هەڵە! user=pop و password=32p');
+            }
         });
+        
         document.getElementById('closeLogin').addEventListener('click', () => {
             loginDiv.remove();
             document.getElementById('app').style.display = 'block';
@@ -1070,29 +1464,42 @@
     
     function showDeleteLoginPage() {
         document.getElementById('app').style.display = 'none';
+        
         const loginDiv = document.createElement('div');
         loginDiv.id = 'loginPageDelete';
         loginDiv.className = 'login-page';
         loginDiv.innerHTML = `
             <h2>🗑️ چوونە ژوورەوە بۆ سڕینەوە</h2>
-            <div class="form-group"><label>👤 ناوی بەکارهێنەر (User)</label><input type="text" id="loginUserDelete" placeholder="user"></div>
-            <div class="form-group"><label>🔒 پاسۆرد (Password)</label><input type="password" id="loginPassDelete" placeholder="password"></div>
+            <div class="form-group">
+                <label>👤 ناوی بەکارهێنەر (User)</label>
+                <input type="text" id="loginUserDelete" placeholder="user">
+            </div>
+            <div class="form-group">
+                <label>🔒 پاسۆرد (Password)</label>
+                <input type="password" id="loginPassDelete" placeholder="password">
+            </div>
             <button id="submitLoginDelete" class="submit-btn">✅ لاگین کردن بۆ سڕینەوە</button>
             <button id="closeLoginDelete" class="back-home">🏠 گەڕانەوە بۆ هۆم</button>
         `;
         document.body.appendChild(loginDiv);
+        
         document.getElementById('submitLoginDelete').addEventListener('click', () => {
             const user = document.getElementById('loginUserDelete').value;
             const pass = document.getElementById('loginPassDelete').value;
+            
             if (user === 'n4' && pass === 'd4') {
-                isDeleteMode = true; isAdmin = false;
-                alert('✅ لاگین سەرکەوتوو!');
+                isDeleteMode = true;
+                isAdmin = false;
+                alert('✅ لاگین سەرکەوتوو! ئێستا دەتوانیت خەرجیەکان بسڕیتەوە.');
                 loginDiv.remove();
                 document.getElementById('app').style.display = 'block';
                 updateAdminUI();
                 renderExpensesAndTotal();
-            } else { alert('❌ هەڵە! user=n4 و password=d4'); }
+            } else {
+                alert('❌ هەڵە! user=n4 و password=d4');
+            }
         });
+        
         document.getElementById('closeLoginDelete').addEventListener('click', () => {
             loginDiv.remove();
             document.getElementById('app').style.display = 'block';
@@ -1102,50 +1509,110 @@
     function updateAdminUI() {
         const wrapper = document.getElementById('loginButtonsWrapper');
         if (isAdmin) {
-            wrapper.innerHTML = `<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; width: 100%;"><span class="admin-badge">✅ ئەدمینی زیادکردن چالاکە</span><button class="btn-login" id="addExpenseBtn">➕ تۆمارکردنی خەرجی نوێ</button><button class="btn-login logout-btn" id="logoutBtn">🚪 Log Out</button></div>`;
+            wrapper.innerHTML = `
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; width: 100%;">
+                    <span class="admin-badge">✅ ئەدمینی زیادکردن چالاکە</span>
+                    <button class="btn-login" id="addExpenseBtn">➕ تۆمارکردنی خەرجی نوێ</button>
+                    <button class="btn-login logout-btn" id="logoutBtn">🚪 Log Out</button>
+                </div>
+            `;
             document.getElementById('addExpenseBtn')?.addEventListener('click', showExpenseForm);
-            document.getElementById('logoutBtn')?.addEventListener('click', () => { isAdmin = false; isDeleteMode = false; updateAdminUI(); renderExpensesAndTotal(); resetLoginButtons(); });
+            document.getElementById('logoutBtn')?.addEventListener('click', () => {
+                isAdmin = false;
+                isDeleteMode = false;
+                updateAdminUI();
+                renderExpensesAndTotal();
+                alert('لە سیستەم دەرچوویت.');
+                resetLoginButtons();
+            });
         } else if (isDeleteMode) {
-            wrapper.innerHTML = `<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; width: 100%;"><span class="delete-badge">🗑️ مۆدی سڕینەوە چالاکە</span><button class="btn-login logout-btn" id="logoutDeleteBtn">🚪 Log Out (سڕینەوە)</button></div>`;
-            document.getElementById('logoutDeleteBtn')?.addEventListener('click', () => { isDeleteMode = false; isAdmin = false; updateAdminUI(); renderExpensesAndTotal(); resetLoginButtons(); });
-        } else { resetLoginButtons(); }
+            wrapper.innerHTML = `
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; width: 100%;">
+                    <span class="delete-badge">🗑️ مۆدی سڕینەوە چالاکە</span>
+                    <button class="btn-login logout-btn" id="logoutDeleteBtn">🚪 Log Out (سڕینەوە)</button>
+                </div>
+            `;
+            document.getElementById('logoutDeleteBtn')?.addEventListener('click', () => {
+                isDeleteMode = false;
+                isAdmin = false;
+                updateAdminUI();
+                renderExpensesAndTotal();
+                alert('لە مۆدی سڕینەوە دەرچوویت.');
+                resetLoginButtons();
+            });
+        } else {
+            resetLoginButtons();
+        }
     }
     
     function resetLoginButtons() {
         const wrapper = document.getElementById('loginButtonsWrapper');
-        wrapper.innerHTML = `<button class="btn-login" id="loginMainBtn">🔐 Log In (Admin - زیادکردن)</button><button class="btn-login delete-login" id="loginDeleteBtn">🗑️ Log In (Delete - سڕینەوە)</button>`;
+        wrapper.innerHTML = `
+            <button class="btn-login" id="loginMainBtn">🔐 Log In (Admin - زیادکردن)</button>
+            <button class="btn-login delete-login" id="loginDeleteBtn">🗑️ Log In (Delete - سڕینەوە)</button>
+        `;
         document.getElementById('loginMainBtn')?.addEventListener('click', showMainLoginPage);
         document.getElementById('loginDeleteBtn')?.addEventListener('click', showDeleteLoginPage);
     }
     
     function showExpenseForm() {
-        if (!isAdmin) { alert('تکایە یەکەمجار لاگین بکە بۆ زیادکردنی خەرجی (pop / 32p)'); return; }
+        if (!isAdmin) {
+            alert('تکایە یەکەمجار لاگین بکە بۆ زیادکردنی خەرجی (pop / 32p)');
+            return;
+        }
         document.getElementById('app').style.display = 'none';
+        
         const formDiv = document.createElement('div');
         formDiv.id = 'expenseForm';
         formDiv.className = 'form-page';
         formDiv.innerHTML = `
             <h2>📝 تۆمارکردنی خەرجی نوێ</h2>
-            <div class="form-group"><label>1. نــاوی خــەرجــکــار یــان مــیــوان:</label><input id="formNaw" placeholder="نمونە: ڕەزا یان ئارام"></div>
-            <div class="form-group"><label>2. نــاوی کاڵا یــان خــواردن:</label><input id="formNawk" placeholder="نمونە: بەرگەر, پیزا, فرایز, هۆتدۆگ"></div>
-            <div class="form-group"><label>3. نرخەکەی (دینار):</label><input id="formNrx" type="number" placeholder="نرخ بە دینار"></div>
-            <div class="form-group"><label>4. وێنە (لینکی وێنە):</label><input id="formWena" placeholder="https://example.com/food.jpg"><a href="https://sigmawire.net/image-to-url-converter" target="_blank" class="helper-link">🔗 کلیک بکە بۆ ئامادەکردنی لینکی وێنە</a></div>
+            <div class="form-group">
+                <label>1. نــاوی خــەرجــکــار یــان مــیــوان:</label>
+                <input id="formNaw" placeholder="نمونە: ڕەزا یان ئارام">
+            </div>
+            <div class="form-group">
+                <label>2. نــاوی کاڵا یــان خــواردن:</label>
+                <input id="formNawk" placeholder="نمونە: بەرگەر, پیزا, فرایز, هۆتدۆگ">
+            </div>
+            <div class="form-group">
+                <label>3. نرخەکەی (دینار):</label>
+                <input id="formNrx" type="number" placeholder="نرخ بە دینار">
+            </div>
+            <div class="form-group">
+                <label>4. وێنە (لینکی وێنە):</label>
+                <input id="formWena" placeholder="https://example.com/food.jpg">
+                <a href="https://sigmawire.net/image-to-url-converter" target="_blank" class="helper-link">🔗 کلیک بکە بۆ ئامادەکردنی لینکی وێنە</a>
+            </div>
             <button id="saveExpense" class="submit-btn">💾 ناردن و تۆمارکردن</button>
             <button id="closeForm" class="back-home">🏠 گەڕانەوە بۆ هۆم</button>
         `;
         document.body.appendChild(formDiv);
+        
         document.getElementById('saveExpense').addEventListener('click', async () => {
             const naw = document.getElementById('formNaw').value.trim();
             const nawk = document.getElementById('formNawk').value.trim();
             const nrx = document.getElementById('formNrx').value.trim();
             const wena = document.getElementById('formWena').value.trim();
-            if (!naw || !nawk || !nrx) { alert('تکایە ناو، ناوی کاڵا و نرخ پڕ بکەوە'); return; }
-            await addExpense({ naw, nawk, nrx: Number(nrx), wena: wena || "https://placehold.co/200x150?text=🍔" });
+            
+            if (!naw || !nawk || !nrx) {
+                alert('تکایە ناو، ناوی کاڵا و نرخ پڕ بکەوە');
+                return;
+            }
+            
+            await addExpense({
+                naw: naw,
+                nawk: nawk,
+                nrx: Number(nrx),
+                wena: wena || "https://placehold.co/200x150?text=🍔"
+            });
+            
             alert('✅ خەرجیەکە بە سەرکەوتوویی تۆمار کرا!');
             formDiv.remove();
             document.getElementById('app').style.display = 'block';
             await renderExpensesAndTotal();
         });
+        
         document.getElementById('closeForm').addEventListener('click', () => {
             formDiv.remove();
             document.getElementById('app').style.display = 'block';
@@ -1163,6 +1630,7 @@
             const fullModal = document.getElementById('fullImageModal');
             if(e.target === fullModal) closeFullscreenImage();
         };
+        
         const closeImageBtn = document.getElementById('closeImageModalBtn');
         if(closeImageBtn) closeImageBtn.onclick = closeFullscreenImage;
     }
@@ -1181,6 +1649,7 @@
                 if(resetBtn) resetBtn.classList.remove('active');
             });
         });
+        
         const applyCustom = document.getElementById('applyCustomRange');
         if(applyCustom) {
             applyCustom.addEventListener('click', async () => {
@@ -1196,6 +1665,7 @@
                 if(resetBtn) resetBtn.classList.remove('active');
             });
         }
+        
         const resetTotal = document.getElementById('resetTotalFilter');
         if(resetTotal) {
             resetTotal.addEventListener('click', async () => {
@@ -1215,15 +1685,20 @@
         document.getElementById('allBtn').classList.remove('active');
         renderExpensesAndTotal();
     });
+    
     document.getElementById('allBtn').addEventListener('click', () => {
         currentFilterMode = "all";
         document.getElementById('allBtn').classList.add('active');
         document.getElementById('todayBtn').classList.remove('active');
         renderExpensesAndTotal();
     });
+    
     document.getElementById('filterDate').addEventListener('change', () => {
-        if (currentFilterMode === "all") renderExpensesAndTotal();
+        if (currentFilterMode === "all") {
+            renderExpensesAndTotal();
+        }
     });
+    
     document.getElementById('filterDate').value = getTodayStr();
     
     bindModalEvents();
