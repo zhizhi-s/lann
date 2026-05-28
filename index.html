@@ -665,7 +665,7 @@
             text-decoration: underline;
         }
 
-        /* ============ ONLY MOBILE & SMALL SCREENS (max-width: 768px) - FIXED ============ */
+        /* ============ ONLY MOBILE & SMALL SCREENS (max-width: 768px) ============ */
         @media (max-width: 768px) {
             .container { padding: 8px; }
             .hero-header { padding: 12px 10px; border-radius: 24px; margin-bottom: 16px; }
@@ -693,26 +693,107 @@
             input[type="date"] { padding: 4px 8px; font-size: 0.65rem; }
             .filter-buttons { gap: 8px; justify-content: center; }
             .btn-filter { padding: 5px 12px; font-size: 0.65rem; border-radius: 25px; }
-            .expenses-grid { gap: 10px; }
+            .expenses-grid { gap: 12px; }
             
-            /* کارتەکان بچووکتر و نوسینەکان گەورەتر */
+            /* گۆڕانکاریەکان بۆ ناوەوەی کارتەکە - وێنە گەورەتر، زانیاری گەورەتر، نرخ لای چەپی ناوەڕاست */
             .expense-card { 
-                padding: 10px 12px; 
-                gap: 10px; 
-                border-left-width: 5px; 
-                border-radius: 16px;
+                padding: 14px 12px; 
+                gap: 12px; 
+                border-left-width: 6px; 
+                border-radius: 20px;
                 flex-direction: row;
                 flex-wrap: wrap;
                 align-items: center;
             }
-            .expense-img { width: 50px; height: 50px; border-radius: 12px; }
-            .expense-info { flex: 1; min-width: calc(100% - 120px); text-align: left; }
-            .expense-info h3 { font-size: 1rem; margin-bottom: 3px; color: #c0392b; }
-            .expense-info p { font-size: 0.75rem; margin: 2px 0; color: #7f8c8d; }
-            .expense-info strong { font-size: 0.75rem; }
-            .expense-info small { font-size: 0.6rem; display: block; margin-top: 3px; }
-            .expense-price { font-size: 0.85rem; padding: 3px 10px; border-radius: 25px; margin-left: auto; white-space: nowrap; }
-            .delete-btn { padding: 5px 12px; font-size: 0.7rem; width: auto; margin-top: 0; }
+            /* وێنە گەورەتر و چوارگۆشەی پڕ */
+            .expense-img { 
+                width: 80px; 
+                height: 80px; 
+                border-radius: 16px; 
+                object-fit: cover;
+            }
+            .expense-info { 
+                flex: 1; 
+                min-width: calc(100% - 100px); 
+                text-align: left;
+                padding: 0 5px;
+            }
+            /* زانیاریەکان زۆر گەورەتر */
+            .expense-info h3 { 
+                font-size: 1.3rem; 
+                margin-bottom: 5px; 
+                color: #c0392b;
+                font-weight: 800;
+            }
+            .expense-info p { 
+                font-size: 0.95rem; 
+                margin: 4px 0; 
+                color: #7f8c8d;
+            }
+            .expense-info strong { 
+                font-size: 0.95rem; 
+            }
+            .expense-info small { 
+                font-size: 0.7rem; 
+                display: block; 
+                margin-top: 5px;
+                color: #95a5a6;
+            }
+            /* نرخەکە لای چەپی ناوەڕاست و گەورەتر */
+            .expense-price { 
+                font-size: 1.2rem; 
+                font-weight: 800;
+                padding: 5px 15px; 
+                border-radius: 30px; 
+                background: #fef5e8;
+                color: #e67e22;
+                display: inline-block;
+                width: fit-content;
+                margin: 0;
+                align-self: center;
+            }
+            .delete-btn { 
+                padding: 6px 14px; 
+                font-size: 0.75rem; 
+                width: auto; 
+                margin-top: 0;
+                background: #e74c3c;
+                color: white;
+                border: none;
+                border-radius: 40px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+            
+            /* ڕێکخستنی کارت بۆ مۆبایل */
+            .expense-card {
+                display: grid;
+                grid-template-columns: 80px 1fr auto;
+                align-items: center;
+                gap: 10px;
+            }
+            .expense-img {
+                grid-row: span 2;
+                align-self: start;
+                margin-top: 5px;
+            }
+            .expense-info {
+                grid-column: 2;
+                grid-row: 1;
+            }
+            .expense-price {
+                grid-column: 2;
+                grid-row: 2;
+                justify-self: start;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+            .delete-btn {
+                grid-column: 3;
+                grid-row: 1 / span 2;
+                align-self: center;
+                justify-self: end;
+            }
             
             .modal-content { padding: 16px 14px; border-radius: 28px; width: 94%; }
             .modal-title { font-size: 1rem; margin-bottom: 8px; }
@@ -742,11 +823,12 @@
         /* Extra small devices (480px and below) */
         @media (max-width: 480px) {
             .hero-header h1 { font-size: 1rem; }
-            .expense-card { padding: 8px 10px; }
-            .expense-img { width: 42px; height: 42px; border-radius: 10px; }
-            .expense-info h3 { font-size: 0.9rem; }
-            .expense-info p { font-size: 0.7rem; }
-            .expense-price { font-size: 0.75rem; padding: 2px 8px; }
+            .expense-card { grid-template-columns: 65px 1fr auto; gap: 8px; padding: 12px 10px; }
+            .expense-img { width: 65px; height: 65px; }
+            .expense-info h3 { font-size: 1.1rem; }
+            .expense-info p { font-size: 0.85rem; }
+            .expense-price { font-size: 1rem; padding: 3px 12px; }
+            .delete-btn { padding: 4px 10px; font-size: 0.65rem; }
             .today-total-amount { font-size: 0.8rem; }
             .total-amount { font-size: 0.9rem; }
         }
