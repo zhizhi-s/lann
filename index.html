@@ -254,18 +254,168 @@
         .small-cta { font-size: 0.65rem; color: #ccaa77; text-align: center; margin-top: 5px; }
         .footer-note { text-align: center; margin-top: 1.5rem; font-size: 0.65rem; color: #b2894b; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 
-        /* Responsive */
-        @media (max-width: 450px) {
-            body { padding: 0.8rem; }
-            .glass-card { padding: 1.2rem 1rem 1.5rem; border-radius: 2rem; }
-            .avatar-burger { width: 70px; height: 70px; border-radius: 25px; }
-            .platform-icon-img { width: 28px; height: 28px; border-radius: 8px; }
-            .platform-name { font-size: 0.95rem; }
-            .link-btn { padding: 0.5rem 1rem; }
-            .branches-row { gap: 0.7rem; }
-            .branch-inner { padding: 0.8rem 0.5rem; }
-            .branch-icon { width: 45px; height: 45px; font-size: 1.8rem; }
-            .branch-title { font-size: 0.85rem; }
+        /* ========== RESPONSIVE FIX: ONLY FOR MOBILE & SMALL SCREENS ========== */
+        /* ئەم بەشە تەنها بۆ مۆبایل و شاشە بچووکەکانە (بە پێی داواکاری) */
+        @media (max-width: 540px) {
+            /* کەم کردنەوەی هەموو پەدینگ و مارجینەکان بۆ کەمکردنی بەرزی کۆی کارتەکە */
+            body {
+                padding: 0.6rem;
+                align-items: flex-start;
+            }
+            .glass-card {
+                padding: 1rem 0.9rem 1.2rem;
+                margin-top: 0.2rem;
+                margin-bottom: 0.2rem;
+                border-radius: 1.8rem;
+                max-width: 100%;
+            }
+            /* هێدەر بچووک بکەوە */
+            .hero {
+                margin-bottom: 0.6rem;
+            }
+            .avatar-burger {
+                width: 58px;
+                height: 58px;
+                border-radius: 22px;
+                margin-bottom: 0.4rem;
+                box-shadow: 0 10px 15px -5px rgba(0,0,0,0.5), 0 0 0 2px #ffcd7e, 0 0 0 4px rgba(0,0,0,0.2);
+            }
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 0;
+            }
+            .delivery-badge {
+                padding: 0.2rem 0.8rem;
+                font-size: 0.6rem;
+                margin-top: 5px;
+                gap: 5px;
+            }
+            .delivery-badge i {
+                font-size: 0.7rem;
+            }
+            
+            /* ========== گرنگترین بەش: دوو لۆکەیشنەکە لە تەنیشت یەک بن (flex-direction: row) ========== */
+            .branches-row {
+                display: flex;
+                flex-direction: row !important;   /* بەهێزکردن بۆ ئەوەی لەسەر یەک نەبن */
+                flex-wrap: nowrap;                /* نەهێشتنی پیچان بۆ شاشە بچووکەکان، بۆ ئەوەی لە تەنیشت یەک بمێننەوە */
+                gap: 0.7rem;
+                margin: 0.8rem 0 0.6rem;
+                justify-content: center;
+            }
+            .branch-card {
+                min-width: 0;          /* ڕێگە بدە بۆ کەمکردنەوەی قەبارە */
+                flex: 1;
+                width: calc(50% - 0.35rem);
+                max-width: 50%;
+                border-radius: 1.2rem;
+            }
+            .branch-inner {
+                padding: 0.6rem 0.3rem;
+                gap: 5px;
+            }
+            .branch-icon {
+                width: 42px;
+                height: 42px;
+                font-size: 1.6rem;
+            }
+            .branch-title {
+                font-size: 0.75rem;
+                white-space: nowrap;
+            }
+            .branch-address {
+                font-size: 0.6rem;
+                gap: 3px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .branch-address span {
+                font-size: 0.55rem;
+                white-space: nowrap;
+            }
+            .branch-arrow {
+                font-size: 0.65rem;
+            }
+            
+            /* کەمکردنەوەی پەدینگەکانی لینکەکانی خوارەوە بۆ کەمکردنی بەرزی لاپەڕە */
+            .link-item {
+                margin-bottom: 0.55rem;
+            }
+            .link-btn {
+                padding: 0.45rem 1rem;
+            }
+            .platform-icon-img {
+                width: 28px;
+                height: 28px;
+                border-radius: 8px;
+            }
+            .platform-name {
+                font-size: 0.9rem;
+            }
+            .link-left {
+                gap: 0.7rem;
+            }
+            
+            /* پرۆمۆ کارد */
+            .promo-card {
+                margin: 0.6rem 0 0.4rem;
+                padding: 0.5rem 0.8rem;
+            }
+            .promo-text {
+                font-size: 0.75rem;
+            }
+            .code {
+                padding: 3px 12px;
+                font-size: 0.85rem;
+            }
+            .small-cta {
+                font-size: 0.6rem;
+                margin-top: 2px;
+            }
+            .footer-note {
+                margin-top: 0.8rem;
+                gap: 0.6rem;
+                font-size: 0.55rem;
+            }
+        }
+        
+        /* بۆ ئەو شاشانەی کە زۆر بچووکن وەک 380px، ئەم هەنگاوانە زیاتر ڕێکدەخەین */
+        @media (max-width: 480px) {
+            .branch-title {
+                white-space: normal;
+                font-size: 0.7rem;
+                line-height: 1.2;
+            }
+            .branch-address span {
+                white-space: normal;
+                font-size: 0.5rem;
+            }
+            .branch-inner {
+                padding: 0.5rem 0.2rem;
+            }
+            .branch-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 1.4rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .branch-title {
+                font-size: 0.68rem;
+            }
+            .branch-address span {
+                font-size: 0.48rem;
+            }
+            .link-btn {
+                padding: 0.4rem 0.8rem;
+            }
+            .platform-name {
+                font-size: 0.8rem;
+            }
+            .glass-card {
+                padding: 0.9rem 0.7rem 1rem;
+            }
         }
 
         @media (min-height: 800px) {
