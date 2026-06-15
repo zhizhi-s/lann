@@ -1,1453 +1,398 @@
 <!DOCTYPE html>
-<html lang="ku">
+<html lang="ckb">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>ICE POP - خواردنی خێرا | خەرجی ڕۆژانەی چێشتخانە</title>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>FastFood LinkTree | Responsive Full Screen</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
 
         body {
-            background: linear-gradient(145deg, #fff9f0 0%, #ffe6d5 100%);
             min-height: 100vh;
+            width: 100%;
+            background: radial-gradient(circle at 10% 30%, #0f0c08, #1a1308);
+            background-attachment: fixed;
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
             position: relative;
         }
 
-        body::before {
-            content: "🍔🌭🍟 ICE POP 🍕🥙🍔";
+        /* بەرهەمەکانی Fast Food لە پشتەوە */
+        .bg-bite {
             position: fixed;
-            bottom: 10px;
-            right: 10px;
-            font-size: 100px;
-            font-weight: bold;
-            color: rgba(255, 200, 150, 0.15);
-            white-space: pre;
+            font-size: 12rem;
+            opacity: 0.08;
             pointer-events: none;
+            user-select: none;
             z-index: 0;
-            transform: rotate(-5deg);
-            font-family: monospace;
         }
+        .bg-item-1 { bottom: 0; left: -50px; transform: rotate(-15deg); }
+        .bg-item-2 { top: 5%; right: -30px; transform: rotate(10deg); font-size: 10rem; }
+        .bg-item-3 { bottom: 20%; right: 15%; opacity: 0.06; font-size: 8rem; }
 
-        body::after {
-            content: "🍔🍟🌭🍕🥙🔥🍔";
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 70px;
-            color: rgba(255, 180, 100, 0.06);
-            pointer-events: none;
-            z-index: 0;
-            white-space: pre;
-        }
-
-        .container {
-            max-width: 1400px;
+        /* کانتینەری سەرەکی - شووشەیی */
+        .glass-card {
+            width: 100%;
+            max-width: 550px;
             margin: 0 auto;
-            padding: 20px;
-            position: relative;
+            background: rgba(22, 18, 14, 0.55);
+            backdrop-filter: blur(14px);
+            border-radius: 2.5rem;
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 100, 0, 0.1) inset;
+            padding: 1.8rem 1.5rem 2rem;
+            transition: all 0.2s ease;
             z-index: 2;
         }
 
-        .hero-header {
-            background: linear-gradient(135deg, #ff7e5e, #feb47b);
-            border-radius: 48px;
-            padding: 30px 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+        /* هێدەر */
+        .hero {
             text-align: center;
-            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .avatar-burger {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 0.8rem;
+            border-radius: 30px;
+            background: #2a1f12;
+            box-shadow: 0 15px 25px -8px rgba(0,0,0,0.5), 0 0 0 3px #ffcd7e, 0 0 0 6px rgba(0,0,0,0.2);
             overflow: hidden;
-        }
-
-        .hero-header h1 {
-            font-size: 3.2rem;
-            letter-spacing: 2px;
-            color: white;
-            text-shadow: 3px 3px 0 #d2691e;
-            font-weight: 800;
-        }
-
-        .hero-header p {
-            font-size: 1.4rem;
-            color: #fff3e0;
-            font-weight: 500;
-            margin-top: 8px;
-        }
-
-        .login-buttons-wrapper {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-start;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .btn-login {
-            background: #2c3e50;
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 60px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.25s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .btn-login:hover {
-            background: #e67e22;
-            transform: scale(1.02);
-        }
-        
-        .btn-login.delete-login {
-            background: #8e44ad;
-        }
-        
-        .btn-login.delete-login:hover {
-            background: #c0392b;
-        }
-
-        .total-stats-section {
-            background: white;
-            border-radius: 48px;
-            padding: 20px 32px;
-            margin-bottom: 32px;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-            border: 1px solid #ffe0b5;
-        }
-
-        .total-header {
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: space-between;
-            border-bottom: 2px dashed #ffce9e;
-            padding-bottom: 12px;
-            margin-bottom: 16px;
-        }
-
-        .total-header h2 {
-            font-size: 1.7rem;
-            color: #c0392b;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .total-amount {
-            font-size: 2.4rem;
-            font-weight: 800;
-            background: linear-gradient(145deg, #f39c12, #e67e22);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .total-badge {
-            background: #2c3e50;
-            padding: 8px 20px;
-            border-radius: 80px;
-            color: white;
-            font-weight: bold;
-        }
-
-        .today-total-section {
-            background: linear-gradient(135deg, #ffe6d5, #fff0e0);
-            border-radius: 40px;
-            padding: 12px 24px;
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            border: 1px solid #ffce9e;
-        }
-        .today-total-label {
-            font-weight: bold;
-            color: #c0392b;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .today-total-amount {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #e67e22;
-            background: white;
-            padding: 5px 20px;
-            border-radius: 50px;
-        }
-
-        .range-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 8px;
-            align-items: center;
-        }
-
-        .range-btn {
-            background: #fce4c5;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 60px;
-            font-weight: 600;
-            cursor: pointer;
             transition: 0.2s;
-            color: #a6491c;
         }
-
-        .range-btn.active {
-            background: #e67e22;
-            color: white;
-            box-shadow: 0 4px 12px rgba(230,126,34,0.3);
+        .avatar-burger:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px #ff8800;
         }
-
-        .custom-range {
-            display: flex;
+        .avatar-burger img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        h1 {
+            font-size: clamp(1.8rem, 6vw, 2.4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFE6B0, #FFA01E);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .delivery-badge {
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #fff1e2;
-            padding: 6px 16px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            padding: 0.3rem 1rem;
             border-radius: 60px;
+            margin-top: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #ffcf8a;
+            border: 0.5px solid #ffa447;
+            flex-wrap: wrap;
+            justify-content: center;
         }
+        .delivery-badge i { font-size: 0.8rem; }
 
-        .custom-range input {
-            width: 75px;
-            padding: 8px;
-            border-radius: 50px;
-            border: 1px solid #ffb46b;
-            text-align: center;
+        /* ========== دوو دوگمەی نوێ بۆ شوێنەکان ========== */
+        .branches-row {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-
-        .apply-range {
-            background: #f39c12;
-            border: none;
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .filter-section {
-            background: rgba(255,255,240,0.95);
+        .branch-card {
+            flex: 1;
+            min-width: 160px;
+            background: rgba(0, 0, 0, 0.55);
             backdrop-filter: blur(8px);
-            border-radius: 60px;
-            padding: 20px 30px;
-            margin-bottom: 40px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 18px;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border-radius: 1.5rem;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 170, 70, 0.6);
+            overflow: hidden;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.4);
         }
-
-        .date-filter {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        .branch-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffbb55;
+            box-shadow: 0 18px 28px -8px black;
         }
-
-        .date-filter label {
-            font-weight: 600;
-            color: #a0522d;
-        }
-
-        input[type="date"] {
-            border: 1px solid #ffb485;
-            padding: 8px 12px;
-            border-radius: 40px;
-            font-size: 1rem;
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .btn-filter {
-            background: #ffb347;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #2d2b26;
-        }
-
-        .btn-filter.active {
-            background: #e67e22;
-            color: white;
-            box-shadow: 0 4px 10px #e67e2270;
-        }
-
-        .expenses-grid {
+        .branch-inner {
             display: flex;
             flex-direction: column;
-            gap: 24px;
-        }
-
-        .expense-card {
-            background: white;
-            border-radius: 32px;
-            padding: 20px 28px;
-            display: flex;
-            flex-wrap: wrap;
             align-items: center;
-            gap: 20px;
-            box-shadow: 0 12px 28px -8px rgba(0,0,0,0.1);
+            padding: 1rem 0.8rem;
+            text-align: center;
+            gap: 8px;
+        }
+        .branch-icon {
+            font-size: 2.2rem;
+            background: rgba(255, 200, 100, 0.15);
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 60px;
             transition: 0.2s;
-            border-left: 12px solid #f39c12;
-            cursor: pointer;
         }
-
-        .expense-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 24px 36px -12px rgba(0,0,0,0.2);
-            background: #fffef7;
+        .branch-card:hover .branch-icon {
+            background: rgba(255, 160, 30, 0.4);
+            transform: scale(1.02);
         }
-
-        .expense-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 28px;
-            object-fit: cover;
-            background: #f7e9dd;
-            border: 2px solid #ffd89a;
-            cursor: pointer;
+        .branch-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #ffdfaa;
+            letter-spacing: 0.3px;
+        }
+        .branch-address {
+            font-size: 0.7rem;
+            color: #dbb87a;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .branch-arrow {
+            color: #ffaa44;
+            font-size: 0.8rem;
             transition: transform 0.2s;
         }
-        .expense-img:hover {
-            transform: scale(1.02);
+        .branch-card:hover .branch-arrow {
+            transform: translateX(4px);
         }
+        /* جیاوازی ڕەنگ بۆ هەر دوگمەیەک */
+        .branch-university {
+            border-top: 3px solid #4caf50;
+        }
+        .branch-university .branch-icon {
+            color: #8bc34a;
+        }
+        .branch-park {
+            border-top: 3px solid #ff9800;
+        }
+        .branch-park .branch-icon {
+            color: #ffb74d;
+        }
+        /* ================================= */
 
-        .expense-info {
-            flex: 3;
-            min-width: 180px;
-        }
-
-        .expense-info h3 {
-            font-size: 1.5rem;
-            color: #c0392b;
-        }
-
-        .expense-info p {
-            color: #7f8c8d;
-            margin: 4px 0;
-        }
-
-        .expense-price {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #e67e22;
-            background: #fef5e8;
-            padding: 6px 18px;
-            border-radius: 40px;
-        }
-
-        .delete-btn {
-            background: #e74c3c;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .delete-btn:hover {
-            background: #c0392b;
-            transform: scale(0.96);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.85);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            background: linear-gradient(125deg, #fffaf2, #fff2e6);
-            border-radius: 64px;
-            max-width: 550px;
-            width: 90%;
-            padding: 32px 28px;
-            position: relative;
-            box-shadow: 0 30px 50px rgba(0,0,0,0.3);
-            border: 2px solid #ffbc7a;
-            animation: fadeSlideUp 0.3s ease-out;
-        }
-        @keyframes fadeSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .modal-close {
-            position: absolute;
-            right: 24px;
-            top: 20px;
-            font-size: 32px;
-            cursor: pointer;
-            color: #c0392b;
-            transition: 0.2s;
-            background: none;
-            border: none;
-            font-weight: bold;
-        }
-        .modal-close:hover {
-            transform: scale(1.2);
-            color: #e67e22;
-        }
-        .modal-img {
-            width: 100%;
-            max-height: 220px;
-            object-fit: cover;
-            border-radius: 48px;
-            margin-bottom: 20px;
-            border: 3px solid #ffb46b;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .modal-img:hover {
-            opacity: 0.95;
-        }
-        .modal-title {
-            font-size: 2rem;
-            color: #c0392b;
-            margin-bottom: 12px;
-            font-weight: 800;
-        }
-        .modal-detail {
-            font-size: 1.2rem;
-            margin: 12px 0;
+        /* لینک کارتەکانی خوارەوە (سۆشیال میدیا) */
+        .link-item { margin-bottom: 0.9rem; }
+        .link-btn {
             display: flex;
-            align-items: baseline;
-            gap: 12px;
-            flex-wrap: wrap;
-            border-bottom: 1px dashed #ffcf9a;
-            padding-bottom: 12px;
-        }
-        .modal-label {
-            font-weight: 700;
-            background: #ffddb0;
-            padding: 4px 14px;
-            border-radius: 30px;
-            color: #a3411b;
-        }
-        .modal-value {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        .modal-price {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #e67e22;
-            margin-top: 15px;
-            text-align: center;
-            background: #ffe3ca;
-            padding: 12px;
-            border-radius: 60px;
-        }
-        .modal-footer {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .close-modal-btn {
-            background: #e67e22;
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 60px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .image-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.95);
-            z-index: 2000;
-            justify-content: center;
             align-items: center;
-            cursor: pointer;
-            flex-direction: column;
-        }
-        .full-image {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 32px;
-            box-shadow: 0 0 40px rgba(255,180,100,0.5);
-            animation: zoomFade 0.25s ease-out;
-        }
-        @keyframes zoomFade {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        .close-image-btn {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            font-size: 48px;
-            color: white;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            text-shadow: 0 0 8px black;
-            transition: 0.2s;
-        }
-        .close-image-btn:hover {
-            transform: scale(1.2);
-            color: #ffa559;
-        }
-        .image-caption {
-            margin-top: 20px;
-            color: #ffddbb;
-            font-size: 1.2rem;
-            background: rgba(0,0,0,0.6);
-            padding: 8px 20px;
+            justify-content: space-between;
+            background: rgba(10, 8, 5, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 0.6rem 1.2rem;
             border-radius: 60px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 140, 0, 0.4);
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-
-        .form-page, .login-page {
-            background: white;
-            border-radius: 48px;
-            padding: 40px;
-            max-width: 700px;
-            margin: 40px auto;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.2);
-            position: relative;
-            z-index: 100;
+        .link-left {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
         }
-
-        .form-page h2, .login-page h2 {
-            font-size: 2rem;
-            color: #e67e22;
-            margin-bottom: 28px;
+        .platform-icon-img {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #1f1a12;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: 60px;
-            border: 1px solid #ffcd94;
-            font-size: 1rem;
-        }
-
-        .submit-btn {
-            background: #e67e22;
-            color: white;
-            padding: 14px 30px;
-            border: none;
-            border-radius: 60px;
-            font-weight: bold;
+        .platform-name {
             font-size: 1.1rem;
-            cursor: pointer;
-            width: 100%;
+            font-weight: 600;
+            color: #fae6c2;
         }
-
-        .back-home {
-            display: inline-block;
-            margin-top: 20px;
-            background: #95a5a6;
-            color: white;
-            padding: 10px 22px;
-            border-radius: 40px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .logout-btn {
-            background: #c0392b;
-            margin-left: 10px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: #b87333;
-        }
-
-        .admin-badge {
-            background: #27ae60;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            margin-left: 15px;
-        }
+        .link-btn .arrow-icon { color: #ffaa44; font-size: 1.3rem; transition: transform 0.2s ease; }
         
-        .delete-badge {
-            background: #e67e22;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            margin-left: 15px;
+        /* hover effects for socials */
+        .link-tiktok:hover { border-color: #00f2ea; box-shadow: 0 0 12px rgba(0, 242, 234, 0.4); background: #11100c; }
+        .link-instagram:hover { border-color: #fccc7a; box-shadow: 0 0 12px #f56040; background: linear-gradient(120deg, #2a1e2c, #1f1822);}
+        .link-facebook:hover { border-color: #3b82f6; box-shadow: 0 0 12px #1877f2; background: #10131c; }
+        .link-snapchat:hover { border-color: #fffc00; box-shadow: 0 0 12px #fffb00; background: #2a2a0e; }
+        .link-snapchat:hover .platform-name { color: #fffbbe; }
+        .link-btn:hover .arrow-icon { transform: translateX(6px); }
+        .link-btn:active { transform: scale(0.97); }
+
+        /* پرۆمۆ کۆد */
+        .promo-card {
+            background: linear-gradient(115deg, #2d2418, #1f1910);
+            margin: 1rem 0 0.8rem;
+            border-radius: 1.8rem;
+            padding: 0.7rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            border: 1px solid #ffbb55;
+            box-shadow: 0 4px 0 #6b3f00;
+        }
+        .promo-text { display: flex; align-items: center; gap: 8px; font-weight: 600; color: #ffe5b4; font-size: 0.85rem; }
+        .promo-text i { font-size: 1.4rem; }
+        .code { background: #000000aa; backdrop-filter: blur(8px); padding: 5px 15px; border-radius: 50px; font-family: monospace; font-weight: bold; font-size: 1rem; letter-spacing: 1px; color: #ffcd7e; border: 1px solid #ffaa33; }
+        .small-cta { font-size: 0.65rem; color: #ccaa77; text-align: center; margin-top: 5px; }
+        .footer-note { text-align: center; margin-top: 1.5rem; font-size: 0.65rem; color: #b2894b; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+        /* Responsive */
+        @media (max-width: 450px) {
+            body { padding: 0.8rem; }
+            .glass-card { padding: 1.2rem 1rem 1.5rem; border-radius: 2rem; }
+            .avatar-burger { width: 70px; height: 70px; border-radius: 25px; }
+            .platform-icon-img { width: 28px; height: 28px; border-radius: 8px; }
+            .platform-name { font-size: 0.95rem; }
+            .link-btn { padding: 0.5rem 1rem; }
+            .branches-row { gap: 0.7rem; }
+            .branch-inner { padding: 0.8rem 0.5rem; }
+            .branch-icon { width: 45px; height: 45px; font-size: 1.8rem; }
+            .branch-title { font-size: 0.85rem; }
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.2rem;
-            color: #e67e22;
+        @media (min-height: 800px) {
+            .glass-card { margin: 1rem auto; }
         }
 
-        .helper-link {
-            display: inline-block;
-            margin-top: 5px;
-            font-size: 0.75rem;
-            color: #e67e22;
-            text-decoration: none;
-            background: #fff0e0;
-            padding: 5px 12px;
-            border-radius: 40px;
-            transition: 0.2s;
+        /* animation */
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(15px);}
+            to { opacity: 1; transform: translateY(0);}
         }
-        .helper-link:hover {
-            background: #e67e22;
-            color: white;
-            text-decoration: underline;
-        }
-
-        /* ============ دیزاینی نوێ بۆ مۆبایل و شاشە بچووکەکان ============ */
-        @media (max-width: 768px) {
-            .container { padding: 8px; }
-            .hero-header { padding: 12px 10px; border-radius: 24px; margin-bottom: 16px; }
-            .hero-header h1 { font-size: 1.2rem; text-shadow: 1px 1px 0 #d2691e; }
-            .hero-header p { font-size: 0.65rem; line-height: 1.2; }
-            .login-buttons-wrapper { gap: 6px; margin-bottom: 10px; justify-content: center; }
-            .btn-login { padding: 6px 12px; font-size: 0.65rem; border-radius: 30px; }
-            .total-stats-section { padding: 10px 12px; border-radius: 20px; margin-bottom: 16px; }
-            .total-header { gap: 6px; padding-bottom: 8px; margin-bottom: 10px; }
-            .total-header h2 { font-size: 0.8rem; }
-            .total-amount { font-size: 1rem; }
-            .total-badge { font-size: 0.6rem; padding: 3px 10px; }
-            .today-total-section { padding: 6px 12px; margin-top: 8px; border-radius: 30px; }
-            .today-total-label { font-size: 0.7rem; }
-            .today-total-amount { font-size: 0.9rem; padding: 2px 10px; border-radius: 30px; }
-            .range-filters { gap: 6px; margin-top: 8px; }
-            .range-btn { padding: 4px 10px; font-size: 0.6rem; border-radius: 30px; }
-            .custom-range { padding: 3px 8px; gap: 4px; }
-            .custom-range span { font-size: 0.6rem; }
-            .custom-range input { width: 45px; padding: 4px; font-size: 0.6rem; }
-            .apply-range { padding: 3px 8px; font-size: 0.6rem; }
-            .filter-section { padding: 10px 12px; border-radius: 24px; gap: 10px; margin-bottom: 16px; flex-direction: column; align-items: stretch; }
-            .date-filter { padding: 5px 12px; gap: 6px; justify-content: center; }
-            .date-filter label { font-size: 0.65rem; }
-            input[type="date"] { padding: 4px 8px; font-size: 0.65rem; }
-            .filter-buttons { gap: 8px; justify-content: center; }
-            .btn-filter { padding: 5px 12px; font-size: 0.65rem; border-radius: 25px; }
-            .expenses-grid { gap: 12px; }
-            
-            /* دیزاینی نوێ بۆ کارتی زانیاری لەسەر مۆبایل - قەبارەی گونجاو و جوان */
-            .expense-card { 
-                background: linear-gradient(135deg, #ffffff 0%, #fffef7 100%);
-                border-radius: 20px;
-                padding: 12px;
-                border-left: none;
-                border: 1px solid #ffe0b5;
-                box-shadow: 0 6px 14px rgba(0,0,0,0.06);
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 12px;
-                transition: all 0.2s ease;
-            }
-            .expense-card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-                background: #ffffff;
-            }
-            
-            /* وێنەکە - قەبارەی مامناوەند و چوارگۆشەی خاو */
-            .expense-img { 
-                width: 70px; 
-                height: 70px; 
-                border-radius: 16px; 
-                object-fit: cover;
-                border: 2px solid #f39c12;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                background: #fef5e8;
-            }
-            
-            /* بەشی زانیاری */
-            .expense-info { 
-                flex: 1;
-                padding: 0;
-            }
-            
-            /* ناوی سەرەکی - جوان و ڕوون */
-            .expense-info h3 { 
-                font-size: 1rem; 
-                font-weight: 800; 
-                color: #c0392b;
-                margin-bottom: 4px;
-                letter-spacing: -0.3px;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-            .expense-info h3::before {
-                content: "👤";
-                font-size: 0.9rem;
-            }
-            
-            /* ناوی کاڵا */
-            .expense-info p { 
-                font-size: 0.75rem; 
-                margin: 3px 0;
-                color: #7f8c8d;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-            }
-            .expense-info p:first-of-type::before {
-                content: "🍽️";
-                font-size: 0.7rem;
-            }
-            .expense-info p:last-of-type::before {
-                content: "💰";
-                font-size: 0.7rem;
-            }
-            .expense-info strong { 
-                font-weight: 600;
-                color: #e67e22;
-            }
-            
-            /* بەروار */
-            .expense-info small { 
-                font-size: 0.55rem; 
-                display: block;
-                margin-top: 4px;
-                color: #b87333;
-                background: #fff0e0;
-                display: inline-block;
-                padding: 2px 8px;
-                border-radius: 20px;
-            }
-            
-            /* نرخەکە - بەڵگەی نرخی دیار */
-            .expense-price { 
-                font-size: 0.9rem; 
-                font-weight: 800;
-                padding: 6px 12px;
-                border-radius: 30px;
-                background: linear-gradient(135deg, #e67e22, #f39c12);
-                color: white;
-                text-align: center;
-                white-space: nowrap;
-                box-shadow: 0 2px 6px rgba(230,126,34,0.3);
-                margin-left: auto;
-            }
-            
-            /* دوگمەی سڕینەوە */
-            .delete-btn { 
-                padding: 6px 12px; 
-                font-size: 0.7rem; 
-                background: #e74c3c;
-                color: white;
-                border: none;
-                border-radius: 30px;
-                cursor: pointer;
-                font-weight: bold;
-                transition: 0.2s;
-                white-space: nowrap;
-            }
-            .delete-btn:hover {
-                background: #c0392b;
-                transform: scale(0.97);
-            }
-            
-            /* ڕێکخستنی کارت بە گریـد */
-            .expense-card {
-                display: grid;
-                grid-template-columns: 70px 1fr auto;
-                gap: 10px;
-                align-items: center;
-            }
-            .expense-img {
-                grid-row: span 2;
-                align-self: center;
-            }
-            .expense-info {
-                grid-column: 2;
-                grid-row: 1;
-            }
-            .expense-price {
-                grid-column: 2;
-                grid-row: 2;
-                justify-self: start;
-                margin-top: 4px;
-            }
-            .delete-btn {
-                grid-column: 3;
-                grid-row: 1 / span 2;
-                align-self: center;
-                justify-self: end;
-            }
-            /* ئەگەر دوگمەی سڕینەوە نەبوو */
-            .expense-card:not(:has(.delete-btn)) .expense-price {
-                grid-row: 1;
-                align-self: center;
-            }
-            
-            .modal-content { padding: 16px 14px; border-radius: 28px; width: 94%; }
-            .modal-title { font-size: 1rem; margin-bottom: 8px; }
-            .modal-img { max-height: 130px; border-radius: 22px; margin-bottom: 10px; }
-            .modal-detail { font-size: 0.7rem; margin: 6px 0; padding-bottom: 6px; gap: 6px; }
-            .modal-label { padding: 2px 8px; font-size: 0.6rem; }
-            .modal-value { font-size: 0.7rem; }
-            .modal-price { font-size: 1rem; padding: 6px; margin-top: 8px; }
-            .close-modal-btn { padding: 6px 16px; font-size: 0.7rem; }
-            .form-page, .login-page { padding: 18px 14px; margin: 16px auto; width: 96%; border-radius: 24px; }
-            .form-page h2, .login-page h2 { font-size: 1.1rem; margin-bottom: 16px; }
-            .form-group { margin-bottom: 12px; }
-            .form-group label { font-size: 0.7rem; }
-            .form-group input { padding: 8px 12px; font-size: 0.7rem; border-radius: 30px; }
-            .submit-btn { padding: 8px 12px; font-size: 0.8rem; }
-            .back-home { padding: 6px 12px; font-size: 0.7rem; margin-top: 12px; }
-            .helper-link { font-size: 0.6rem; padding: 3px 8px; }
-            body::before { font-size: 30px; bottom: 3px; right: 3px; opacity: 0.08; }
-            body::after { font-size: 20px; top: 5px; left: 5px; opacity: 0.05; }
-            footer { font-size: 0.55rem; margin-top: 20px; }
-            .admin-badge, .delete-badge { font-size: 0.55rem; padding: 3px 8px; }
-            .full-image { max-width: 95%; max-height: 70%; }
-            .close-image-btn { top: 10px; right: 15px; font-size: 30px; }
-            .image-caption { font-size: 0.65rem; padding: 4px 10px; }
-        }
-
-        /* بۆ شاشەی زۆر بچووک */
-        @media (max-width: 480px) {
-            .expense-card { grid-template-columns: 55px 1fr auto; gap: 8px; padding: 10px; }
-            .expense-img { width: 55px; height: 55px; border-radius: 12px; }
-            .expense-info h3 { font-size: 0.85rem; }
-            .expense-info p { font-size: 0.65rem; }
-            .expense-price { font-size: 0.75rem; padding: 4px 10px; }
-            .delete-btn { padding: 4px 10px; font-size: 0.6rem; }
-            .today-total-amount { font-size: 0.75rem; }
-            .total-amount { font-size: 0.85rem; }
-        }
+        .glass-card { animation: fadeSlide 0.5s ease-out; }
+        .hero { opacity: 0; animation: fadeSlide 0.3s forwards; }
+        .branches-row { opacity: 0; animation: fadeSlide 0.4s forwards; animation-delay: 0.1s; }
+        .link-item { opacity: 0; animation: fadeSlide 0.3s forwards; }
+        .link-item:nth-child(1) { animation-delay: 0.2s; }
+        .link-item:nth-child(2) { animation-delay: 0.25s; }
+        .link-item:nth-child(3) { animation-delay: 0.3s; }
+        .link-item:nth-child(4) { animation-delay: 0.35s; }
     </style>
 </head>
 <body>
-<div class="container" id="app">
-    <div class="login-buttons-wrapper" id="loginButtonsWrapper">
-        <button class="btn-login" id="loginMainBtn">🔐 Log In (Admin - زیادکردن)</button>
-        <button class="btn-login delete-login" id="loginDeleteBtn">🗑️ Log In (Delete - سڕینەوە)</button>
-    </div>
-    <div class="hero-header">
-        <h1>🍔🌭🍟 ICE POP 🍕🥙🍔</h1>
-        <p>خەرجی ڕۆژانەی چێشتخانە (خواردنی خێرا) | کلیک لەسەر کارت یان وێنە بکە بۆ بینینی وردەکاری</p>
+
+<div class="bg-bite bg-item-1">🍔</div>
+<div class="bg-bite bg-item-2">🍟</div>
+<div class="bg-bite bg-item-3">🥤</div>
+
+<div class="glass-card">
+    <div class="hero">
+        <div class="avatar-burger">
+            <img src="https://i.ibb.co/Kjnhk4xK/file-00000000f9987243bd6be0b8b9ee667b.jpg" alt="Fast Food Logo">
+        </div>
+        <h1>ICE POP</h1>
+        <div class="delivery-badge">
+            <i class="fas fa-motorcycle"></i> <span>Fast Delivery • 15-20 دەقیقە</span> <i class="fas fa-bolt"></i>
+        </div>
     </div>
 
-    <div class="total-stats-section" id="totalStatsCard">
-        <div class="total-header">
-            <h2>💰 کۆی گشتی خەرجی: <span id="totalSumAmount" class="total-amount">0</span> دینار</h2>
-            <div class="total-badge" id="totalRangeLabel">هەموو خەرجیەکان</div>
-        </div>
-        <div class="today-total-section">
-            <div class="today-total-label">📅 کۆی گشتی خەرجی ئەمڕۆ:</div>
-            <div class="today-total-amount" id="todayTotalAmount">0 دینار</div>
-        </div>
-        <div class="range-filters">
-            <button data-days="5" class="range-btn">📆 5 ڕۆژی کۆتایی</button>
-            <button data-days="10" class="range-btn">📆 10 ڕۆژی کۆتایی</button>
-            <button data-days="15" class="range-btn">📆 15 ڕۆژی کۆتایی</button>
-            <button data-days="20" class="range-btn">📆 20 ڕۆژی کۆتایی</button>
-            <div class="custom-range">
-                <span>✏️ ڕۆژ:</span>
-                <input type="number" id="customDaysInput" min="1" max="365" placeholder="ژمارە">
-                <button id="applyCustomRange" class="apply-range">فلتەر</button>
+    <!-- دوو دوگمەی جوان بۆ شوێنەکان (لقی یەکەم و لقی دووەم) -->
+    <div class="branches-row">
+        <!-- لقی یەکەم: زانکۆ -->
+        <a href="https://maps.app.goo.gl/S3P37ZqbPJdRzqGE7" target="_blank" rel="noopener" class="branch-card branch-university">
+            <div class="branch-inner">
+                <div class="branch-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="branch-title">لقی یەکەم • زانکۆ</div>
+                <div class="branch-address">
+                    <i class="fas fa-map-pin"></i> <span>پیشاندان لە گووگڵ مەیپ</span>
+                    <i class="fas fa-arrow-right branch-arrow"></i>
+                </div>
             </div>
-            <button id="resetTotalFilter" class="range-btn" style="background:#e1b992;">🏠 کۆی گشتی هەموو</button>
-        </div>
+        </a>
+
+        <!-- لقی دووەم: 32 پاڕک -->
+        <a href="https://maps.app.goo.gl/GmEcootTVRKEzM4f7" target="_blank" rel="noopener" class="branch-card branch-park">
+            <div class="branch-inner">
+                <div class="branch-icon">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <div class="branch-title">لقی دووەم • 32 پاڕک</div>
+                <div class="branch-address">
+                    <i class="fas fa-map-pin"></i> <span>پیشاندان لە گووگڵ مەیپ</span>
+                    <i class="fas fa-arrow-right branch-arrow"></i>
+                </div>
+            </div>
+        </a>
     </div>
 
-    <div class="filter-section">
-        <div class="date-filter">
-            <label>📅 بەروار بۆ فلتەر:</label>
-            <input type="date" id="filterDate">
-        </div>
-        <div class="filter-buttons">
-            <button id="todayBtn" class="btn-filter active">📆 لیستی خەرجی ئەمڕۆ</button>
-            <button id="allBtn" class="btn-filter">🗂️ هەموو خەرجی کۆنەکان</button>
-        </div>
+    <!-- TikTok -->
+    <div class="link-item">
+        <a href="https://www.tiktok.com/@icepopfood?_r=1&_t=ZS-97ExUuL4D2d" target="_blank" rel="noopener" class="link-btn link-tiktok">
+            <div class="link-left">
+                <img class="platform-icon-img" src="https://i.ibb.co/Dfv88rsj/images-1.jpg" alt="TikTok Logo">
+                <span class="platform-name">TikTok</span>
+            </div>
+            <i class="fas fa-arrow-right arrow-icon"></i>
+        </a>
     </div>
 
-    <div id="expensesList" class="expenses-grid">
-        <div class="loading">🔄 بارکردنی زانیارییەکان لە Firebase...</div>
+    <!-- Instagram -->
+    <div class="link-item">
+        <a href="https://www.instagram.com/icepop32park?igsh=MWhpY3cxcHV4bnMydA==" target="_blank" rel="noopener" class="link-btn link-instagram">
+            <div class="link-left">
+                <img class="platform-icon-img" src="https://i.ibb.co/mFDkzqBr/file-00000000f9987243bd6be0b8b9ee667b.jpg" alt="Instagram Logo">
+                <span class="platform-name">Instagram</span>
+            </div>
+            <i class="fas fa-arrow-right arrow-icon"></i>
+        </a>
     </div>
-    <footer>🔥 ICE POP-ســیــســتــەمــێــک بــۆ خــەرجــی ڕۆژانــەی چــێــشــتــخــانــەی 
-       <br> BY: Zhyar</br>
-    </footer>
-</div>
 
-<div id="infoModal" class="modal">
-    <div class="modal-content">
-        <button class="modal-close" id="closeModalBtn">&times;</button>
-        <img id="modalImage" class="modal-img" src="https://placehold.co/400x200?text=🍔" alt="وێنە">
-        <div class="modal-title" id="modalTitle">نــاوی خــەرجــکــار یــان مــیــوان:</div>
-        <div class="modal-detail"><span class="modal-label">🍽️نــاوی کاڵا یــان خــواردن:</span> <span class="modal-value" id="modalItemName">---</span></div>
-        <div class="modal-detail"><span class="modal-label">💰 نرخ (دینار):</span> <span class="modal-value" id="modalPrice">0</span></div>
-        <div class="modal-detail"><span class="modal-label">📅 بەروار:</span> <span class="modal-value" id="modalDate">----</span></div>
-        <div class="modal-detail"><span class="modal-label">🕒 کاتی تۆمارکردن:</span> <span class="modal-value" id="modalTime">----</span></div>
-        <div class="modal-price" id="modalFormattedPrice">💰 0 IQD</div>
-        <div class="modal-footer">
-            <button class="close-modal-btn" id="modalFooterBtn">داخستن</button>
-        </div>
+    <!-- Facebook -->
+    <div class="link-item">
+        <a href="https://www.facebook.com/share/18EJgpJgZr/" target="_blank" rel="noopener" class="link-btn link-facebook">
+            <div class="link-left">
+                <img class="platform-icon-img" src="https://i.ibb.co/d0mw3fxH/facebook-new-logo-change-designboom-02-1.jpg" alt="Facebook Logo">
+                <span class="platform-name">Facebook</span>
+            </div>
+            <i class="fas fa-arrow-right arrow-icon"></i>
+        </a>
     </div>
-</div>
 
-<div id="fullImageModal" class="image-modal">
-    <button class="close-image-btn" id="closeImageModalBtn">✖</button>
-    <img id="fullScreenImage" class="full-image" src="" alt="وێنەی گەورە">
-    <div class="image-caption" id="imageCaption">وێنەی کاڵا</div>
+    <!-- Snapchat -->
+    <div class="link-item">
+        <a href="https://www.snapchat.com/add/icepop32.park?share_id=5lB9KafctL0&locale=en-US" target="_blank" rel="noopener" class="link-btn link-snapchat">
+            <div class="link-left">
+                <img class="platform-icon-img" src="https://i.ibb.co/k23XzmGP/file-00000000f9987243bd6be0b8b9ee667b.jpg" alt="Snapchat Logo">
+                <span class="platform-name">Snapchat</span>
+            </div>
+            <i class="fas fa-arrow-right arrow-icon"></i>
+        </a>
+    </div>
+
+    <div class="promo-card">
+        <div class="promo-text"><i class="fas fa-ticket-alt"></i><span>کۆدی دابەزین</span></div>
+        <div class="code">none</div>
+    </div>
+    <div class="small-cta"><i class="fas fa-clock"></i> ئایس پۆپ هەڵژێرە</div>
+
+    <div class="footer-note">
+        <span><i class="fas fa-map-marker-alt"></i> هەولێر / زانکۆ و 32 پاڕک</span>
+        <span><i class="fas fa-hashtag"></i> #FastLinkTree</span>
+    </div>
 </div>
 
 <script>
-    // Firebase configuration and app logic (unchanged)
-    const firebaseConfig = {
-        apiKey: "AIzaSyDpMvqqiMJF_bcoAOEC4gC9CJrvdDlJVMA",
-        authDomain: "icepop-3ed45.firebaseapp.com",
-        projectId: "icepop-3ed45",
-        storageBucket: "icepop-3ed45.firebasestorage.app",
-        messagingSenderId: "635220816671",
-        appId: "1:635220816671:web:71a452ec17bacd3ee0b62a",
-        measurementId: "G-GLZ0MJXGL9"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    
-    const COLLECTION_NAME = "xarje";
-    const DOC_ID = "1CRssfrJepDusoQQcMh";
-    
-    let isAdmin = false;
-    let isDeleteMode = false;
-    let currentFilterMode = "today"; 
-    let currentTotalRangeMode = "all";
-    let totalDaysValue = null;
-
-    function getTodayStr() {
-        return new Date().toISOString().slice(0, 10);
-    }
-    
-    async function fetchExpenses() {
-        try {
-            const docRef = db.collection(COLLECTION_NAME).doc(DOC_ID);
-            const docSnap = await docRef.get();
-            if (docSnap.exists) {
-                const data = docSnap.data();
-                return data.items || [];
-            } else {
-                await docRef.set({ items: [] });
-                return [];
-            }
-        } catch (error) {
-            console.error("Error fetching expenses:", error);
-            return [];
-        }
-    }
-    
-    async function saveExpenses(expenses) {
-        try {
-            await db.collection(COLLECTION_NAME).doc(DOC_ID).set({ items: expenses });
-            return true;
-        } catch (error) {
-            console.error("Error saving expenses:", error);
-            return false;
-        }
-    }
-    
-    async function addExpense(expense) {
-        const expenses = await fetchExpenses();
-        expense.id = Date.now() + "_" + Math.floor(Math.random() * 10000);
-        expense.createdAt = new Date().toISOString();
-        expenses.push(expense);
-        await saveExpenses(expenses);
-        await renderExpensesAndTotal();
-    }
-    
-    async function deleteExpense(id) {
-        let expenses = await fetchExpenses();
-        expenses = expenses.filter(exp => exp.id != id);
-        await saveExpenses(expenses);
-        await renderExpensesAndTotal();
-    }
-    
-    function computeTotalByDays(expenses, days) {
-        if (!days) return expenses.reduce((sum, e) => sum + (Number(e.nrx) || 0), 0);
-        const now = new Date();
-        const cutoff = new Date();
-        cutoff.setDate(now.getDate() - days);
-        const filtered = expenses.filter(exp => {
-            if (!exp.createdAt) return false;
-            const expDate = new Date(exp.createdAt);
-            return expDate >= cutoff;
-        });
-        return filtered.reduce((sum, e) => sum + (Number(e.nrx) || 0), 0);
-    }
-
-    function computeTodayTotal(expenses) {
-        const todayStr = getTodayStr();
-        const filtered = expenses.filter(exp => {
-            const expDate = exp.createdAt ? exp.createdAt.slice(0, 10) : "";
-            return expDate === todayStr;
-        });
-        return filtered.reduce((sum, e) => sum + (Number(e.nrx) || 0), 0);
-    }
-
-    async function updateTodayTotalCard(expensesAll) {
-        const todayTotal = computeTodayTotal(expensesAll);
-        document.getElementById('todayTotalAmount').innerText = todayTotal.toLocaleString() + " دینار";
-    }
-    
-    async function updateTotalCard(expensesAll) {
-        let total = 0;
-        let label = "";
-        if (currentTotalRangeMode === "all") {
-            total = expensesAll.reduce((sum, e) => sum + (Number(e.nrx) || 0), 0);
-            label = "کۆی گشتی هەموو خەرجیەکان";
-        } else if (currentTotalRangeMode === "days" && totalDaysValue !== null) {
-            total = computeTotalByDays(expensesAll, totalDaysValue);
-            label = `کۆی دوایین ${totalDaysValue} ڕۆژ`;
-        }
-        document.getElementById('totalSumAmount').innerText = total.toLocaleString();
-        document.getElementById('totalRangeLabel').innerText = label;
-        await updateTodayTotalCard(expensesAll);
-    }
-    
-    function showFullscreenImage(imgUrl, title) {
-        const fullModal = document.getElementById('fullImageModal');
-        const fullImg = document.getElementById('fullScreenImage');
-        const caption = document.getElementById('imageCaption');
-        fullImg.src = imgUrl;
-        caption.innerText = title || "وێنەی خواردن";
-        fullModal.style.display = "flex";
-        fullImg.onerror = () => {
-            fullImg.src = "https://placehold.co/800x500?text=🍔+وێنە+نییە";
-            caption.innerText = "وێنە بەردەست نییە";
-        };
-    }
-    
-    function closeFullscreenImage() {
-        document.getElementById('fullImageModal').style.display = "none";
-    }
-    
-    function showExpenseInfo(expense) {
-        const modal = document.getElementById('infoModal');
-        const modalImg = document.getElementById('modalImage');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalItemName = document.getElementById('modalItemName');
-        const modalPriceSpan = document.getElementById('modalPrice');
-        const modalDateSpan = document.getElementById('modalDate');
-        const modalTimeSpan = document.getElementById('modalTime');
-        const modalFormatted = document.getElementById('modalFormattedPrice');
-        
-        let imgUrl = expense.wena && expense.wena.trim() !== "" ? expense.wena : "https://placehold.co/400x200?text=🍔+خواردنی+خێرا";
-        modalImg.src = imgUrl;
-        modalImg.onerror = () => { modalImg.src = "https://placehold.co/400x200?text=🍔+خواردن"; };
-        
-        modalImg.onclick = (e) => {
-            e.stopPropagation();
-            showFullscreenImage(modalImg.src, expense.nawk || "وێنە");
-        };
-        
-        modalTitle.innerText = escapeHtml(expense.naw || "بەکارهێنەر");
-        modalItemName.innerText = escapeHtml(expense.nawk || "بێ ناو");
-        const priceNumber = Number(expense.nrx) || 0;
-        modalPriceSpan.innerText = priceNumber.toLocaleString();
-        modalFormatted.innerText = `💰 ${priceNumber.toLocaleString()} دیناری عێراقی`;
-        
-        let dateObj = new Date(expense.createdAt);
-        if (isNaN(dateObj.getTime())) {
-            modalDateSpan.innerText = "بەروار نییە";
-            modalTimeSpan.innerText = "---";
-        } else {
-            modalDateSpan.innerText = dateObj.toLocaleDateString('ku-IR');
-            modalTimeSpan.innerText = dateObj.toLocaleTimeString('ku-IR');
-        }
-        
-        modal.style.display = "flex";
-    }
-    
-    function closeModal() {
-        document.getElementById('infoModal').style.display = "none";
-    }
-    
-    async function renderExpenses() {
-        const container = document.getElementById('expensesList');
-        container.innerHTML = '<div class="loading">⏳ بارکردنی داتا...</div>';
-        
-        let allExpenses = await fetchExpenses();
-        let filtered = [];
-        const todayStr = getTodayStr();
-        const selectedDate = document.getElementById('filterDate').value;
-        
-        if (currentFilterMode === "today") {
-            filtered = allExpenses.filter(exp => {
-                const expDate = exp.createdAt ? exp.createdAt.slice(0, 10) : "";
-                return expDate === todayStr;
-            });
-            if (filtered.length === 0) {
-                filtered = [...allExpenses].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            } else {
-                filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            }
-        } else {
-            filtered = [...allExpenses].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            if (selectedDate && currentFilterMode === "all") {
-                filtered = filtered.filter(exp => exp.createdAt?.slice(0, 10) === selectedDate);
-            }
-        }
-        
-        if (filtered.length === 0) {
-            container.innerHTML = `<div style="background:#fff2e6; border-radius:48px; padding:40px; text-align:center;">😢 هیچ خەرجیەک نەدۆزرایەوە. تکایە خەرجی نوێ تۆمار بکە.</div>`;
-            return;
-        }
-        
-        const showDeleteButtons = isDeleteMode;
-        
-        container.innerHTML = filtered.map(exp => {
-            const imageUrl = exp.wena && exp.wena.trim() !== "" ? escapeHtml(exp.wena) : "https://placehold.co/70x70?text=🍔";
-            return `
-            <div class="expense-card" data-id="${exp.id}" data-exp-data='${JSON.stringify(exp).replace(/'/g, "&#39;")}'>
-                <img class="expense-img" src="${imageUrl}" alt="وێنەی کاڵا" data-imgurl="${imageUrl}" data-itemname="${escapeHtml(exp.nawk)}" onerror="this.src='https://placehold.co/70x70?text=🍔'">
-                <div class="expense-info">
-                    <h3>${escapeHtml(exp.naw)}</h3>
-                    <p><strong>${escapeHtml(exp.nawk)}</strong></p>
-                    <p><strong>${Number(exp.nrx).toLocaleString()}</strong> دینار</p>
-                    <small>📅 ${exp.createdAt ? new Date(exp.createdAt).toLocaleDateString('ku-IR') : 'بەروار نییە'}</small>
-                </div>
-                <div class="expense-price">💰 ${Number(exp.nrx).toLocaleString()}</div>
-                ${showDeleteButtons ? `<button class="delete-btn" onclick="event.stopPropagation(); handleDelete('${exp.id}')">🗑️ بسڕەوە</button>` : ''}
-            </div>
-        `}).join('');
-        
-        document.querySelectorAll('.expense-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                if(e.target.classList && e.target.classList.contains('delete-btn')) return;
-                const rawData = card.getAttribute('data-exp-data');
-                if(rawData) {
-                    try {
-                        const expenseObj = JSON.parse(rawData);
-                        showExpenseInfo(expenseObj);
-                    } catch(e) { console.warn(e); }
-                }
-            });
-            
-            const imgElem = card.querySelector('.expense-img');
-            if(imgElem) {
-                imgElem.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    let imgUrl = imgElem.getAttribute('data-imgurl') || imgElem.src;
-                    let itemName = imgElem.getAttribute('data-itemname') || 'وێنە';
-                    showFullscreenImage(imgUrl, itemName);
-                });
-            }
-        });
-    }
-    
-    async function renderExpensesAndTotal() {
-        await renderExpenses();
-        const allItems = await fetchExpenses();
-        await updateTotalCard(allItems);
-    }
-    
-    window.handleDelete = async function(id) {
-        if (confirm('دڵنیای لە سڕینەوەی ئەم خەرجییە؟')) {
-            await deleteExpense(id);
-        }
-    };
-    
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-    
-    // Login and form functions (same as before)
-    function showMainLoginPage() {
-        document.getElementById('app').style.display = 'none';
-        const loginDiv = document.createElement('div');
-        loginDiv.id = 'loginPage';
-        loginDiv.className = 'login-page';
-        loginDiv.innerHTML = `
-            <h2>🔑 چوونە ژوورەوەی بەڕێوەبەر (زیادکردن)</h2>
-            <div class="form-group"><label>👤 ناوی بەکارهێنەر (User)</label><input type="text" id="loginUser" placeholder="user"></div>
-            <div class="form-group"><label>🔒 پاسۆرد (Password)</label><input type="password" id="loginPass" placeholder="password"></div>
-            <button id="submitLogin" class="submit-btn">✅ لاگین کردن</button>
-            <button id="closeLogin" class="back-home">🏠 گەڕانەوە بۆ هۆم</button>
-        `;
-        document.body.appendChild(loginDiv);
-        document.getElementById('submitLogin').addEventListener('click', () => {
-            const user = document.getElementById('loginUser').value;
-            const pass = document.getElementById('loginPass').value;
-            if (user === 'pop' && pass === '32p') {
-                isAdmin = true; isDeleteMode = false;
-                alert('✅ لاگین سەرکەوتوو!');
-                loginDiv.remove();
-                document.getElementById('app').style.display = 'block';
-                updateAdminUI();
-                renderExpensesAndTotal();
-                showExpenseForm();
-            } else { alert('❌ هەڵە! user=pop و password=32p'); }
-        });
-        document.getElementById('closeLogin').addEventListener('click', () => {
-            loginDiv.remove();
-            document.getElementById('app').style.display = 'block';
-        });
-    }
-    
-    function showDeleteLoginPage() {
-        document.getElementById('app').style.display = 'none';
-        const loginDiv = document.createElement('div');
-        loginDiv.id = 'loginPageDelete';
-        loginDiv.className = 'login-page';
-        loginDiv.innerHTML = `
-            <h2>🗑️ چوونە ژوورەوە بۆ سڕینەوە</h2>
-            <div class="form-group"><label>👤 ناوی بەکارهێنەر (User)</label><input type="text" id="loginUserDelete" placeholder="user"></div>
-            <div class="form-group"><label>🔒 پاسۆرد (Password)</label><input type="password" id="loginPassDelete" placeholder="password"></div>
-            <button id="submitLoginDelete" class="submit-btn">✅ لاگین کردن بۆ سڕینەوە</button>
-            <button id="closeLoginDelete" class="back-home">🏠 گەڕانەوە بۆ هۆم</button>
-        `;
-        document.body.appendChild(loginDiv);
-        document.getElementById('submitLoginDelete').addEventListener('click', () => {
-            const user = document.getElementById('loginUserDelete').value;
-            const pass = document.getElementById('loginPassDelete').value;
-            if (user === 'n4' && pass === 'd4') {
-                isDeleteMode = true; isAdmin = false;
-                alert('✅ لاگین سەرکەوتوو!');
-                loginDiv.remove();
-                document.getElementById('app').style.display = 'block';
-                updateAdminUI();
-                renderExpensesAndTotal();
-            } else { alert('❌ هەڵە! user=n4 و password=d4'); }
-        });
-        document.getElementById('closeLoginDelete').addEventListener('click', () => {
-            loginDiv.remove();
-            document.getElementById('app').style.display = 'block';
-        });
-    }
-    
-    function updateAdminUI() {
-        const wrapper = document.getElementById('loginButtonsWrapper');
-        if (isAdmin) {
-            wrapper.innerHTML = `<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; width: 100%;"><span class="admin-badge">✅ ئەدمینی زیادکردن چالاکە</span><button class="btn-login" id="addExpenseBtn">➕ تۆمارکردنی خەرجی نوێ</button><button class="btn-login logout-btn" id="logoutBtn">🚪 Log Out</button></div>`;
-            document.getElementById('addExpenseBtn')?.addEventListener('click', showExpenseForm);
-            document.getElementById('logoutBtn')?.addEventListener('click', () => { isAdmin = false; isDeleteMode = false; updateAdminUI(); renderExpensesAndTotal(); resetLoginButtons(); });
-        } else if (isDeleteMode) {
-            wrapper.innerHTML = `<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; width: 100%;"><span class="delete-badge">🗑️ مۆدی سڕینەوە چالاکە</span><button class="btn-login logout-btn" id="logoutDeleteBtn">🚪 Log Out (سڕینەوە)</button></div>`;
-            document.getElementById('logoutDeleteBtn')?.addEventListener('click', () => { isDeleteMode = false; isAdmin = false; updateAdminUI(); renderExpensesAndTotal(); resetLoginButtons(); });
-        } else { resetLoginButtons(); }
-    }
-    
-    function resetLoginButtons() {
-        const wrapper = document.getElementById('loginButtonsWrapper');
-        wrapper.innerHTML = `<button class="btn-login" id="loginMainBtn">🔐 Log In (Admin - زیادکردن)</button><button class="btn-login delete-login" id="loginDeleteBtn">🗑️ Log In (Delete - سڕینەوە)</button>`;
-        document.getElementById('loginMainBtn')?.addEventListener('click', showMainLoginPage);
-        document.getElementById('loginDeleteBtn')?.addEventListener('click', showDeleteLoginPage);
-    }
-    
-    function showExpenseForm() {
-        if (!isAdmin) { alert('تکایە یەکەمجار لاگین بکە بۆ زیادکردنی خەرجی (pop / 32p)'); return; }
-        document.getElementById('app').style.display = 'none';
-        const formDiv = document.createElement('div');
-        formDiv.id = 'expenseForm';
-        formDiv.className = 'form-page';
-        formDiv.innerHTML = `
-            <h2>📝 تۆمارکردنی خەرجی نوێ</h2>
-            <div class="form-group"><label>1. نــاوی خــەرجــکــار یــان مــیــوان:</label><input id="formNaw" placeholder="نمونە: ڕەزا یان ئارام"></div>
-            <div class="form-group"><label>2. نــاوی کاڵا یــان خــواردن:</label><input id="formNawk" placeholder="نمونە: بەرگەر, پیزا, فرایز, هۆتدۆگ"></div>
-            <div class="form-group"><label>3. نرخەکەی (دینار):</label><input id="formNrx" type="number" placeholder="نرخ بە دینار"></div>
-            <div class="form-group"><label>4. وێنە (لینکی وێنە):</label><input id="formWena" placeholder="https://example.com/food.jpg"><a href="https://sigmawire.net/image-to-url-converter" target="_blank" class="helper-link">🔗 کلیک بکە بۆ ئامادەکردنی لینکی وێنە</a></div>
-            <button id="saveExpense" class="submit-btn">💾 ناردن و تۆمارکردن</button>
-            <button id="closeForm" class="back-home">🏠 گەڕانەوە بۆ هۆم</button>
-        `;
-        document.body.appendChild(formDiv);
-        document.getElementById('saveExpense').addEventListener('click', async () => {
-            const naw = document.getElementById('formNaw').value.trim();
-            const nawk = document.getElementById('formNawk').value.trim();
-            const nrx = document.getElementById('formNrx').value.trim();
-            const wena = document.getElementById('formWena').value.trim();
-            if (!naw || !nawk || !nrx) { alert('تکایە ناو، ناوی کاڵا و نرخ پڕ بکەوە'); return; }
-            await addExpense({ naw, nawk, nrx: Number(nrx), wena: wena || "https://placehold.co/200x150?text=🍔" });
-            alert('✅ خەرجیەکە بە سەرکەوتوویی تۆمار کرا!');
-            formDiv.remove();
-            document.getElementById('app').style.display = 'block';
-            await renderExpensesAndTotal();
-        });
-        document.getElementById('closeForm').addEventListener('click', () => {
-            formDiv.remove();
-            document.getElementById('app').style.display = 'block';
-        });
-    }
-    
-    function bindModalEvents() {
-        const modal = document.getElementById('infoModal');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const footerBtn = document.getElementById('modalFooterBtn');
-        if(closeBtn) closeBtn.onclick = closeModal;
-        if(footerBtn) footerBtn.onclick = closeModal;
-        window.onclick = function(e) {
-            if(e.target === modal) closeModal();
-            const fullModal = document.getElementById('fullImageModal');
-            if(e.target === fullModal) closeFullscreenImage();
-        };
-        const closeImageBtn = document.getElementById('closeImageModalBtn');
-        if(closeImageBtn) closeImageBtn.onclick = closeFullscreenImage;
-    }
-    
-    function setupRangeControls() {
-        document.querySelectorAll('.range-btn[data-days]').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const days = parseInt(btn.getAttribute('data-days'));
-                currentTotalRangeMode = "days";
-                totalDaysValue = days;
-                const allExp = await fetchExpenses();
-                await updateTotalCard(allExp);
-                document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const resetBtn = document.getElementById('resetTotalFilter');
-                if(resetBtn) resetBtn.classList.remove('active');
-            });
-        });
-        const applyCustom = document.getElementById('applyCustomRange');
-        if(applyCustom) {
-            applyCustom.addEventListener('click', async () => {
-                const daysInput = document.getElementById('customDaysInput');
-                let daysVal = parseInt(daysInput.value);
-                if(isNaN(daysVal) || daysVal <= 0) daysVal = 7;
-                currentTotalRangeMode = "days";
-                totalDaysValue = daysVal;
-                const allExp = await fetchExpenses();
-                await updateTotalCard(allExp);
-                document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
-                const resetBtn = document.getElementById('resetTotalFilter');
-                if(resetBtn) resetBtn.classList.remove('active');
-            });
-        }
-        const resetTotal = document.getElementById('resetTotalFilter');
-        if(resetTotal) {
-            resetTotal.addEventListener('click', async () => {
-                currentTotalRangeMode = "all";
-                totalDaysValue = null;
-                const allExp = await fetchExpenses();
-                await updateTotalCard(allExp);
-                document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
-                resetTotal.classList.add('active');
-            });
-        }
-    }
-    
-    // ========== ئۆتۆماتیک نوێکردنەوەی تەنها کۆی گشتی خەرجی ئەمڕۆ لە کاتژمێر 2 شەو ==========
-    function scheduleMidnightRefresh() {
-        const now = new Date();
-        // کاتژمێر 2 شەو = 2:00:00
-        const target = new Date();
-        target.setHours(2, 0, 0, 0);
-        
-        // ئەگەر کاتی ئێستا لە 2 شەو تێپەڕیوە، بڕۆ بۆ سبەینێ
-        if (now >= target) {
-            target.setDate(target.getDate() + 1);
-        }
-        
-        const delay = target.getTime() - now.getTime();
-        
-        setTimeout(async () => {
-            // تەنها کۆی گشتی ئەمڕۆ نوێ دەکاتەوە، نەک کۆی گشتی خەرجی
-            const allItems = await fetchExpenses();
-            await updateTodayTotalCard(allItems);  // ← تەنها ئەمە (کۆی گشتی خەرجی ئەمڕۆ)
-            // دووبارە خۆ پلان دانەوە بۆ سبەینێ
-            scheduleMidnightRefresh();
-        }, delay);
-    }
-    
-    // دەستپێکردنی پلانی نوێکردنەوە
-    scheduleMidnightRefresh();
-    // ==========================================
-    
-    document.getElementById('todayBtn').addEventListener('click', () => {
-        currentFilterMode = "today";
-        document.getElementById('todayBtn').classList.add('active');
-        document.getElementById('allBtn').classList.remove('active');
-        renderExpensesAndTotal();
-    });
-    document.getElementById('allBtn').addEventListener('click', () => {
-        currentFilterMode = "all";
-        document.getElementById('allBtn').classList.add('active');
-        document.getElementById('todayBtn').classList.remove('active');
-        renderExpensesAndTotal();
-    });
-    document.getElementById('filterDate').addEventListener('change', () => {
-        if (currentFilterMode === "all") renderExpensesAndTotal();
-    });
-    document.getElementById('filterDate').value = getTodayStr();
-    
-    bindModalEvents();
-    setupRangeControls();
-    renderExpensesAndTotal();
-    resetLoginButtons();
+    console.log("✅ دوو دوگمە بە شێوەی کارتی هاوشێوە و یەک سایز دروستکرا: لقی یەکەم (زانکۆ) و لقی دووەم (32 پاڕک)");
 </script>
 </body>
 </html>
