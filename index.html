@@ -510,7 +510,6 @@
             width: 100%;
         }
 
-        /* کارتی باوان - هەر کارتێک لەناو کارتێکی تر */
         .chef-order-card-wrapper {
             width: 100%;
             max-width: 320px;
@@ -522,7 +521,6 @@
             flex: 0 0 auto;
         }
 
-        /* کارتی منداڵ - کارتە سەرەکیەکە */
         .chef-order-card {
             background: #ffffff;
             border-radius: 20px;
@@ -546,7 +544,6 @@
             box-shadow: 0 12px 35px rgba(108, 92, 231, 0.15);
         }
 
-        /* دۆخی چەپ = چاوەڕوان */
         .chef-order-card-wrapper.position-left {
             border-color: #fdcb6e;
         }
@@ -559,7 +556,6 @@
             color: #1a1a2e;
         }
 
-        /* دۆخی ناوەڕاست = ئامادە دەکرێت */
         .chef-order-card-wrapper.position-center {
             border-color: #74b9ff;
         }
@@ -574,7 +570,6 @@
             color: #1a1a2e;
         }
 
-        /* دۆخی ڕاست = ئامادە کراوە */
         .chef-order-card-wrapper.position-right {
             border-color: #00b894;
         }
@@ -651,7 +646,6 @@
             margin-top: 6px;
         }
 
-        /* ===== گونجاندن بۆ شاشە بچووکەکان ===== */
         @media (max-width: 768px) {
             .chef-horizontal-orders {
                 gap: 18px;
@@ -684,7 +678,6 @@
                 font-size: 12px;
             }
             
-            /* چاککردنی شاشەی کاشێر بۆ مۆبایل */
             .cashier-layout {
                 grid-template-columns: 1fr;
             }
@@ -752,7 +745,6 @@
             }
         }
 
-        /* ===== گونجاندن بۆ شاشە زۆر بچووکەکان (مۆبایلە بچووکەکان) ===== */
         @media (max-width: 480px) {
             .item-grid {
                 grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
@@ -811,7 +803,6 @@
         }
 
         @media (max-width: 1024px) and (min-width: 769px) {
-            /* تابلێت - کارتەکانی شێف بە ٣ کارت لە ڕیز */
             .chef-horizontal-orders {
                 justify-content: center;
                 gap: 20px;
@@ -823,7 +814,6 @@
         }
 
         @media (min-width: 1025px) {
-            /* شاشە گەورەکان - کارتەکانی شێف لە ناوەڕاست */
             .chef-horizontal-orders {
                 justify-content: center;
                 gap: 24px;
@@ -831,6 +821,278 @@
             .chef-order-card-wrapper {
                 max-width: 320px;
                 flex: 0 0 auto;
+            }
+        }
+
+        /* ===== گونجاندنی ژووری بەڕێوبەر بۆ شاشە بچووکەکان ===== */
+        @media (max-width: 768px) {
+            /* باشترکردنی مێنووی بەڕێوبەر */
+            .manager-menu {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            .manager-menu button {
+                padding: 10px 8px;
+                font-size: 13px;
+                text-align: center;
+                white-space: nowrap;
+                border-radius: 10px;
+            }
+
+            /* چاککردنی هیدەر */
+            .header-bar {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 6px;
+                padding: 8px 0;
+            }
+            .header-bar .title {
+                font-size: 16px;
+                order: 1;
+            }
+            .header-bar .branch-select {
+                order: 2;
+                margin-right: auto;
+            }
+            .header-bar .branch-select select {
+                font-size: 12px;
+                padding: 4px 8px;
+                min-width: 80px;
+            }
+            .header-bar .user-info {
+                font-size: 12px;
+                order: 3;
+                width: 100%;
+                text-align: center;
+            }
+            .header-bar .back-btn {
+                order: 4;
+                font-size: 13px;
+                padding: 4px 10px;
+            }
+
+            /* چاککردنی گرید و کارتەکانی ئامار */
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .stat-card {
+                padding: 12px 8px;
+            }
+            .stat-card .number {
+                font-size: 20px;
+            }
+            .stat-card .label {
+                font-size: 11px;
+            }
+
+            /* چاککردنی چارتی مانگانە */
+            .monthly-chart .bar-container {
+                height: 100px;
+                gap: 4px;
+                overflow-x: auto;
+                padding: 6px 0;
+            }
+            .monthly-chart .bar-wrapper {
+                min-width: 28px;
+            }
+            .monthly-chart .bar-value {
+                font-size: 9px;
+            }
+            .monthly-chart .bar-label {
+                font-size: 9px;
+            }
+            .monthly-chart .bar {
+                min-height: 2px;
+            }
+
+            /* چاککردنی تەیبڵی ئایتمەکان */
+            table {
+                font-size: 13px;
+            }
+            table th,
+            table td {
+                padding: 6px 4px;
+                font-size: 12px;
+            }
+            table td .btn-sm {
+                padding: 4px 8px;
+                font-size: 11px;
+                min-width: 30px;
+            }
+
+            /* چاککردنی کارتەکانی شەریکە */
+            .partner-detail-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .partner-detail-card {
+                padding: 14px;
+            }
+            .partner-detail-header {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .partner-detail-name {
+                font-size: 16px;
+            }
+            .partner-detail-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .partner-stat {
+                padding: 8px;
+            }
+            .partner-stat-number {
+                font-size: 18px;
+            }
+            .partner-stat-label {
+                font-size: 10px;
+            }
+            .partner-order-item {
+                font-size: 11px;
+                padding: 6px 6px;
+                gap: 4px;
+            }
+            .partner-order-id {
+                min-width: 40px;
+                font-size: 11px;
+            }
+            .partner-order-total {
+                font-size: 11px;
+                min-width: 60px;
+            }
+            .partner-order-time {
+                font-size: 10px;
+                min-width: 40px;
+            }
+
+            /* چاککردنی بۆکسی زیادکردنی ئایتم */
+            .branch-items-filter {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+            }
+            .branch-items-filter select {
+                width: 100%;
+                font-size: 13px;
+                padding: 6px 10px;
+            }
+            .branch-items-filter label {
+                font-size: 13px;
+            }
+
+            /* چاککردنی داشبۆرد */
+            .dashboard {
+                padding: 14px;
+                border-radius: 16px;
+            }
+            .dashboard h3 {
+                font-size: 17px;
+            }
+            .dashboard h4 {
+                font-size: 14px;
+            }
+
+            /* چاککردنی مۆدال */
+            .modal {
+                padding: 18px;
+                max-width: 95%;
+                border-radius: 18px;
+            }
+            .modal h3 {
+                font-size: 19px;
+            }
+            .modal .form-group label {
+                font-size: 13px;
+            }
+            .modal input, .modal select {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            /* چاککردنی ئۆردەرەکانی ناو داشبۆرد */
+            .dashboard .order-item {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .dashboard .order-item .order-id {
+                font-size: 12px;
+            }
+            .dashboard .order-item .time-stamp {
+                font-size: 10px;
+            }
+            .dashboard .order-item .order-type-badge {
+                font-size: 10px;
+                padding: 1px 8px;
+            }
+
+            .dashboard > div[style*="max-height:300px"] {
+                max-height: 200px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .manager-menu {
+                grid-template-columns: 1fr 1fr;
+                gap: 5px;
+            }
+            .manager-menu button {
+                font-size: 11px;
+                padding: 8px 4px;
+                border-radius: 8px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .stat-card {
+                padding: 8px 4px;
+                border-radius: 10px;
+            }
+            .stat-card .number {
+                font-size: 16px;
+            }
+            .stat-card .label {
+                font-size: 9px;
+            }
+            .header-bar .title {
+                font-size: 14px;
+            }
+            .header-bar .user-info {
+                font-size: 10px;
+            }
+            table th, table td {
+                font-size: 10px;
+                padding: 4px 2px;
+            }
+            table td .btn-sm {
+                font-size: 9px;
+                padding: 2px 6px;
+                min-width: 24px;
+            }
+            .partner-detail-card {
+                padding: 10px;
+            }
+            .partner-detail-name {
+                font-size: 14px;
+            }
+            .partner-stat-number {
+                font-size: 15px;
+            }
+            .monthly-chart .bar-container {
+                height: 80px;
+            }
+            .monthly-chart .bar-wrapper {
+                min-width: 22px;
+            }
+            .monthly-chart .bar-value {
+                font-size: 8px;
+            }
+            .monthly-chart .bar-label {
+                font-size: 8px;
             }
         }
 
@@ -1729,13 +1991,11 @@
         .partner-code-modal .modal .code-error.show {
             display: block;
         }
-        /* ڕێگری لە سکرۆڵی پەیج کە نەگەڕێتەوە سەرەوە */
         .no-scroll-reset {
             overflow-y: auto !important;
             scroll-behavior: auto !important;
         }
 
-        /* جیاکەرەوەی لایڤ داشبۆرد */
         .live-indicator {
             display: inline-block;
             width: 10px;
@@ -1836,12 +2096,10 @@
         const storage = getStorage(app);
         const auth = getAuth(app);
 
-        // ===== Collection 1: sis (هەر وەک خۆی) =====
         const COLLECTION_NAME = 'sis';
         const DOCUMENT_ID = 'LW1oDtX6N4s0o97o1vaz';
         const docRef = doc(db, COLLECTION_NAME, DOCUMENT_ID);
 
-        // ===== Collection 2: partner_orders (تازە بۆ ئۆردەرەکانی شەریکە) =====
         const PARTNER_ORDERS_COLLECTION = 'partner_orders';
 
         const GROUP_OPTIONS = [
@@ -1904,17 +2162,13 @@
             setTimeout(() => t.remove(), 3000);
         }
 
-        // ===== فانکشنی نوێ بۆ نرخەکان بە دیناری عێراقی =====
         function formatPrice(price) {
             if (!price && price !== 0) return '0 د.ع';
-            // گۆڕینی نرخ بۆ ژمارەی تەواو (بەبێ 0.00)
             const rounded = Math.round(price);
-            // زیادکردنی هەزاران بە کۆما
             const formatted = rounded.toLocaleString('en-US');
             return formatted + ' د.ع';
         }
 
-        // فانکشنی پشکنینی نرخ بۆ ئەوەی 0.00 نیشان نەدات
         function formatPriceShort(price) {
             if (!price && price !== 0) return '0';
             const rounded = Math.round(price);
@@ -1958,7 +2212,6 @@
             return days[date.getDay()];
         }
 
-        // ===== Load Items from sis (هەر وەک خۆی) =====
         function loadItemsFromFirestore() {
             if (state.unsubscribeItems) {
                 state.unsubscribeItems();
@@ -2084,7 +2337,6 @@
             }
         }
 
-        // ===== Load Orders from sis (هەر وەک خۆی) =====
         function loadOrdersFromFirestore() {
             if (state.unsubscribeOrders) {
                 state.unsubscribeOrders();
@@ -2113,7 +2365,6 @@
             }
         }
 
-        // ===== Load Partner Orders from partner_orders collection (تازە) =====
         function loadPartnerOrdersFromFirestore() {
             if (state.unsubscribePartnerOrders) {
                 state.unsubscribePartnerOrders();
@@ -2140,7 +2391,6 @@
             }
         }
 
-        // ===== Save Partner Order to partner_orders collection (تازە) =====
         async function savePartnerOrderToFirestore(order) {
             try {
                 await addDoc(collection(db, PARTNER_ORDERS_COLLECTION), order);
@@ -2151,7 +2401,6 @@
             }
         }
 
-        // ===== Save Order to sis (هەر وەک خۆی) =====
         async function saveOrdersToFirestore() {
             try {
                 await updateDoc(docRef, {
@@ -2569,7 +2818,6 @@
             `;
         }
 
-        // =============== بەشی شێف - کارتی وەک کاشێر ===============
         function renderChef() {
             const labels = { grill: 'بەرگر', pizza: 'پیتزا', gas: 'گەس', cashier: 'کاشێر' };
             const roleLabel = labels[state.chefView] || 'شێف';
@@ -2650,9 +2898,7 @@
                 </div>
             `;
         }
-        // =============== کۆتایی بەشی شێف ===============
 
-        // =============== بەشی بەڕێوبەر - داشبۆردی لایڤ ===============
         function renderManager() {
             let filteredItems = state.items.filter(item => item.branch === state.selectedBranch);
 
@@ -2679,7 +2925,6 @@
                 <option value="${b}" ${state.selectedBranch === b ? 'selected' : ''}>${b}</option>
             `).join('');
 
-            // ===== داشبۆرد: تەنها ساڵە و سەفەری (نەک شەریکە) =====
             let dineTakeawayOrders = state.orders.filter(o => {
                 const isPartner = o.partner && o.orderType === 'partner';
                 return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
@@ -2692,13 +2937,11 @@
             const totalDineTakeaway = dineTakeawayOrders.length;
             const totalRevenueDineTakeaway = dineTakeawayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
             
-            // ئاماری بەیانی و شەو بۆ ساڵە و سەفەری
             const morningDineTakeaway = dineTakeawayOrders.filter(o => o.shift === 'morning').length;
             const nightDineTakeaway = dineTakeawayOrders.filter(o => o.shift === 'night').length;
             const morningRevenueDineTakeaway = dineTakeawayOrders.filter(o => o.shift === 'morning').reduce((sum, o) => sum + (o.total || 0), 0);
             const nightRevenueDineTakeaway = dineTakeawayOrders.filter(o => o.shift === 'night').reduce((sum, o) => sum + (o.total || 0), 0);
 
-            // ئاماری کاشێرەکان بۆ ساڵە و سەفەری
             const cashierStatsDineTakeaway = {};
             dineTakeawayOrders.forEach(o => {
                 if (o.cashier) {
@@ -2713,7 +2956,6 @@
                     </div>
                 `).join('') : '<p style="grid-column:1/-1;color:#94a3b8;">هیچ داتایەک نییە</p>';
 
-            // ===== دیتەڵی شەریکە: تەنها ئۆردەرەکانی شەریکە (لە collectionی تازە) =====
             let partnerOrders = state.partnerOrders;
             
             if (state.branchFilter !== 'all') {
@@ -3313,7 +3555,6 @@
                         image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp'
                     };
 
-                    // ===== ئەگەر شەریکە بوو، بچێتە collectionی تازە =====
                     if (state.orderType === 'partner' && state.partner) {
                         await savePartnerOrderToFirestore(orderData);
                         state.cart = [];
@@ -3322,7 +3563,6 @@
                         return;
                     }
 
-                    // ===== ئەگەر ساڵە یان سەفەری بوو، بچێتە sis (هەر وەک خۆی) =====
                     const order = {
                         id: ++state.orderCounter,
                         ...orderData,
