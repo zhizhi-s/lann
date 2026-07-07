@@ -1420,6 +1420,119 @@
         ::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 8px; }
         ::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
 
+        /* ===== چاکسازی تایبەت بە مۆبایل بۆ ئۆردەرەکانی ساڵە و سەفەری ===== */
+        @media (max-width: 768px) {
+            .dashboard .order-item {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 2px 8px !important;
+                padding: 6px 8px !important;
+                font-size: 12px !important;
+                border-right-width: 3px !important;
+                border-radius: 6px !important;
+                margin-bottom: 4px !important;
+                background: #f8fafc !important;
+                border-bottom: 1px solid #e2e8f0 !important;
+                align-items: center !important;
+            }
+            .dashboard .order-item .order-id {
+                font-size: 12px !important;
+                font-weight: 700 !important;
+                color: #6c5ce7 !important;
+                grid-column: 1 / 2 !important;
+            }
+            .dashboard .order-item .order-type-badge {
+                font-size: 9px !important;
+                padding: 1px 8px !important;
+                border-radius: 8px !important;
+                justify-self: end !important;
+                grid-column: 2 / 3 !important;
+                font-weight: 600 !important;
+            }
+            .dashboard .order-item .order-items-text {
+                grid-column: 1 / 3 !important;
+                font-size: 11px !important;
+                color: #1a1a2e !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                font-weight: 500 !important;
+            }
+            .dashboard .order-item .order-price {
+                grid-column: 1 / 2 !important;
+                font-size: 12px !important;
+                font-weight: 700 !important;
+                color: #6c5ce7 !important;
+            }
+            .dashboard .order-item .order-time {
+                grid-column: 2 / 3 !important;
+                font-size: 10px !important;
+                color: #94a3b8 !important;
+                justify-self: end !important;
+            }
+            .dashboard .order-item .order-cashier {
+                grid-column: 1 / 3 !important;
+                font-size: 10px !important;
+                color: #64748b !important;
+                text-align: left !important;
+                font-weight: 500 !important;
+            }
+            .stats-grid .stat-card:nth-child(3) {
+                grid-column: 1 / -1 !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard .order-item {
+                padding: 4px 6px !important;
+                font-size: 10px !important;
+                gap: 1px 6px !important;
+            }
+            .dashboard .order-item .order-id {
+                font-size: 10px !important;
+            }
+            .dashboard .order-item .order-items-text {
+                font-size: 10px !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+            }
+            .dashboard .order-item .order-price {
+                font-size: 10px !important;
+            }
+            .dashboard .order-item .order-time {
+                font-size: 9px !important;
+            }
+            .dashboard .order-item .order-type-badge {
+                font-size: 8px !important;
+                padding: 1px 6px !important;
+            }
+            .dashboard .order-item .order-cashier {
+                font-size: 9px !important;
+            }
+            .monthly-chart .bar-container {
+                height: 80px;
+                gap: 3px;
+            }
+            .monthly-chart .bar-value {
+                font-size: 8px;
+            }
+            .monthly-chart .bar-label {
+                font-size: 8px;
+            }
+            .stats-grid {
+                gap: 4px;
+            }
+            .stat-card .number {
+                font-size: 14px;
+            }
+            .stat-card .label {
+                font-size: 8px;
+            }
+            .partner-detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
             body { padding: 8px; }
             .login-box, .options-box { padding: 20px 16px; }
@@ -2559,11 +2672,11 @@
                                 ${dineTakeawayOrders.length ? dineTakeawayOrders.map(o => `
                                     <div class="order-item" style="border-right-color: ${o.orderType === 'dine' ? '#3498db' : '#f39c12'};">
                                         <span class="order-id">#${o.id}</span>
-                                        <span>${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
                                         <span class="order-type-badge ${o.orderType}">${o.orderType === 'dine' ? '🍽️ ساڵە' : '🛍️ سەفەری'}</span>
-                                        <span>${formatPrice(o.total)}</span>
-                                        <span class="time-stamp">${o.time}</span>
-                                        <span>${o.cashier || ''}</span>
+                                        <span class="order-items-text">${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
+                                        <span class="order-price">${formatPrice(o.total)}</span>
+                                        <span class="order-time">${o.time}</span>
+                                        <span class="order-cashier">${o.cashier || ''}</span>
                                     </div>
                                 `).join('') : '<p style="color:#94a3b8;text-align:center;padding:16px;">هیچ ئۆردەرێکی ساڵە و سەفەری نییە</p>'}
                             </div>
