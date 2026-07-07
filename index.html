@@ -16,8 +16,8 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            align-items: flex-start;
+            padding: 10px;
         }
         #app {
             width: 100%;
@@ -646,112 +646,31 @@
             margin-top: 6px;
         }
 
+        /* ===== گونجاندنی گشتی بۆ شاشە بچووکەکان ===== */
         @media (max-width: 768px) {
-            .chef-horizontal-orders {
-                gap: 18px;
-                justify-content: center;
-            }
-            .chef-order-card-wrapper {
-                max-width: 100%;
-                padding: 6px;
-                flex: 0 0 100%;
-            }
-            .chef-order-card {
-                min-height: 180px;
-                padding: 16px 12px;
-                border-radius: 16px;
-            }
-            .chef-order-card .chef-image-wrapper {
-                max-width: 140px;
-            }
-            .chef-order-card .chef-order-name {
-                font-size: 15px;
-            }
-            .chef-order-card .chef-order-details {
-                font-size: 13px;
-            }
-            .chef-order-card .chef-order-status-label {
-                font-size: 13px;
-                padding: 4px 16px;
-            }
-            .chef-order-card .chef-order-id {
-                font-size: 12px;
-            }
-            
+            /* گونجاندنی کاشێر */
             .cashier-layout {
                 grid-template-columns: 1fr;
-            }
-            .item-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 12px;
+                margin-top: 10px;
             }
             .items-panel {
-                max-height: 50vh;
+                max-height: 45vh;
+                padding: 12px;
+                border-radius: 16px;
             }
-            .order-panel {
-                max-height: 60vh;
-            }
-            .login-box,
-            .options-box {
-                padding: 24px 20px;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .modal {
-                padding: 20px;
-                width: 95%;
-            }
-            .header-bar .title {
-                font-size: 18px;
-            }
-            .chef-login-buttons button {
-                min-width: 80px;
-                padding: 12px 16px;
+            .items-panel h3 {
                 font-size: 16px;
+                margin-bottom: 10px;
+                padding-bottom: 6px;
             }
-            .partner-detail-grid {
-                grid-template-columns: 1fr;
-            }
-            .cashier-partner-buttons button {
-                padding: 6px 12px;
-                min-width: 60px;
-                font-size: 11px;
-                max-width: 100px;
-            }
-            .cashier-partner-buttons button img {
-                width: 30px;
-                height: 30px;
-            }
-            .delivery-options button {
-                padding: 10px 16px;
-                font-size: 14px;
-                min-width: 70px;
-            }
-            .group-filter-buttons button {
-                padding: 4px 10px;
-                font-size: 11px;
-            }
-            .branch-items-filter {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .branch-items-filter select {
-                width: 100%;
-            }
-            .chef-order-mini .btn-complete {
-                padding: 8px 16px;
-                font-size: 14px;
-                min-width: 80px;
-            }
-        }
-
-        @media (max-width: 480px) {
             .item-grid {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
                 gap: 8px;
             }
             .item-card {
                 padding: 8px 4px;
+                border-radius: 12px;
             }
             .item-card .name {
                 font-size: 12px;
@@ -759,78 +678,175 @@
             .item-card .price {
                 font-size: 12px;
             }
+            .item-card .item-image-wrapper .emoji-placeholder {
+                font-size: 30px;
+            }
+            
+            .order-panel {
+                max-height: 55vh;
+                padding: 12px;
+                border-radius: 16px;
+            }
+            .order-panel h3 {
+                font-size: 16px;
+                margin-bottom: 10px;
+                padding-bottom: 6px;
+            }
+            .order-list {
+                max-height: 180px;
+                min-height: 100px;
+                padding: 6px;
+                border-radius: 12px;
+            }
+            .order-item {
+                padding: 6px 8px;
+                font-size: 13px;
+                border-right-width: 3px;
+                border-radius: 8px;
+            }
+            .order-item .qty {
+                width: 22px;
+                height: 22px;
+                font-size: 11px;
+            }
             .order-total {
                 font-size: 16px;
+                padding: 6px 0;
             }
+            .order-actions button {
+                font-size: 13px;
+                padding: 8px;
+                border-radius: 10px;
+                min-width: 60px;
+            }
+            
             .delivery-options button {
                 padding: 8px 12px;
-                font-size: 12px;
+                font-size: 13px;
                 min-width: 60px;
+                border-radius: 10px;
+            }
+            .cashier-partner-buttons button {
+                padding: 4px 8px;
+                min-width: 50px;
+                font-size: 10px;
+                max-width: 80px;
+                border-radius: 10px;
+            }
+            .cashier-partner-buttons button img {
+                width: 24px;
+                height: 24px;
+                border-radius: 6px;
+            }
+            .partner-info-badge {
+                font-size: 11px;
+                padding: 4px 10px;
+                border-radius: 14px;
+            }
+            .partner-info-badge img {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .group-filter-buttons button {
+                padding: 4px 10px;
+                font-size: 11px;
+                border-radius: 14px;
+            }
+            
+            /* گونجاندنی شێف */
+            .chef-horizontal-orders {
+                gap: 12px;
+                padding: 4px 0;
             }
             .chef-order-card-wrapper {
                 max-width: 100%;
                 padding: 4px;
+                flex: 0 0 100%;
+                border-width: 2px;
             }
             .chef-order-card {
-                min-height: 150px;
+                min-height: 140px;
                 padding: 12px 8px;
+                border-radius: 14px;
+                border-width: 2px;
             }
             .chef-order-card .chef-image-wrapper {
                 max-width: 100px;
             }
+            .chef-order-card .chef-image-wrapper .emoji-placeholder {
+                font-size: 35px;
+            }
             .chef-order-card .chef-order-name {
-                font-size: 13px;
+                font-size: 14px;
             }
             .chef-order-card .chef-order-details {
-                font-size: 11px;
+                font-size: 12px;
             }
             .chef-order-card .chef-order-status-label {
+                font-size: 12px;
+                padding: 3px 14px;
+                border-radius: 20px;
+            }
+            .chef-order-card .chef-order-id {
                 font-size: 11px;
-                padding: 3px 12px;
             }
-            .btn {
-                padding: 10px 20px;
-                font-size: 15px;
+            .chef-order-card .chef-order-hint {
+                font-size: 10px;
             }
-            .login-box,
-            .options-box {
-                padding: 16px 12px;
+            .chef-view {
+                padding: 12px;
+                border-radius: 16px;
+                margin-top: 12px;
             }
-            .login-box h2,
-            .options-box h2 {
-                font-size: 20px;
+            .chef-view h3 {
+                font-size: 16px;
+                margin-bottom: 10px;
+                padding-bottom: 6px;
             }
-        }
-
-        @media (max-width: 1024px) and (min-width: 769px) {
-            .chef-horizontal-orders {
-                justify-content: center;
-                gap: 20px;
+            .chef-scroll-wrapper {
+                max-height: 70vh;
+                min-height: 200px;
+                padding: 2px 2px 10px 2px;
             }
-            .chef-order-card-wrapper {
-                max-width: 280px;
-                flex: 0 0 calc(33.33% - 20px);
+            
+            .chef-order-mini {
+                padding: 8px 12px;
+                font-size: 12px;
+                border-radius: 10px;
             }
-        }
-
-        @media (min-width: 1025px) {
-            .chef-horizontal-orders {
-                justify-content: center;
-                gap: 24px;
+            .chef-order-mini .order-id {
+                font-size: 12px;
             }
-            .chef-order-card-wrapper {
-                max-width: 320px;
-                flex: 0 0 auto;
+            .chef-order-mini .order-items {
+                font-size: 11px;
             }
-        }
-
-        /* ===== گونجاندنی ژووری بەڕێوبەر بۆ شاشە بچووکەکان (بچووکتر) ===== */
-        @media (max-width: 768px) {
+            .chef-order-mini .btn-complete {
+                padding: 6px 14px;
+                font-size: 13px;
+                min-width: 70px;
+                border-radius: 10px;
+            }
+            
+            /* گونجاندنی بەڕێوبەر */
+            .dashboard {
+                padding: 12px;
+                border-radius: 16px;
+            }
+            .dashboard h3 {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+            .dashboard h4 {
+                font-size: 13px;
+                margin: 12px 0 6px !important;
+            }
+            
             .manager-menu {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 5px;
-                margin-bottom: 10px;
+                gap: 4px;
+                margin-bottom: 8px;
             }
             .manager-menu button {
                 padding: 6px 4px;
@@ -838,124 +854,73 @@
                 border-radius: 8px;
                 border-width: 1.5px;
             }
-
-            .header-bar {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 4px;
-                padding: 6px 0;
-            }
-            .header-bar .title {
-                font-size: 14px;
-                order: 1;
-            }
-            .header-bar .branch-select {
-                order: 2;
-                margin-right: auto;
-            }
-            .header-bar .branch-select label {
-                font-size: 11px !important;
-            }
-            .header-bar .branch-select select {
-                font-size: 11px;
-                padding: 3px 6px;
-                min-width: 70px;
-                border-width: 1.5px;
-            }
-            .header-bar .user-info {
-                font-size: 10px;
-                order: 3;
-                width: 100%;
-                text-align: center;
-            }
-            .header-bar .back-btn {
-                order: 4;
-                font-size: 11px;
-                padding: 3px 8px;
-            }
-
-            .dashboard {
-                padding: 10px;
-                border-radius: 12px;
-            }
-            .dashboard h3 {
-                font-size: 14px;
-                margin-bottom: 8px;
-            }
-            .dashboard h4 {
-                font-size: 12px;
-                margin: 12px 0 6px !important;
-            }
-
+            
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 5px;
+                gap: 6px;
                 margin-bottom: 10px;
             }
             .stat-card {
-                padding: 6px 4px;
-                border-radius: 8px;
+                padding: 8px 4px;
+                border-radius: 10px;
                 border-width: 1.5px;
             }
             .stat-card .number {
-                font-size: 15px;
+                font-size: 16px;
             }
             .stat-card .label {
-                font-size: 9px;
+                font-size: 10px;
                 margin-top: 2px;
             }
-
+            
             .monthly-chart {
                 padding: 8px;
                 border-radius: 10px;
                 margin-top: 8px;
             }
             .monthly-chart .bar-container {
-                height: 70px;
+                height: 80px;
                 gap: 3px;
                 padding-top: 4px;
             }
             .monthly-chart .bar-wrapper {
-                min-width: 20px;
+                min-width: 18px;
             }
             .monthly-chart .bar-value {
-                font-size: 7px;
+                font-size: 8px;
             }
             .monthly-chart .bar-label {
-                font-size: 7px;
+                font-size: 8px;
             }
-            .monthly-chart .bar {
-                min-height: 2px;
-                border-radius: 4px 4px 0 0;
-            }
-
+            
             .dashboard .order-item {
-                font-size: 10px;
-                padding: 4px 6px;
+                font-size: 11px;
+                padding: 5px 8px;
                 border-right-width: 3px;
                 border-radius: 6px;
                 gap: 3px;
             }
             .dashboard .order-item .order-id {
-                font-size: 10px;
-            }
-            .dashboard .order-item .time-stamp {
-                font-size: 8px;
+                font-size: 11px;
             }
             .dashboard .order-item .order-type-badge {
-                font-size: 8px;
+                font-size: 9px;
                 padding: 1px 6px;
+                border-radius: 8px;
             }
-
+            .dashboard .order-item .time-stamp {
+                font-size: 9px;
+            }
+            
             .dashboard > div[style*="max-height:300px"] {
-                max-height: 150px !important;
+                max-height: 160px !important;
                 border-radius: 8px;
                 padding: 6px !important;
                 border-width: 1.5px !important;
             }
-
+            
             table {
-                font-size: 10px;
+                font-size: 11px;
             }
             table th,
             table td {
@@ -967,7 +932,7 @@
                 font-size: 10px;
             }
             table td .btn-sm {
-                padding: 2px 5px;
+                padding: 2px 6px;
                 font-size: 9px;
                 min-width: 22px;
                 border-radius: 6px;
@@ -983,7 +948,7 @@
                 padding: 1px 6px;
                 border-radius: 8px;
             }
-
+            
             .branch-items-filter {
                 gap: 4px;
                 margin-bottom: 8px;
@@ -996,14 +961,15 @@
                 padding: 4px 8px;
                 border-width: 1.5px;
                 min-width: 100px;
+                border-radius: 8px;
             }
-
+            
             .btn-primary[data-action="show-add-item"] {
                 padding: 6px 14px !important;
                 font-size: 12px !important;
                 border-radius: 8px !important;
             }
-
+            
             .partner-detail-grid {
                 grid-template-columns: 1fr;
                 gap: 8px;
@@ -1042,7 +1008,7 @@
                 font-size: 14px;
             }
             .partner-stat-label {
-                font-size: 8px;
+                font-size: 9px;
             }
             .partner-detail-orders {
                 padding: 6px;
@@ -1050,23 +1016,23 @@
                 max-height: 120px;
             }
             .partner-order-item {
-                font-size: 9px;
+                font-size: 10px;
                 padding: 4px 4px;
                 gap: 3px;
             }
             .partner-order-id {
                 min-width: 30px;
-                font-size: 9px;
+                font-size: 10px;
             }
             .partner-order-items {
                 font-size: 9px;
             }
             .partner-order-total {
-                font-size: 9px;
+                font-size: 10px;
                 min-width: 50px;
             }
             .partner-order-time {
-                font-size: 8px;
+                font-size: 9px;
                 min-width: 30px;
             }
             .partner-order-code {
@@ -1082,7 +1048,7 @@
             .partner-shift {
                 font-size: 10px;
             }
-
+            
             .partner-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
@@ -1113,7 +1079,46 @@
                 padding: 4px 10px !important;
                 margin-top: 4px !important;
             }
-
+            
+            /* گونجاندنی هیدەر */
+            .header-bar {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 4px;
+                padding: 6px 0;
+            }
+            .header-bar .title {
+                font-size: 15px;
+                order: 1;
+            }
+            .header-bar .branch-select {
+                order: 2;
+                margin-right: auto;
+            }
+            .header-bar .branch-select label {
+                font-size: 11px !important;
+            }
+            .header-bar .branch-select select {
+                font-size: 11px;
+                padding: 3px 6px;
+                min-width: 70px;
+                border-width: 1.5px;
+                border-radius: 8px;
+            }
+            .header-bar .user-info {
+                font-size: 11px;
+                order: 3;
+                width: 100%;
+                text-align: center;
+            }
+            .header-bar .back-btn {
+                order: 4;
+                font-size: 12px;
+                padding: 3px 10px;
+                border-radius: 8px;
+            }
+            
+            /* گونجاندنی مۆدال */
             .modal {
                 padding: 14px;
                 border-radius: 14px;
@@ -1155,7 +1160,7 @@
                 padding: 8px 14px;
                 border-radius: 8px;
             }
-
+            
             .partner-code-modal .modal input {
                 font-size: 24px;
                 letter-spacing: 6px;
@@ -1175,38 +1180,131 @@
                 font-size: 12px;
                 margin: 6px 0;
             }
-
+            
             .no-orders {
-                font-size: 11px;
+                font-size: 12px;
                 padding: 10px;
+            }
+            
+            .login-box,
+            .options-box {
+                padding: 24px 20px;
+                border-radius: 18px;
+            }
+            .login-box h2,
+            .options-box h2 {
+                font-size: 22px;
+            }
+            .chef-login-buttons button {
+                min-width: 80px;
+                padding: 12px 16px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+            .btn {
+                font-size: 16px;
+                padding: 12px 20px;
+                border-radius: 10px;
             }
         }
 
         @media (max-width: 480px) {
-            .manager-menu {
-                grid-template-columns: 1fr 1fr;
-                gap: 4px;
+            .item-grid {
+                grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+                gap: 6px;
             }
-            .manager-menu button {
+            .item-card {
+                padding: 6px 2px;
+                border-radius: 10px;
+            }
+            .item-card .name {
+                font-size: 10px;
+            }
+            .item-card .price {
+                font-size: 10px;
+            }
+            .item-card .item-image-wrapper .emoji-placeholder {
+                font-size: 24px;
+            }
+            
+            .order-panel {
+                max-height: 50vh;
+            }
+            .order-list {
+                max-height: 150px;
+                min-height: 80px;
+            }
+            .order-item {
+                font-size: 11px;
+                padding: 4px 6px;
+            }
+            .order-item .qty {
+                width: 18px;
+                height: 18px;
                 font-size: 9px;
-                padding: 5px 2px;
-                border-radius: 6px;
-                border-width: 1px;
             }
-            .header-bar .title {
+            .order-total {
+                font-size: 14px;
+            }
+            .order-actions button {
+                font-size: 11px;
+                padding: 6px;
+                border-radius: 8px;
+                min-width: 50px;
+            }
+            
+            .delivery-options button {
+                padding: 6px 8px;
+                font-size: 11px;
+                min-width: 50px;
+                border-radius: 8px;
+                border-width: 2px;
+            }
+            .cashier-partner-buttons button {
+                padding: 3px 6px;
+                min-width: 40px;
+                font-size: 9px;
+                max-width: 60px;
+                border-radius: 8px;
+                border-width: 2px;
+            }
+            .cashier-partner-buttons button img {
+                width: 18px;
+                height: 18px;
+                border-radius: 4px;
+            }
+            
+            .items-panel h3,
+            .order-panel h3,
+            .chef-view h3 {
+                font-size: 14px;
+            }
+            
+            .chef-order-card {
+                min-height: 120px;
+                padding: 10px 6px;
+            }
+            .chef-order-card .chef-image-wrapper {
+                max-width: 80px;
+            }
+            .chef-order-card .chef-image-wrapper .emoji-placeholder {
+                font-size: 28px;
+            }
+            .chef-order-card .chef-order-name {
                 font-size: 12px;
             }
-            .header-bar .branch-select select {
-                font-size: 9px;
-                padding: 2px 4px;
-                min-width: 60px;
+            .chef-order-card .chef-order-details {
+                font-size: 10px;
             }
-            .header-bar .user-info {
-                font-size: 9px;
+            .chef-order-card .chef-order-status-label {
+                font-size: 10px;
+                padding: 2px 10px;
             }
-            .header-bar .back-btn {
+            
+            .manager-menu button {
                 font-size: 9px;
-                padding: 2px 6px;
+                padding: 4px 2px;
+                border-radius: 6px;
             }
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
@@ -1222,25 +1320,21 @@
             .stat-card .label {
                 font-size: 8px;
             }
-            .dashboard h3 {
-                font-size: 12px;
-            }
-            .dashboard h4 {
-                font-size: 10px;
-            }
+            
             .monthly-chart .bar-container {
-                height: 55px;
+                height: 60px;
                 gap: 2px;
             }
             .monthly-chart .bar-wrapper {
-                min-width: 16px;
+                min-width: 14px;
             }
             .monthly-chart .bar-value {
-                font-size: 6px;
+                font-size: 7px;
             }
             .monthly-chart .bar-label {
-                font-size: 6px;
+                font-size: 7px;
             }
+            
             table th,
             table td {
                 font-size: 8px;
@@ -1252,18 +1346,19 @@
             table td .btn-sm {
                 font-size: 7px;
                 padding: 1px 4px;
-                min-width: 18px;
+                min-width: 16px;
                 border-radius: 4px;
             }
             table td img {
-                width: 22px !important;
-                height: 22px !important;
+                width: 20px !important;
+                height: 20px !important;
             }
             .branch-tag {
-                font-size: 7px;
+                font-size: 6px;
                 padding: 1px 4px;
-                border-radius: 6px;
+                border-radius: 4px;
             }
+            
             .partner-detail-name {
                 font-size: 11px;
             }
@@ -1272,7 +1367,7 @@
             }
             .partner-order-item {
                 font-size: 8px;
-                padding: 3px 3px;
+                padding: 3px 2px;
             }
             .partner-order-id {
                 font-size: 8px;
@@ -1282,18 +1377,23 @@
                 font-size: 8px;
                 min-width: 40px;
             }
-            .dashboard .order-item {
-                font-size: 8px;
-                padding: 3px 4px;
-                border-right-width: 2px;
+            
+            .header-bar .title {
+                font-size: 13px;
             }
-            .dashboard .order-item .order-id {
-                font-size: 8px;
+            .header-bar .user-info {
+                font-size: 9px;
             }
-            .dashboard .order-item .order-type-badge {
-                font-size: 7px;
-                padding: 1px 4px;
+            .header-bar .branch-select select {
+                font-size: 9px;
+                padding: 2px 4px;
+                min-width: 60px;
             }
+            .header-bar .back-btn {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+            
             .modal h3 {
                 font-size: 14px;
             }
@@ -1306,6 +1406,7 @@
                 font-size: 11px;
                 padding: 6px 10px;
             }
+            
             .partner-code-modal .modal input {
                 font-size: 20px;
                 letter-spacing: 4px;
@@ -1315,6 +1416,37 @@
             .partner-code-modal .modal .partner-logo-big {
                 width: 50px;
                 height: 50px;
+            }
+            
+            .login-box,
+            .options-box {
+                padding: 16px 12px;
+                border-radius: 14px;
+            }
+            .login-box h2,
+            .options-box h2 {
+                font-size: 18px;
+            }
+            .btn {
+                font-size: 14px;
+                padding: 10px 16px;
+                border-radius: 8px;
+            }
+            .option-btn {
+                padding: 12px;
+                font-size: 16px;
+                border-radius: 12px;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .chef-horizontal-orders {
+                justify-content: center;
+                gap: 24px;
+            }
+            .chef-order-card-wrapper {
+                max-width: 320px;
+                flex: 0 0 auto;
             }
         }
 
