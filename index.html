@@ -1012,6 +1012,7 @@
             padding: 12px;
             margin-top: 12px;
             border: 2px solid #e2e8f0;
+            overflow: hidden;
         }
         .monthly-chart .bar-container {
             display: flex;
@@ -1019,20 +1020,27 @@
             gap: 6px;
             height: 120px;
             padding-top: 8px;
+            padding-bottom: 4px;
         }
         .monthly-chart .bar {
             flex: 1;
-            background: #6c5ce7;
-            border-radius: 6px 6px 0 0;
+            background: linear-gradient(180deg, #6c5ce7, #a29bfe);
+            border-radius: 6px 6px 2px 2px;
             min-height: 4px;
             transition: 0.5s;
             position: relative;
+            box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2);
+        }
+        .monthly-chart .bar:hover {
+            transform: scaleY(1.02);
+            transform-origin: bottom;
         }
         .monthly-chart .bar-label {
             font-size: 10px;
             color: #64748b;
             text-align: center;
             margin-top: 3px;
+            font-weight: 600;
         }
         .monthly-chart .bar-wrapper {
             display: flex;
@@ -1042,7 +1050,7 @@
         }
         .monthly-chart .bar-value {
             font-size: 10px;
-            font-weight: 600;
+            font-weight: 700;
             color: #6c5ce7;
             margin-bottom: 2px;
         }
@@ -1422,7 +1430,6 @@
 
         /* ===== چاکسازی تایبەت بە مۆبایل بۆ داشبۆرد ===== */
         @media (max-width: 768px) {
-            /* کارتەکانی ئامار - ٣ کارت لەسەر ٢ ڕیز */
             .stats-grid {
                 grid-template-columns: 1fr 1fr !important;
                 gap: 6px !important;
@@ -1438,12 +1445,10 @@
                 font-size: 9px !important;
                 line-height: 1.3 !important;
             }
-            /* کارتی کۆی داهات بە پانتر */
             .stats-grid .stat-card:nth-child(3) {
                 grid-column: 1 / -1 !important;
             }
 
-            /* ئۆردەرەکان - ڕیزکراو بە تۆڕ */
             .dashboard .order-item {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
@@ -1500,7 +1505,6 @@
                 font-weight: 500 !important;
             }
 
-            /* سەرپەڕە */
             .header-bar .title {
                 font-size: 15px !important;
             }
@@ -1517,21 +1521,53 @@
                 min-width: 50px !important;
             }
 
-            /* چارتی مانگانە */
+            /* ===== دیزاینی تایبەت بە ڕەوتی مانگانە لە مۆبایل ===== */
+            .monthly-chart {
+                padding: 8px !important;
+                border-radius: 12px !important;
+                background: linear-gradient(135deg, #f8fafc, #f0f2f5) !important;
+            }
             .monthly-chart .bar-container {
-                height: 80px !important;
+                height: 70px !important;
                 gap: 3px !important;
+                padding-top: 4px !important;
+            }
+            .monthly-chart .bar {
+                border-radius: 4px 4px 2px 2px !important;
+                min-height: 3px !important;
+                box-shadow: 0 1px 4px rgba(108, 92, 231, 0.15) !important;
             }
             .monthly-chart .bar-value {
-                font-size: 8px !important;
+                font-size: 7px !important;
+                font-weight: 700 !important;
+                color: #6c5ce7 !important;
+                margin-bottom: 1px !important;
+                background: white !important;
+                padding: 0 3px !important;
+                border-radius: 3px !important;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
             }
             .monthly-chart .bar-label {
-                font-size: 8px !important;
+                font-size: 7px !important;
+                font-weight: 600 !important;
+                color: #64748b !important;
+                margin-top: 2px !important;
+                background: white !important;
+                padding: 0 4px !important;
+                border-radius: 3px !important;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
             }
-
-            /* کانتینەری لیست */
-            .dashboard .order-list-container {
-                max-height: 250px !important;
+            .monthly-chart .bar-wrapper {
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
+            .monthly-chart .bar-wrapper .bar.max {
+                background: linear-gradient(180deg, #00b894, #55efc4) !important;
+                box-shadow: 0 2px 10px rgba(0, 184, 148, 0.3) !important;
+            }
+            .monthly-chart .bar-wrapper .bar.min {
+                background: linear-gradient(180deg, #fdcb6e, #ffeaa7) !important;
+                box-shadow: 0 2px 8px rgba(253, 203, 110, 0.3) !important;
             }
         }
 
@@ -1572,10 +1608,61 @@
             .dashboard .order-item .order-cashier {
                 font-size: 8px !important;
             }
+
+            /* ===== دیزاینی تایبەت بە ڕەوتی مانگانە لە شاشە زۆر بچووکەکان ===== */
+            .monthly-chart {
+                padding: 6px !important;
+                border-radius: 10px !important;
+                background: linear-gradient(135deg, #ffffff, #f8fafc) !important;
+                border-color: #e2e8f0 !important;
+            }
+            .monthly-chart .bar-container {
+                height: 55px !important;
+                gap: 2px !important;
+                padding-top: 2px !important;
+            }
+            .monthly-chart .bar {
+                border-radius: 3px 3px 2px 2px !important;
+                min-height: 2px !important;
+                box-shadow: 0 1px 3px rgba(108, 92, 231, 0.12) !important;
+            }
+            .monthly-chart .bar-value {
+                font-size: 6px !important;
+                padding: 0 2px !important;
+                border-radius: 2px !important;
+            }
+            .monthly-chart .bar-label {
+                font-size: 6px !important;
+                padding: 0 3px !important;
+                border-radius: 2px !important;
+                margin-top: 1px !important;
+            }
+            .monthly-chart .bar-wrapper .bar.max::after {
+                content: "★";
+                position: absolute;
+                top: -12px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 8px;
+                color: #00b894;
+                display: block;
+            }
         }
 
-        /* چاکسازی بۆ شاشە مامناوەند (تابلێت) */
-        @media (max-width: 1024px) and (min-width: 769px) {
+        @media (min-width: 481px) and (max-width: 1024px) {
+            .monthly-chart .bar-container {
+                height: 90px !important;
+                gap: 4px !important;
+            }
+            .monthly-chart .bar-value {
+                font-size: 9px !important;
+            }
+            .monthly-chart .bar-label {
+                font-size: 9px !important;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
             .stats-grid {
                 grid-template-columns: repeat(3, 1fr) !important;
             }
@@ -2689,23 +2776,33 @@
                             <h4 style="font-size:15px;margin:12px 0 8px;">📈 ڕەوتی مانگانە (ساڵە و سەفەری)</h4>
                             <div class="monthly-chart">
                                 <div class="bar-container">
-                                    ${getMonthDays().map(day => {
-                                        const dayStr = day.toDateString();
-                                        const dayOrders = dineTakeawayOrders.filter(o => {
-                                            const d = new Date(o.timestamp);
-                                            return d.toDateString() === dayStr;
+                                    ${(() => {
+                                        const monthDays = getMonthDays();
+                                        const dayTotals = monthDays.map(day => {
+                                            const dayStr = day.toDateString();
+                                            const dayOrders = dineTakeawayOrders.filter(o => {
+                                                const d = new Date(o.timestamp);
+                                                return d.toDateString() === dayStr;
+                                            });
+                                            return dayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
                                         });
-                                        const total = dayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
-                                        const maxTotal = Math.max(...dineTakeawayOrders.map(o => o.total || 0), 1);
-                                        const height = (total / Math.max(...dineTakeawayOrders.map(o => o.total || 0), 1)) * 100;
-                                        return `
-                                            <div class="bar-wrapper">
-                                                <div class="bar-value">${formatPriceShort(total)}</div>
-                                                <div class="bar" style="height:${Math.max(height || 4, 4)}px;"></div>
-                                                <div class="bar-label">${day.getDate()}</div>
-                                            </div>
-                                        `;
-                                    }).join('')}
+                                        const maxTotal = Math.max(...dayTotals, 1);
+                                        const minTotal = Math.min(...dayTotals.filter(v => v > 0), 0);
+                                        return monthDays.map((day, index) => {
+                                            const total = dayTotals[index] || 0;
+                                            const height = (total / maxTotal) * 100;
+                                            let barClass = '';
+                                            if (total > 0 && total === maxTotal) barClass = 'max';
+                                            else if (total > 0 && total === minTotal && minTotal > 0) barClass = 'min';
+                                            return `
+                                                <div class="bar-wrapper">
+                                                    <div class="bar-value">${formatPriceShort(total)}</div>
+                                                    <div class="bar ${barClass}" style="height:${Math.max(height || 3, 3)}px;"></div>
+                                                    <div class="bar-label">${day.getDate()}</div>
+                                                </div>
+                                            `;
+                                        }).join('');
+                                    })()}
                                 </div>
                             </div>
 
