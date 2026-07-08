@@ -2225,7 +2225,6 @@
             partnerCode: '',
             chefView: 'all',
             managerTab: 'dashboard',
-            orderCounter: 100,
             partnerImages: { talabat: '', zuu: '', wade: '', leezu: '' },
             branchFilter: 'all',
             loginType: null,
@@ -2243,8 +2242,20 @@
             pendingPartner: null,
             partnerOrders: [],
             selectedChefGroup: 'skip',
-            savedScrollPosition: 0
+            savedScrollPosition: 0,
+            lastResetDate: null,
+            lastMonthlyReset: null,
+            usedOrderNumbers: new Set()
         };
+
+        function getSmallestAvailableOrderNumber() {
+            for (let i = 1; i <= 50; i++) {
+                if (!state.usedOrderNumbers.has(i)) {
+                    return i;
+                }
+            }
+            return state.usedOrderNumbers.size + 1;
+        }
 
         function toast(msg, isError = false) {
             const t = document.createElement('div');
@@ -2304,6 +2315,69 @@
             return days[date.getDay()];
         }
 
+        function checkAndResetStats() {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const resetHour = 4;
+            
+            if (state.lastResetDate) {
+                const lastReset = new Date(state.lastResetDate);
+                const lastResetDay = new Date(lastReset.getFullYear(), lastReset.getMonth(), lastReset.getDate());
+                
+                if (today.getTime() !== lastResetDay.getTime()) {
+                    if (now.getHours() >= resetHour) {
+                        state.orders = state.orders.filter(o => o.partner && o.orderType === 'partner');
+                        state.usedOrderNumbers.clear();
+                        state.lastResetDate = new Date().toISOString();
+                        saveResetDateToFirestore();
+                        toast('📊 ئامارەکان لە 4 بەیانی نوێ کرانەوە');
+                    }
+                }
+            } else {
+                state.lastResetDate = new Date().toISOString();
+                saveResetDateToFirestore();
+            }
+            
+            if (state.lastMonthlyReset) {
+                const lastMonthly = new Date(state.lastMonthlyReset);
+                const currentMonth = now.getMonth();
+                const currentYear = now.getFullYear();
+                const lastMonth = lastMonthly.getMonth();
+                const lastYear = lastMonthly.getFullYear();
+                
+                if (currentMonth !== lastMonth || currentYear !== lastYear) {
+                    state.lastMonthlyReset = new Date().toISOString();
+                    saveMonthlyResetToFirestore();
+                    toast('📊 ڕەوتی مانگانە نوێ کرایەوە');
+                }
+            } else {
+                state.lastMonthlyReset = new Date().toISOString();
+                saveMonthlyResetToFirestore();
+            }
+        }
+
+        async function saveResetDateToFirestore() {
+            try {
+                await updateDoc(docRef, {
+                    lastResetDate: state.lastResetDate,
+                    lastUpdated: new Date().toISOString()
+                });
+            } catch (error) {
+                console.error('Error saving reset date:', error);
+            }
+        }
+
+        async function saveMonthlyResetToFirestore() {
+            try {
+                await updateDoc(docRef, {
+                    lastMonthlyReset: state.lastMonthlyReset,
+                    lastUpdated: new Date().toISOString()
+                });
+            } catch (error) {
+                console.error('Error saving monthly reset date:', error);
+            }
+        }
+
         function loadItemsFromFirestore() {
             if (state.unsubscribeItems) {
                 state.unsubscribeItems();
@@ -2335,9 +2409,19 @@
                         if (data.partnerImages) {
                             state.partnerImages = data.partnerImages;
                         }
+                        
+                        if (data.lastResetDate) {
+                            state.lastResetDate = data.lastResetDate;
+                        }
+                        if (data.lastMonthlyReset) {
+                            state.lastMonthlyReset = data.lastMonthlyReset;
+                        }
 
                         state.isLoading = false;
                         state.firebaseError = null;
+                        
+                        checkAndResetStats();
+                        
                         render();
                     } else {
                         createDefaultDocument();
@@ -2376,7 +2460,9 @@
                     items: defaultItems,
                     partnerImages: { talabat: '', zuu: '', wade: '', leezu: '' },
                     orders: [],
-                    lastUpdated: new Date().toISOString()
+                    lastUpdated: new Date().toISOString(),
+                    lastResetDate: new Date().toISOString(),
+                    lastMonthlyReset: new Date().toISOString()
                 });
 
                 toast('📁 دۆکیومێنت دروست کرا');
@@ -2444,10 +2530,12 @@
                         const ordersData = data.orders || [];
                         state.orders = ordersData;
                         
-                        if (state.orders.length) {
-                            const maxId = Math.max(...state.orders.map(o => o.id || 0));
-                            state.orderCounter = Math.max(state.orderCounter, maxId);
-                        }
+                        state.usedOrderNumbers.clear();
+                        state.orders.forEach(o => {
+                            if (o.id && o.id <= 50 && !o.completed) {
+                                state.usedOrderNumbers.add(o.id);
+                            }
+                        });
                         
                         render();
                     }
@@ -2506,6 +2594,25 @@
             }
         }
 
+        async function completeOrderByCashier(orderId) {
+            const order = state.orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            if (order.branch !== 'park32') return;
+
+            if (order.status !== 'ready') {
+                toast('تکایە یەکەم ئۆردەرەکە لەلایەن شێفەوە ئامادە بکرێت', true);
+                return;
+            }
+
+            state.orders = state.orders.filter(o => o.id !== orderId);
+            state.usedOrderNumbers.delete(orderId);
+            
+            await saveOrdersToFirestore();
+            render();
+            toast(`✅ ئۆردەر #${orderId} تەواو کرا و ژمارەکە بەتاڵ بووەوە!`);
+        }
+
         async function updateOrderStatus(orderId, status) {
             const order = state.orders.find(o => o.id === orderId);
             if (!order) return;
@@ -2525,7 +2632,6 @@
                 return;
             }
 
-            // هەڵگرتنی شوێنی سکرۆڵ
             const scrollWrapper = document.getElementById('chef-scroll-wrapper');
             if (scrollWrapper) {
                 state.savedScrollPosition = scrollWrapper.scrollTop;
@@ -2536,7 +2642,6 @@
             
             render();
             
-            // گەڕاندنەوەی سکرۆڵ بۆ هەمان شوێن
             setTimeout(() => {
                 if (scrollWrapper) {
                     scrollWrapper.scrollTop = state.savedScrollPosition;
@@ -2544,23 +2649,6 @@
             }, 50);
             
             toast(`🔄 ئۆردەر #${orderId} گۆڕدرا بۆ: ${status}`);
-        }
-
-        async function completeOrderByCashier(orderId) {
-            const order = state.orders.find(o => o.id === orderId);
-            if (!order) return;
-
-            if (order.branch !== 'park32') return;
-
-            if (order.status !== 'ready') {
-                toast('تکایە یەکەم ئۆردەرەکە لەلایەن شێفەوە ئامادە بکرێت', true);
-                return;
-            }
-
-            state.orders = state.orders.filter(o => o.id !== orderId);
-            await saveOrdersToFirestore();
-            render();
-            toast(`✅ ئۆردەر #${orderId} تەواو کرا و سڕایەوە!`);
         }
 
         function openPartnerCodeModal(partner) {
@@ -2603,7 +2691,6 @@
             }
         }
 
-        // فانکشنی renderی نوێ کە سکرۆڵ ناگەڕێنێتەوە
         function render() {
             const app = document.getElementById('app');
             if (!app) return;
@@ -2656,11 +2743,9 @@
             }
             app.innerHTML = html;
 
-            // سکرۆڵ ناگەڕێتەوە بۆ سەرەتا
             if (state.currentPage === 'chef') {
                 const scrollWrapper = document.getElementById('chef-scroll-wrapper');
                 if (scrollWrapper) {
-                    // بەکارهێنانی requestAnimationFrame بۆ دڵنیابوون لە دروستبوونی DOM
                     requestAnimationFrame(() => {
                         scrollWrapper.scrollTop = state.savedScrollPosition;
                     });
@@ -2952,7 +3037,8 @@
                 orders = orders.filter(o => o.items.some(i => i.chefGroup === 'گەس'));
             }
 
-            orders.sort((a, b) => b.id - a.id);
+            // ڕیزکردن بە پێی کاتی دروستبوون (نوێترین لە کۆتای)
+            orders.sort((a, b) => a.timestamp - b.timestamp);
 
             function renderOrderItem(o) {
                 const firstItem = o.items[0] || { name: 'بێ ناو', price: 0 };
@@ -3020,6 +3106,8 @@
         }
 
         function renderManager() {
+            checkAndResetStats();
+            
             let filteredItems = state.items.filter(item => item.branch === state.selectedBranch);
 
             const itemsHtml = filteredItems.map(item => `
@@ -3616,7 +3704,6 @@
                 };
             });
 
-            // گۆڕینی ڕووداوی کلیک بۆ کارتی شێف - سکرۆڵ ناگەڕێتەوە
             document.querySelectorAll('.chef-order-card-wrapper').forEach(el => {
                 el.onclick = function(e) {
                     e.preventDefault();
@@ -3745,6 +3832,8 @@
                         return;
                     }
 
+                    const nextId = getSmallestAvailableOrderNumber();
+
                     const orderData = {
                         items: state.cart.map(i => ({ 
                             id: i.id, 
@@ -3767,23 +3856,23 @@
                         image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp'
                     };
 
-                    if (state.orderType === 'partner' && state.partner) {
-                        await savePartnerOrderToFirestore(orderData);
-                        state.cart = [];
-                        state.partnerCode = '';
-                        render();
-                        return;
-                    }
-
+                    // ئۆردەری شەریکەکانیش بۆ شێف دەنێردرێن
                     const order = {
-                        id: ++state.orderCounter,
+                        id: nextId,
                         ...orderData,
                         status: 'pending'
                     };
 
                     state.orders.push(order);
+                    state.usedOrderNumbers.add(nextId);
                     state.cart = [];
                     state.partnerCode = '';
+                    
+                    // هەروەها بۆ ئاماری شەریکەکان لە داتابەیس جیا هەڵدەگیرێت
+                    if (state.orderType === 'partner' && state.partner) {
+                        await savePartnerOrderToFirestore(orderData);
+                    }
+                    
                     toast('✅ ئۆردەر #' + order.id + ' سەیڤ کرا!');
 
                     await saveOrdersToFirestore();
