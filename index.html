@@ -121,30 +121,6 @@
             background: #f8f7ff;
             transform: scale(1.02);
         }
-        .sub-option {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 10px;
-            margin: 6px 0;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .sub-option button {
-            flex: 1;
-            min-width: 80px;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        .sub-option button:hover {
-            border-color: #6c5ce7;
-            background: #f8f7ff;
-        }
         .cashier-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -363,25 +339,6 @@
             box-shadow: 0 6px 25px rgba(108, 92, 231, 0.35);
             transform: scale(1.03);
         }
-        .partner-input {
-            display: flex;
-            gap: 8px;
-            margin: 6px 0;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .partner-input input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 15px;
-            min-width: 80px;
-        }
-        .partner-input input:focus {
-            border-color: #6c5ce7;
-            outline: none;
-        }
         .chef-view {
             background: white;
             border-radius: 20px;
@@ -490,9 +447,10 @@
             height: auto;
             max-height: 80vh;
             overflow-y: auto;
-            scroll-behavior: smooth;
+            scroll-behavior: auto !important;
             padding: 4px 4px 16px 4px;
             min-height: 200px;
+            overscroll-behavior: contain;
         }
         .chef-horizontal-orders {
             display: flex;
@@ -1006,54 +964,6 @@
             font-weight: 700;
             color: #6c5ce7;
         }
-        .monthly-chart {
-            background: #f8fafc;
-            border-radius: 14px;
-            padding: 12px;
-            margin-top: 12px;
-            border: 2px solid #e2e8f0;
-            overflow: hidden;
-        }
-        .monthly-chart .bar-container {
-            display: flex;
-            align-items: flex-end;
-            gap: 6px;
-            height: 120px;
-            padding-top: 8px;
-            padding-bottom: 4px;
-        }
-        .monthly-chart .bar {
-            flex: 1;
-            background: linear-gradient(180deg, #6c5ce7, #a29bfe);
-            border-radius: 6px 6px 2px 2px;
-            min-height: 4px;
-            transition: 0.5s;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2);
-        }
-        .monthly-chart .bar:hover {
-            transform: scaleY(1.02);
-            transform-origin: bottom;
-        }
-        .monthly-chart .bar-label {
-            font-size: 10px;
-            color: #64748b;
-            text-align: center;
-            margin-top: 3px;
-            font-weight: 600;
-        }
-        .monthly-chart .bar-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-        }
-        .monthly-chart .bar-value {
-            font-size: 10px;
-            font-weight: 700;
-            color: #6c5ce7;
-            margin-bottom: 2px;
-        }
         .item-image-preview {
             max-width: 40px;
             max-height: 40px;
@@ -1428,8 +1338,616 @@
         ::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 8px; }
         ::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
 
-        /* ===== چاکسازی تایبەت بە مۆبایل بۆ داشبۆرد ===== */
+        /* ========================================
+           دیزاینی نوێ و نایابی ڕەوتی مانگانە 
+           ======================================== */
+        .monthly-chart-modern {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            border-radius: 28px;
+            padding: 28px 24px 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 80px rgba(108, 92, 231, 0.1);
+            margin-top: 16px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .monthly-chart-modern::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.15), transparent 70%);
+            border-radius: 50%;
+            animation: float-bg 8s ease-in-out infinite;
+        }
+
+        .monthly-chart-modern::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 184, 148, 0.1), transparent 70%);
+            border-radius: 50%;
+            animation: float-bg 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float-bg {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -20px) scale(1.1); }
+        }
+
+        .chart-header-simple {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .chart-title-simple {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chart-title-simple h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .chart-title-simple .badge-live {
+            background: rgba(0, 184, 148, 0.2);
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            color: #55efc4;
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chart-title-simple .badge-live .dot {
+            width: 6px;
+            height: 6px;
+            background: #00b894;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.7); }
+        }
+
+        .chart-stats-simple {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+
+        .stat-box .stat-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #a29bfe;
+            display: block;
+        }
+
+        .stat-box .stat-label {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chart-bars-simple {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 130px;
+            padding: 8px 0 4px;
+            position: relative;
+            z-index: 2;
+            min-height: 80px;
+        }
+
+        .bar-item-simple {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-width: 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bar-item-simple:hover {
+            transform: translateY(-4px);
+        }
+
+        .bar-item-simple .bar-value {
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .bar-item-simple:hover .bar-value {
+            opacity: 1;
+            color: #ffffff;
+        }
+
+        .bar-item-simple .bar-track {
+            width: 100%;
+            max-width: 40px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 8px 8px 4px 4px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            min-height: 6px;
+        }
+
+        .bar-item-simple .bar-track .bar-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-radius: 8px 8px 4px 4px;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            min-height: 4px;
+        }
+
+        .bar-item-simple .bar-track .bar-fill.high {
+            background: linear-gradient(180deg, #a29bfe, #6c5ce7);
+            box-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
+        }
+
+        .bar-item-simple .bar-track .bar-fill.medium {
+            background: linear-gradient(180deg, #81ecec, #00cec9);
+            box-shadow: 0 0 20px rgba(0, 206, 201, 0.2);
+        }
+
+        .bar-item-simple .bar-track .bar-fill.low {
+            background: linear-gradient(180deg, #fdcb6e, #f39c12);
+            box-shadow: 0 0 20px rgba(243, 156, 18, 0.15);
+        }
+
+        .bar-item-simple .bar-track .bar-fill.zero {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+        }
+
+        .bar-item-simple .bar-track .bar-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(108, 92, 231, 0.1), transparent 70%);
+            opacity: 0;
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .bar-item-simple:hover .bar-track .bar-glow {
+            opacity: 1;
+        }
+
+        .bar-item-simple .bar-label-simple {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .bar-item-simple:hover .bar-label-simple {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .bar-item-simple .bar-day-simple {
+            font-size: 7px;
+            color: rgba(255, 255, 255, 0.25);
+            text-align: center;
+            margin-top: -2px;
+        }
+
+        .bar-item-simple.today .bar-track .bar-fill {
+            box-shadow: 0 0 30px rgba(108, 92, 231, 0.5) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .bar-item-simple.today .bar-label-simple {
+            color: #a29bfe;
+            font-weight: 700;
+        }
+
+        .bar-item-simple.today .bar-day-simple {
+            color: rgba(162, 155, 254, 0.5);
+        }
+
+        .bar-item-simple .bar-max-star {
+            font-size: 10px;
+            color: #fdcb6e;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .bar-item-simple:hover .bar-max-star {
+            opacity: 1;
+        }
+
+        .chart-footer-simple {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            z-index: 2;
+        }
+
+        .chart-footer-simple .total-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .chart-footer-simple .total-text span {
+            color: #a29bfe;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .chart-footer-simple .total-text .trend-up {
+            color: #55efc4;
+            font-size: 12px;
+            margin-right: 6px;
+        }
+
+        .chart-footer-simple .total-text .trend-down {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-right: 6px;
+        }
+
+        .chart-footer-simple .legend-simple {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chart-footer-simple .legend-item-simple {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 500;
+        }
+
+        .chart-footer-simple .legend-item-simple .color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .chart-footer-simple .legend-item-simple .color-dot.high { background: #6c5ce7; }
+        .chart-footer-simple .legend-item-simple .color-dot.medium { background: #00cec9; }
+        .chart-footer-simple .legend-item-simple .color-dot.low { background: #f39c12; }
+
+        .chart-footer-simple .btn-details {
+            background: rgba(108, 92, 231, 0.2);
+            border: 1px solid rgba(108, 92, 231, 0.3);
+            color: #a29bfe;
+            padding: 6px 18px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chart-footer-simple .btn-details:hover {
+            background: rgba(108, 92, 231, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.2);
+        }
+
+        /* ===== چاکسازی بۆ مۆبایل ===== */
         @media (max-width: 768px) {
+            .monthly-chart-modern {
+                padding: 20px 16px 16px;
+                border-radius: 20px;
+            }
+
+            .chart-title-simple h4 {
+                font-size: 15px;
+            }
+
+            .chart-stats-simple {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .stat-box {
+                padding: 4px 12px;
+            }
+
+            .stat-box .stat-value {
+                font-size: 13px;
+            }
+
+            .stat-box .stat-label {
+                font-size: 8px;
+            }
+
+            .chart-bars-simple {
+                height: 100px;
+                gap: 4px;
+                min-height: 60px;
+            }
+
+            .bar-item-simple .bar-value {
+                font-size: 8px;
+            }
+
+            .bar-item-simple .bar-label-simple {
+                font-size: 8px;
+            }
+
+            .bar-item-simple .bar-day-simple {
+                font-size: 6px;
+            }
+
+            .bar-item-simple .bar-track {
+                max-width: 30px;
+                min-height: 4px;
+            }
+
+            .bar-item-simple .bar-track .bar-fill {
+                min-height: 3px;
+            }
+
+            .chart-footer-simple .total-text {
+                font-size: 11px;
+            }
+
+            .chart-footer-simple .total-text span {
+                font-size: 14px;
+            }
+
+            .chart-footer-simple .legend-simple {
+                gap: 8px;
+            }
+
+            .chart-footer-simple .legend-item-simple {
+                font-size: 8px;
+            }
+
+            .chart-footer-simple .legend-item-simple .color-dot {
+                width: 6px;
+                height: 6px;
+            }
+
+            .chart-footer-simple .btn-details {
+                font-size: 10px;
+                padding: 5px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .monthly-chart-modern {
+                padding: 14px 10px 12px;
+                border-radius: 16px;
+            }
+
+            .chart-header-simple {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .chart-title-simple h4 {
+                font-size: 13px;
+            }
+
+            .chart-title-simple .badge-live {
+                font-size: 8px;
+                padding: 2px 10px;
+            }
+
+            .chart-stats-simple {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .stat-box {
+                padding: 3px 8px;
+                flex: 1;
+                text-align: center;
+            }
+
+            .stat-box .stat-value {
+                font-size: 11px;
+            }
+
+            .stat-box .stat-label {
+                font-size: 7px;
+            }
+
+            .chart-bars-simple {
+                height: 75px;
+                gap: 3px;
+                min-height: 50px;
+                padding: 4px 0 2px;
+            }
+
+            .bar-item-simple .bar-value {
+                font-size: 7px;
+            }
+
+            .bar-item-simple .bar-label-simple {
+                font-size: 7px;
+                margin-top: 1px;
+            }
+
+            .bar-item-simple .bar-day-simple {
+                font-size: 5px;
+            }
+
+            .bar-item-simple .bar-track {
+                max-width: 22px;
+                min-height: 3px;
+                border-radius: 5px 5px 3px 3px;
+            }
+
+            .bar-item-simple .bar-track .bar-fill {
+                min-height: 2px;
+                border-radius: 5px 5px 3px 3px;
+            }
+
+            .bar-item-simple .bar-max-star {
+                font-size: 7px;
+            }
+
+            .chart-footer-simple {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+
+            .chart-footer-simple .total-text {
+                font-size: 10px;
+                text-align: center;
+            }
+
+            .chart-footer-simple .total-text span {
+                font-size: 13px;
+            }
+
+            .chart-footer-simple .legend-simple {
+                justify-content: center;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+
+            .chart-footer-simple .legend-item-simple {
+                font-size: 7px;
+            }
+
+            .chart-footer-simple .legend-item-simple .color-dot {
+                width: 5px;
+                height: 5px;
+            }
+
+            .chart-footer-simple .btn-details {
+                font-size: 9px;
+                padding: 4px 10px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 1024px) {
+            .monthly-chart-modern {
+                padding: 24px 20px 18px;
+            }
+
+            .chart-bars-simple {
+                height: 115px;
+                gap: 5px;
+            }
+
+            .bar-item-simple .bar-label-simple {
+                font-size: 9px;
+            }
+
+            .bar-item-simple .bar-track {
+                max-width: 35px;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .monthly-chart-modern {
+                padding: 32px 28px 24px;
+            }
+
+            .chart-bars-simple {
+                height: 150px;
+                gap: 8px;
+            }
+
+            .bar-item-simple .bar-track {
+                max-width: 50px;
+            }
+
+            .chart-title-simple h4 {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+            .login-box, .options-box { padding: 20px 16px; }
+            .item-grid { grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 8px; }
+            .cashier-layout { grid-template-columns: 1fr; }
+            .modal { padding: 16px; }
+            .chef-login-buttons button { min-width: 70px; padding: 10px 14px; font-size: 14px; }
+            .partner-detail-grid { grid-template-columns: 1fr; }
+            .cashier-partner-buttons button { padding: 4px 10px; min-width: 50px; font-size: 10px; max-width: 85px; }
+            .cashier-partner-buttons button img { width: 26px; height: 26px; }
+            .delivery-options button { padding: 8px 12px; font-size: 13px; min-width: 60px; }
+            .group-filter-buttons button { padding: 4px 8px; font-size: 10px; }
+            .branch-items-filter { flex-direction: column; align-items: stretch; }
+            .branch-items-filter select { width: 100%; }
+            .chef-order-mini .btn-complete { padding: 6px 12px; font-size: 12px; min-width: 60px; }
+            .chef-horizontal-orders { gap: 12px; }
+            .chef-order-card-wrapper { max-width: 100%; padding: 4px; flex: 0 0 100%; }
+            .chef-order-card { min-height: 150px; padding: 12px 8px; }
+            .chef-order-card .chef-image-wrapper { max-width: 100px; }
+            .chef-order-card .chef-order-name { font-size: 13px; }
+            .chef-order-card .chef-order-details { font-size: 12px; }
+            .chef-order-card .chef-order-status-label { font-size: 12px; padding: 3px 12px; }
+            .chef-order-card .chef-order-id { font-size: 11px; }
+            .partner-detail-card { padding: 12px; }
+            .partner-detail-name { font-size: 16px; }
+            .partner-detail-stats { grid-template-columns: 1fr 1fr; }
+            .order-total { font-size: 16px; }
+            .btn { font-size: 15px; padding: 12px 20px; }
+            table { font-size: 11px; }
+            table th, table td { padding: 6px 4px; }
+
             .stats-grid {
                 grid-template-columns: 1fr 1fr !important;
                 gap: 6px !important;
@@ -1520,188 +2038,8 @@
                 padding: 5px 8px !important;
                 min-width: 50px !important;
             }
-
-            /* ===== دیزاینی تایبەت بە ڕەوتی مانگانە لە مۆبایل ===== */
-            .monthly-chart {
-                padding: 8px !important;
-                border-radius: 12px !important;
-                background: linear-gradient(135deg, #f8fafc, #f0f2f5) !important;
-            }
-            .monthly-chart .bar-container {
-                height: 70px !important;
-                gap: 3px !important;
-                padding-top: 4px !important;
-            }
-            .monthly-chart .bar {
-                border-radius: 4px 4px 2px 2px !important;
-                min-height: 3px !important;
-                box-shadow: 0 1px 4px rgba(108, 92, 231, 0.15) !important;
-            }
-            .monthly-chart .bar-value {
-                font-size: 7px !important;
-                font-weight: 700 !important;
-                color: #6c5ce7 !important;
-                margin-bottom: 1px !important;
-                background: white !important;
-                padding: 0 3px !important;
-                border-radius: 3px !important;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
-            }
-            .monthly-chart .bar-label {
-                font-size: 7px !important;
-                font-weight: 600 !important;
-                color: #64748b !important;
-                margin-top: 2px !important;
-                background: white !important;
-                padding: 0 4px !important;
-                border-radius: 3px !important;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
-            }
-            .monthly-chart .bar-wrapper {
-                flex: 1 !important;
-                min-width: 0 !important;
-            }
-            .monthly-chart .bar-wrapper .bar.max {
-                background: linear-gradient(180deg, #00b894, #55efc4) !important;
-                box-shadow: 0 2px 10px rgba(0, 184, 148, 0.3) !important;
-            }
-            .monthly-chart .bar-wrapper .bar.min {
-                background: linear-gradient(180deg, #fdcb6e, #ffeaa7) !important;
-                box-shadow: 0 2px 8px rgba(253, 203, 110, 0.3) !important;
-            }
         }
 
-        @media (max-width: 480px) {
-            .stats-grid {
-                gap: 4px !important;
-            }
-            .stat-card .number {
-                font-size: 14px !important;
-            }
-            .stat-card .label {
-                font-size: 8px !important;
-            }
-
-            .dashboard .order-item {
-                padding: 3px 4px !important;
-                font-size: 10px !important;
-                gap: 1px 4px !important;
-            }
-            .dashboard .order-item .order-id {
-                font-size: 10px !important;
-            }
-            .dashboard .order-item .order-items-text {
-                font-size: 9px !important;
-                white-space: normal !important;
-                word-break: break-word !important;
-            }
-            .dashboard .order-item .order-price {
-                font-size: 10px !important;
-            }
-            .dashboard .order-item .order-time {
-                font-size: 8px !important;
-            }
-            .dashboard .order-item .order-type-badge {
-                font-size: 7px !important;
-                padding: 1px 4px !important;
-            }
-            .dashboard .order-item .order-cashier {
-                font-size: 8px !important;
-            }
-
-            /* ===== دیزاینی تایبەت بە ڕەوتی مانگانە لە شاشە زۆر بچووکەکان ===== */
-            .monthly-chart {
-                padding: 6px !important;
-                border-radius: 10px !important;
-                background: linear-gradient(135deg, #ffffff, #f8fafc) !important;
-                border-color: #e2e8f0 !important;
-            }
-            .monthly-chart .bar-container {
-                height: 55px !important;
-                gap: 2px !important;
-                padding-top: 2px !important;
-            }
-            .monthly-chart .bar {
-                border-radius: 3px 3px 2px 2px !important;
-                min-height: 2px !important;
-                box-shadow: 0 1px 3px rgba(108, 92, 231, 0.12) !important;
-            }
-            .monthly-chart .bar-value {
-                font-size: 6px !important;
-                padding: 0 2px !important;
-                border-radius: 2px !important;
-            }
-            .monthly-chart .bar-label {
-                font-size: 6px !important;
-                padding: 0 3px !important;
-                border-radius: 2px !important;
-                margin-top: 1px !important;
-            }
-            .monthly-chart .bar-wrapper .bar.max::after {
-                content: "★";
-                position: absolute;
-                top: -12px;
-                left: 50%;
-                transform: translateX(-50%);
-                font-size: 8px;
-                color: #00b894;
-                display: block;
-            }
-        }
-
-        @media (min-width: 481px) and (max-width: 1024px) {
-            .monthly-chart .bar-container {
-                height: 90px !important;
-                gap: 4px !important;
-            }
-            .monthly-chart .bar-value {
-                font-size: 9px !important;
-            }
-            .monthly-chart .bar-label {
-                font-size: 9px !important;
-            }
-        }
-
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr) !important;
-            }
-            .stats-grid .stat-card:nth-child(3) {
-                grid-column: auto !important;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 8px; }
-            .login-box, .options-box { padding: 20px 16px; }
-            .item-grid { grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 8px; }
-            .cashier-layout { grid-template-columns: 1fr; }
-            .modal { padding: 16px; }
-            .chef-login-buttons button { min-width: 70px; padding: 10px 14px; font-size: 14px; }
-            .partner-detail-grid { grid-template-columns: 1fr; }
-            .cashier-partner-buttons button { padding: 4px 10px; min-width: 50px; font-size: 10px; max-width: 85px; }
-            .cashier-partner-buttons button img { width: 26px; height: 26px; }
-            .delivery-options button { padding: 8px 12px; font-size: 13px; min-width: 60px; }
-            .group-filter-buttons button { padding: 4px 8px; font-size: 10px; }
-            .branch-items-filter { flex-direction: column; align-items: stretch; }
-            .branch-items-filter select { width: 100%; }
-            .chef-order-mini .btn-complete { padding: 6px 12px; font-size: 12px; min-width: 60px; }
-            .chef-horizontal-orders { gap: 12px; }
-            .chef-order-card-wrapper { max-width: 100%; padding: 4px; flex: 0 0 100%; }
-            .chef-order-card { min-height: 150px; padding: 12px 8px; }
-            .chef-order-card .chef-image-wrapper { max-width: 100px; }
-            .chef-order-card .chef-order-name { font-size: 13px; }
-            .chef-order-card .chef-order-details { font-size: 12px; }
-            .chef-order-card .chef-order-status-label { font-size: 12px; padding: 3px 12px; }
-            .chef-order-card .chef-order-id { font-size: 11px; }
-            .partner-detail-card { padding: 12px; }
-            .partner-detail-name { font-size: 16px; }
-            .partner-detail-stats { grid-template-columns: 1fr 1fr; }
-            .order-total { font-size: 16px; }
-            .btn { font-size: 15px; padding: 12px 20px; }
-            table { font-size: 11px; }
-            table th, table td { padding: 6px 4px; }
-        }
         @media (max-width: 480px) {
             body { padding: 4px; }
             .login-box, .options-box { padding: 16px 12px; }
@@ -1741,6 +2079,52 @@
             .partner-stat-number { font-size: 16px; }
             .partner-order-item { font-size: 10px; padding: 4px 6px; }
             .toast { font-size: 13px; padding: 10px 16px; bottom: 12px; right: 12px; left: 12px; }
+
+            .stats-grid {
+                gap: 4px !important;
+            }
+            .stat-card .number {
+                font-size: 14px !important;
+            }
+            .stat-card .label {
+                font-size: 8px !important;
+            }
+
+            .dashboard .order-item {
+                padding: 3px 4px !important;
+                font-size: 10px !important;
+                gap: 1px 4px !important;
+            }
+            .dashboard .order-item .order-id {
+                font-size: 10px !important;
+            }
+            .dashboard .order-item .order-items-text {
+                font-size: 9px !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+            }
+            .dashboard .order-item .order-price {
+                font-size: 10px !important;
+            }
+            .dashboard .order-item .order-time {
+                font-size: 8px !important;
+            }
+            .dashboard .order-item .order-type-badge {
+                font-size: 7px !important;
+                padding: 1px 4px !important;
+            }
+            .dashboard .order-item .order-cashier {
+                font-size: 8px !important;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+            }
+            .stats-grid .stat-card:nth-child(3) {
+                grid-column: auto !important;
+            }
         }
     </style>
 </head>
@@ -1812,6 +2196,13 @@
             'خواردنەوەکان'
         ];
 
+        const CHEF_GROUP_OPTIONS = [
+            'پیتزا',
+            'بەرگر',
+            'گەس',
+            'skip'
+        ];
+
         const BRANCH_OPTIONS = ['زانکۆ', '٣٢ پارک'];
 
         const PARTNER_LOGOS = {
@@ -1850,7 +2241,9 @@
             unsubscribePartnerOrders: null,
             showPartnerCodeModal: false,
             pendingPartner: null,
-            partnerOrders: []
+            partnerOrders: [],
+            selectedChefGroup: 'skip',
+            savedScrollPosition: 0
         };
 
         function toast(msg, isError = false) {
@@ -1930,6 +2323,7 @@
                             group: item.grwp || 'گشتی',
                             image: item.link || '',
                             branch: item.branch || 'زانکۆ',
+                            chefGroup: item.chefGroup || 'skip',
                             partnerPrices: {
                                 talabat: item.nt || null,
                                 zuu: item.nz || null,
@@ -1967,15 +2361,15 @@
         async function createDefaultDocument() {
             try {
                 const defaultItems = [
-                    { id: 'p1', naw: 'پیتزا مەرگ', nrx: 12000, grwp: 'پیتزا', link: '', branch: 'زانکۆ', nt: 14000, nz: 13000, nw: 12500, nl: 13500 },
-                    { id: 'p2', naw: 'پیتزا مەک', nrx: 10000, grwp: 'پیتزا', link: '', branch: 'زانکۆ', nt: 12000, nz: 11000, nw: 10500, nl: 11500 },
-                    { id: 'g1', naw: 'شاورما گەس', nrx: 8000, grwp: 'گەس', link: '', branch: '٣٢ پارک', nt: 10000, nz: 9000, nw: 8500, nl: 9500 },
-                    { id: 'g2', naw: 'گەس بریانی', nrx: 14000, grwp: 'گەس', link: '', branch: '٣٢ پارک', nt: 16000, nz: 15000, nw: 14500, nl: 15500 },
-                    { id: 'gr1', naw: 'شیش تاووک', nrx: 11000, grwp: 'بەرگر', link: '', branch: 'زانکۆ', nt: 13000, nz: 12000, nw: 11500, nl: 12500 },
-                    { id: 'gr2', naw: 'بەرگر پەتی', nrx: 9000, grwp: 'بەرگر', link: '', branch: '٣٢ پارک', nt: 11000, nz: 10000, nw: 9500, nl: 10500 },
-                    { id: 'd1', naw: 'پەپسی', nrx: 2000, grwp: 'خواردنەوەکان', link: '', branch: 'زانکۆ', nt: 3000, nz: 2500, nw: 2000, nl: 2500 },
-                    { id: 'd2', naw: 'سپرایت', nrx: 2000, grwp: 'خواردنەوەکان', link: '', branch: '٣٢ پارک', nt: 3000, nz: 2500, nw: 2000, nl: 2500 },
-                    { id: 'd3', naw: 'ئاو', nrx: 1000, grwp: 'خواردنەوەکان', link: '', branch: 'زانکۆ', nt: 1500, nz: 1200, nw: 1000, nl: 1200 },
+                    { id: 'p1', naw: 'پیتزا مەرگ', nrx: 12000, grwp: 'پیتزا', link: '', branch: 'زانکۆ', chefGroup: 'پیتزا', nt: 14000, nz: 13000, nw: 12500, nl: 13500 },
+                    { id: 'p2', naw: 'پیتزا مەک', nrx: 10000, grwp: 'پیتزا', link: '', branch: 'زانکۆ', chefGroup: 'پیتزا', nt: 12000, nz: 11000, nw: 10500, nl: 11500 },
+                    { id: 'g1', naw: 'شاورما گەس', nrx: 8000, grwp: 'گەس', link: '', branch: '٣٢ پارک', chefGroup: 'گەس', nt: 10000, nz: 9000, nw: 8500, nl: 9500 },
+                    { id: 'g2', naw: 'گەس بریانی', nrx: 14000, grwp: 'گەس', link: '', branch: '٣٢ پارک', chefGroup: 'گەس', nt: 16000, nz: 15000, nw: 14500, nl: 15500 },
+                    { id: 'gr1', naw: 'شیش تاووک', nrx: 11000, grwp: 'بەرگر', link: '', branch: 'زانکۆ', chefGroup: 'بەرگر', nt: 13000, nz: 12000, nw: 11500, nl: 12500 },
+                    { id: 'gr2', naw: 'بەرگر پەتی', nrx: 9000, grwp: 'بەرگر', link: '', branch: '٣٢ پارک', chefGroup: 'بەرگر', nt: 11000, nz: 10000, nw: 9500, nl: 10500 },
+                    { id: 'd1', naw: 'پەپسی', nrx: 2000, grwp: 'خواردنەوەکان', link: '', branch: 'زانکۆ', chefGroup: 'skip', nt: 3000, nz: 2500, nw: 2000, nl: 2500 },
+                    { id: 'd2', naw: 'سپرایت', nrx: 2000, grwp: 'خواردنەوەکان', link: '', branch: '٣٢ پارک', chefGroup: 'skip', nt: 3000, nz: 2500, nw: 2000, nl: 2500 },
+                    { id: 'd3', naw: 'ئاو', nrx: 1000, grwp: 'خواردنەوەکان', link: '', branch: 'زانکۆ', chefGroup: 'skip', nt: 1500, nz: 1200, nw: 1000, nl: 1200 },
                 ];
 
                 await setDoc(docRef, {
@@ -2005,6 +2399,7 @@
                     grwp: item.group || 'گشتی',
                     link: item.image || '',
                     branch: item.branch || 'زانکۆ',
+                    chefGroup: item.chefGroup || 'skip',
                     nt: item.partnerPrices?.talabat || null,
                     nz: item.partnerPrices?.zuu || null,
                     nw: item.partnerPrices?.wade || null,
@@ -2130,9 +2525,24 @@
                 return;
             }
 
+            // هەڵگرتنی شوێنی سکرۆڵ
+            const scrollWrapper = document.getElementById('chef-scroll-wrapper');
+            if (scrollWrapper) {
+                state.savedScrollPosition = scrollWrapper.scrollTop;
+            }
+
             order.status = status;
             await saveOrdersToFirestore();
+            
             render();
+            
+            // گەڕاندنەوەی سکرۆڵ بۆ هەمان شوێن
+            setTimeout(() => {
+                if (scrollWrapper) {
+                    scrollWrapper.scrollTop = state.savedScrollPosition;
+                }
+            }, 50);
+            
             toast(`🔄 ئۆردەر #${orderId} گۆڕدرا بۆ: ${status}`);
         }
 
@@ -2193,6 +2603,7 @@
             }
         }
 
+        // فانکشنی renderی نوێ کە سکرۆڵ ناگەڕێنێتەوە
         function render() {
             const app = document.getElementById('app');
             if (!app) return;
@@ -2244,6 +2655,17 @@
                     html += renderOptions();
             }
             app.innerHTML = html;
+
+            // سکرۆڵ ناگەڕێتەوە بۆ سەرەتا
+            if (state.currentPage === 'chef') {
+                const scrollWrapper = document.getElementById('chef-scroll-wrapper');
+                if (scrollWrapper) {
+                    // بەکارهێنانی requestAnimationFrame بۆ دڵنیابوون لە دروستبوونی DOM
+                    requestAnimationFrame(() => {
+                        scrollWrapper.scrollTop = state.savedScrollPosition;
+                    });
+                }
+            }
 
             if (state.showItemModal && !state.isLoading) {
                 app.innerHTML += renderItemModal();
@@ -2310,7 +2732,6 @@
                     <input type="text" id="username" placeholder="ناوی بەکارهێنەر" />
                     <input type="password" id="password" placeholder="تێپەڕەوشە" />
                     <button class="btn" data-action="login-manager">چوونە ژوور</button>
-                    <p style="font-size:12px;color:#94a3b8;margin-top:10px;">user: s4ng4r | pass: s2026s</p>
                 `;
             } else if (state.branch === 'zanco') {
                 branchLabel = '🏫 زانکۆ';
@@ -2524,11 +2945,11 @@
             let orders = state.orders.filter(o => o.status !== 'completed' && o.branch === 'park32');
 
             if (state.chefView === 'grill') {
-                orders = orders.filter(o => o.items.some(i => i.group === 'بەرگر'));
+                orders = orders.filter(o => o.items.some(i => i.chefGroup === 'بەرگر'));
             } else if (state.chefView === 'pizza') {
-                orders = orders.filter(o => o.items.some(i => i.group === 'پیتزا'));
+                orders = orders.filter(o => o.items.some(i => i.chefGroup === 'پیتزا'));
             } else if (state.chefView === 'gas') {
-                orders = orders.filter(o => o.items.some(i => i.group === 'گەس'));
+                orders = orders.filter(o => o.items.some(i => i.chefGroup === 'گەس'));
             }
 
             orders.sort((a, b) => b.id - a.id);
@@ -2607,6 +3028,7 @@
                         ${item.image ? `<img src="${item.image}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;" loading="lazy" onerror="this.style.display='none';" />` : '🍽️'} 
                         ${item.name}
                         <span class="branch-tag ${item.branch === 'زانکۆ' ? 'zanco' : 'park32'}">${item.branch}</span>
+                        ${item.chefGroup && item.chefGroup !== 'skip' ? `<span style="background:#6c5ce7;color:white;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;margin-right:4px;">👨‍🍳 ${item.chefGroup}</span>` : ''}
                     </td>
                     <td>${formatPrice(item.price)}</td>
                     <td>
@@ -2712,6 +3134,51 @@
                 </div>
             `;
 
+            const monthDays = getMonthDays();
+            const dayTotals = monthDays.map(day => {
+                const dayStr = day.toDateString();
+                const dayOrders = dineTakeawayOrders.filter(o => {
+                    const d = new Date(o.timestamp);
+                    return d.toDateString() === dayStr;
+                });
+                return dayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+            });
+            const maxTotal = Math.max(...dayTotals, 1);
+            const monthlyTotal = dayTotals.reduce((sum, v) => sum + v, 0);
+            const avgDaily = Math.round(monthlyTotal / monthDays.length);
+
+            const barsHtml = monthDays.map((day, index) => {
+                const total = dayTotals[index] || 0;
+                const height = (total / maxTotal) * 100;
+                const dayName = getDayName(day);
+                
+                let barClass = 'zero';
+                if (total > 0 && total >= maxTotal * 0.6) barClass = 'high';
+                else if (total > 0 && total >= maxTotal * 0.3) barClass = 'medium';
+                else if (total > 0) barClass = 'low';
+
+                const isToday = day.toDateString() === new Date().toDateString();
+                const isMax = total > 0 && total === maxTotal;
+
+                return `
+                    <div class="bar-item-simple ${isToday ? 'today' : ''}">
+                        <span class="bar-value">${formatPriceShort(total)}</span>
+                        <div class="bar-track">
+                            <div class="bar-fill ${barClass}" style="height:${Math.max(height || 3, 3)}%;">
+                                <div class="bar-glow"></div>
+                            </div>
+                        </div>
+                        <span class="bar-label-simple">${day.getDate()}</span>
+                        <span class="bar-day-simple">${dayName}</span>
+                        ${isMax ? '<span class="bar-max-star">⭐</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+
+            const last30Days = dayTotals.slice(-30);
+            const trend = last30Days.length > 1 ? 
+                ((last30Days[last30Days.length - 1] - last30Days[0]) / (last30Days[0] || 1) * 100) : 0;
+
             return `
                 <div>
                     <div class="header-bar">
@@ -2774,35 +3241,49 @@
                             </div>
 
                             <h4 style="font-size:15px;margin:12px 0 8px;">📈 ڕەوتی مانگانە (ساڵە و سەفەری)</h4>
-                            <div class="monthly-chart">
-                                <div class="bar-container">
-                                    ${(() => {
-                                        const monthDays = getMonthDays();
-                                        const dayTotals = monthDays.map(day => {
-                                            const dayStr = day.toDateString();
-                                            const dayOrders = dineTakeawayOrders.filter(o => {
-                                                const d = new Date(o.timestamp);
-                                                return d.toDateString() === dayStr;
-                                            });
-                                            return dayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
-                                        });
-                                        const maxTotal = Math.max(...dayTotals, 1);
-                                        const minTotal = Math.min(...dayTotals.filter(v => v > 0), 0);
-                                        return monthDays.map((day, index) => {
-                                            const total = dayTotals[index] || 0;
-                                            const height = (total / maxTotal) * 100;
-                                            let barClass = '';
-                                            if (total > 0 && total === maxTotal) barClass = 'max';
-                                            else if (total > 0 && total === minTotal && minTotal > 0) barClass = 'min';
-                                            return `
-                                                <div class="bar-wrapper">
-                                                    <div class="bar-value">${formatPriceShort(total)}</div>
-                                                    <div class="bar ${barClass}" style="height:${Math.max(height || 3, 3)}px;"></div>
-                                                    <div class="bar-label">${day.getDate()}</div>
-                                                </div>
-                                            `;
-                                        }).join('');
-                                    })()}
+                            
+                            <div class="monthly-chart-modern">
+                                <div class="chart-header-simple">
+                                    <div class="chart-title-simple">
+                                        <h4>📊 ڕەوتی فرۆشتن</h4>
+                                        <span class="badge-live">
+                                            <span class="dot"></span>
+                                            لایڤ
+                                        </span>
+                                    </div>
+                                    <div class="chart-stats-simple">
+                                        <div class="stat-box">
+                                            <span class="stat-value">${formatPrice(avgDaily)}</span>
+                                            <span class="stat-label">تێکڕا</span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="stat-value">${formatPrice(monthlyTotal)}</span>
+                                            <span class="stat-label">کۆی مانگ</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="chart-bars-simple">
+                                    ${barsHtml}
+                                </div>
+
+                                <div class="chart-footer-simple">
+                                    <div class="total-text">
+                                        کۆی گشتی: <span>${formatPrice(monthlyTotal)}</span>
+                                        ${trend !== 0 ? `<span class="${trend > 0 ? 'trend-up' : 'trend-down'}">${trend > 0 ? '📈+' : '📉'}${Math.abs(trend).toFixed(1)}%</span>` : ''}
+                                    </div>
+                                    <div class="legend-simple">
+                                        <span class="legend-item-simple">
+                                            <span class="color-dot high"></span> بەرز
+                                        </span>
+                                        <span class="legend-item-simple">
+                                            <span class="color-dot medium"></span> ناوەند
+                                        </span>
+                                        <span class="legend-item-simple">
+                                            <span class="color-dot low"></span> نزم
+                                        </span>
+                                    </div>
+                                    <button class="btn-details" data-action="view-monthly-details">👁️ وردتر</button>
                                 </div>
                             </div>
 
@@ -2890,6 +3371,12 @@
                 <option value="${b}" ${item && item.branch === b ? 'selected' : ''}>${b}</option>
             `).join('');
 
+            const chefGroupOptionsHtml = CHEF_GROUP_OPTIONS.map(g => {
+                const selected = item && item.chefGroup === g ? 'selected' : '';
+                const displayName = g === 'skip' ? '🚫 بەزاندن (skip)' : `👨‍🍳 ${g}`;
+                return `<option value="${g}" ${selected}>${displayName}</option>`;
+            }).join('');
+
             return `
                 <div class="modal-overlay" id="item-modal-overlay">
                     <div class="modal" id="item-modal">
@@ -2915,6 +3402,13 @@
                             <select id="item-branch">
                                 ${branchOptionsHtml}
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label>گرووپی شێف</label>
+                            <select id="item-chef-group">
+                                ${chefGroupOptionsHtml}
+                            </select>
+                            <small style="color:#64748b;display:block;margin-top:2px;">هەڵبژاردنی شێف بۆ ئەم ئایتمە (skip بۆ نەچوون بۆ شێف)</small>
                         </div>
                         <div class="form-group">
                             <label>لینکی وێنە</label>
@@ -3122,6 +3616,7 @@
                 };
             });
 
+            // گۆڕینی ڕووداوی کلیک بۆ کارتی شێف - سکرۆڵ ناگەڕێتەوە
             document.querySelectorAll('.chef-order-card-wrapper').forEach(el => {
                 el.onclick = function(e) {
                     e.preventDefault();
@@ -3251,7 +3746,15 @@
                     }
 
                     const orderData = {
-                        items: state.cart.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price, group: i.group, image: i.image })),
+                        items: state.cart.map(i => ({ 
+                            id: i.id, 
+                            name: i.name, 
+                            qty: i.qty, 
+                            price: i.price, 
+                            group: i.group, 
+                            image: i.image,
+                            chefGroup: i.chefGroup || 'skip'
+                        })),
                         total: state.cart.reduce((sum, i) => sum + i.price * i.qty, 0),
                         orderType: state.orderType,
                         partner: state.partner,
@@ -3323,6 +3826,12 @@
                 };
             });
 
+            document.querySelectorAll('[data-action="view-monthly-details"]').forEach(el => {
+                el.onclick = () => {
+                    toast('📊 وردەکاری ڕەوتی مانگانە');
+                };
+            });
+
             const closeModalBtn = document.getElementById('close-item-modal');
             if (closeModalBtn) {
                 closeModalBtn.onclick = () => {
@@ -3360,6 +3869,7 @@
                     const group = document.getElementById('item-group')?.value.trim();
                     const branch = document.getElementById('item-branch')?.value.trim() || 'زانکۆ';
                     const image = document.getElementById('item-image')?.value.trim();
+                    const chefGroup = document.getElementById('item-chef-group')?.value || 'skip';
 
                     if (!name) {
                         toast('تکایە ناوی ئایتم داخل بکە', true);
@@ -3388,6 +3898,7 @@
                             item.group = group || 'گشتی';
                             item.branch = branch;
                             item.image = image || '';
+                            item.chefGroup = chefGroup;
                             item.partnerPrices = partnerPrices;
                             toast('✅ ئایتم نوێ کرایەوە');
                         }
@@ -3399,6 +3910,7 @@
                             group: group || 'گشتی',
                             branch: branch,
                             image: image || '',
+                            chefGroup: chefGroup,
                             partnerPrices: partnerPrices
                         };
                         state.items.push(newItem);
