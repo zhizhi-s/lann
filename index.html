@@ -2208,7 +2208,7 @@
         const PARTNER_LOGOS = {
             talabat: 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
             zuu: 'https://i.ibb.co/gMT6mBmc/unnamed.webp',
-            wade: 'https://i.ibb.co/gL5Lv9tH/unnamed.png',
+            wade: 'https://play-lh.googleusercontent.com/xRRjQVEB3jlNqZa3nhNh0jvsMhMfNmjMVmY8BrRC9rEQIHAGPVRIIJDBL4RatBhCXg06l__XdiZ3kks5HcmBsw',
             leezu: 'https://www.lezzoo.com/icon.png'
         };
 
@@ -2327,12 +2327,15 @@
             
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             
+            // ===== ریسێتی ڕۆژانە لە 4:00 AM =====
             if (state.lastResetDate) {
                 const lastReset = new Date(state.lastResetDate);
                 const lastResetDay = new Date(lastReset.getFullYear(), lastReset.getMonth(), lastReset.getDate());
                 
+                // ئەگەر ڕۆژی تری بێت و کات > 4:00 AM
                 if (today.getTime() !== lastResetDay.getTime()) {
                     if (currentHour >= resetHour || (currentHour === resetHour && currentMinutes >= resetMinute)) {
+                        // تەنها ئەو ئۆردەرانە بهێڵەوە کە شەریکەن و لە ڕۆژی ئێستادان
                         const todayOrders = state.orders.filter(o => {
                             const orderDate = new Date(o.timestamp);
                             return o.partner && o.orderType === 'partner' && 
@@ -2341,6 +2344,7 @@
                                    orderDate.getFullYear() === today.getFullYear();
                         });
                         
+                        // هەموو ئۆردەرەکانی تر پاک بکەرەوە (تەنها شەریکەکانی ئەمڕۆ بمێنن)
                         const partnerOrdersToday = state.orders.filter(o => {
                             const orderDate = new Date(o.timestamp);
                             return o.partner && o.orderType === 'partner' && 
@@ -2352,6 +2356,7 @@
                         state.orders = partnerOrdersToday;
                         state.usedOrderNumbers.clear();
                         
+                        // ژمارەکانی ئۆردەری ئەمڕۆ زیاد بکە
                         state.orders.forEach(o => {
                             if (o.id && o.id <= 50 && !o.completed) {
                                 state.usedOrderNumbers.add(o.id);
@@ -2368,6 +2373,7 @@
                 saveResetDateToFirestore();
             }
             
+            // ===== ریسێتی مانگانە =====
             if (state.lastMonthlyReset) {
                 const lastMonthly = new Date(state.lastMonthlyReset);
                 const currentMonth = now.getMonth();
@@ -2375,7 +2381,9 @@
                 const lastMonth = lastMonthly.getMonth();
                 const lastYear = lastMonthly.getFullYear();
                 
+                // ئەگەر مانگ گۆڕا
                 if (currentMonth !== lastMonth || currentYear !== lastYear) {
+                    // تەنها ئەو ئۆردەرانە بهێڵەوە کە لە مانگی ئێستادان
                     const currentMonthOrders = state.orders.filter(o => {
                         const orderDate = new Date(o.timestamp);
                         return orderDate.getMonth() === currentMonth && 
@@ -2631,9 +2639,6 @@
             }
         }
 
-        // ============================================================
-        // فەنکشنی تەواوکردنی ئۆردەر لەلایەن کاشێر - گۆڕدراوە
-        // ============================================================
         async function completeOrderByCashier(orderId) {
             const order = state.orders.find(o => o.id === orderId);
             if (!order) return;
@@ -2645,17 +2650,20 @@
                 return;
             }
 
-            // ستەیتی ئۆردەرەکە دەگۆڕین بۆ 'completed'
-            order.status = 'completed';
-            order.completedByCashier = true;
-            order.completedAt = new Date().toISOString();
+            // ===== چاکسازی: بسڕەوە لە هەموو شوێنەکان =====
+            // 1. لە state.orders بیسڕەوە
+            state.orders = state.orders.filter(o => o.id !== orderId);
             
-            // ژمارەکە بەتاڵ دەکەینەوە بۆ بەکارهێنانی دوبارە
+            // 2. ژمارەکە لە usedOrderNumbers بسڕەوە
             state.usedOrderNumbers.delete(orderId);
             
+            // 3. سەیڤ بکە بۆ Firestore
             await saveOrdersToFirestore();
+            
+            // 4. ڕێندرینگ بکە
             render();
-            toast(`✅ ئۆردەر #${orderId} تەواو کرا!`);
+            
+            toast(`✅ ئۆردەر #${orderId} تەواو کرا و لە هەموو شوێنەکان سڕایەوە!`);
         }
 
         async function updateOrderStatus(orderId, status) {
@@ -3114,16 +3122,9 @@
                 </span>
             ` : '';
 
-            // ============================================================
-            // تەنها ئۆردەرەکانی ستەیتی 'ready' نیشان بدە (ئەوانەی تەواو نەکراون)
-            // ============================================================
             let chefOrdersHtml = '';
             if (state.branch === 'park32') {
-                const readyOrders = state.orders.filter(o => 
-                    o.branch === 'park32' && 
-                    o.status === 'ready' &&
-                    o.orderType !== 'partner'
-                );
+                const readyOrders = state.orders.filter(o => o.branch === 'park32' && o.status === 'ready');
                 chefOrdersHtml = readyOrders.length ? readyOrders.map(o => {
                     const items = o.items.map(i => `${i.name} ×${i.qty}`).join('، ');
                     return `
@@ -3190,7 +3191,7 @@
                         <div id="chef-orders-list">
                             <div class="chef-orders-container">
                                 <div class="chef-orders-column ready">
-                                    <div class="column-title">✅ تەواو بووە <span class="count">${state.orders.filter(o => o.branch === 'park32' && o.status === 'ready' && o.orderType !== 'partner').length}</span></div>
+                                    <div class="column-title">✅ تەواو بووە <span class="count">${state.orders.filter(o => o.branch === 'park32' && o.status === 'ready').length}</span></div>
                                     ${chefOrdersHtml}
                                 </div>
                             </div>
@@ -3230,7 +3231,6 @@
                 <option value="${b}" ${state.selectedBranch === b ? 'selected' : ''}>${b}</option>
             `).join('');
 
-            // هەموو ئۆردەرەکانی ساڵە و سەفەری نیشان بدە (تەنانەت تەواو کراوەکانیش)
             let dineTakeawayOrders = state.orders.filter(o => {
                 const isPartner = o.partner && o.orderType === 'partner';
                 return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
