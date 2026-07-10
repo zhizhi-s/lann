@@ -2248,18 +2248,35 @@
             usedOrderNumbers: new Set(),
             itemsPanelScrollTop: 0,
             dailyResetDone: false,
-            monthlyResetDone: false
+            monthlyResetDone: false,
+            // گەیاندنی ئۆردەرە تەواوەکان بۆ داتابەیس
+            completedOrders: []
         };
 
+        // ===== فەنکشنی بچووکترین ژمارەی بەتاڵ =====
         function getSmallestAvailableOrderNumber() {
-            // بچووکترین ژمارەی بەتاڵ بدۆزەرەوە لە نێوان ١ تا ٥٠
+            // کۆکردنەوەی هەموو ژمارەکانی ئۆردەر (تەنها ژمارەکانی 1-50)
+            const usedNumbers = new Set();
+            state.orders.forEach(o => {
+                if (o.id && o.id >= 1 && o.id <= 50) {
+                    usedNumbers.add(o.id);
+                }
+            });
+            // بۆ ئۆردەرە تەواوەکانیش
+            state.completedOrders.forEach(o => {
+                if (o.id && o.id >= 1 && o.id <= 50) {
+                    usedNumbers.add(o.id);
+                }
+            });
+
+            // گەڕان بەدوای بچووکترین ژمارەی بەتاڵ (لە 1 تا 50)
             for (let i = 1; i <= 50; i++) {
-                if (!state.usedOrderNumbers.has(i)) {
+                if (!usedNumbers.has(i)) {
                     return i;
                 }
             }
-            // ئەگەر هەموو ژمارەکان پڕ بوون، ژمارەی نوێ زیاد بکە
-            return state.usedOrderNumbers.size + 1;
+            // ئەگەر هەموو ژمارەکان پڕ بوون، ژمارەی 51 وەربگرە
+            return 51;
         }
 
         function toast(msg, isError = false) {
@@ -2320,6 +2337,36 @@
             return days[date.getDay()];
         }
 
+        // ===== فەنکشنی نوێ بۆ گەیاندنی ئۆردەرە تەواوەکان =====
+        async function moveOrderToCompleted(order) {
+            // ئۆردەرەکە زیاد بکە بۆ لیستی تەواوەکان
+            state.completedOrders.push(order);
+            
+            // لە لیستی ئۆردەرە چالاکەکان بیسڕەوە
+            state.orders = state.orders.filter(o => o.id !== order.id);
+            
+            // ژمارەکە لە usedOrderNumbers بسڕەوە (بۆ ئەوەی دووبارە بەکاربهێنرێت)
+            state.usedOrderNumbers.delete(order.id);
+            
+            // سەیڤ بکە بۆ Firestore
+            await saveOrdersToFirestore();
+            await saveCompletedOrdersToFirestore();
+            
+            render();
+            toast(`✅ ئۆردەر #${order.id} تەواو کرا و گوێزرایە بۆ ئامارەکان`);
+        }
+
+        async function saveCompletedOrdersToFirestore() {
+            try {
+                await updateDoc(docRef, {
+                    completedOrders: state.completedOrders,
+                    lastUpdated: new Date().toISOString()
+                });
+            } catch (error) {
+                console.error('Error saving completed orders:', error);
+            }
+        }
+
         function checkAndResetStats() {
             const now = new Date();
             const currentHour = now.getHours();
@@ -2334,7 +2381,6 @@
                 const lastReset = new Date(state.lastResetDate);
                 const lastResetDay = new Date(lastReset.getFullYear(), lastReset.getMonth(), lastReset.getDate());
                 
-                // ئەگەر ڕۆژی تری بێت و کات > 4:00 AM
                 if (today.getTime() !== lastResetDay.getTime()) {
                     if (currentHour >= resetHour || (currentHour === resetHour && currentMinutes >= resetMinute)) {
                         // تەنها ئەو ئۆردەرانە بهێڵەوە کە شەریکەن و لە ڕۆژی ئێستادان
@@ -2346,7 +2392,6 @@
                                    orderDate.getFullYear() === today.getFullYear();
                         });
                         
-                        // هەموو ئۆردەرەکانی تر پاک بکەرەوە (تەنها شەریکەکانی ئەمڕۆ بمێنن)
                         const partnerOrdersToday = state.orders.filter(o => {
                             const orderDate = new Date(o.timestamp);
                             return o.partner && o.orderType === 'partner' && 
@@ -2355,8 +2400,9 @@
                                    orderDate.getFullYear() === today.getFullYear();
                         });
                         
-                        state.orders = partnerOrdersToday;
-                        state.usedOrderNumbers.clear();
+                        // ئۆردەرە تەواوەکان ناسڕدرێنەوە
+                        // state.orders = partnerOrdersToday;
+                        // state.usedOrderNumbers.clear();
                         
                         // ژمارەکانی ئۆردەری ئەمڕۆ زیاد بکە
                         state.orders.forEach(o => {
@@ -2383,16 +2429,15 @@
                 const lastMonth = lastMonthly.getMonth();
                 const lastYear = lastMonthly.getFullYear();
                 
-                // ئەگەر مانگ گۆڕا
                 if (currentMonth !== lastMonth || currentYear !== lastYear) {
-                    // تەنها ئەو ئۆردەرانە بهێڵەوە کە لە مانگی ئێستادان
                     const currentMonthOrders = state.orders.filter(o => {
                         const orderDate = new Date(o.timestamp);
                         return orderDate.getMonth() === currentMonth && 
                                orderDate.getFullYear() === currentYear;
                     });
                     
-                    state.orders = currentMonthOrders;
+                    // ئۆردەرە تەواوەکان ناسڕدرێنەوە
+                    // state.orders = currentMonthOrders;
                     state.lastMonthlyReset = new Date().toISOString();
                     saveMonthlyResetToFirestore();
                     toast('📊 ئامارە مانگانەکان نوێ کرانەوە');
@@ -2463,6 +2508,11 @@
                         if (data.lastMonthlyReset) {
                             state.lastMonthlyReset = data.lastMonthlyReset;
                         }
+                        
+                        // بارکردنی ئۆردەرە تەواوەکان
+                        if (data.completedOrders) {
+                            state.completedOrders = data.completedOrders;
+                        }
 
                         state.isLoading = false;
                         state.firebaseError = null;
@@ -2507,6 +2557,7 @@
                     items: defaultItems,
                     partnerImages: { talabat: '', zuu: '', wade: '', leezu: '' },
                     orders: [],
+                    completedOrders: [],
                     lastUpdated: new Date().toISOString(),
                     lastResetDate: new Date().toISOString(),
                     lastMonthlyReset: new Date().toISOString()
@@ -2577,6 +2628,11 @@
                         const ordersData = data.orders || [];
                         state.orders = ordersData;
                         
+                        // بارکردنی ئۆردەرە تەواوەکان
+                        if (data.completedOrders) {
+                            state.completedOrders = data.completedOrders;
+                        }
+                        
                         state.usedOrderNumbers.clear();
                         state.orders.forEach(o => {
                             if (o.id && o.id <= 50 && !o.completed) {
@@ -2641,32 +2697,28 @@
             }
         }
 
+        // ===== فەنکشنی نوێ بۆ تەواوکردنی ئۆردەر لەلایەن کاشێر =====
         async function completeOrderByCashier(orderId) {
             const order = state.orders.find(o => o.id === orderId);
-            if (!order) return;
+            if (!order) {
+                toast('ئۆردەرەکە نەدۆزرایەوە!', true);
+                return;
+            }
 
-            if (order.branch !== 'park32') return;
+            if (order.branch !== 'park32') {
+                toast('تەنها ئۆردەری ٣٢ پارک دەتوانرێت تەواو بکرێت!', true);
+                return;
+            }
 
             if (order.status !== 'ready') {
                 toast('تکایە یەکەم ئۆردەرەکە لەلایەن شێفەوە ئامادە بکرێت', true);
                 return;
             }
 
-            // ===== گۆڕانکاری: تەنها ستەیشن بگۆڕە بۆ completed، مەیسڕەوە =====
-            order.status = 'completed';
-            order.completed = true;
-            order.completedAt = new Date().toISOString();
+            // گواستنەوەی ئۆردەرەکە بۆ لیستی تەواوەکان
+            await moveOrderToCompleted(order);
             
-            // ژمارەکە لە usedOrderNumbers بسڕەوە تا ببێتە بەتاڵ بۆ ئۆردەری نوێ
-            state.usedOrderNumbers.delete(orderId);
-            
-            // سەیڤ بکە بۆ Firestore
-            await saveOrdersToFirestore();
-            
-            // ڕێندرینگ بکە
-            render();
-            
-            toast(`✅ ئۆردەر #${orderId} تەواو کرا! (ستەیشن: completed)`);
+            toast(`✅ ئۆردەر #${orderId} تەواو کرا و گوێزرایە بۆ ئامارەکان!`);
         }
 
         async function updateOrderStatus(orderId, status) {
@@ -3127,8 +3179,7 @@
 
             let chefOrdersHtml = '';
             if (state.branch === 'park32') {
-                // تەنها ئۆردەرە ئامادەکراوەکان (ready) پیشان بدە کە تەواو نەبوون
-                const readyOrders = state.orders.filter(o => o.branch === 'park32' && o.status === 'ready' && !o.completed);
+                const readyOrders = state.orders.filter(o => o.branch === 'park32' && o.status === 'ready');
                 chefOrdersHtml = readyOrders.length ? readyOrders.map(o => {
                     const items = o.items.map(i => `${i.name} ×${i.qty}`).join('، ');
                     return `
@@ -3195,7 +3246,7 @@
                         <div id="chef-orders-list">
                             <div class="chef-orders-container">
                                 <div class="chef-orders-column ready">
-                                    <div class="column-title">✅ تەواو بووە <span class="count">${state.orders.filter(o => o.branch === 'park32' && o.status === 'ready' && !o.completed).length}</span></div>
+                                    <div class="column-title">✅ تەواو بووە <span class="count">${state.orders.filter(o => o.branch === 'park32' && o.status === 'ready').length}</span></div>
                                     ${chefOrdersHtml}
                                 </div>
                             </div>
@@ -3235,26 +3286,38 @@
                 <option value="${b}" ${state.selectedBranch === b ? 'selected' : ''}>${b}</option>
             `).join('');
 
-            // ===== گۆڕانکاری: هەموو ئۆردەرەکان پیشان بدە (تەنانەت completed) =====
-            let dineTakeawayOrders = state.orders.filter(o => {
+            // ===== ئۆردەرەکانی ساڵە و سەفەری + ئۆردەرە تەواوەکان =====
+            let allDineTakeawayOrders = [];
+            
+            // ئۆردەرە چالاکەکان
+            const activeOrders = state.orders.filter(o => {
                 const isPartner = o.partner && o.orderType === 'partner';
                 return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
             });
+            
+            // ئۆردەرە تەواوەکان
+            const completedOrders = state.completedOrders.filter(o => {
+                const isPartner = o.partner && o.orderType === 'partner';
+                return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
+            });
+            
+            // هەموو ئۆردەرەکان (چالاک + تەواو)
+            allDineTakeawayOrders = [...activeOrders, ...completedOrders];
 
             if (state.branchFilter !== 'all') {
-                dineTakeawayOrders = dineTakeawayOrders.filter(o => o.branch === state.branchFilter);
+                allDineTakeawayOrders = allDineTakeawayOrders.filter(o => o.branch === state.branchFilter);
             }
 
-            const totalDineTakeaway = dineTakeawayOrders.length;
-            const totalRevenueDineTakeaway = dineTakeawayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+            const totalDineTakeaway = allDineTakeawayOrders.length;
+            const totalRevenueDineTakeaway = allDineTakeawayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
             
-            const morningDineTakeaway = dineTakeawayOrders.filter(o => o.shift === 'morning').length;
-            const nightDineTakeaway = dineTakeawayOrders.filter(o => o.shift === 'night').length;
-            const morningRevenueDineTakeaway = dineTakeawayOrders.filter(o => o.shift === 'morning').reduce((sum, o) => sum + (o.total || 0), 0);
-            const nightRevenueDineTakeaway = dineTakeawayOrders.filter(o => o.shift === 'night').reduce((sum, o) => sum + (o.total || 0), 0);
+            const morningDineTakeaway = allDineTakeawayOrders.filter(o => o.shift === 'morning').length;
+            const nightDineTakeaway = allDineTakeawayOrders.filter(o => o.shift === 'night').length;
+            const morningRevenueDineTakeaway = allDineTakeawayOrders.filter(o => o.shift === 'morning').reduce((sum, o) => sum + (o.total || 0), 0);
+            const nightRevenueDineTakeaway = allDineTakeawayOrders.filter(o => o.shift === 'night').reduce((sum, o) => sum + (o.total || 0), 0);
 
             const cashierStatsDineTakeaway = {};
-            dineTakeawayOrders.forEach(o => {
+            allDineTakeawayOrders.forEach(o => {
                 if (o.cashier) {
                     cashierStatsDineTakeaway[o.cashier] = (cashierStatsDineTakeaway[o.cashier] || 0) + 1;
                 }
@@ -3327,7 +3390,7 @@
             const monthDays = getMonthDays();
             const dayTotals = monthDays.map(day => {
                 const dayStr = day.toDateString();
-                const dayOrders = dineTakeawayOrders.filter(o => {
+                const dayOrders = allDineTakeawayOrders.filter(o => {
                     const d = new Date(o.timestamp);
                     return d.toDateString() === dayStr;
                 });
@@ -3477,23 +3540,19 @@
                                 </div>
                             </div>
 
-                            <h4 style="font-size:15px;margin:12px 0 8px;">📋 کۆی ئۆردەرەکانی ساڵە و سەفەری</h4>
+                            <h4 style="font-size:15px;margin:12px 0 8px;">📋 کۆی ئۆردەرەکانی ساڵە و سەفەری (چالاک + تەواو)</h4>
                             <div style="max-height:250px;overflow-y:auto;border:2px solid #e2e8f0;border-radius:10px;padding:8px;">
-                                ${dineTakeawayOrders.length ? dineTakeawayOrders.map(o => {
-                                    const statusText = o.completed ? '✅ تەواو' : (o.status || 'چاوەڕوان');
-                                    const statusColor = o.completed ? '#00b894' : (o.status === 'ready' ? '#fdcb6e' : '#6c5ce7');
-                                    return `
-                                        <div class="order-item" style="border-right-color: ${o.orderType === 'dine' ? '#3498db' : '#f39c12'};">
-                                            <span class="order-id">#${o.id}</span>
-                                            <span class="order-type-badge ${o.orderType}">${o.orderType === 'dine' ? '🍽️ ساڵە' : '🛍️ سەفەری'}</span>
-                                            <span class="order-items-text">${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
-                                            <span class="order-price">${formatPrice(o.total)}</span>
-                                            <span class="order-time">${o.time}</span>
-                                            <span class="order-cashier">${o.cashier || ''}</span>
-                                            <span style="font-size:10px;color:${statusColor};font-weight:600;">${statusText}</span>
-                                        </div>
-                                    `;
-                                }).join('') : '<p style="color:#94a3b8;text-align:center;padding:16px;">هیچ ئۆردەرێکی ساڵە و سەفەری نییە</p>'}
+                                ${allDineTakeawayOrders.length ? allDineTakeawayOrders.map(o => `
+                                    <div class="order-item" style="border-right-color: ${o.orderType === 'dine' ? '#3498db' : '#f39c12'};">
+                                        <span class="order-id">#${o.id}</span>
+                                        <span class="order-type-badge ${o.orderType}">${o.orderType === 'dine' ? '🍽️ ساڵە' : '🛍️ سەفەری'}</span>
+                                        <span class="order-items-text">${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
+                                        <span class="order-price">${formatPrice(o.total)}</span>
+                                        <span class="order-time">${o.time}</span>
+                                        <span class="order-cashier">${o.cashier || ''}</span>
+                                        ${o.completed ? '<span style="background:#00b894;color:white;padding:2px 8px;border-radius:6px;font-size:10px;">✅ تەواو</span>' : ''}
+                                    </div>
+                                `).join('') : '<p style="color:#94a3b8;text-align:center;padding:16px;">هیچ ئۆردەرێکی ساڵە و سەفەری نییە</p>'}
                             </div>
                         </div>
                     ` : ''}
@@ -3951,7 +4010,7 @@
                         return;
                     }
 
-                    // ===== گۆڕانکاری: بەکارهێنانی سیستەمی بچووکترین ژمارەی بەتاڵ =====
+                    // ===== بەکارهێنانی بچووکترین ژمارەی بەتاڵ =====
                     const nextId = getSmallestAvailableOrderNumber();
 
                     const orderData = {
@@ -3979,8 +4038,7 @@
                     const order = {
                         id: nextId,
                         ...orderData,
-                        status: 'pending',
-                        completed: false
+                        status: 'pending'
                     };
 
                     state.orders.push(order);
