@@ -2252,11 +2252,13 @@
         };
 
         function getSmallestAvailableOrderNumber() {
+            // بچووکترین ژمارەی بەتاڵ بدۆزەرەوە لە نێوان ١ تا ٥٠
             for (let i = 1; i <= 50; i++) {
                 if (!state.usedOrderNumbers.has(i)) {
                     return i;
                 }
             }
+            // ئەگەر هەموو ژمارەکان پڕ بوون، ژمارەی نوێ زیاد بکە
             return state.usedOrderNumbers.size + 1;
         }
 
@@ -2650,20 +2652,21 @@
                 return;
             }
 
-            // ===== چاکسازی: بسڕەوە لە هەموو شوێنەکان =====
-            // 1. لە state.orders بیسڕەوە
-            state.orders = state.orders.filter(o => o.id !== orderId);
+            // ===== گۆڕانکاری: تەنها ستەیشن بگۆڕە بۆ completed، مەیسڕەوە =====
+            order.status = 'completed';
+            order.completed = true;
+            order.completedAt = new Date().toISOString();
             
-            // 2. ژمارەکە لە usedOrderNumbers بسڕەوە
+            // ژمارەکە لە usedOrderNumbers بسڕەوە تا ببێتە بەتاڵ بۆ ئۆردەری نوێ
             state.usedOrderNumbers.delete(orderId);
             
-            // 3. سەیڤ بکە بۆ Firestore
+            // سەیڤ بکە بۆ Firestore
             await saveOrdersToFirestore();
             
-            // 4. ڕێندرینگ بکە
+            // ڕێندرینگ بکە
             render();
             
-            toast(`✅ ئۆردەر #${orderId} تەواو کرا و لە هەموو شوێنەکان سڕایەوە!`);
+            toast(`✅ ئۆردەر #${orderId} تەواو کرا! (ستەیشن: completed)`);
         }
 
         async function updateOrderStatus(orderId, status) {
@@ -3124,7 +3127,8 @@
 
             let chefOrdersHtml = '';
             if (state.branch === 'park32') {
-                const readyOrders = state.orders.filter(o => o.branch === 'park32' && o.status === 'ready');
+                // تەنها ئۆردەرە ئامادەکراوەکان (ready) پیشان بدە کە تەواو نەبوون
+                const readyOrders = state.orders.filter(o => o.branch === 'park32' && o.status === 'ready' && !o.completed);
                 chefOrdersHtml = readyOrders.length ? readyOrders.map(o => {
                     const items = o.items.map(i => `${i.name} ×${i.qty}`).join('، ');
                     return `
@@ -3191,7 +3195,7 @@
                         <div id="chef-orders-list">
                             <div class="chef-orders-container">
                                 <div class="chef-orders-column ready">
-                                    <div class="column-title">✅ تەواو بووە <span class="count">${state.orders.filter(o => o.branch === 'park32' && o.status === 'ready').length}</span></div>
+                                    <div class="column-title">✅ تەواو بووە <span class="count">${state.orders.filter(o => o.branch === 'park32' && o.status === 'ready' && !o.completed).length}</span></div>
                                     ${chefOrdersHtml}
                                 </div>
                             </div>
@@ -3231,6 +3235,7 @@
                 <option value="${b}" ${state.selectedBranch === b ? 'selected' : ''}>${b}</option>
             `).join('');
 
+            // ===== گۆڕانکاری: هەموو ئۆردەرەکان پیشان بدە (تەنانەت completed) =====
             let dineTakeawayOrders = state.orders.filter(o => {
                 const isPartner = o.partner && o.orderType === 'partner';
                 return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
@@ -3474,16 +3479,21 @@
 
                             <h4 style="font-size:15px;margin:12px 0 8px;">📋 کۆی ئۆردەرەکانی ساڵە و سەفەری</h4>
                             <div style="max-height:250px;overflow-y:auto;border:2px solid #e2e8f0;border-radius:10px;padding:8px;">
-                                ${dineTakeawayOrders.length ? dineTakeawayOrders.map(o => `
-                                    <div class="order-item" style="border-right-color: ${o.orderType === 'dine' ? '#3498db' : '#f39c12'};">
-                                        <span class="order-id">#${o.id}</span>
-                                        <span class="order-type-badge ${o.orderType}">${o.orderType === 'dine' ? '🍽️ ساڵە' : '🛍️ سەفەری'}</span>
-                                        <span class="order-items-text">${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
-                                        <span class="order-price">${formatPrice(o.total)}</span>
-                                        <span class="order-time">${o.time}</span>
-                                        <span class="order-cashier">${o.cashier || ''}</span>
-                                    </div>
-                                `).join('') : '<p style="color:#94a3b8;text-align:center;padding:16px;">هیچ ئۆردەرێکی ساڵە و سەفەری نییە</p>'}
+                                ${dineTakeawayOrders.length ? dineTakeawayOrders.map(o => {
+                                    const statusText = o.completed ? '✅ تەواو' : (o.status || 'چاوەڕوان');
+                                    const statusColor = o.completed ? '#00b894' : (o.status === 'ready' ? '#fdcb6e' : '#6c5ce7');
+                                    return `
+                                        <div class="order-item" style="border-right-color: ${o.orderType === 'dine' ? '#3498db' : '#f39c12'};">
+                                            <span class="order-id">#${o.id}</span>
+                                            <span class="order-type-badge ${o.orderType}">${o.orderType === 'dine' ? '🍽️ ساڵە' : '🛍️ سەفەری'}</span>
+                                            <span class="order-items-text">${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
+                                            <span class="order-price">${formatPrice(o.total)}</span>
+                                            <span class="order-time">${o.time}</span>
+                                            <span class="order-cashier">${o.cashier || ''}</span>
+                                            <span style="font-size:10px;color:${statusColor};font-weight:600;">${statusText}</span>
+                                        </div>
+                                    `;
+                                }).join('') : '<p style="color:#94a3b8;text-align:center;padding:16px;">هیچ ئۆردەرێکی ساڵە و سەفەری نییە</p>'}
                             </div>
                         </div>
                     ` : ''}
@@ -3941,6 +3951,7 @@
                         return;
                     }
 
+                    // ===== گۆڕانکاری: بەکارهێنانی سیستەمی بچووکترین ژمارەی بەتاڵ =====
                     const nextId = getSmallestAvailableOrderNumber();
 
                     const orderData = {
@@ -3968,7 +3979,8 @@
                     const order = {
                         id: nextId,
                         ...orderData,
-                        status: 'pending'
+                        status: 'pending',
+                        completed: false
                     };
 
                     state.orders.push(order);
