@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>سیستەمی کاشێری چێشتخانە</title>
     <style>
+        /* ... هەموو ستایلەکان وەک خۆی ماون ... */
         * {
             margin: 0;
             padding: 0;
@@ -269,7 +270,6 @@
             margin-top: 6px;
         }
         .order-actions button {
-            flex: 1;
             padding: 10px;
             border: none;
             border-radius: 12px;
@@ -451,6 +451,8 @@
             padding: 4px 4px 16px 4px;
             min-height: 200px;
             overscroll-behavior: contain;
+            /* پاراستنی شوێنی سکڕۆڵ */
+            will-change: scroll-position;
         }
         .chef-horizontal-orders {
             display: flex;
@@ -2208,7 +2210,7 @@
         const PARTNER_LOGOS = {
             talabat: 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
             zuu: 'https://i.ibb.co/gMT6mBmc/unnamed.webp',
-            wade: 'https://play-lh.googleusercontent.com/xRRjQVEB3jlNqZa3nhNh0jvsMhMfNmjMVmY8BrRC9rEQIHAGPVRIIJDBL4RatBhCXg06l__XdiZ3kks5HcmBsw',
+            wade: 'https://i.ibb.co/gL5Lv9tH/unnamed.png',
             leezu: 'https://www.lezzoo.com/icon.png'
         };
 
@@ -2248,16 +2250,51 @@
             usedOrderNumbers: new Set(),
             itemsPanelScrollTop: 0,
             dailyResetDone: false,
-            monthlyResetDone: false
+            monthlyResetDone: false,
+            // === NEW: Daily & Monthly reset tracking in Firebase ===
+            dailyResetTimestamp: null,
+            monthlyResetTimestamp: null,
+            currentDayOrders: [],
+            currentMonthOrders: []
         };
 
+        // ===== فەنکشنی ئۆردەری تایبەت =====
+        function generateUniqueOrderId() {
+            return 'ord_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        }
+
+        // ===== فەنکشنی سەرەکی بۆ دۆزینەوەی بچووکترین ژمارەی بەتاڵ =====
         function getSmallestAvailableOrderNumber() {
+            refreshUsedOrderNumbers();
+            
             for (let i = 1; i <= 50; i++) {
                 if (!state.usedOrderNumbers.has(i)) {
                     return i;
                 }
             }
             return state.usedOrderNumbers.size + 1;
+        }
+
+        // ===== نوێکردنەوەی لیستی ژمارە بەکارهاتووەکان =====
+        function refreshUsedOrderNumbers() {
+            state.usedOrderNumbers.clear();
+            
+            // تەنها ئۆردەرە ناتەواوەکان (pending, preparing, ready) ژمارەکانیان بەکارهێنراوە
+            state.orders.forEach(o => {
+                if (o.status !== 'completed' && o.orderNumber && o.orderNumber <= 50) {
+                    state.usedOrderNumbers.add(o.orderNumber);
+                }
+            });
+        }
+
+        // ===== دۆزینەوەی ئۆردەر بە uniqueId =====
+        function findOrderByUniqueId(uniqueId) {
+            return state.orders.find(o => o.uniqueId === uniqueId);
+        }
+
+        // ===== دۆزینەوەی ئۆردەر بە orderNumber =====
+        function findOrderByNumber(orderNumber) {
+            return state.orders.find(o => o.orderNumber === orderNumber);
         }
 
         function toast(msg, isError = false) {
@@ -2318,110 +2355,174 @@
             return days[date.getDay()];
         }
 
-        function checkAndResetStats() {
+        // ============================================
+        //  NEW: Daily Reset Logic (4:00 AM)
+        // ============================================
+        function performDailyReset() {
             const now = new Date();
-            const currentHour = now.getHours();
-            const currentMinutes = now.getMinutes();
-            const resetHour = 4;
-            const resetMinute = 0;
-            
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             
-            // ===== ریسێتی ڕۆژانە لە 4:00 AM =====
-            if (state.lastResetDate) {
-                const lastReset = new Date(state.lastResetDate);
-                const lastResetDay = new Date(lastReset.getFullYear(), lastReset.getMonth(), lastReset.getDate());
-                
-                // ئەگەر ڕۆژی تری بێت و کات > 4:00 AM
-                if (today.getTime() !== lastResetDay.getTime()) {
-                    if (currentHour >= resetHour || (currentHour === resetHour && currentMinutes >= resetMinute)) {
-                        // تەنها ئەو ئۆردەرانە بهێڵەوە کە شەریکەن و لە ڕۆژی ئێستادان
-                        const todayOrders = state.orders.filter(o => {
-                            const orderDate = new Date(o.timestamp);
-                            return o.partner && o.orderType === 'partner' && 
-                                   orderDate.getDate() === today.getDate() &&
-                                   orderDate.getMonth() === today.getMonth() &&
-                                   orderDate.getFullYear() === today.getFullYear();
-                        });
-                        
-                        // هەموو ئۆردەرەکانی تر پاک بکەرەوە (تەنها شەریکەکانی ئەمڕۆ بمێنن)
-                        const partnerOrdersToday = state.orders.filter(o => {
-                            const orderDate = new Date(o.timestamp);
-                            return o.partner && o.orderType === 'partner' && 
-                                   orderDate.getDate() === today.getDate() &&
-                                   orderDate.getMonth() === today.getMonth() &&
-                                   orderDate.getFullYear() === today.getFullYear();
-                        });
-                        
-                        state.orders = partnerOrdersToday;
-                        state.usedOrderNumbers.clear();
-                        
-                        // ژمارەکانی ئۆردەری ئەمڕۆ زیاد بکە
-                        state.orders.forEach(o => {
-                            if (o.id && o.id <= 50 && !o.completed) {
-                                state.usedOrderNumbers.add(o.id);
-                            }
-                        });
-                        
-                        state.lastResetDate = new Date().toISOString();
-                        saveResetDateToFirestore();
-                        toast('📊 ئامارە ڕۆژانەکان لە 4:00 AM نوێ کرانەوە');
-                    }
+            // Only reset if not already done today
+            if (state.dailyResetTimestamp) {
+                const lastResetDate = new Date(state.dailyResetTimestamp);
+                if (lastResetDate.getDate() === today.getDate() &&
+                    lastResetDate.getMonth() === today.getMonth() &&
+                    lastResetDate.getFullYear() === today.getFullYear()) {
+                    return; // Already reset today
                 }
-            } else {
-                state.lastResetDate = new Date().toISOString();
-                saveResetDateToFirestore();
+            }
+
+            // Filter out today's orders to keep (they will be re-counted)
+            const todayOrders = state.orders.filter(o => {
+                const orderDate = new Date(o.timestamp);
+                return orderDate.getDate() === today.getDate() &&
+                       orderDate.getMonth() === today.getMonth() &&
+                       orderDate.getFullYear() === today.getFullYear();
+            });
+
+            // Keep only today's orders in the orders array
+            state.orders = todayOrders;
+            state.currentDayOrders = todayOrders;
+            
+            // Reset daily counters in state
+            state.dailyResetDone = true;
+            state.dailyResetTimestamp = now.toISOString();
+            
+            // Refresh used order numbers based on today's orders
+            refreshUsedOrderNumbers();
+            
+            // Save to Firebase
+            updateDoc(docRef, {
+                dailyResetTimestamp: state.dailyResetTimestamp,
+                orders: state.orders,
+                lastUpdated: new Date().toISOString()
+            }).catch(err => console.error('Error saving daily reset:', err));
+            
+            toast('🔄 سیستەم نوێ بویەوە (٤:٠٠ بەیانی)');
+        }
+
+        // ============================================
+        //  NEW: Monthly Reset Logic
+        // ============================================
+        function performMonthlyReset() {
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            
+            if (state.monthlyResetTimestamp) {
+                const lastReset = new Date(state.monthlyResetTimestamp);
+                if (lastReset.getMonth() === currentMonth && 
+                    lastReset.getFullYear() === currentYear) {
+                    return; // Already reset this month
+                }
+            }
+
+            // Keep only current month's orders
+            const currentMonthOrders = state.orders.filter(o => {
+                const orderDate = new Date(o.timestamp);
+                return orderDate.getMonth() === currentMonth &&
+                       orderDate.getFullYear() === currentYear;
+            });
+
+            state.orders = currentMonthOrders;
+            state.currentMonthOrders = currentMonthOrders;
+            state.monthlyResetDone = true;
+            state.monthlyResetTimestamp = now.toISOString();
+            
+            refreshUsedOrderNumbers();
+            
+            updateDoc(docRef, {
+                monthlyResetTimestamp: state.monthlyResetTimestamp,
+                orders: state.orders,
+                lastUpdated: new Date().toISOString()
+            }).catch(err => console.error('Error saving monthly reset:', err));
+        }
+
+        // ============================================
+        //  NEW: Check and apply resets
+        // ============================================
+        function checkAndApplyResets() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            
+            // Daily reset at 4:00 AM
+            if (hours === 4 && minutes >= 0 && minutes < 5) {
+                performDailyReset();
             }
             
-            // ===== ریسێتی مانگانە =====
-            if (state.lastMonthlyReset) {
-                const lastMonthly = new Date(state.lastMonthlyReset);
-                const currentMonth = now.getMonth();
-                const currentYear = now.getFullYear();
-                const lastMonth = lastMonthly.getMonth();
-                const lastYear = lastMonthly.getFullYear();
-                
-                // ئەگەر مانگ گۆڕا
-                if (currentMonth !== lastMonth || currentYear !== lastYear) {
-                    // تەنها ئەو ئۆردەرانە بهێڵەوە کە لە مانگی ئێستادان
-                    const currentMonthOrders = state.orders.filter(o => {
-                        const orderDate = new Date(o.timestamp);
-                        return orderDate.getMonth() === currentMonth && 
-                               orderDate.getFullYear() === currentYear;
-                    });
-                    
-                    state.orders = currentMonthOrders;
-                    state.lastMonthlyReset = new Date().toISOString();
-                    saveMonthlyResetToFirestore();
-                    toast('📊 ئامارە مانگانەکان نوێ کرانەوە');
+            // Also check if reset should have happened while site was closed
+            // If current time is after 4:00 AM and before 5:00 AM, check if reset wasn't done
+            if ((hours > 4 || (hours === 4 && minutes >= 0)) && hours < 5) {
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                if (state.dailyResetTimestamp) {
+                    const lastReset = new Date(state.dailyResetTimestamp);
+                    if (lastReset.getDate() !== today.getDate() ||
+                        lastReset.getMonth() !== today.getMonth() ||
+                        lastReset.getFullYear() !== today.getFullYear()) {
+                        performDailyReset();
+                    }
+                } else {
+                    performDailyReset();
+                }
+            }
+            
+            // Monthly reset: check if month changed
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            if (state.monthlyResetTimestamp) {
+                const lastReset = new Date(state.monthlyResetTimestamp);
+                if (lastReset.getMonth() !== currentMonth || 
+                    lastReset.getFullYear() !== currentYear) {
+                    performMonthlyReset();
                 }
             } else {
-                state.lastMonthlyReset = new Date().toISOString();
-                saveMonthlyResetToFirestore();
+                performMonthlyReset();
             }
         }
 
-        async function saveResetDateToFirestore() {
+        // ===== Modified checkAndResetStats to use new reset logic =====
+        function checkAndResetStats() {
+            checkAndApplyResets();
+            
+            // Filter orders for current day and month
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            state.currentDayOrders = state.orders.filter(o => {
+                const orderDate = new Date(o.timestamp);
+                return orderDate.getDate() === today.getDate() &&
+                       orderDate.getMonth() === today.getMonth() &&
+                       orderDate.getFullYear() === today.getFullYear();
+            });
+            
+            state.currentMonthOrders = state.orders.filter(o => {
+                const orderDate = new Date(o.timestamp);
+                return orderDate.getMonth() === now.getMonth() &&
+                       orderDate.getFullYear() === now.getFullYear();
+            });
+        }
+
+        // ===== Load reset timestamps from Firebase =====
+        async function loadResetTimestamps() {
             try {
-                await updateDoc(docRef, {
-                    lastResetDate: state.lastResetDate,
-                    lastUpdated: new Date().toISOString()
-                });
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.dailyResetTimestamp) {
+                        state.dailyResetTimestamp = data.dailyResetTimestamp;
+                    }
+                    if (data.monthlyResetTimestamp) {
+                        state.monthlyResetTimestamp = data.monthlyResetTimestamp;
+                    }
+                }
             } catch (error) {
-                console.error('Error saving reset date:', error);
+                console.error('Error loading reset timestamps:', error);
             }
         }
 
-        async function saveMonthlyResetToFirestore() {
-            try {
-                await updateDoc(docRef, {
-                    lastMonthlyReset: state.lastMonthlyReset,
-                    lastUpdated: new Date().toISOString()
-                });
-            } catch (error) {
-                console.error('Error saving monthly reset date:', error);
-            }
-        }
+        // ===== Original checkAndResetStats preserved but modified =====
+        // The original function is replaced with the new one above
 
         function loadItemsFromFirestore() {
             if (state.unsubscribeItems) {
@@ -2460,6 +2561,14 @@
                         }
                         if (data.lastMonthlyReset) {
                             state.lastMonthlyReset = data.lastMonthlyReset;
+                        }
+                        
+                        // Load reset timestamps
+                        if (data.dailyResetTimestamp) {
+                            state.dailyResetTimestamp = data.dailyResetTimestamp;
+                        }
+                        if (data.monthlyResetTimestamp) {
+                            state.monthlyResetTimestamp = data.monthlyResetTimestamp;
                         }
 
                         state.isLoading = false;
@@ -2507,7 +2616,9 @@
                     orders: [],
                     lastUpdated: new Date().toISOString(),
                     lastResetDate: new Date().toISOString(),
-                    lastMonthlyReset: new Date().toISOString()
+                    lastMonthlyReset: new Date().toISOString(),
+                    dailyResetTimestamp: new Date().toISOString(),
+                    monthlyResetTimestamp: new Date().toISOString()
                 });
 
                 toast('📁 دۆکیومێنت دروست کرا');
@@ -2573,15 +2684,31 @@
                     if (docSnapshot.exists()) {
                         const data = docSnapshot.data();
                         const ordersData = data.orders || [];
-                        state.orders = ordersData;
                         
-                        state.usedOrderNumbers.clear();
-                        state.orders.forEach(o => {
-                            if (o.id && o.id <= 50 && !o.completed) {
-                                state.usedOrderNumbers.add(o.id);
+                        state.orders = ordersData.map(o => {
+                            if (!o.uniqueId) {
+                                o.uniqueId = generateUniqueOrderId();
                             }
+                            if (!o.itemStatuses) {
+                                o.itemStatuses = {};
+                                o.items.forEach(item => {
+                                    o.itemStatuses[item.id] = 'pending';
+                                });
+                            }
+                            return o;
                         });
                         
+                        refreshUsedOrderNumbers();
+                        
+                        // Load reset timestamps if available
+                        if (data.dailyResetTimestamp) {
+                            state.dailyResetTimestamp = data.dailyResetTimestamp;
+                        }
+                        if (data.monthlyResetTimestamp) {
+                            state.monthlyResetTimestamp = data.monthlyResetTimestamp;
+                        }
+                        
+                        checkAndResetStats();
                         render();
                     }
                 }, (error) => {
@@ -2634,74 +2761,97 @@
                     orders: state.orders,
                     lastUpdated: new Date().toISOString()
                 });
+                refreshUsedOrderNumbers();
             } catch (error) {
                 console.error('Error saving orders:', error);
             }
         }
 
-        async function completeOrderByCashier(orderId) {
-            const order = state.orders.find(o => o.id === orderId);
-            if (!order) return;
-
-            if (order.branch !== 'park32') return;
-
-            if (order.status !== 'ready') {
-                toast('تکایە یەکەم ئۆردەرەکە لەلایەن شێفەوە ئامادە بکرێت', true);
-                return;
-            }
-
-            // ===== چاکسازی: بسڕەوە لە هەموو شوێنەکان =====
-            // 1. لە state.orders بیسڕەوە
-            state.orders = state.orders.filter(o => o.id !== orderId);
-            
-            // 2. ژمارەکە لە usedOrderNumbers بسڕەوە
-            state.usedOrderNumbers.delete(orderId);
-            
-            // 3. سەیڤ بکە بۆ Firestore
-            await saveOrdersToFirestore();
-            
-            // 4. ڕێندرینگ بکە
-            render();
-            
-            toast(`✅ ئۆردەر #${orderId} تەواو کرا و لە هەموو شوێنەکان سڕایەوە!`);
+        function isOrderFullyReady(order) {
+            if (!order.itemStatuses) return false;
+            const allReady = order.items.every(item => {
+                const status = order.itemStatuses[item.id] || 'pending';
+                return status === 'ready';
+            });
+            return allReady;
         }
 
-        async function updateOrderStatus(orderId, status) {
-            const order = state.orders.find(o => o.id === orderId);
-            if (!order) return;
+        function updateOrderOverallStatus(order) {
+            if (isOrderFullyReady(order)) {
+                order.status = 'ready';
+            } else {
+                const hasPreparing = order.items.some(item => {
+                    const status = order.itemStatuses[item.id] || 'pending';
+                    return status === 'preparing';
+                });
+                if (hasPreparing) {
+                    order.status = 'preparing';
+                } else {
+                    order.status = 'pending';
+                }
+            }
+        }
+
+        async function updateItemStatus(uniqueId, itemId, newStatus) {
+            const order = findOrderByUniqueId(uniqueId);
+            if (!order) {
+                toast('ئۆردەر نەدۆزرایەوە!', true);
+                return;
+            }
 
             if (order.branch !== 'park32') return;
 
-            if (order.status === 'ready') {
-                toast('ئەم ئۆردەرە پێشتر ئامادە کراوە!');
-                return;
+            if (!order.itemStatuses) {
+                order.itemStatuses = {};
+                order.items.forEach(item => {
+                    order.itemStatuses[item.id] = 'pending';
+                });
             }
 
+            const currentStatus = order.itemStatuses[itemId] || 'pending';
             const statusFlow = ['pending', 'preparing', 'ready'];
-            const currentIndex = statusFlow.indexOf(order.status);
-            const newIndex = statusFlow.indexOf(status);
+            const currentIndex = statusFlow.indexOf(currentStatus);
+            const newIndex = statusFlow.indexOf(newStatus);
             
             if (newIndex > currentIndex + 1 || newIndex < currentIndex) {
+                toast('ناتوانیت دۆخی ئایتم بگۆڕیت', true);
                 return;
             }
 
-            const scrollWrapper = document.getElementById('chef-scroll-wrapper');
-            if (scrollWrapper) {
-                state.savedScrollPosition = scrollWrapper.scrollTop;
-            }
-
-            order.status = status;
+            order.itemStatuses[itemId] = newStatus;
+            updateOrderOverallStatus(order);
             await saveOrdersToFirestore();
-            
             render();
             
-            setTimeout(() => {
-                if (scrollWrapper) {
-                    scrollWrapper.scrollTop = state.savedScrollPosition;
-                }
-            }, 50);
+            const itemName = order.items.find(i => i.id === itemId)?.name || 'ئایتم';
+            toast(`🔄 ${itemName} گۆڕدرا بۆ: ${newStatus}`);
+        }
+
+        async function completeOrderByCashier(uniqueId) {
+            const order = findOrderByUniqueId(uniqueId);
+            if (!order) {
+                toast('ئۆردەر نەدۆزرایەوە!', true);
+                return;
+            }
+
+            if (order.branch !== 'park32') return;
+
+            if (!isOrderFullyReady(order)) {
+                toast('تکایە چاوەڕێ بکە هەتا هەموو ئایتمەکان ئامادە بن!', true);
+                return;
+            }
+
+            order.status = 'completed';
+            order.completedAt = new Date().toISOString();
             
-            toast(`🔄 ئۆردەر #${orderId} گۆڕدرا بۆ: ${status}`);
+            if (order.orderNumber) {
+                state.usedOrderNumbers.delete(order.orderNumber);
+            }
+            
+            await saveOrdersToFirestore();
+            render();
+            
+            toast(`✅ ئۆردەر #${order.orderNumber} تەواو کرا!`);
         }
 
         function openPartnerCodeModal(partner) {
@@ -2750,11 +2900,21 @@
 
             let orders = state.orders.filter(o => o.status !== 'completed' && o.branch === 'park32');
 
-            let separateCards = [];
+            let cards = [];
             
             orders.forEach(order => {
+                if (!order.itemStatuses) {
+                    order.itemStatuses = {};
+                    order.items.forEach(item => {
+                        order.itemStatuses[item.id] = 'pending';
+                    });
+                }
+
+                updateOrderOverallStatus(order);
+
                 order.items.forEach(item => {
                     let shouldShow = false;
+                    const itemStatus = order.itemStatuses[item.id] || 'pending';
                     
                     if (state.chefView === 'grill' && item.chefGroup === 'بەرگر') {
                         shouldShow = true;
@@ -2767,9 +2927,12 @@
                     }
                     
                     if (shouldShow) {
-                        separateCards.push({
-                            orderId: order.id,
+                        cards.push({
+                            uniqueId: order.uniqueId,
+                            orderNumber: order.orderNumber,
                             item: item,
+                            itemStatus: itemStatus,
+                            orderStatus: order.status,
                             orderType: order.orderType,
                             partner: order.partner,
                             partnerCode: order.partnerCode,
@@ -2777,20 +2940,21 @@
                             cashier: order.cashier,
                             branch: order.branch,
                             timestamp: order.timestamp,
-                            status: order.status,
-                            image: item.image || order.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp'
+                            image: item.image || order.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
+                            allReady: isOrderFullyReady(order)
                         });
                     }
                 });
             });
 
-            separateCards.sort((a, b) => a.timestamp - b.timestamp);
+            cards.sort((a, b) => a.timestamp - b.timestamp);
 
-            const cardsHtml = separateCards.length ? separateCards.map((card) => {
+            const cardsHtml = cards.length ? cards.map((card) => {
                 const item = card.item;
-                const orderId = card.orderId;
-                const status = card.status || 'pending';
-                const isReady = status === 'ready';
+                const orderNumber = card.orderNumber;
+                const uniqueId = card.uniqueId;
+                const itemStatus = card.itemStatus || 'pending';
+                const isReady = itemStatus === 'ready';
                 
                 const statusLabels = {
                     'pending': 'چاوەڕوان',
@@ -2799,8 +2963,8 @@
                 };
 
                 let position = 'left';
-                if (status === 'preparing') position = 'center';
-                else if (status === 'ready') position = 'right';
+                if (itemStatus === 'preparing') position = 'center';
+                else if (itemStatus === 'ready') position = 'right';
 
                 const typeLabel = card.orderType === 'dine' ? 'ساڵە' : 
                                  card.orderType === 'takeaway' ? 'سەفەری' : 
@@ -2814,10 +2978,11 @@
 
                 return `
                     <div class="chef-order-card-wrapper position-${position}" 
-                         data-order-id="${orderId}" 
+                         data-unique-id="${uniqueId}" 
                          data-item-id="${item.id}"
-                         data-ready="${isReady}" 
-                         data-status="${status}">
+                         data-item-status="${itemStatus}"
+                         data-all-ready="${card.allReady}"
+                         data-ready="${isReady}">
                         <div class="chef-order-card">
                             <div class="chef-image-wrapper">
                                 ${card.image && card.image !== '' ? 
@@ -2832,15 +2997,15 @@
                                 <span style="margin:0 4px;">•</span>
                                 <span>${timerText}</span>
                                 <span style="margin:0 4px;">•</span>
-                                <span>#${orderId}</span>
+                                <span>#${orderNumber}</span>
                                 ${card.cashier ? `<span style="margin:0 4px;">•</span><span>👤 ${card.cashier}</span>` : ''}
                             </div>
-                            <div class="chef-order-status-label ${status}">${statusLabels[status] || status}</div>
+                            <div class="chef-order-status-label ${itemStatus}">${statusLabels[itemStatus] || itemStatus}</div>
                             <div class="chef-order-hint">${isReady ? '✅ ئامادە کراوە' : '👆 کلیک بکە بۆ گۆڕینی دۆخ'}</div>
                         </div>
                     </div>
                 `;
-            }).join('') : '<div style="color:#94a3b8;text-align:center;padding:40px 0;font-size:18px;width:100%;">هیچ ئۆردەرێک نییە</div>';
+            }).join('') : '<div style="color:#94a3b8;text-align:center;padding:40px 0;font-size:18px;width:100%;">هیچ ئایتمێک نییە</div>';
 
             return `
                 <div>
@@ -2850,7 +3015,7 @@
                         <button class="back-btn" data-action="logout">🚪 دەرچوون</button>
                     </div>
                     <div class="chef-view">
-                        <h3>📋 ئۆردەرەکان (${separateCards.length} کارت)</h3>
+                        <h3>📋 ئایتمەکان (${cards.length})</h3>
                         <div class="chef-scroll-wrapper" id="chef-scroll-wrapper">
                             <div class="chef-horizontal-orders" id="chef-orders-container">
                                 ${cardsHtml}
@@ -2864,6 +3029,12 @@
         function render() {
             const app = document.getElementById('app');
             if (!app) return;
+
+            let savedScrollTop = 0;
+            const scrollWrapper = document.getElementById('chef-scroll-wrapper');
+            if (scrollWrapper) {
+                savedScrollTop = scrollWrapper.scrollTop;
+            }
 
             if (state.isLoading) {
                 app.innerHTML = `
@@ -2914,11 +3085,13 @@
             app.innerHTML = html;
 
             if (state.currentPage === 'chef') {
-                const scrollWrapper = document.getElementById('chef-scroll-wrapper');
-                if (scrollWrapper) {
-                    requestAnimationFrame(() => {
-                        scrollWrapper.scrollTop = state.savedScrollPosition;
-                    });
+                const newScrollWrapper = document.getElementById('chef-scroll-wrapper');
+                if (newScrollWrapper) {
+                    const targetScroll = savedScrollTop > 0 ? savedScrollTop : state.savedScrollPosition;
+                    newScrollWrapper.scrollTop = targetScroll;
+                    newScrollWrapper.onscroll = () => {
+                        state.savedScrollPosition = newScrollWrapper.scrollTop;
+                    };
                 }
             }
 
@@ -3122,21 +3295,26 @@
                 </span>
             ` : '';
 
-            let chefOrdersHtml = '';
+            let readyOrdersHtml = '';
             if (state.branch === 'park32') {
-                const readyOrders = state.orders.filter(o => o.branch === 'park32' && o.status === 'ready');
-                chefOrdersHtml = readyOrders.length ? readyOrders.map(o => {
+                const readyOrders = state.orders.filter(o => 
+                    o.branch === 'park32' && 
+                    o.status === 'ready' &&
+                    o.status !== 'completed'
+                );
+                
+                readyOrdersHtml = readyOrders.length ? readyOrders.map(o => {
                     const items = o.items.map(i => `${i.name} ×${i.qty}`).join('، ');
                     return `
                         <div class="chef-order-mini">
-                            <span class="order-id">#${o.id}</span>
+                            <span class="order-id">#${o.orderNumber}</span>
                             <span class="order-items">${items}</span>
                             <span class="order-time">${o.time}</span>
-                            <span class="order-status-badge ready">✅ تەواو بووە</span>
-                            <button class="btn-complete" data-action="cashier-complete" data-id="${o.id}">✅ تەواو</button>
+                            <span class="order-status-badge ready">✅ ئامادە کراوە</span>
+                            <button class="btn-complete" data-action="cashier-complete" data-unique-id="${o.uniqueId}">✅ تەواو</button>
                         </div>
                     `;
-                }).join('') : '<p style="color:#94a3b8;text-align:center;padding:20px;font-size:16px;">هیچ ئۆردەرێکی تەواو نییە</p>';
+                }).join('') : '<p style="color:#94a3b8;text-align:center;padding:20px;font-size:16px;">هیچ ئۆردەرێکی ئامادە نییە</p>';
             }
 
             return `
@@ -3187,12 +3365,12 @@
 
                     ${state.branch === 'park32' ? `
                     <div class="chef-view" id="chef-view">
-                        <h3>👨‍🍳 ئۆردەرە تەواوەکان (٣٢ پارک)</h3>
+                        <h3>👨‍🍳 ئۆردەرە ئامادەکراوەکان (٣٢ پارک) <span class="live-indicator"></span></h3>
                         <div id="chef-orders-list">
                             <div class="chef-orders-container">
                                 <div class="chef-orders-column ready">
-                                    <div class="column-title">✅ تەواو بووە <span class="count">${state.orders.filter(o => o.branch === 'park32' && o.status === 'ready').length}</span></div>
-                                    ${chefOrdersHtml}
+                                    <div class="column-title">✅ ئامادە کراوە <span class="count">${state.orders.filter(o => o.branch === 'park32' && o.status === 'ready' && o.status !== 'completed').length}</span></div>
+                                    ${readyOrdersHtml}
                                 </div>
                             </div>
                         </div>
@@ -3231,7 +3409,8 @@
                 <option value="${b}" ${state.selectedBranch === b ? 'selected' : ''}>${b}</option>
             `).join('');
 
-            let dineTakeawayOrders = state.orders.filter(o => {
+            // Use currentDayOrders and currentMonthOrders from state (filtered by reset)
+            let dineTakeawayOrders = state.currentDayOrders.filter(o => {
                 const isPartner = o.partner && o.orderType === 'partner';
                 return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
             });
@@ -3262,7 +3441,14 @@
                     </div>
                 `).join('') : '<p style="grid-column:1/-1;color:#94a3b8;">هیچ داتایەک نییە</p>';
 
-            let partnerOrders = state.partnerOrders;
+            // Partner orders filtered to current day
+            let partnerOrders = state.partnerOrders.filter(o => {
+                const orderDate = new Date(o.timestamp);
+                const now = new Date();
+                return orderDate.getDate() === now.getDate() &&
+                       orderDate.getMonth() === now.getMonth() &&
+                       orderDate.getFullYear() === now.getFullYear();
+            });
             
             if (state.branchFilter !== 'all') {
                 partnerOrders = partnerOrders.filter(o => o.branch === state.branchFilter);
@@ -3319,10 +3505,11 @@
                 </div>
             `;
 
+            // Monthly chart uses current month orders (state.currentMonthOrders)
             const monthDays = getMonthDays();
             const dayTotals = monthDays.map(day => {
                 const dayStr = day.toDateString();
-                const dayOrders = dineTakeawayOrders.filter(o => {
+                const dayOrders = state.currentMonthOrders.filter(o => {
                     const d = new Date(o.timestamp);
                     return d.toDateString() === dayStr;
                 });
@@ -3363,6 +3550,18 @@
             const last30Days = dayTotals.slice(-30);
             const trend = last30Days.length > 1 ? 
                 ((last30Days[last30Days.length - 1] - last30Days[0]) / (last30Days[0] || 1) * 100) : 0;
+
+            const ordersListHtml = dineTakeawayOrders.length ? dineTakeawayOrders.map((o, index) => `
+                <div class="order-item" style="border-right-color: ${o.orderType === 'dine' ? '#3498db' : '#f39c12'};">
+                    <span class="order-id">${index + 1}</span>
+                    <span class="order-type-badge ${o.orderType}">${o.orderType === 'dine' ? '🍽️ ساڵە' : '🛍️ سەفەری'}</span>
+                    <span class="order-items-text">${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
+                    <span class="order-price">${formatPrice(o.total)}</span>
+                    <span class="order-time">${o.time}</span>
+                    <span class="order-cashier">${o.cashier || ''}</span>
+                    ${o.status === 'completed' ? '<span style="font-size:10px;color:#00b894;font-weight:700;">✅ تەواو</span>' : ''}
+                </div>
+            `).join('') : '<p style="color:#94a3b8;text-align:center;padding:16px;">هیچ ئۆردەرێکی ساڵە و سەفەری نییە</p>';
 
             return `
                 <div>
@@ -3472,18 +3671,9 @@
                                 </div>
                             </div>
 
-                            <h4 style="font-size:15px;margin:12px 0 8px;">📋 کۆی ئۆردەرەکانی ساڵە و سەفەری</h4>
+                            <h4 style="font-size:15px;margin:12px 0 8px;">📋 کۆی ئۆردەرەکانی ساڵە و سەفەری (بە ژمارەی ڕیزبەندی)</h4>
                             <div style="max-height:250px;overflow-y:auto;border:2px solid #e2e8f0;border-radius:10px;padding:8px;">
-                                ${dineTakeawayOrders.length ? dineTakeawayOrders.map(o => `
-                                    <div class="order-item" style="border-right-color: ${o.orderType === 'dine' ? '#3498db' : '#f39c12'};">
-                                        <span class="order-id">#${o.id}</span>
-                                        <span class="order-type-badge ${o.orderType}">${o.orderType === 'dine' ? '🍽️ ساڵە' : '🛍️ سەفەری'}</span>
-                                        <span class="order-items-text">${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
-                                        <span class="order-price">${formatPrice(o.total)}</span>
-                                        <span class="order-time">${o.time}</span>
-                                        <span class="order-cashier">${o.cashier || ''}</span>
-                                    </div>
-                                `).join('') : '<p style="color:#94a3b8;text-align:center;padding:16px;">هیچ ئۆردەرێکی ساڵە و سەفەری نییە</p>'}
+                                ${ordersListHtml}
                             </div>
                         </div>
                     ` : ''}
@@ -3808,30 +3998,33 @@
                     
                     if (e.target.closest('.chef-order-card-wrapper') !== this) return;
                     
-                    const orderId = parseInt(this.dataset.orderId);
-                    const currentStatus = this.dataset.status;
+                    const uniqueId = this.dataset.uniqueId;
+                    const itemId = this.dataset.itemId;
+                    const currentStatus = this.dataset.itemStatus;
                     const isReady = this.dataset.ready === 'true';
                     
                     if (isReady) {
-                        toast('ئەم ئۆردەرە پێشتر ئامادە کراوە!');
+                        toast('ئەم ئایتمە پێشتر ئامادە کراوە!');
                         return;
                     }
                     
-                    let newStatus, newPosition;
+                    let newStatus;
                     
                     if (currentStatus === 'pending') {
                         newStatus = 'preparing';
-                        newPosition = 'center';
                     } else if (currentStatus === 'preparing') {
                         newStatus = 'ready';
-                        newPosition = 'right';
                     } else {
                         return;
                     }
                     
+                    let newPosition = 'left';
+                    if (newStatus === 'preparing') newPosition = 'center';
+                    else if (newStatus === 'ready') newPosition = 'right';
+                    
                     this.classList.remove('position-left', 'position-center', 'position-right');
                     this.classList.add(`position-${newPosition}`);
-                    this.dataset.status = newStatus;
+                    this.dataset.itemStatus = newStatus;
                     
                     if (newStatus === 'ready') {
                         this.dataset.ready = 'true';
@@ -3856,14 +4049,14 @@
                         hint.textContent = newStatus === 'ready' ? '✅ ئامادە کراوە' : '👆 کلیک بکە بۆ گۆڕینی دۆخ';
                     }
                     
-                    updateOrderStatus(orderId, newStatus);
+                    updateItemStatus(uniqueId, itemId, newStatus);
                 };
             });
 
             document.querySelectorAll('[data-action="cashier-complete"]').forEach(el => {
                 el.onclick = async () => {
-                    const orderId = parseInt(el.dataset.id);
-                    await completeOrderByCashier(orderId);
+                    const uniqueId = el.dataset.uniqueId;
+                    await completeOrderByCashier(uniqueId);
                 };
             });
 
@@ -3941,7 +4134,8 @@
                         return;
                     }
 
-                    const nextId = getSmallestAvailableOrderNumber();
+                    const uniqueId = generateUniqueOrderId();
+                    const orderNumber = getSmallestAvailableOrderNumber();
 
                     const orderData = {
                         items: state.cart.map(i => ({ 
@@ -3966,13 +4160,19 @@
                     };
 
                     const order = {
-                        id: nextId,
+                        uniqueId: uniqueId,
+                        orderNumber: orderNumber,
                         ...orderData,
-                        status: 'pending'
+                        status: 'pending',
+                        itemStatuses: {}
                     };
 
+                    order.items.forEach(item => {
+                        order.itemStatuses[item.id] = 'pending';
+                    });
+
                     state.orders.push(order);
-                    state.usedOrderNumbers.add(nextId);
+                    state.usedOrderNumbers.add(orderNumber);
                     state.cart = [];
                     state.partnerCode = '';
                     
@@ -3980,7 +4180,7 @@
                         await savePartnerOrderToFirestore(orderData);
                     }
                     
-                    toast('✅ ئۆردەر #' + order.id + ' سەیڤ کرا!');
+                    toast(`✅ ئۆردەر #${orderNumber} سەیڤ کرا! (ID: ${uniqueId})`);
 
                     await saveOrdersToFirestore();
                     render();
@@ -4218,9 +4418,22 @@
                     console.warn('Auth error (ignored):', authError);
                 }
 
+                // Load reset timestamps first
+                await loadResetTimestamps();
+                
                 loadItemsFromFirestore();
                 loadOrdersFromFirestore();
                 loadPartnerOrdersFromFirestore();
+
+                // Check for resets on init
+                setTimeout(() => {
+                    checkAndApplyResets();
+                }, 1000);
+
+                // Periodic check every minute
+                setInterval(() => {
+                    checkAndApplyResets();
+                }, 60000);
 
                 setTimeout(async () => {
                     try {
