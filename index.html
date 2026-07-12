@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>سیستەمی کاشێری چێشتخانە</title>
     <style>
-        /* ... هەموو ستایلەکان وەک خۆی ماون ... */
         * {
             margin: 0;
             padding: 0;
@@ -451,7 +450,6 @@
             padding: 4px 4px 16px 4px;
             min-height: 200px;
             overscroll-behavior: contain;
-            /* پاراستنی شوێنی سکڕۆڵ */
             will-change: scroll-position;
         }
         .chef-horizontal-orders {
@@ -587,7 +585,6 @@
             margin-top: 4px;
         }
 
-        /* Dashboard & Manager */
         .dashboard {
             background: white;
             border-radius: 20px;
@@ -1340,9 +1337,112 @@
         ::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 8px; }
         ::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
 
-        /* ========================================
-           دیزاینی نوێ و نایابی ڕەوتی مانگانە 
-           ======================================== */
+        /* ===== ستایلی مۆدالی ژمارەی مێز ===== */
+        .table-modal .modal {
+            max-width: 420px;
+            text-align: center;
+        }
+        .table-modal .modal .table-number-display {
+            font-size: 48px;
+            font-weight: 800;
+            color: #6c5ce7;
+            margin: 8px 0 16px 0;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 3px solid #e2e8f0;
+        }
+        .table-modal .modal .table-number-input {
+            font-size: 32px;
+            text-align: center;
+            padding: 16px;
+            width: 120px;
+            margin: 8px auto;
+            display: block;
+            border: 3px solid #6c5ce7;
+            border-radius: 14px;
+            font-weight: 700;
+        }
+        .table-modal .modal .table-number-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
+        }
+        .table-modal .modal .table-hint {
+            color: #64748b;
+            font-size: 14px;
+            margin: 8px 0;
+        }
+        .table-modal .modal .table-error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 6px;
+            display: none;
+        }
+        .table-modal .modal .table-error.show { display: block; }
+        .table-modal .modal .used-tables {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+        .table-modal .modal .used-tables .table-pill {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #ff6b6b;
+            color: white;
+        }
+        .table-modal .modal .used-tables .empty-tables {
+            color: #94a3b8;
+            font-size: 13px;
+            padding: 4px 0;
+        }
+        .table-modal .modal .table-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin: 12px 0;
+        }
+        .table-modal .modal .table-buttons-grid button {
+            padding: 10px 6px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #1a1a2e;
+        }
+        .table-modal .modal .table-buttons-grid button:hover {
+            border-color: #6c5ce7;
+            background: #f8f7ff;
+            transform: scale(1.05);
+        }
+        .table-modal .modal .table-buttons-grid button.active {
+            border-color: #6c5ce7;
+            background: #6c5ce7;
+            color: white;
+        }
+        .table-modal .modal .table-buttons-grid button.used {
+            border-color: #ff6b6b;
+            background: #fff5f5;
+            color: #ff6b6b;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .table-modal .modal .table-buttons-grid button.used:hover {
+            transform: none;
+            border-color: #ff6b6b;
+            background: #fff5f5;
+        }
+
         .monthly-chart-modern {
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             border-radius: 28px;
@@ -1684,7 +1784,6 @@
             box-shadow: 0 4px 20px rgba(108, 92, 231, 0.2);
         }
 
-        /* ===== چاکسازی بۆ مۆبایل ===== */
         @media (max-width: 768px) {
             .monthly-chart-modern {
                 padding: 20px 16px 16px;
@@ -1950,6 +2049,23 @@
             table { font-size: 11px; }
             table th, table td { padding: 6px 4px; }
 
+            .table-modal .modal .table-buttons-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 4px;
+            }
+            .table-modal .modal .table-buttons-grid button {
+                padding: 8px 4px;
+                font-size: 12px;
+            }
+            .table-modal .modal .table-number-display {
+                font-size: 36px;
+            }
+            .table-modal .modal .table-number-input {
+                font-size: 24px;
+                width: 100px;
+                padding: 12px;
+            }
+
             .stats-grid {
                 grid-template-columns: 1fr 1fr !important;
                 gap: 6px !important;
@@ -2082,6 +2198,23 @@
             .partner-order-item { font-size: 10px; padding: 4px 6px; }
             .toast { font-size: 13px; padding: 10px 16px; bottom: 12px; right: 12px; left: 12px; }
 
+            .table-modal .modal .table-buttons-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 3px;
+            }
+            .table-modal .modal .table-buttons-grid button {
+                padding: 6px 3px;
+                font-size: 11px;
+            }
+            .table-modal .modal .table-number-display {
+                font-size: 28px;
+            }
+            .table-modal .modal .table-number-input {
+                font-size: 20px;
+                width: 80px;
+                padding: 10px;
+            }
+
             .stats-grid {
                 gap: 4px !important;
             }
@@ -2132,6 +2265,10 @@
 </head>
 <body>
     <div id="app"></div>
+
+    <audio id="orderNotificationSound" preload="auto" style="display:none;">
+        <source src="data:audio/wav;base64,U3RlcmVvIGlzIGRlYWQh" type="audio/wav">
+    </audio>
 
     <script type="importmap">
         {
@@ -2251,22 +2388,103 @@
             itemsPanelScrollTop: 0,
             dailyResetDone: false,
             monthlyResetDone: false,
-            // === NEW: Daily & Monthly reset tracking in Firebase ===
             dailyResetTimestamp: null,
             monthlyResetTimestamp: null,
             currentDayOrders: [],
-            currentMonthOrders: []
+            currentMonthOrders: [],
+            lastPlayedOrderId: null,
+            isSoundEnabled: true,
+            usedTables: new Set(),
+            showTableModal: false,
+            selectedTableNumber: null,
+            pendingOrder: null
         };
 
-        // ===== فەنکشنی ئۆردەری تایبەت =====
+        // ===== فەنکشنی دەنگی ئۆردەری نوێ - تەنها بۆ شێف =====
+        function playOrderNotificationSound() {
+            // ===== پشکنینی تایبەت بۆ شێف =====
+            // تەنها ئەگەر بەکارهێنەر لە پەڕەی شێف بێت، دەنگەکە کار بکات
+            if (state.currentPage !== 'chef') {
+                return;
+            }
+
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const frequencies = [800, 1000, 1200];
+                const durations = [0.15, 0.15, 0.2];
+                const pauses = [0.1, 0.1, 0];
+                let time = 0;
+                frequencies.forEach((freq, index) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = freq;
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime + time);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + time + durations[index]);
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    oscillator.start(audioContext.currentTime + time);
+                    oscillator.stop(audioContext.currentTime + time + durations[index]);
+                    time += durations[index] + pauses[index];
+                });
+                setTimeout(() => {
+                    try {
+                        const ctx2 = new (window.AudioContext || window.webkitAudioContext)();
+                        const osc2 = ctx2.createOscillator();
+                        const gain2 = ctx2.createGain();
+                        osc2.type = 'sine';
+                        osc2.frequency.value = 1500;
+                        gain2.gain.setValueAtTime(0.2, ctx2.currentTime);
+                        gain2.gain.exponentialRampToValueAtTime(0.01, ctx2.currentTime + 0.15);
+                        osc2.connect(gain2);
+                        gain2.connect(ctx2.destination);
+                        osc2.start(ctx2.currentTime);
+                        osc2.stop(ctx2.currentTime + 0.15);
+                    } catch(e) {}
+                }, time * 1000 + 100);
+                return true;
+            } catch (error) {
+                console.warn('دەنگی ئاگادارکردنەوە شکستی هێنا:', error);
+                try {
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = 1000;
+                    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.3);
+                    return true;
+                } catch(e2) {
+                    return false;
+                }
+            }
+        }
+
+        function toggleSound() {
+            state.isSoundEnabled = !state.isSoundEnabled;
+            toast(state.isSoundEnabled ? '🔊 دەنگ چالاک کرا' : '🔇 دەنگ ناچالاک کرا');
+            render();
+        }
+
+        function refreshUsedTables() {
+            state.usedTables.clear();
+            state.orders.forEach(o => {
+                if (o.tableNumber && o.status !== 'completed') {
+                    state.usedTables.add(o.tableNumber);
+                }
+            });
+        }
+
         function generateUniqueOrderId() {
             return 'ord_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         }
 
-        // ===== فەنکشنی سەرەکی بۆ دۆزینەوەی بچووکترین ژمارەی بەتاڵ =====
         function getSmallestAvailableOrderNumber() {
             refreshUsedOrderNumbers();
-            
             for (let i = 1; i <= 50; i++) {
                 if (!state.usedOrderNumbers.has(i)) {
                     return i;
@@ -2275,11 +2493,8 @@
             return state.usedOrderNumbers.size + 1;
         }
 
-        // ===== نوێکردنەوەی لیستی ژمارە بەکارهاتووەکان =====
         function refreshUsedOrderNumbers() {
             state.usedOrderNumbers.clear();
-            
-            // تەنها ئۆردەرە ناتەواوەکان (pending, preparing, ready) ژمارەکانیان بەکارهێنراوە
             state.orders.forEach(o => {
                 if (o.status !== 'completed' && o.orderNumber && o.orderNumber <= 50) {
                     state.usedOrderNumbers.add(o.orderNumber);
@@ -2287,12 +2502,10 @@
             });
         }
 
-        // ===== دۆزینەوەی ئۆردەر بە uniqueId =====
         function findOrderByUniqueId(uniqueId) {
             return state.orders.find(o => o.uniqueId === uniqueId);
         }
 
-        // ===== دۆزینەوەی ئۆردەر بە orderNumber =====
         function findOrderByNumber(orderNumber) {
             return state.orders.find(o => o.orderNumber === orderNumber);
         }
@@ -2355,82 +2568,58 @@
             return days[date.getDay()];
         }
 
-        // ============================================
-        //  NEW: Daily Reset Logic (4:00 AM)
-        // ============================================
         function performDailyReset() {
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            // Only reset if not already done today
             if (state.dailyResetTimestamp) {
                 const lastResetDate = new Date(state.dailyResetTimestamp);
                 if (lastResetDate.getDate() === today.getDate() &&
                     lastResetDate.getMonth() === today.getMonth() &&
                     lastResetDate.getFullYear() === today.getFullYear()) {
-                    return; // Already reset today
+                    return;
                 }
             }
-
-            // Filter out today's orders to keep (they will be re-counted)
             const todayOrders = state.orders.filter(o => {
                 const orderDate = new Date(o.timestamp);
                 return orderDate.getDate() === today.getDate() &&
                        orderDate.getMonth() === today.getMonth() &&
                        orderDate.getFullYear() === today.getFullYear();
             });
-
-            // Keep only today's orders in the orders array
             state.orders = todayOrders;
             state.currentDayOrders = todayOrders;
-            
-            // Reset daily counters in state
             state.dailyResetDone = true;
             state.dailyResetTimestamp = now.toISOString();
-            
-            // Refresh used order numbers based on today's orders
             refreshUsedOrderNumbers();
-            
-            // Save to Firebase
+            refreshUsedTables();
             updateDoc(docRef, {
                 dailyResetTimestamp: state.dailyResetTimestamp,
                 orders: state.orders,
                 lastUpdated: new Date().toISOString()
             }).catch(err => console.error('Error saving daily reset:', err));
-            
             toast('🔄 سیستەم نوێ بویەوە (٤:٠٠ بەیانی)');
         }
 
-        // ============================================
-        //  NEW: Monthly Reset Logic
-        // ============================================
         function performMonthlyReset() {
             const now = new Date();
             const currentMonth = now.getMonth();
             const currentYear = now.getFullYear();
-            
             if (state.monthlyResetTimestamp) {
                 const lastReset = new Date(state.monthlyResetTimestamp);
                 if (lastReset.getMonth() === currentMonth && 
                     lastReset.getFullYear() === currentYear) {
-                    return; // Already reset this month
+                    return;
                 }
             }
-
-            // Keep only current month's orders
             const currentMonthOrders = state.orders.filter(o => {
                 const orderDate = new Date(o.timestamp);
                 return orderDate.getMonth() === currentMonth &&
                        orderDate.getFullYear() === currentYear;
             });
-
             state.orders = currentMonthOrders;
             state.currentMonthOrders = currentMonthOrders;
             state.monthlyResetDone = true;
             state.monthlyResetTimestamp = now.toISOString();
-            
             refreshUsedOrderNumbers();
-            
             updateDoc(docRef, {
                 monthlyResetTimestamp: state.monthlyResetTimestamp,
                 orders: state.orders,
@@ -2438,21 +2627,13 @@
             }).catch(err => console.error('Error saving monthly reset:', err));
         }
 
-        // ============================================
-        //  NEW: Check and apply resets
-        // ============================================
         function checkAndApplyResets() {
             const now = new Date();
             const hours = now.getHours();
             const minutes = now.getMinutes();
-            
-            // Daily reset at 4:00 AM
             if (hours === 4 && minutes >= 0 && minutes < 5) {
                 performDailyReset();
             }
-            
-            // Also check if reset should have happened while site was closed
-            // If current time is after 4:00 AM and before 5:00 AM, check if reset wasn't done
             if ((hours > 4 || (hours === 4 && minutes >= 0)) && hours < 5) {
                 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                 if (state.dailyResetTimestamp) {
@@ -2466,8 +2647,6 @@
                     performDailyReset();
                 }
             }
-            
-            // Monthly reset: check if month changed
             const currentMonth = now.getMonth();
             const currentYear = now.getFullYear();
             if (state.monthlyResetTimestamp) {
@@ -2481,21 +2660,17 @@
             }
         }
 
-        // ===== Modified checkAndResetStats to use new reset logic =====
         function checkAndResetStats() {
             checkAndApplyResets();
-            
-            // Filter orders for current day and month
+            refreshUsedTables();
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
             state.currentDayOrders = state.orders.filter(o => {
                 const orderDate = new Date(o.timestamp);
                 return orderDate.getDate() === today.getDate() &&
                        orderDate.getMonth() === today.getMonth() &&
                        orderDate.getFullYear() === today.getFullYear();
             });
-            
             state.currentMonthOrders = state.orders.filter(o => {
                 const orderDate = new Date(o.timestamp);
                 return orderDate.getMonth() === now.getMonth() &&
@@ -2503,7 +2678,6 @@
             });
         }
 
-        // ===== Load reset timestamps from Firebase =====
         async function loadResetTimestamps() {
             try {
                 const docSnap = await getDoc(docRef);
@@ -2521,21 +2695,16 @@
             }
         }
 
-        // ===== Original checkAndResetStats preserved but modified =====
-        // The original function is replaced with the new one above
-
         function loadItemsFromFirestore() {
             if (state.unsubscribeItems) {
                 state.unsubscribeItems();
                 state.unsubscribeItems = null;
             }
-
             try {
                 state.unsubscribeItems = onSnapshot(docRef, (docSnapshot) => {
                     if (docSnapshot.exists()) {
                         const data = docSnapshot.data();
                         const itemsData = data.items || [];
-                        
                         state.items = itemsData.map(item => ({
                             id: item.id || genId(),
                             name: item.naw || 'بێ ناو',
@@ -2551,31 +2720,24 @@
                                 leezu: item.nl || null
                             }
                         }));
-
                         if (data.partnerImages) {
                             state.partnerImages = data.partnerImages;
                         }
-                        
                         if (data.lastResetDate) {
                             state.lastResetDate = data.lastResetDate;
                         }
                         if (data.lastMonthlyReset) {
                             state.lastMonthlyReset = data.lastMonthlyReset;
                         }
-                        
-                        // Load reset timestamps
                         if (data.dailyResetTimestamp) {
                             state.dailyResetTimestamp = data.dailyResetTimestamp;
                         }
                         if (data.monthlyResetTimestamp) {
                             state.monthlyResetTimestamp = data.monthlyResetTimestamp;
                         }
-
                         state.isLoading = false;
                         state.firebaseError = null;
-                        
                         checkAndResetStats();
-                        
                         render();
                     } else {
                         createDefaultDocument();
@@ -2609,7 +2771,6 @@
                     { id: 'd2', naw: 'سپرایت', nrx: 2000, grwp: 'خواردنەوەکان', link: '', branch: '٣٢ پارک', chefGroup: 'skip', nt: 3000, nz: 2500, nw: 2000, nl: 2500 },
                     { id: 'd3', naw: 'ئاو', nrx: 1000, grwp: 'خواردنەوەکان', link: '', branch: 'زانکۆ', chefGroup: 'skip', nt: 1500, nz: 1200, nw: 1000, nl: 1200 },
                 ];
-
                 await setDoc(docRef, {
                     items: defaultItems,
                     partnerImages: { talabat: '', zuu: '', wade: '', leezu: '' },
@@ -2620,7 +2781,6 @@
                     dailyResetTimestamp: new Date().toISOString(),
                     monthlyResetTimestamp: new Date().toISOString()
                 });
-
                 toast('📁 دۆکیومێنت دروست کرا');
                 loadItemsFromFirestore();
             } catch (error) {
@@ -2647,12 +2807,10 @@
                     nw: item.partnerPrices?.wade || null,
                     nl: item.partnerPrices?.leezu || null
                 }));
-
                 await updateDoc(docRef, {
                     items: itemsData,
                     lastUpdated: new Date().toISOString()
                 });
-
                 toast('✅ داتا سەیڤ کرا');
             } catch (error) {
                 console.error('Error saving items:', error);
@@ -2678,13 +2836,11 @@
                 state.unsubscribeOrders();
                 state.unsubscribeOrders = null;
             }
-
             try {
                 state.unsubscribeOrders = onSnapshot(docRef, (docSnapshot) => {
                     if (docSnapshot.exists()) {
                         const data = docSnapshot.data();
                         const ordersData = data.orders || [];
-                        
                         state.orders = ordersData.map(o => {
                             if (!o.uniqueId) {
                                 o.uniqueId = generateUniqueOrderId();
@@ -2697,17 +2853,14 @@
                             }
                             return o;
                         });
-                        
                         refreshUsedOrderNumbers();
-                        
-                        // Load reset timestamps if available
+                        refreshUsedTables();
                         if (data.dailyResetTimestamp) {
                             state.dailyResetTimestamp = data.dailyResetTimestamp;
                         }
                         if (data.monthlyResetTimestamp) {
                             state.monthlyResetTimestamp = data.monthlyResetTimestamp;
                         }
-                        
                         checkAndResetStats();
                         render();
                     }
@@ -2724,7 +2877,6 @@
                 state.unsubscribePartnerOrders();
                 state.unsubscribePartnerOrders = null;
             }
-
             try {
                 state.unsubscribePartnerOrders = onSnapshot(
                     collection(db, PARTNER_ORDERS_COLLECTION),
@@ -2762,6 +2914,7 @@
                     lastUpdated: new Date().toISOString()
                 });
                 refreshUsedOrderNumbers();
+                refreshUsedTables();
             } catch (error) {
                 console.error('Error saving orders:', error);
             }
@@ -2798,31 +2951,25 @@
                 toast('ئۆردەر نەدۆزرایەوە!', true);
                 return;
             }
-
             if (order.branch !== 'park32') return;
-
             if (!order.itemStatuses) {
                 order.itemStatuses = {};
                 order.items.forEach(item => {
                     order.itemStatuses[item.id] = 'pending';
                 });
             }
-
             const currentStatus = order.itemStatuses[itemId] || 'pending';
             const statusFlow = ['pending', 'preparing', 'ready'];
             const currentIndex = statusFlow.indexOf(currentStatus);
             const newIndex = statusFlow.indexOf(newStatus);
-            
             if (newIndex > currentIndex + 1 || newIndex < currentIndex) {
                 toast('ناتوانیت دۆخی ئایتم بگۆڕیت', true);
                 return;
             }
-
             order.itemStatuses[itemId] = newStatus;
             updateOrderOverallStatus(order);
             await saveOrdersToFirestore();
             render();
-            
             const itemName = order.items.find(i => i.id === itemId)?.name || 'ئایتم';
             toast(`🔄 ${itemName} گۆڕدرا بۆ: ${newStatus}`);
         }
@@ -2833,24 +2980,21 @@
                 toast('ئۆردەر نەدۆزرایەوە!', true);
                 return;
             }
-
             if (order.branch !== 'park32') return;
-
             if (!isOrderFullyReady(order)) {
                 toast('تکایە چاوەڕێ بکە هەتا هەموو ئایتمەکان ئامادە بن!', true);
                 return;
             }
-
             order.status = 'completed';
             order.completedAt = new Date().toISOString();
-            
+            if (order.tableNumber) {
+                state.usedTables.delete(order.tableNumber);
+            }
             if (order.orderNumber) {
                 state.usedOrderNumbers.delete(order.orderNumber);
             }
-            
             await saveOrdersToFirestore();
             render();
-            
             toast(`✅ ئۆردەر #${order.orderNumber} تەواو کرا!`);
         }
 
@@ -2874,7 +3018,6 @@
             const input = document.getElementById('partner-code-input');
             const errorEl = document.getElementById('partner-code-error');
             if (!input) return;
-            
             const code = input.value.trim();
             if (code.length === 4 && /^\d{4}$/.test(code)) {
                 state.partner = state.pendingPartner;
@@ -2894,6 +3037,143 @@
             }
         }
 
+        function openTableModal() {
+            if (!state.cart.length) {
+                toast('تکایە لاپەڕەکە پڕ بکە', true);
+                return;
+            }
+            state.showTableModal = true;
+            state.selectedTableNumber = null;
+            refreshUsedTables();
+            render();
+            setTimeout(() => {
+                const input = document.getElementById('table-number-input');
+                if (input) input.focus();
+            }, 100);
+        }
+
+        function closeTableModal() {
+            state.showTableModal = false;
+            state.selectedTableNumber = null;
+            render();
+        }
+
+        function selectTableNumber(num) {
+            if (state.usedTables.has(num)) {
+                toast(`⚠️ مێز ${num} داگیرکراوە!`, true);
+                return;
+            }
+            state.selectedTableNumber = num;
+            const display = document.getElementById('table-number-display');
+            if (display) {
+                display.textContent = num;
+                display.style.borderColor = '#00b894';
+                display.style.background = '#f0fdf6';
+            }
+            const input = document.getElementById('table-number-input');
+            if (input) {
+                input.value = num;
+            }
+            const errorEl = document.getElementById('table-error');
+            if (errorEl) errorEl.classList.remove('show');
+        }
+
+        function confirmTableNumber() {
+            const input = document.getElementById('table-number-input');
+            const errorEl = document.getElementById('table-error');
+            if (!input) return;
+            let num = parseInt(input.value.trim());
+            if (isNaN(num) || num < 1 || num > 40) {
+                if (errorEl) {
+                    errorEl.textContent = '⚠️ تکایە ژمارەیەک لە نێوان ١ بۆ ٤٠ داخل بکە';
+                    errorEl.classList.add('show');
+                }
+                input.value = '';
+                input.focus();
+                return;
+            }
+            if (state.usedTables.has(num)) {
+                if (errorEl) {
+                    errorEl.textContent = `⚠️ مێز ${num} داگیرکراوە! تکایە ژمارەیەکی تر هەڵبژێرە`;
+                    errorEl.classList.add('show');
+                }
+                input.value = '';
+                input.focus();
+                return;
+            }
+            state.selectedTableNumber = num;
+            state.showTableModal = false;
+            saveOrderWithTable(num);
+        }
+
+        async function saveOrderWithTable(tableNumber) {
+            if (!state.cart.length) {
+                toast('تکایە لاپەڕەکە پڕ بکە', true);
+                return;
+            }
+
+            const uniqueId = generateUniqueOrderId();
+            const orderNumber = getSmallestAvailableOrderNumber();
+
+            const orderData = {
+                items: state.cart.map(i => ({ 
+                    id: i.id, 
+                    name: i.name, 
+                    qty: i.qty, 
+                    price: i.price, 
+                    group: i.group, 
+                    image: i.image,
+                    chefGroup: i.chefGroup || 'skip'
+                })),
+                total: state.cart.reduce((sum, i) => sum + i.price * i.qty, 0),
+                orderType: 'dine',
+                tableNumber: tableNumber,
+                time: now(),
+                shift: getShift(),
+                cashier: state.currentUser,
+                branch: state.branch,
+                timestamp: Date.now(),
+                image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp'
+            };
+
+            const order = {
+                uniqueId: uniqueId,
+                orderNumber: orderNumber,
+                ...orderData,
+                status: 'pending',
+                itemStatuses: {}
+            };
+
+            order.items.forEach(item => {
+                order.itemStatuses[item.id] = 'pending';
+            });
+
+            state.orders.push(order);
+            state.usedOrderNumbers.add(orderNumber);
+            state.usedTables.add(tableNumber);
+            state.cart = [];
+            
+            // ===== لێدانی دەنگی ئاگادارکردنەوە - تەنها بۆ شێف =====
+            // دڵنیا بە کە تەنها شێف دەنگی ببیستێت
+            if (state.branch === 'park32' && state.isSoundEnabled) {
+                const orderHasChefItems = order.items.some(item => 
+                    item.chefGroup && item.chefGroup !== 'skip'
+                );
+                if (orderHasChefItems) {
+                    // پشکنینی زیادە بۆ ئەوەی تەنها شێف دەنگ ببیستێت
+                    if (state.currentPage === 'chef') {
+                        setTimeout(() => playOrderNotificationSound(), 100);
+                        setTimeout(() => playOrderNotificationSound(), 400);
+                        setTimeout(() => playOrderNotificationSound(), 700);
+                    }
+                }
+            }
+            
+            toast(`✅ ئۆردەر #${orderNumber} بۆ مێز ${tableNumber} سەیڤ کرا!`);
+            await saveOrdersToFirestore();
+            render();
+        }
+
         function renderChef() {
             const labels = { grill: 'بەرگر', pizza: 'پیتزا', gas: 'گەس', cashier: 'کاشێر' };
             const roleLabel = labels[state.chefView] || 'شێف';
@@ -2909,13 +3189,10 @@
                         order.itemStatuses[item.id] = 'pending';
                     });
                 }
-
                 updateOrderOverallStatus(order);
-
                 order.items.forEach(item => {
                     let shouldShow = false;
                     const itemStatus = order.itemStatuses[item.id] || 'pending';
-                    
                     if (state.chefView === 'grill' && item.chefGroup === 'بەرگر') {
                         shouldShow = true;
                     } else if (state.chefView === 'pizza' && item.chefGroup === 'پیتزا') {
@@ -2925,7 +3202,6 @@
                     } else if (state.chefView === 'cashier') {
                         shouldShow = true;
                     }
-                    
                     if (shouldShow) {
                         cards.push({
                             uniqueId: order.uniqueId,
@@ -2934,6 +3210,7 @@
                             itemStatus: itemStatus,
                             orderStatus: order.status,
                             orderType: order.orderType,
+                            tableNumber: order.tableNumber,
                             partner: order.partner,
                             partnerCode: order.partnerCode,
                             time: order.time,
@@ -2955,27 +3232,26 @@
                 const uniqueId = card.uniqueId;
                 const itemStatus = card.itemStatus || 'pending';
                 const isReady = itemStatus === 'ready';
-                
                 const statusLabels = {
                     'pending': 'چاوەڕوان',
                     'preparing': 'ئامادە دەکرێت',
                     'ready': 'ئامادە کراوە'
                 };
-
                 let position = 'left';
                 if (itemStatus === 'preparing') position = 'center';
                 else if (itemStatus === 'ready') position = 'right';
-
-                const typeLabel = card.orderType === 'dine' ? 'ساڵە' : 
-                                 card.orderType === 'takeaway' ? 'سەفەری' : 
-                                 card.partner?.toUpperCase() || 'شەریکە';
-
+                let typeLabel = '';
+                if (card.orderType === 'dine') {
+                    typeLabel = card.tableNumber ? `مێز ${card.tableNumber}` : 'ساڵە';
+                } else if (card.orderType === 'takeaway') {
+                    typeLabel = 'سەفەری';
+                } else {
+                    typeLabel = card.partner?.toUpperCase() || 'شەریکە';
+                }
                 const now2 = Date.now();
                 const elapsed = Math.floor((now2 - card.timestamp) / 60000);
                 const timerText = elapsed < 1 ? 'تازە' : `${elapsed} دەقە`;
-
                 const cardTitle = `${item.name} ×${item.qty}`;
-
                 return `
                     <div class="chef-order-card-wrapper position-${position}" 
                          data-unique-id="${uniqueId}" 
@@ -3012,7 +3288,12 @@
                     <div class="header-bar">
                         <div class="title">👨‍🍳 شێفی ${roleLabel} - ٣٢ پارک</div>
                         <div class="user-info">${state.currentUser || 'شێف'} | ${now()}</div>
-                        <button class="back-btn" data-action="logout">🚪 دەرچوون</button>
+                        <div style="display:flex;gap:6px;align-items:center;">
+                            <button class="back-btn" data-action="toggle-sound" style="font-size:18px;padding:4px 10px;">
+                                ${state.isSoundEnabled ? '🔊' : '🔇'}
+                            </button>
+                            <button class="back-btn" data-action="logout">🚪 دەرچوون</button>
+                        </div>
                     </div>
                     <div class="chef-view">
                         <h3>📋 ئایتمەکان (${cards.length})</h3>
@@ -3112,7 +3393,62 @@
                 app.innerHTML += renderPartnerCodeModal();
             }
 
+            if (state.showTableModal && !state.isLoading) {
+                app.innerHTML += renderTableModal();
+            }
+
             attachEvents();
+        }
+
+        function renderTableModal() {
+            const usedTablesArray = Array.from(state.usedTables).sort((a, b) => a - b);
+            const allTables = Array.from({ length: 40 }, (_, i) => i + 1);
+            
+            const tableButtonsHtml = allTables.map(num => {
+                const isUsed = state.usedTables.has(num);
+                const isSelected = state.selectedTableNumber === num;
+                let classes = '';
+                if (isUsed) classes += ' used';
+                if (isSelected) classes += ' active';
+                return `<button class="${classes}" data-action="select-table" data-number="${num}">${num}</button>`;
+            }).join('');
+
+            const usedTablesHtml = usedTablesArray.length ? 
+                usedTablesArray.map(num => `<span class="table-pill">مێز ${num}</span>`).join('') :
+                '<span class="empty-tables">هیچ مێزێک داگیرنەکراوە</span>';
+
+            return `
+                <div class="modal-overlay table-modal" id="table-modal-overlay">
+                    <div class="modal" id="table-modal">
+                        <button class="close-btn" id="close-table-modal">✕</button>
+                        <h3>🪑 هەڵبژاردنی ژمارەی مێز</h3>
+                        <p class="table-hint">تکایە ژمارەی مێز دیاری بکە (١ بۆ ٤٠)</p>
+                        
+                        <div class="used-tables">
+                            <span style="font-weight:600;font-size:13px;width:100%;text-align:center;color:#1a1a2e;margin-bottom:4px;">مێزە داگیرکراوەکان:</span>
+                            ${usedTablesHtml}
+                        </div>
+
+                        <input type="number" id="table-number-input" class="table-number-input" 
+                               placeholder="_ _" min="1" max="40" 
+                               value="${state.selectedTableNumber || ''}" />
+                        <div id="table-error" class="table-error"></div>
+                        
+                        <div class="table-number-display" id="table-number-display">
+                            ${state.selectedTableNumber || '?'}
+                        </div>
+
+                        <div class="table-buttons-grid">
+                            ${tableButtonsHtml}
+                        </div>
+
+                        <div class="flex" style="margin-top:16px;gap:10px;">
+                            <button class="btn" id="confirm-table-btn" style="flex:1;">✅ پشتڕاستی مێز</button>
+                            <button class="btn btn-danger" id="cancel-table-btn" style="flex:1;">🚫 ڕەتکردنەوە</button>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         function renderPartnerCodeModal() {
@@ -3305,10 +3641,12 @@
                 
                 readyOrdersHtml = readyOrders.length ? readyOrders.map(o => {
                     const items = o.items.map(i => `${i.name} ×${i.qty}`).join('، ');
+                    const tableInfo = o.tableNumber ? `🪑 مێز ${o.tableNumber}` : '';
                     return `
                         <div class="chef-order-mini">
                             <span class="order-id">#${o.orderNumber}</span>
                             <span class="order-items">${items}</span>
+                            <span style="font-size:11px;color:#6c5ce7;font-weight:600;">${tableInfo}</span>
                             <span class="order-time">${o.time}</span>
                             <span class="order-status-badge ready">✅ ئامادە کراوە</span>
                             <button class="btn-complete" data-action="cashier-complete" data-unique-id="${o.uniqueId}">✅ تەواو</button>
@@ -3317,6 +3655,12 @@
                 }).join('') : '<p style="color:#94a3b8;text-align:center;padding:20px;font-size:16px;">هیچ ئۆردەرێکی ئامادە نییە</p>';
             }
 
+            const activeOrdersCount = state.orders.filter(o => 
+                o.branch === 'park32' && 
+                o.status !== 'completed' && 
+                o.orderType === 'dine'
+            ).length;
+
             return `
                 <div>
                     <div class="header-bar">
@@ -3324,6 +3668,13 @@
                         <div class="user-info">${state.currentUser || 'کاشێر'} | ${now()}</div>
                         <button class="back-btn" data-action="logout">🚪 دەرچوون</button>
                     </div>
+
+                    ${state.branch === 'park32' ? `
+                        <div style="background:#f8fafc;border-radius:12px;padding:8px 16px;margin-bottom:12px;border:2px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+                            <span style="font-weight:600;color:#1a1a2e;">🪑 ئۆردەری چالاکی ساڵە: <span style="color:#6c5ce7;">${activeOrdersCount}</span></span>
+                            <span style="font-size:13px;color:#64748b;">مێزە داگیرکراوەکان: ${Array.from(state.usedTables).sort((a,b)=>a-b).join(', ') || 'هیچ'}</span>
+                        </div>
+                    ` : ''}
 
                     <div class="cashier-layout">
                         <div class="items-panel" id="items-panel">
@@ -3358,7 +3709,11 @@
 
                             <div class="order-actions">
                                 <button class="btn btn-danger" data-action="clear-cart">🧹 خاڵی کردن</button>
-                                <button class="btn btn-success" data-action="save-order">💾 سەیڤ کردن</button>
+                                ${state.branch === 'park32' && state.orderType === 'dine' ? `
+                                    <button class="btn btn-success" data-action="open-table-modal">🪑 سەیڤ بە مێز</button>
+                                ` : `
+                                    <button class="btn btn-success" data-action="save-order">💾 سەیڤ کردن</button>
+                                `}
                             </div>
                         </div>
                     </div>
@@ -3409,7 +3764,6 @@
                 <option value="${b}" ${state.selectedBranch === b ? 'selected' : ''}>${b}</option>
             `).join('');
 
-            // Use currentDayOrders and currentMonthOrders from state (filtered by reset)
             let dineTakeawayOrders = state.currentDayOrders.filter(o => {
                 const isPartner = o.partner && o.orderType === 'partner';
                 return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
@@ -3441,7 +3795,6 @@
                     </div>
                 `).join('') : '<p style="grid-column:1/-1;color:#94a3b8;">هیچ داتایەک نییە</p>';
 
-            // Partner orders filtered to current day
             let partnerOrders = state.partnerOrders.filter(o => {
                 const orderDate = new Date(o.timestamp);
                 const now = new Date();
@@ -3505,7 +3858,6 @@
                 </div>
             `;
 
-            // Monthly chart uses current month orders (state.currentMonthOrders)
             const monthDays = getMonthDays();
             const dayTotals = monthDays.map(day => {
                 const dayStr = day.toDateString();
@@ -3555,6 +3907,7 @@
                 <div class="order-item" style="border-right-color: ${o.orderType === 'dine' ? '#3498db' : '#f39c12'};">
                     <span class="order-id">${index + 1}</span>
                     <span class="order-type-badge ${o.orderType}">${o.orderType === 'dine' ? '🍽️ ساڵە' : '🛍️ سەفەری'}</span>
+                    ${o.tableNumber ? `<span style="font-size:10px;color:#6c5ce7;font-weight:600;">🪑مێز${o.tableNumber}</span>` : ''}
                     <span class="order-items-text">${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
                     <span class="order-price">${formatPrice(o.total)}</span>
                     <span class="order-time">${o.time}</span>
@@ -3845,6 +4198,8 @@
                     state.editingItemId = null;
                     state.showPartnerCodeModal = false;
                     state.pendingPartner = null;
+                    state.showTableModal = false;
+                    state.selectedTableNumber = null;
                     render();
                 };
             });
@@ -3861,6 +4216,8 @@
                     state.editingItemId = null;
                     state.showPartnerCodeModal = false;
                     state.pendingPartner = null;
+                    state.showTableModal = false;
+                    state.selectedTableNumber = null;
                     render();
                 };
             });
@@ -3950,6 +4307,75 @@
                 };
             });
 
+            document.querySelectorAll('[data-action="toggle-sound"]').forEach(el => {
+                el.onclick = () => {
+                    toggleSound();
+                };
+            });
+
+            document.querySelectorAll('[data-action="open-table-modal"]').forEach(el => {
+                el.onclick = () => {
+                    openTableModal();
+                };
+            });
+
+            const closeTableBtn = document.getElementById('close-table-modal');
+            if (closeTableBtn) {
+                closeTableBtn.onclick = closeTableModal;
+            }
+
+            const cancelTableBtn = document.getElementById('cancel-table-btn');
+            if (cancelTableBtn) {
+                cancelTableBtn.onclick = closeTableModal;
+            }
+
+            const confirmTableBtn = document.getElementById('confirm-table-btn');
+            if (confirmTableBtn) {
+                confirmTableBtn.onclick = confirmTableNumber;
+            }
+
+            const tableOverlay = document.getElementById('table-modal-overlay');
+            if (tableOverlay) {
+                tableOverlay.onclick = (e) => {
+                    if (e.target === tableOverlay) {
+                        closeTableModal();
+                    }
+                };
+            }
+
+            document.querySelectorAll('[data-action="select-table"]').forEach(el => {
+                el.onclick = () => {
+                    const num = parseInt(el.dataset.number);
+                    selectTableNumber(num);
+                };
+            });
+
+            const tableInput = document.getElementById('table-number-input');
+            if (tableInput) {
+                tableInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        confirmTableNumber();
+                    }
+                });
+                tableInput.addEventListener('input', () => {
+                    const val = parseInt(tableInput.value);
+                    if (!isNaN(val) && val >= 1 && val <= 40) {
+                        const errorEl = document.getElementById('table-error');
+                        if (errorEl) errorEl.classList.remove('show');
+                        if (!state.usedTables.has(val)) {
+                            state.selectedTableNumber = val;
+                            const display = document.getElementById('table-number-display');
+                            if (display) {
+                                display.textContent = val;
+                                display.style.borderColor = '#00b894';
+                                display.style.background = '#f0fdf6';
+                            }
+                        }
+                    }
+                });
+            }
+
             const branchFilter = document.getElementById('branch-filter');
             if (branchFilter) {
                 branchFilter.onchange = () => {
@@ -3995,21 +4421,16 @@
                 el.onclick = function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
                     if (e.target.closest('.chef-order-card-wrapper') !== this) return;
-                    
                     const uniqueId = this.dataset.uniqueId;
                     const itemId = this.dataset.itemId;
                     const currentStatus = this.dataset.itemStatus;
                     const isReady = this.dataset.ready === 'true';
-                    
                     if (isReady) {
                         toast('ئەم ئایتمە پێشتر ئامادە کراوە!');
                         return;
                     }
-                    
                     let newStatus;
-                    
                     if (currentStatus === 'pending') {
                         newStatus = 'preparing';
                     } else if (currentStatus === 'preparing') {
@@ -4017,38 +4438,30 @@
                     } else {
                         return;
                     }
-                    
                     let newPosition = 'left';
                     if (newStatus === 'preparing') newPosition = 'center';
                     else if (newStatus === 'ready') newPosition = 'right';
-                    
                     this.classList.remove('position-left', 'position-center', 'position-right');
                     this.classList.add(`position-${newPosition}`);
                     this.dataset.itemStatus = newStatus;
-                    
                     if (newStatus === 'ready') {
                         this.dataset.ready = 'true';
                     }
-                    
                     const card = this.querySelector('.chef-order-card');
                     const statusLabel = card?.querySelector('.chef-order-status-label');
                     const hint = card?.querySelector('.chef-order-hint');
-                    
                     const statusLabels = {
                         'pending': 'چاوەڕوان',
                         'preparing': 'ئامادە دەکرێت',
                         'ready': 'ئامادە کراوە'
                     };
-                    
                     if (statusLabel) {
                         statusLabel.className = `chef-order-status-label ${newStatus}`;
                         statusLabel.textContent = statusLabels[newStatus] || newStatus;
                     }
-                    
                     if (hint) {
                         hint.textContent = newStatus === 'ready' ? '✅ ئامادە کراوە' : '👆 کلیک بکە بۆ گۆڕینی دۆخ';
                     }
-                    
                     updateItemStatus(uniqueId, itemId, newStatus);
                 };
             });
@@ -4066,7 +4479,6 @@
                     if (itemsPanel) {
                         state.itemsPanelScrollTop = itemsPanel.scrollTop;
                     }
-                    
                     const id = el.dataset.id;
                     const item = state.items.find(i => i.id === id);
                     if (item) {
@@ -4078,7 +4490,6 @@
                             state.cart.push({ ...item, price, qty: 1 });
                         }
                         render();
-                        
                         setTimeout(() => {
                             const newItemsPanel = document.querySelector('.items-panel');
                             if (newItemsPanel) {
@@ -4134,6 +4545,11 @@
                         return;
                     }
 
+                    if (state.branch === 'park32' && state.orderType === 'dine') {
+                        openTableModal();
+                        return;
+                    }
+
                     const uniqueId = generateUniqueOrderId();
                     const orderNumber = getSmallestAvailableOrderNumber();
 
@@ -4180,8 +4596,23 @@
                         await savePartnerOrderToFirestore(orderData);
                     }
                     
-                    toast(`✅ ئۆردەر #${orderNumber} سەیڤ کرا! (ID: ${uniqueId})`);
-
+                    // ===== لێدانی دەنگی ئاگادارکردنەوە - تەنها بۆ شێف =====
+                    if (state.branch === 'park32' && state.isSoundEnabled) {
+                        const orderHasChefItems = order.items.some(item => 
+                            item.chefGroup && item.chefGroup !== 'skip'
+                        );
+                        if (orderHasChefItems) {
+                            // پشکنینی زیادە بۆ ئەوەی تەنها شێف دەنگ ببیستێت
+                            if (state.currentPage === 'chef') {
+                                setTimeout(() => playOrderNotificationSound(), 100);
+                                setTimeout(() => playOrderNotificationSound(), 400);
+                                setTimeout(() => playOrderNotificationSound(), 700);
+                                toast('🔔 ئاگادارکردنەوە بۆ شێفەکان نێردرا!');
+                            }
+                        }
+                    }
+                    
+                    toast(`✅ ئۆردەر #${orderNumber} سەیڤ کرا!`);
                     await saveOrdersToFirestore();
                     render();
                 };
@@ -4328,12 +4759,10 @@
                     fileInput.accept = 'image/*';
                     fileInput.style.display = 'none';
                     document.body.appendChild(fileInput);
-                    
                     fileInput.onchange = async (e) => {
                         const file = e.target.files[0];
                         if (file) {
                             toast('⏳ وێنە بار دەکرێت...');
-                            
                             try {
                                 const reader = new FileReader();
                                 reader.onload = async (event) => {
@@ -4354,7 +4783,6 @@
                         }
                         fileInput.remove();
                     };
-                    
                     fileInput.click();
                 };
             });
@@ -4418,19 +4846,16 @@
                     console.warn('Auth error (ignored):', authError);
                 }
 
-                // Load reset timestamps first
                 await loadResetTimestamps();
                 
                 loadItemsFromFirestore();
                 loadOrdersFromFirestore();
                 loadPartnerOrdersFromFirestore();
 
-                // Check for resets on init
                 setTimeout(() => {
                     checkAndApplyResets();
                 }, 1000);
 
-                // Periodic check every minute
                 setInterval(() => {
                     checkAndApplyResets();
                 }, 60000);
