@@ -103,6 +103,58 @@
             margin: 2px;
             display: inline-block;
         }
+        .btn-success {
+            background: #00b894;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #00a381;
+        }
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #e55a5a;
+        }
+        .btn-warning {
+            background: #fdcb6e;
+            color: #1a1a2e;
+        }
+        .btn-warning:hover {
+            background: #f0b84d;
+        }
+        .btn-discount {
+            background: linear-gradient(135deg, #e17055, #d63031);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            min-width: 60px;
+            box-shadow: 0 4px 15px rgba(214, 48, 49, 0.3);
+        }
+        .btn-discount:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(214, 48, 49, 0.5);
+        }
+        .btn-discount.active {
+            background: linear-gradient(135deg, #00b894, #00a381);
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+        }
+        .btn-discount.active:hover {
+            box-shadow: 0 6px 25px rgba(0, 184, 148, 0.5);
+        }
+        .btn-primary {
+            background: #6c5ce7;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a4bd1;
+        }
         .option-btn {
             padding: 16px;
             font-size: 18px;
@@ -206,9 +258,10 @@
             border-radius: 20px;
             padding: 16px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-            max-height: 70vh;
+            max-height: 80vh;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
         .order-panel h3 {
             font-size: 20px;
@@ -216,6 +269,130 @@
             color: #1a1a2e;
             border-bottom: 3px solid #6c5ce7;
             padding-bottom: 8px;
+            flex-shrink: 0;
+        }
+        .delivery-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 6px 0;
+            flex-shrink: 0;
+        }
+        .delivery-options button {
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 2.5px solid #e2e8f0;
+            background: white;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+            font-size: 14px;
+            flex: 1;
+            min-width: 70px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .delivery-options button:hover {
+            border-color: #6c5ce7;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.15);
+        }
+        .delivery-options button.active {
+            border-color: #6c5ce7;
+            background: linear-gradient(135deg, #6c5ce7, #5a4bd1);
+            color: white;
+            box-shadow: 0 6px 25px rgba(108, 92, 231, 0.35);
+            transform: scale(1.03);
+        }
+        .cashier-partner-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 6px 0;
+            justify-content: flex-start;
+            flex-shrink: 0;
+        }
+        .cashier-partner-buttons button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 12px;
+            border: 2.5px solid #e2e8f0;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            font-size: 12px;
+            gap: 6px;
+            flex: 1;
+            min-width: 60px;
+            max-width: 110px;
+        }
+        .cashier-partner-buttons button:hover {
+            border-color: #6c5ce7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.15);
+        }
+        .cashier-partner-buttons button.active {
+            border-color: #6c5ce7;
+            background: #f8f7ff;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            transform: scale(1.03);
+        }
+        .cashier-partner-buttons button img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: white;
+            padding: 3px;
+        }
+        .cashier-partner-buttons button .partner-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+        .cashier-partner-buttons button.active .partner-label { color: #6c5ce7; }
+        .partner-info-badge {
+            background: #e17055;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 4px 0;
+        }
+        .partner-info-badge img {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            object-fit: contain;
+            background: white;
+            padding: 2px;
+        }
+        .discount-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 6px 0;
+            padding: 8px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+        .discount-buttons .label {
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
         }
         .order-list {
             flex: 1;
@@ -224,8 +401,8 @@
             padding: 8px;
             background: #f8fafc;
             border-radius: 14px;
-            min-height: 120px;
-            max-height: 220px;
+            min-height: 80px;
+            max-height: 180px;
         }
         .order-item {
             display: flex;
@@ -261,12 +438,25 @@
             border-top: 2px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .order-total .discount-info {
+            font-size: 13px;
+            color: #e17055;
+            font-weight: 600;
+        }
+        .order-total .original-price {
+            font-size: 14px;
+            color: #94a3b8;
+            text-decoration: line-through;
+            margin-left: 8px;
         }
         .order-actions {
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
             margin-top: 6px;
+            flex-shrink: 0;
         }
         .order-actions button {
             padding: 10px;
@@ -277,66 +467,7 @@
             cursor: pointer;
             transition: 0.3s;
             min-width: 60px;
-        }
-        .btn-primary {
-            background: #6c5ce7;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #5a4bd1;
-        }
-        .btn-success {
-            background: #00b894;
-            color: white;
-        }
-        .btn-success:hover {
-            background: #00a381;
-        }
-        .btn-danger {
-            background: #ff6b6b;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #e55a5a;
-        }
-        .btn-warning {
-            background: #fdcb6e;
-            color: #1a1a2e;
-        }
-        .btn-warning:hover {
-            background: #f0b84d;
-        }
-        .delivery-options {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin: 6px 0;
-        }
-        .delivery-options button {
-            padding: 10px 16px;
-            border-radius: 12px;
-            border: 2.5px solid #e2e8f0;
-            background: white;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.3s;
-            font-size: 14px;
             flex: 1;
-            min-width: 70px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-        .delivery-options button:hover {
-            border-color: #6c5ce7;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.15);
-        }
-        .delivery-options button.active {
-            border-color: #6c5ce7;
-            background: linear-gradient(135deg, #6c5ce7, #5a4bd1);
-            color: white;
-            box-shadow: 0 6px 25px rgba(108, 92, 231, 0.35);
-            transform: scale(1.03);
         }
         .chef-view {
             background: white;
@@ -969,75 +1100,6 @@
             border-radius: 6px;
             object-fit: cover;
         }
-        .cashier-partner-buttons {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin: 6px 0;
-            justify-content: flex-start;
-        }
-        .cashier-partner-buttons button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px 12px;
-            border-radius: 12px;
-            border: 2.5px solid #e2e8f0;
-            background: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-            font-size: 12px;
-            gap: 6px;
-            flex: 1;
-            min-width: 60px;
-            max-width: 110px;
-        }
-        .cashier-partner-buttons button:hover {
-            border-color: #6c5ce7;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.15);
-        }
-        .cashier-partner-buttons button.active {
-            border-color: #6c5ce7;
-            background: #f8f7ff;
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-            transform: scale(1.03);
-        }
-        .cashier-partner-buttons button img {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            object-fit: contain;
-            background: white;
-            padding: 3px;
-        }
-        .cashier-partner-buttons button .partner-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #1a1a2e;
-        }
-        .cashier-partner-buttons button.active .partner-label { color: #6c5ce7; }
-        .partner-info-badge {
-            background: #e17055;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            margin: 4px 0;
-        }
-        .partner-info-badge img {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            object-fit: contain;
-            background: white;
-            padding: 2px;
-        }
         .partner-detail-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1337,7 +1399,6 @@
         ::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 8px; }
         ::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
 
-        /* ===== ستایلی مۆدالی ژمارەی مێز ===== */
         .table-modal .modal {
             max-width: 420px;
             text-align: center;
@@ -1453,7 +1514,6 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-
         .monthly-chart-modern::before {
             content: '';
             position: absolute;
@@ -1465,7 +1525,6 @@
             border-radius: 50%;
             animation: float-bg 8s ease-in-out infinite;
         }
-
         .monthly-chart-modern::after {
             content: '';
             position: absolute;
@@ -1477,12 +1536,10 @@
             border-radius: 50%;
             animation: float-bg 10s ease-in-out infinite reverse;
         }
-
         @keyframes float-bg {
             0%, 100% { transform: translate(0, 0) scale(1); }
             50% { transform: translate(30px, -20px) scale(1.1); }
         }
-
         .chart-header-simple {
             display: flex;
             justify-content: space-between;
@@ -1493,13 +1550,11 @@
             position: relative;
             z-index: 2;
         }
-
         .chart-title-simple {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-
         .chart-title-simple h4 {
             font-size: 18px;
             font-weight: 700;
@@ -1507,7 +1562,6 @@
             margin: 0;
             letter-spacing: 0.5px;
         }
-
         .chart-title-simple .badge-live {
             background: rgba(0, 184, 148, 0.2);
             border: 1px solid rgba(0, 184, 148, 0.3);
@@ -1520,7 +1574,6 @@
             align-items: center;
             gap: 6px;
         }
-
         .chart-title-simple .badge-live .dot {
             width: 6px;
             height: 6px;
@@ -1528,18 +1581,15 @@
             border-radius: 50%;
             animation: pulse-dot 1.5s infinite;
         }
-
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.3; transform: scale(0.7); }
         }
-
         .chart-stats-simple {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-
         .stat-box {
             background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(10px);
@@ -1548,14 +1598,12 @@
             border: 1px solid rgba(255, 255, 255, 0.06);
             text-align: center;
         }
-
         .stat-box .stat-value {
             font-size: 15px;
             font-weight: 700;
             color: #a29bfe;
             display: block;
         }
-
         .stat-box .stat-label {
             font-size: 9px;
             color: rgba(255, 255, 255, 0.5);
@@ -1563,7 +1611,6 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .chart-bars-simple {
             display: flex;
             align-items: flex-end;
@@ -1574,7 +1621,6 @@
             z-index: 2;
             min-height: 80px;
         }
-
         .bar-item-simple {
             flex: 1;
             display: flex;
@@ -1585,11 +1631,9 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
         .bar-item-simple:hover {
             transform: translateY(-4px);
         }
-
         .bar-item-simple .bar-value {
             font-size: 10px;
             font-weight: 600;
@@ -1597,12 +1641,10 @@
             opacity: 0;
             transition: all 0.3s ease;
         }
-
         .bar-item-simple:hover .bar-value {
             opacity: 1;
             color: #ffffff;
         }
-
         .bar-item-simple .bar-track {
             width: 100%;
             max-width: 40px;
@@ -1613,7 +1655,6 @@
             overflow: hidden;
             min-height: 6px;
         }
-
         .bar-item-simple .bar-track .bar-fill {
             position: absolute;
             bottom: 0;
@@ -1623,27 +1664,22 @@
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             min-height: 4px;
         }
-
         .bar-item-simple .bar-track .bar-fill.high {
             background: linear-gradient(180deg, #a29bfe, #6c5ce7);
             box-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
         }
-
         .bar-item-simple .bar-track .bar-fill.medium {
             background: linear-gradient(180deg, #81ecec, #00cec9);
             box-shadow: 0 0 20px rgba(0, 206, 201, 0.2);
         }
-
         .bar-item-simple .bar-track .bar-fill.low {
             background: linear-gradient(180deg, #fdcb6e, #f39c12);
             box-shadow: 0 0 20px rgba(243, 156, 18, 0.15);
         }
-
         .bar-item-simple .bar-track .bar-fill.zero {
             background: rgba(255, 255, 255, 0.05);
             box-shadow: none;
         }
-
         .bar-item-simple .bar-track .bar-glow {
             position: absolute;
             top: -50%;
@@ -1655,11 +1691,9 @@
             transition: all 0.5s ease;
             pointer-events: none;
         }
-
         .bar-item-simple:hover .bar-track .bar-glow {
             opacity: 1;
         }
-
         .bar-item-simple .bar-label-simple {
             font-size: 10px;
             color: rgba(255, 255, 255, 0.5);
@@ -1667,43 +1701,35 @@
             text-align: center;
             transition: all 0.3s ease;
         }
-
         .bar-item-simple:hover .bar-label-simple {
             color: rgba(255, 255, 255, 0.8);
         }
-
         .bar-item-simple .bar-day-simple {
             font-size: 7px;
             color: rgba(255, 255, 255, 0.25);
             text-align: center;
             margin-top: -2px;
         }
-
         .bar-item-simple.today .bar-track .bar-fill {
             box-shadow: 0 0 30px rgba(108, 92, 231, 0.5) !important;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         .bar-item-simple.today .bar-label-simple {
             color: #a29bfe;
             font-weight: 700;
         }
-
         .bar-item-simple.today .bar-day-simple {
             color: rgba(162, 155, 254, 0.5);
         }
-
         .bar-item-simple .bar-max-star {
             font-size: 10px;
             color: #fdcb6e;
             opacity: 0;
             transition: all 0.3s ease;
         }
-
         .bar-item-simple:hover .bar-max-star {
             opacity: 1;
         }
-
         .chart-footer-simple {
             display: flex;
             justify-content: space-between;
@@ -1716,37 +1742,31 @@
             position: relative;
             z-index: 2;
         }
-
         .chart-footer-simple .total-text {
             font-size: 13px;
             color: rgba(255, 255, 255, 0.6);
             font-weight: 500;
         }
-
         .chart-footer-simple .total-text span {
             color: #a29bfe;
             font-size: 17px;
             font-weight: 700;
         }
-
         .chart-footer-simple .total-text .trend-up {
             color: #55efc4;
             font-size: 12px;
             margin-right: 6px;
         }
-
         .chart-footer-simple .total-text .trend-down {
             color: #ff6b6b;
             font-size: 12px;
             margin-right: 6px;
         }
-
         .chart-footer-simple .legend-simple {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-
         .chart-footer-simple .legend-item-simple {
             display: flex;
             align-items: center;
@@ -1755,17 +1775,14 @@
             color: rgba(255, 255, 255, 0.4);
             font-weight: 500;
         }
-
         .chart-footer-simple .legend-item-simple .color-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
         }
-
         .chart-footer-simple .legend-item-simple .color-dot.high { background: #6c5ce7; }
         .chart-footer-simple .legend-item-simple .color-dot.medium { background: #00cec9; }
         .chart-footer-simple .legend-item-simple .color-dot.low { background: #f39c12; }
-
         .chart-footer-simple .btn-details {
             background: rgba(108, 92, 231, 0.2);
             border: 1px solid rgba(108, 92, 231, 0.3);
@@ -1777,169 +1794,134 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .chart-footer-simple .btn-details:hover {
             background: rgba(108, 92, 231, 0.3);
             transform: translateY(-2px);
             box-shadow: 0 4px 20px rgba(108, 92, 231, 0.2);
         }
-
         @media (max-width: 768px) {
             .monthly-chart-modern {
                 padding: 20px 16px 16px;
                 border-radius: 20px;
             }
-
             .chart-title-simple h4 {
                 font-size: 15px;
             }
-
             .chart-stats-simple {
                 gap: 8px;
                 flex-wrap: wrap;
             }
-
             .stat-box {
                 padding: 4px 12px;
             }
-
             .stat-box .stat-value {
                 font-size: 13px;
             }
-
             .stat-box .stat-label {
                 font-size: 8px;
             }
-
             .chart-bars-simple {
                 height: 100px;
                 gap: 4px;
                 min-height: 60px;
             }
-
             .bar-item-simple .bar-value {
                 font-size: 8px;
             }
-
             .bar-item-simple .bar-label-simple {
                 font-size: 8px;
             }
-
             .bar-item-simple .bar-day-simple {
                 font-size: 6px;
             }
-
             .bar-item-simple .bar-track {
                 max-width: 30px;
                 min-height: 4px;
             }
-
             .bar-item-simple .bar-track .bar-fill {
                 min-height: 3px;
             }
-
             .chart-footer-simple .total-text {
                 font-size: 11px;
             }
-
             .chart-footer-simple .total-text span {
                 font-size: 14px;
             }
-
             .chart-footer-simple .legend-simple {
                 gap: 8px;
             }
-
             .chart-footer-simple .legend-item-simple {
                 font-size: 8px;
             }
-
             .chart-footer-simple .legend-item-simple .color-dot {
                 width: 6px;
                 height: 6px;
             }
-
             .chart-footer-simple .btn-details {
                 font-size: 10px;
                 padding: 5px 14px;
             }
         }
-
         @media (max-width: 480px) {
             .monthly-chart-modern {
                 padding: 14px 10px 12px;
                 border-radius: 16px;
             }
-
             .chart-header-simple {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 8px;
             }
-
             .chart-title-simple h4 {
                 font-size: 13px;
             }
-
             .chart-title-simple .badge-live {
                 font-size: 8px;
                 padding: 2px 10px;
             }
-
             .chart-stats-simple {
                 width: 100%;
                 justify-content: space-between;
             }
-
             .stat-box {
                 padding: 3px 8px;
                 flex: 1;
                 text-align: center;
             }
-
             .stat-box .stat-value {
                 font-size: 11px;
             }
-
             .stat-box .stat-label {
                 font-size: 7px;
             }
-
             .chart-bars-simple {
                 height: 75px;
                 gap: 3px;
                 min-height: 50px;
                 padding: 4px 0 2px;
             }
-
             .bar-item-simple .bar-value {
                 font-size: 7px;
             }
-
             .bar-item-simple .bar-label-simple {
                 font-size: 7px;
                 margin-top: 1px;
             }
-
             .bar-item-simple .bar-day-simple {
                 font-size: 5px;
             }
-
             .bar-item-simple .bar-track {
                 max-width: 22px;
                 min-height: 3px;
                 border-radius: 5px 5px 3px 3px;
             }
-
             .bar-item-simple .bar-track .bar-fill {
                 min-height: 2px;
                 border-radius: 5px 5px 3px 3px;
             }
-
             .bar-item-simple .bar-max-star {
                 font-size: 7px;
             }
-
             .chart-footer-simple {
                 flex-direction: column;
                 align-items: stretch;
@@ -1947,31 +1929,25 @@
                 margin-top: 10px;
                 padding-top: 10px;
             }
-
             .chart-footer-simple .total-text {
                 font-size: 10px;
                 text-align: center;
             }
-
             .chart-footer-simple .total-text span {
                 font-size: 13px;
             }
-
             .chart-footer-simple .legend-simple {
                 justify-content: center;
                 gap: 6px;
                 flex-wrap: wrap;
             }
-
             .chart-footer-simple .legend-item-simple {
                 font-size: 7px;
             }
-
             .chart-footer-simple .legend-item-simple .color-dot {
                 width: 5px;
                 height: 5px;
             }
-
             .chart-footer-simple .btn-details {
                 font-size: 9px;
                 padding: 4px 10px;
@@ -1979,45 +1955,36 @@
                 text-align: center;
             }
         }
-
         @media (min-width: 481px) and (max-width: 1024px) {
             .monthly-chart-modern {
                 padding: 24px 20px 18px;
             }
-
             .chart-bars-simple {
                 height: 115px;
                 gap: 5px;
             }
-
             .bar-item-simple .bar-label-simple {
                 font-size: 9px;
             }
-
             .bar-item-simple .bar-track {
                 max-width: 35px;
             }
         }
-
         @media (min-width: 1025px) {
             .monthly-chart-modern {
                 padding: 32px 28px 24px;
             }
-
             .chart-bars-simple {
                 height: 150px;
                 gap: 8px;
             }
-
             .bar-item-simple .bar-track {
                 max-width: 50px;
             }
-
             .chart-title-simple h4 {
                 font-size: 20px;
             }
         }
-
         @media (max-width: 768px) {
             body { padding: 8px; }
             .login-box, .options-box { padding: 20px 16px; }
@@ -2048,7 +2015,6 @@
             .btn { font-size: 15px; padding: 12px 20px; }
             table { font-size: 11px; }
             table th, table td { padding: 6px 4px; }
-
             .table-modal .modal .table-buttons-grid {
                 grid-template-columns: repeat(4, 1fr);
                 gap: 4px;
@@ -2065,7 +2031,6 @@
                 width: 100px;
                 padding: 12px;
             }
-
             .stats-grid {
                 grid-template-columns: 1fr 1fr !important;
                 gap: 6px !important;
@@ -2084,7 +2049,6 @@
             .stats-grid .stat-card:nth-child(3) {
                 grid-column: 1 / -1 !important;
             }
-
             .dashboard .order-item {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
@@ -2140,7 +2104,6 @@
                 text-align: left !important;
                 font-weight: 500 !important;
             }
-
             .header-bar .title {
                 font-size: 15px !important;
             }
@@ -2157,7 +2120,6 @@
                 min-width: 50px !important;
             }
         }
-
         @media (max-width: 480px) {
             body { padding: 4px; }
             .login-box, .options-box { padding: 16px 12px; }
@@ -2197,7 +2159,6 @@
             .partner-stat-number { font-size: 16px; }
             .partner-order-item { font-size: 10px; padding: 4px 6px; }
             .toast { font-size: 13px; padding: 10px 16px; bottom: 12px; right: 12px; left: 12px; }
-
             .table-modal .modal .table-buttons-grid {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 3px;
@@ -2214,7 +2175,6 @@
                 width: 80px;
                 padding: 10px;
             }
-
             .stats-grid {
                 gap: 4px !important;
             }
@@ -2224,7 +2184,6 @@
             .stat-card .label {
                 font-size: 8px !important;
             }
-
             .dashboard .order-item {
                 padding: 3px 4px !important;
                 font-size: 10px !important;
@@ -2252,13 +2211,237 @@
                 font-size: 8px !important;
             }
         }
-
         @media (min-width: 769px) and (max-width: 1024px) {
             .stats-grid {
                 grid-template-columns: repeat(3, 1fr) !important;
             }
             .stats-grid .stat-card:nth-child(3) {
                 grid-column: auto !important;
+            }
+        }
+        /* Receipt Print Styles */
+        .receipt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            backdrop-filter: blur(6px);
+        }
+        .receipt-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .receipt-content {
+            background: white;
+            padding: 16px 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #1a1a2e;
+            direction: rtl;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            max-width: 80mm;
+            margin: 0 auto;
+        }
+        .receipt-content .header {
+            text-align: center;
+            border-bottom: 2px dashed #1a1a2e;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .receipt-content .header .rest-name {
+            font-size: 20px;
+            font-weight: 800;
+            color: #6c5ce7;
+            letter-spacing: 0.5px;
+        }
+        .receipt-content .header .branch-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin: 4px 0;
+        }
+        .receipt-content .header .rest-info {
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.4;
+        }
+        .receipt-content .header .rest-info .phone {
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+        .receipt-content .header .logo-receipt {
+            max-width: 60px;
+            max-height: 60px;
+            object-fit: contain;
+            margin: 4px auto;
+            display: block;
+            border-radius: 8px;
+        }
+        .receipt-content .divider {
+            border: none;
+            border-top: 1px dashed #94a3b8;
+            margin: 8px 0;
+        }
+        .receipt-content .row {
+            display: flex;
+            justify-content: space-between;
+            margin: 3px 0;
+        }
+        .receipt-content .row .label { color: #64748b; }
+        .receipt-content .row .value { font-weight: 600; }
+        .receipt-content .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+            font-size: 12px;
+        }
+        .receipt-content .items-table th {
+            border-bottom: 1px dashed #94a3b8;
+            padding: 4px 2px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 11px;
+            color: #64748b;
+        }
+        .receipt-content .items-table td {
+            padding: 4px 2px;
+            text-align: center;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .receipt-content .items-table .item-name { text-align: right; }
+        .receipt-content .items-table .item-qty { min-width: 30px; }
+        .receipt-content .items-table .item-price { min-width: 60px; }
+        .receipt-content .total-row {
+            border-top: 2px dashed #1a1a2e;
+            margin-top: 4px;
+            padding-top: 8px;
+            font-size: 14px;
+        }
+        .receipt-content .total-row .total-amount {
+            font-size: 16px;
+            font-weight: 800;
+            color: #6c5ce7;
+        }
+        .receipt-content .discount-row {
+            color: #e17055;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .receipt-content .footer {
+            text-align: center;
+            border-top: 2px dashed #1a1a2e;
+            margin-top: 10px;
+            padding-top: 10px;
+            font-size: 14px;
+            color: #1a1a2e;
+            font-weight: 500;
+        }
+        .receipt-content .footer .thanks {
+            font-size: 18px;
+            font-weight: 700;
+            color: #6c5ce7;
+        }
+        .receipt-content .payment-method {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 6px 10px;
+            margin: 6px 0;
+            font-weight: 600;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .receipt-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .receipt-actions .btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 10px;
+            font-size: 14px;
+        }
+        @media print {
+            body * { visibility: hidden; }
+            .receipt-content, .receipt-content * { visibility: visible; }
+            .receipt-content { 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                width: 80mm;
+                padding: 10px 8px;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                font-size: 12px;
+            }
+            .receipt-actions { display: none; }
+            .receipt-modal { 
+                background: none; 
+                padding: 0; 
+                max-width: 80mm;
+                box-shadow: none;
+                overflow: visible;
+            }
+            .receipt-overlay {
+                background: none;
+                backdrop-filter: none;
+                padding: 0;
+                position: absolute;
+            }
+            .receipt-content .header .rest-name { font-size: 18px; }
+            .receipt-content .header .branch-name { font-size: 14px; }
+            .receipt-content .items-table { font-size: 11px; }
+            .receipt-content .total-row { font-size: 13px; }
+            .receipt-content .total-row .total-amount { font-size: 15px; }
+        }
+        /* Hide receipt overlay by default, show only during print */
+        .receipt-overlay {
+            display: none !important;
+        }
+        .receipt-overlay.print-active {
+            display: flex !important;
+        }
+        @media print {
+            .receipt-overlay {
+                display: flex !important;
+                position: fixed !important;
+                background: none !important;
+                backdrop-filter: none !important;
+                padding: 0 !important;
+                z-index: 99999 !important;
+            }
+            .receipt-modal {
+                background: none !important;
+                padding: 0 !important;
+                max-width: 80mm !important;
+                box-shadow: none !important;
+                overflow: visible !important;
+                max-height: none !important;
+            }
+            .receipt-actions { display: none !important; }
+            .receipt-content { 
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                padding: 10px 8px !important;
             }
         }
     </style>
@@ -2292,12 +2475,7 @@
             setDoc,
             getDoc,
             collection,
-            addDoc,
-            query,
-            where,
-            orderBy,
-            getDocs,
-            deleteDoc
+            addDoc
         } from 'firebase/firestore';
         import { getStorage } from 'firebase/storage';
         import { getAuth, signInAnonymously } from 'firebase/auth';
@@ -2351,6 +2529,27 @@
             leezu: 'https://www.lezzoo.com/icon.png'
         };
 
+        const CHEF_SOUND_MAP = {
+            'پیتزا': { 
+                emoji: '🍕', 
+                frequencies: [800, 1000, 1200],
+                label: 'پیتزا',
+                view: 'pizza'
+            },
+            'بەرگر': { 
+                emoji: '🍔', 
+                frequencies: [600, 800, 1000],
+                label: 'بەرگر',
+                view: 'grill'
+            },
+            'گەس': { 
+                emoji: '🥩', 
+                frequencies: [400, 600, 800],
+                label: 'گەس',
+                view: 'gas'
+            }
+        };
+
         const state = {
             currentPage: 'options',
             currentRole: null,
@@ -2397,23 +2596,29 @@
             usedTables: new Set(),
             showTableModal: false,
             selectedTableNumber: null,
-            pendingOrder: null
+            pendingOrder: null,
+            previousOrderIds: new Set(),
+            discount: 0,
+            discountAmount: 0,
+            originalTotal: 0,
+            showReceipt: false,
+            receiptOrder: null,
+            receiptPrinted: false
         };
 
-        // ===== فەنکشنی دەنگی ئۆردەری نوێ - تەنها بۆ شێف =====
-        function playOrderNotificationSound() {
-            // ===== پشکنینی تایبەت بۆ شێف =====
-            // تەنها ئەگەر بەکارهێنەر لە پەڕەی شێف بێت، دەنگەکە کار بکات
-            if (state.currentPage !== 'chef') {
-                return;
-            }
+        function playChefNotificationSound(chefGroup) {
+            if (state.currentPage !== 'chef') return;
+            const soundConfig = CHEF_SOUND_MAP[chefGroup];
+            if (!soundConfig) return;
+            if (state.chefView !== soundConfig.view) return;
 
             try {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const frequencies = [800, 1000, 1200];
-                const durations = [0.15, 0.15, 0.2];
-                const pauses = [0.1, 0.1, 0];
+                const frequencies = soundConfig.frequencies;
+                const durations = [0.12, 0.12, 0.18];
+                const pauses = [0.08, 0.08, 0];
                 let time = 0;
+                
                 frequencies.forEach((freq, index) => {
                     const oscillator = audioContext.createOscillator();
                     const gainNode = audioContext.createGain();
@@ -2427,14 +2632,15 @@
                     oscillator.stop(audioContext.currentTime + time + durations[index]);
                     time += durations[index] + pauses[index];
                 });
+                
                 setTimeout(() => {
                     try {
                         const ctx2 = new (window.AudioContext || window.webkitAudioContext)();
                         const osc2 = ctx2.createOscillator();
                         const gain2 = ctx2.createGain();
                         osc2.type = 'sine';
-                        osc2.frequency.value = 1500;
-                        gain2.gain.setValueAtTime(0.2, ctx2.currentTime);
+                        osc2.frequency.value = frequencies[frequencies.length - 1] + 200;
+                        gain2.gain.setValueAtTime(0.15, ctx2.currentTime);
                         gain2.gain.exponentialRampToValueAtTime(0.01, ctx2.currentTime + 0.15);
                         osc2.connect(gain2);
                         gain2.connect(ctx2.destination);
@@ -2442,32 +2648,56 @@
                         osc2.stop(ctx2.currentTime + 0.15);
                     } catch(e) {}
                 }, time * 1000 + 100);
+                
                 return true;
             } catch (error) {
                 console.warn('دەنگی ئاگادارکردنەوە شکستی هێنا:', error);
-                try {
-                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.value = 1000;
-                    gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(ctx.currentTime);
-                    osc.stop(ctx.currentTime + 0.3);
-                    return true;
-                } catch(e2) {
-                    return false;
-                }
+                return false;
             }
+        }
+
+        function playOrderNotificationSound() {
+            if (state.currentPage !== 'chef') return;
+            return playChefNotificationSound('پیتزا');
         }
 
         function toggleSound() {
             state.isSoundEnabled = !state.isSoundEnabled;
             toast(state.isSoundEnabled ? '🔊 دەنگ چالاک کرا' : '🔇 دەنگ ناچالاک کرا');
             render();
+        }
+
+        function setDiscount(percent) {
+            if (state.cart.length === 0) {
+                toast('تکایە یەکەم ئایتمەکان زیاد بکە', true);
+                return;
+            }
+            
+            if (state.orderType === 'partner') {
+                toast('داشکان بۆ شەریکە نییە!', true);
+                return;
+            }
+
+            if (state.discount === percent) {
+                state.discount = 0;
+                state.discountAmount = 0;
+                toast('❌ داشکان لابرا');
+            } else {
+                state.discount = percent;
+                const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+                state.discountAmount = (originalTotal * percent) / 100;
+                toast(`✅ داشکانی %${percent} جێگیر کرا (${formatPrice(state.discountAmount)})`);
+            }
+            render();
+        }
+
+        function getDiscountedTotal() {
+            const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            state.originalTotal = originalTotal;
+            if (state.discount > 0) {
+                return originalTotal - (originalTotal * state.discount) / 100;
+            }
+            return originalTotal;
         }
 
         function refreshUsedTables() {
@@ -2504,10 +2734,6 @@
 
         function findOrderByUniqueId(uniqueId) {
             return state.orders.find(o => o.uniqueId === uniqueId);
-        }
-
-        function findOrderByNumber(orderNumber) {
-            return state.orders.find(o => o.orderNumber === orderNumber);
         }
 
         function toast(msg, isError = false) {
@@ -2631,9 +2857,13 @@
             const now = new Date();
             const hours = now.getHours();
             const minutes = now.getMinutes();
+            
+            // ڕۆژانە لە 4:00 AM ڕێکدەخاتەوە
             if (hours === 4 && minutes >= 0 && minutes < 5) {
                 performDailyReset();
             }
+            
+            // پشکنینی کاتی ڕۆژانە لە 4:00 AM
             if ((hours > 4 || (hours === 4 && minutes >= 0)) && hours < 5) {
                 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                 if (state.dailyResetTimestamp) {
@@ -2647,6 +2877,8 @@
                     performDailyReset();
                 }
             }
+            
+            // مانگانە لە 4:00 AM ڕێکدەخاتەوە
             const currentMonth = now.getMonth();
             const currentYear = now.getFullYear();
             if (state.monthlyResetTimestamp) {
@@ -2841,7 +3073,11 @@
                     if (docSnapshot.exists()) {
                         const data = docSnapshot.data();
                         const ordersData = data.orders || [];
-                        state.orders = ordersData.map(o => {
+                        
+                        const oldOrderIds = new Set(state.orders.map(o => o.uniqueId));
+                        
+                        const newOrders = [];
+                        const processedOrders = ordersData.map(o => {
                             if (!o.uniqueId) {
                                 o.uniqueId = generateUniqueOrderId();
                             }
@@ -2851,18 +3087,57 @@
                                     o.itemStatuses[item.id] = 'pending';
                                 });
                             }
+                            if (!oldOrderIds.has(o.uniqueId) && o.status !== 'completed') {
+                                newOrders.push(o);
+                            }
                             return o;
                         });
+
+                        state.orders = processedOrders;
                         refreshUsedOrderNumbers();
                         refreshUsedTables();
+                        
                         if (data.dailyResetTimestamp) {
                             state.dailyResetTimestamp = data.dailyResetTimestamp;
                         }
                         if (data.monthlyResetTimestamp) {
                             state.monthlyResetTimestamp = data.monthlyResetTimestamp;
                         }
+                        
                         checkAndResetStats();
                         render();
+
+                        if (state.currentPage === 'chef' && newOrders.length > 0 && state.isSoundEnabled) {
+                            const currentChefView = state.chefView;
+                            const chefGroupMap = {
+                                'pizza': 'پیتزا',
+                                'grill': 'بەرگر',
+                                'gas': 'گەس'
+                            };
+                            const currentChefGroup = chefGroupMap[currentChefView];
+                            
+                            if (currentChefGroup) {
+                                const ordersForThisChef = newOrders.filter(order => {
+                                    return order.items.some(item => 
+                                        item.chefGroup === currentChefGroup
+                                    );
+                                });
+
+                                if (ordersForThisChef.length > 0) {
+                                    ordersForThisChef.forEach((order, index) => {
+                                        setTimeout(() => {
+                                            const soundConfig = CHEF_SOUND_MAP[currentChefGroup];
+                                            if (soundConfig) {
+                                                playChefNotificationSound(currentChefGroup);
+                                                toast(`🔔 ${soundConfig.emoji} ئۆردەری ${soundConfig.label} #${order.orderNumber} هات!`);
+                                            }
+                                        }, index * 400);
+                                    });
+                                }
+                            }
+                        }
+
+                        state.previousOrderIds = new Set(state.orders.map(o => o.uniqueId));
                     }
                 }, (error) => {
                     console.error('Error loading orders:', error);
@@ -3114,6 +3389,10 @@
 
             const uniqueId = generateUniqueOrderId();
             const orderNumber = getSmallestAvailableOrderNumber();
+            
+            const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
+            const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
 
             const orderData = {
                 items: state.cart.map(i => ({ 
@@ -3125,7 +3404,10 @@
                     image: i.image,
                     chefGroup: i.chefGroup || 'skip'
                 })),
-                total: state.cart.reduce((sum, i) => sum + i.price * i.qty, 0),
+                total: discountedTotal,
+                originalTotal: originalTotal,
+                discount: state.discount,
+                discountAmount: discountAmount,
                 orderType: 'dine',
                 tableNumber: tableNumber,
                 time: now(),
@@ -3151,27 +3433,50 @@
             state.orders.push(order);
             state.usedOrderNumbers.add(orderNumber);
             state.usedTables.add(tableNumber);
-            state.cart = [];
             
-            // ===== لێدانی دەنگی ئاگادارکردنەوە - تەنها بۆ شێف =====
-            // دڵنیا بە کە تەنها شێف دەنگی ببیستێت
-            if (state.branch === 'park32' && state.isSoundEnabled) {
-                const orderHasChefItems = order.items.some(item => 
-                    item.chefGroup && item.chefGroup !== 'skip'
-                );
-                if (orderHasChefItems) {
-                    // پشکنینی زیادە بۆ ئەوەی تەنها شێف دەنگ ببیستێت
-                    if (state.currentPage === 'chef') {
-                        setTimeout(() => playOrderNotificationSound(), 100);
-                        setTimeout(() => playOrderNotificationSound(), 400);
-                        setTimeout(() => playOrderNotificationSound(), 700);
-                    }
-                }
-            }
+            const receiptOrder = { ...order };
+            state.cart = [];
+            state.discount = 0;
+            state.discountAmount = 0;
+            state.previousOrderIds.add(uniqueId);
             
             toast(`✅ ئۆردەر #${orderNumber} بۆ مێز ${tableNumber} سەیڤ کرا!`);
             await saveOrdersToFirestore();
+            
+            // Auto print receipt for dine-in
+            state.receiptOrder = receiptOrder;
+            state.showReceipt = true;
+            state.receiptPrinted = false;
             render();
+            // Trigger auto print after render
+            setTimeout(() => {
+                if (!state.receiptPrinted) {
+                    state.receiptPrinted = true;
+                    window.print();
+                    // Close receipt after print dialog
+                    setTimeout(() => {
+                        state.showReceipt = false;
+                        state.receiptOrder = null;
+                        render();
+                    }, 500);
+                }
+            }, 300);
+        }
+
+        function showReceiptForOrder(order) {
+            state.receiptOrder = order;
+            state.showReceipt = true;
+            render();
+        }
+
+        function closeReceipt() {
+            state.showReceipt = false;
+            state.receiptOrder = null;
+            render();
+        }
+
+        function printReceipt() {
+            window.print();
         }
 
         function renderChef() {
@@ -3218,7 +3523,10 @@
                             branch: order.branch,
                             timestamp: order.timestamp,
                             image: item.image || order.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
-                            allReady: isOrderFullyReady(order)
+                            allReady: isOrderFullyReady(order),
+                            discount: order.discount,
+                            originalTotal: order.originalTotal,
+                            total: order.total
                         });
                     }
                 });
@@ -3252,6 +3560,14 @@
                 const elapsed = Math.floor((now2 - card.timestamp) / 60000);
                 const timerText = elapsed < 1 ? 'تازە' : `${elapsed} دەقە`;
                 const cardTitle = `${item.name} ×${item.qty}`;
+                
+                const chefEmoji = CHEF_SOUND_MAP[item.chefGroup]?.emoji || '🍽️';
+                
+                let discountInfo = '';
+                if (card.discount > 0) {
+                    discountInfo = `<span style="background:#e17055;color:white;padding:2px 8px;border-radius:8px;font-size:10px;margin-right:4px;">%${card.discount}</span>`;
+                }
+                
                 return `
                     <div class="chef-order-card-wrapper position-${position}" 
                          data-unique-id="${uniqueId}" 
@@ -3265,9 +3581,9 @@
                                     `<img src="${card.image}" alt="${item.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />` : 
                                     ''
                                 }
-                                <span class="emoji-placeholder" style="${card.image && card.image !== '' ? 'display:none;' : ''}">🍽️</span>
+                                <span class="emoji-placeholder" style="${card.image && card.image !== '' ? 'display:none;' : ''}">${chefEmoji}</span>
                             </div>
-                            <div class="chef-order-name">${cardTitle}</div>
+                            <div class="chef-order-name">${cardTitle} ${discountInfo}</div>
                             <div class="chef-order-details">
                                 <span class="order-type-badge ${card.orderType || 'dine'}">${typeLabel}</span>
                                 <span style="margin:0 4px;">•</span>
@@ -3275,6 +3591,7 @@
                                 <span style="margin:0 4px;">•</span>
                                 <span>#${orderNumber}</span>
                                 ${card.cashier ? `<span style="margin:0 4px;">•</span><span>👤 ${card.cashier}</span>` : ''}
+                                ${item.chefGroup && item.chefGroup !== 'skip' ? `<span style="margin:0 4px;">•</span><span>${chefEmoji} ${item.chefGroup}</span>` : ''}
                             </div>
                             <div class="chef-order-status-label ${itemStatus}">${statusLabels[itemStatus] || itemStatus}</div>
                             <div class="chef-order-hint">${isReady ? '✅ ئامادە کراوە' : '👆 کلیک بکە بۆ گۆڕینی دۆخ'}</div>
@@ -3300,6 +3617,115 @@
                         <div class="chef-scroll-wrapper" id="chef-scroll-wrapper">
                             <div class="chef-horizontal-orders" id="chef-orders-container">
                                 ${cardsHtml}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderReceiptModal() {
+            if (!state.receiptOrder) return '';
+            
+            const order = state.receiptOrder;
+            const branchName = order.branch === 'zanco' ? 'زانکۆ' : '٣٢ پارک';
+            const restName = 'چێشتخانەی ئایس پۆپ';
+            const restPhone = '0750 123 4567';
+            const restAddress = branchName === 'زانکۆ' ? 'شەقامی زانکۆ، هەولێر' : '٣٢ پارک، هەولێر';
+            const logo = 'https://i.ibb.co/5g9D2kBt/file-0000000075187246ad73011f5eda1ff3.png';
+            
+            const orderTypeLabel = order.orderType === 'dine' ? 'ساڵە' : 'سەفەری';
+            const tableInfo = order.tableNumber ? `مێز ${order.tableNumber}` : '';
+            const receiptNo = String(order.orderNumber).padStart(4, '0');
+            
+            const dateObj = new Date(order.timestamp);
+            const dateStr = dateObj.toLocaleDateString('ku');
+            const timeStr = order.time || dateObj.toLocaleTimeString('ku', { hour: '2-digit', minute: '2-digit' });
+            
+            const itemsHtml = order.items.map(item => `
+                <tr>
+                    <td class="item-name">${item.name}</td>
+                    <td class="item-qty">${item.qty}</td>
+                    <td class="item-price">${formatPrice(item.price * item.qty)}</td>
+                </tr>
+            `).join('');
+            
+            const discountHtml = order.discount > 0 ? `
+                <div class="row discount-row">
+                    <span>داشکان (${order.discount}%)</span>
+                    <span>- ${formatPrice(order.discountAmount)}</span>
+                </div>
+            ` : '';
+            
+            const paymentMethod = order.partner ? `شەریکە (${order.partner.toUpperCase()})` : 'نەقد';
+
+            return `
+                <div class="receipt-overlay" id="receipt-overlay">
+                    <div class="receipt-modal">
+                        <div class="receipt-content" id="receipt-content">
+                            <div class="header">
+                                <img src="${logo}" class="logo-receipt" onerror="this.style.display='none'" />
+                                <div class="rest-name">${restName}</div>
+                                <div class="branch-name">${branchName}</div>
+                                <div class="rest-info">
+                                    <div>📞 <span class="phone">${restPhone}</span></div>
+                                    <div>📍 ${restAddress}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <span class="label">Receipt No:</span>
+                                <span class="value">#${receiptNo}</span>
+                            </div>
+                            <div class="row">
+                                <span class="label">ڕێکەوت:</span>
+                                <span class="value">${dateStr}</span>
+                            </div>
+                            <div class="row">
+                                <span class="label">کات:</span>
+                                <span class="value">${timeStr}</span>
+                            </div>
+                            <div class="row">
+                                <span class="label">کاشێر:</span>
+                                <span class="value">${order.cashier || '-'}</span>
+                            </div>
+                            <div class="row">
+                                <span class="label">جۆری ئۆردەر:</span>
+                                <span class="value">${orderTypeLabel}</span>
+                            </div>
+                            ${tableInfo ? `<div class="row"><span class="label">مێز:</span><span class="value">${tableInfo}</span></div>` : ''}
+                            
+                            <hr class="divider" />
+                            
+                            <table class="items-table">
+                                <thead>
+                                    <tr>
+                                        <th>ناو</th>
+                                        <th>ژمارە</th>
+                                        <th>نرخ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${itemsHtml}
+                                </tbody>
+                            </table>
+                            
+                            <hr class="divider" />
+                            
+                            ${discountHtml}
+                            
+                            <div class="row total-row">
+                                <span>کۆی گشتی</span>
+                                <span class="total-amount">${formatPrice(order.total)}</span>
+                            </div>
+                            
+                            <div class="payment-method">
+                                💳 شێوەی پارەدان: ${paymentMethod}
+                            </div>
+                            
+                            <div class="footer">
+                                <div class="thanks">❤️ Thank You For Visiting Us ❤️</div>
+                                <div style="font-size:12px;color:#64748b;margin-top:4px;">${restName} - ${branchName}</div>
                             </div>
                         </div>
                     </div>
@@ -3363,6 +3789,11 @@
                 default:
                     html += renderOptions();
             }
+            
+            if (state.showReceipt && state.receiptOrder) {
+                html += renderReceiptModal();
+            }
+            
             app.innerHTML = html;
 
             if (state.currentPage === 'chef') {
@@ -3594,20 +4025,52 @@
                 <button class="${state.selectedGroup === g ? 'active' : ''}" data-action="filter-group" data-group="${g}">${g}</button>
             `).join('');
 
-            const cartHtml = state.cart.map((item, idx) => `
-                <div class="order-item">
-                    <span>${item.name}</span>
-                    <span>${formatPrice(item.price * item.qty)}</span>
-                    <div class="flex gap-5">
-                        <button class="btn btn-sm btn-warning" data-action="cart-qty" data-idx="${idx}" data-dir="-">-</button>
-                        <span class="qty">${item.qty}</span>
-                        <button class="btn btn-sm btn-warning" data-action="cart-qty" data-idx="${idx}" data-dir="+">+</button>
-                        <button class="btn btn-sm btn-danger" data-action="cart-remove" data-idx="${idx}">✕</button>
+            const cartHtml = state.cart.map((item, idx) => {
+                const itemTotal = item.price * item.qty;
+                return `
+                    <div class="order-item">
+                        <span>${item.name}</span>
+                        <span>${formatPrice(itemTotal)}</span>
+                        <div class="flex gap-5">
+                            <button class="btn btn-sm btn-warning" data-action="cart-qty" data-idx="${idx}" data-dir="-">-</button>
+                            <span class="qty">${item.qty}</span>
+                            <button class="btn btn-sm btn-warning" data-action="cart-qty" data-idx="${idx}" data-dir="+">+</button>
+                            <button class="btn btn-sm btn-danger" data-action="cart-remove" data-idx="${idx}">✕</button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
-            const total = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const discountedTotal = getDiscountedTotal();
+            const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
+
+            let totalDisplay = '';
+            if (state.discount > 0 && state.orderType !== 'partner') {
+                totalDisplay = `
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;width:100%;">
+                        <div style="display:flex;justify-content:space-between;width:100%;">
+                            <span>نرخی بنەڕەت:</span>
+                            <span class="original-price">${formatPrice(originalTotal)}</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;width:100%;color:#e17055;">
+                            <span>داشکان (${state.discount}%):</span>
+                            <span>- ${formatPrice(discountAmount)}</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;width:100%;font-size:20px;border-top:2px solid #e2e8f0;padding-top:4px;">
+                            <span>کۆی گشتی:</span>
+                            <span style="color:#00b894;">${formatPrice(discountedTotal)}</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                totalDisplay = `
+                    <div style="display:flex;justify-content:space-between;width:100%;">
+                        <span>کۆی گشتی:</span>
+                        <span>${formatPrice(originalTotal)}</span>
+                    </div>
+                `;
+            }
 
             const deliveryBtns = ['dine', 'takeaway', 'partner'].map(t => {
                 const labels = { dine: '🍽️ ساڵە', takeaway: '🛍️ سەفەری', partner: '🤝 شەریکە' };
@@ -3631,6 +4094,15 @@
                 </span>
             ` : '';
 
+            const discountButtons = `
+                <div class="discount-buttons">
+                    <span class="label">🏷️ داشکان:</span>
+                    <button class="btn-discount ${state.discount === 30 ? 'active' : ''}" data-action="set-discount" data-percent="30">%30</button>
+                    <button class="btn-discount ${state.discount === 50 ? 'active' : ''}" data-action="set-discount" data-percent="50">%50</button>
+                    ${state.discount > 0 ? `<button class="btn-discount" data-action="set-discount" data-percent="0" style="background:#e2e8f0;color:#1a1a2e;box-shadow:none;">✕ لابردن</button>` : ''}
+                </div>
+            `;
+
             let readyOrdersHtml = '';
             if (state.branch === 'park32') {
                 const readyOrders = state.orders.filter(o => 
@@ -3642,11 +4114,13 @@
                 readyOrdersHtml = readyOrders.length ? readyOrders.map(o => {
                     const items = o.items.map(i => `${i.name} ×${i.qty}`).join('، ');
                     const tableInfo = o.tableNumber ? `🪑 مێز ${o.tableNumber}` : '';
+                    const discountInfo = o.discount > 0 ? `🔖%${o.discount}` : '';
                     return `
                         <div class="chef-order-mini">
                             <span class="order-id">#${o.orderNumber}</span>
                             <span class="order-items">${items}</span>
                             <span style="font-size:11px;color:#6c5ce7;font-weight:600;">${tableInfo}</span>
+                            ${discountInfo ? `<span style="font-size:10px;color:#e17055;font-weight:600;">${discountInfo}</span>` : ''}
                             <span class="order-time">${o.time}</span>
                             <span class="order-status-badge ready">✅ ئامادە کراوە</span>
                             <button class="btn-complete" data-action="cashier-complete" data-unique-id="${o.uniqueId}">✅ تەواو</button>
@@ -3698,13 +4172,14 @@
                                 ${partnerInfo}
                             </div>
 
+                            ${state.orderType !== 'partner' ? discountButtons : ''}
+
                             <div class="order-list" id="cart-list">
                                 ${cartHtml || '<p style="color:#94a3b8;text-align:center;padding:20px;">تا ئێستا هیچ شتێک زیاد نەکراوە</p>'}
                             </div>
 
                             <div class="order-total">
-                                <span>کۆی گشتی:</span>
-                                <span>${formatPrice(total)}</span>
+                                ${totalDisplay}
                             </div>
 
                             <div class="order-actions">
@@ -3859,9 +4334,19 @@
             `;
 
             const monthDays = getMonthDays();
+            
+            let monthlyFilteredOrders = state.currentMonthOrders.filter(o => {
+                const isPartner = o.partner && o.orderType === 'partner';
+                return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
+            });
+            
+            if (state.branchFilter !== 'all') {
+                monthlyFilteredOrders = monthlyFilteredOrders.filter(o => o.branch === state.branchFilter);
+            }
+
             const dayTotals = monthDays.map(day => {
                 const dayStr = day.toDateString();
-                const dayOrders = state.currentMonthOrders.filter(o => {
+                const dayOrders = monthlyFilteredOrders.filter(o => {
                     const d = new Date(o.timestamp);
                     return d.toDateString() === dayStr;
                 });
@@ -3869,7 +4354,7 @@
             });
             const maxTotal = Math.max(...dayTotals, 1);
             const monthlyTotal = dayTotals.reduce((sum, v) => sum + v, 0);
-            const avgDaily = Math.round(monthlyTotal / monthDays.length);
+            const avgDaily = monthDays.length > 0 ? Math.round(monthlyTotal / monthDays.length) : 0;
 
             const barsHtml = monthDays.map((day, index) => {
                 const total = dayTotals[index] || 0;
@@ -3910,6 +4395,7 @@
                     ${o.tableNumber ? `<span style="font-size:10px;color:#6c5ce7;font-weight:600;">🪑مێز${o.tableNumber}</span>` : ''}
                     <span class="order-items-text">${o.items.map(i => `${i.name} ×${i.qty}`).join('، ')}</span>
                     <span class="order-price">${formatPrice(o.total)}</span>
+                    ${o.discount > 0 ? `<span style="font-size:9px;color:#e17055;font-weight:600;">🔖%${o.discount}</span>` : ''}
                     <span class="order-time">${o.time}</span>
                     <span class="order-cashier">${o.cashier || ''}</span>
                     ${o.status === 'completed' ? '<span style="font-size:10px;color:#00b894;font-weight:700;">✅ تەواو</span>' : ''}
@@ -3982,7 +4468,7 @@
                             <div class="monthly-chart-modern">
                                 <div class="chart-header-simple">
                                     <div class="chart-title-simple">
-                                        <h4>📊 ڕەوتی فرۆشتن</h4>
+                                        <h4>📊 ڕەوتی فرۆشتن ${state.branchFilter === 'all' ? '(هەموو)' : state.branchFilter === 'zanco' ? '(زانکۆ)' : '(٣٢ پارک)'}</h4>
                                         <span class="badge-live">
                                             <span class="dot"></span>
                                             لایڤ
@@ -4200,6 +4686,10 @@
                     state.pendingPartner = null;
                     state.showTableModal = false;
                     state.selectedTableNumber = null;
+                    state.discount = 0;
+                    state.discountAmount = 0;
+                    state.showReceipt = false;
+                    state.receiptOrder = null;
                     render();
                 };
             });
@@ -4218,6 +4708,10 @@
                     state.pendingPartner = null;
                     state.showTableModal = false;
                     state.selectedTableNumber = null;
+                    state.discount = 0;
+                    state.discountAmount = 0;
+                    state.showReceipt = false;
+                    state.receiptOrder = null;
                     render();
                 };
             });
@@ -4313,6 +4807,20 @@
                 };
             });
 
+            document.querySelectorAll('[data-action="set-discount"]').forEach(el => {
+                el.onclick = () => {
+                    const percent = parseInt(el.dataset.percent);
+                    if (percent === 0) {
+                        state.discount = 0;
+                        state.discountAmount = 0;
+                        toast('❌ داشکان لابرا');
+                        render();
+                    } else {
+                        setDiscount(percent);
+                    }
+                };
+            });
+
             document.querySelectorAll('[data-action="open-table-modal"]').forEach(el => {
                 el.onclick = () => {
                     openTableModal();
@@ -4398,6 +4906,8 @@
                     if (state.orderType !== 'partner') {
                         state.partner = null;
                         state.partnerCode = '';
+                        state.discount = 0;
+                        state.discountAmount = 0;
                     }
                     render();
                 };
@@ -4489,6 +4999,8 @@
                             const price = getPrice(item, state.partner);
                             state.cart.push({ ...item, price, qty: 1 });
                         }
+                        state.discount = 0;
+                        state.discountAmount = 0;
                         render();
                         setTimeout(() => {
                             const newItemsPanel = document.querySelector('.items-panel');
@@ -4510,6 +5022,8 @@
                             state.cart[idx].qty -= 1;
                             if (state.cart[idx].qty <= 0) state.cart.splice(idx, 1);
                         }
+                        state.discount = 0;
+                        state.discountAmount = 0;
                         render();
                     }
                 };
@@ -4519,6 +5033,8 @@
                 el.onclick = () => {
                     const idx = parseInt(el.dataset.idx);
                     state.cart.splice(idx, 1);
+                    state.discount = 0;
+                    state.discountAmount = 0;
                     render();
                 };
             });
@@ -4526,6 +5042,8 @@
             document.querySelectorAll('[data-action="clear-cart"]').forEach(el => {
                 el.onclick = () => {
                     state.cart = [];
+                    state.discount = 0;
+                    state.discountAmount = 0;
                     render();
                 };
             });
@@ -4553,6 +5071,10 @@
                     const uniqueId = generateUniqueOrderId();
                     const orderNumber = getSmallestAvailableOrderNumber();
 
+                    const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+                    const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
+                    const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
+
                     const orderData = {
                         items: state.cart.map(i => ({ 
                             id: i.id, 
@@ -4563,7 +5085,10 @@
                             image: i.image,
                             chefGroup: i.chefGroup || 'skip'
                         })),
-                        total: state.cart.reduce((sum, i) => sum + i.price * i.qty, 0),
+                        total: discountedTotal,
+                        originalTotal: originalTotal,
+                        discount: state.discount,
+                        discountAmount: discountAmount,
                         orderType: state.orderType,
                         partner: state.partner,
                         partnerCode: state.partnerCode,
@@ -4589,32 +5114,42 @@
 
                     state.orders.push(order);
                     state.usedOrderNumbers.add(orderNumber);
+                    
+                    const receiptOrder = { ...order };
                     state.cart = [];
                     state.partnerCode = '';
+                    state.discount = 0;
+                    state.discountAmount = 0;
                     
                     if (state.orderType === 'partner' && state.partner) {
                         await savePartnerOrderToFirestore(orderData);
                     }
                     
-                    // ===== لێدانی دەنگی ئاگادارکردنەوە - تەنها بۆ شێف =====
-                    if (state.branch === 'park32' && state.isSoundEnabled) {
-                        const orderHasChefItems = order.items.some(item => 
-                            item.chefGroup && item.chefGroup !== 'skip'
-                        );
-                        if (orderHasChefItems) {
-                            // پشکنینی زیادە بۆ ئەوەی تەنها شێف دەنگ ببیستێت
-                            if (state.currentPage === 'chef') {
-                                setTimeout(() => playOrderNotificationSound(), 100);
-                                setTimeout(() => playOrderNotificationSound(), 400);
-                                setTimeout(() => playOrderNotificationSound(), 700);
-                                toast('🔔 ئاگادارکردنەوە بۆ شێفەکان نێردرا!');
-                            }
-                        }
-                    }
+                    state.previousOrderIds.add(uniqueId);
                     
                     toast(`✅ ئۆردەر #${orderNumber} سەیڤ کرا!`);
                     await saveOrdersToFirestore();
-                    render();
+                    
+                    // Show receipt and auto print for dine-in and takeaway only
+                    if (state.orderType === 'dine' || state.orderType === 'takeaway') {
+                        state.receiptOrder = receiptOrder;
+                        state.showReceipt = true;
+                        state.receiptPrinted = false;
+                        render();
+                        // Auto print after render
+                        setTimeout(() => {
+                            if (!state.receiptPrinted) {
+                                state.receiptPrinted = true;
+                                window.print();
+                                // Close receipt after print dialog
+                                setTimeout(() => {
+                                    state.showReceipt = false;
+                                    state.receiptOrder = null;
+                                    render();
+                                }, 500);
+                            }
+                        }, 300);
+                    }
                 };
             });
 
@@ -4832,7 +5367,20 @@
                     if (errorEl) errorEl.classList.remove('show');
                 });
             }
+
+            // Receipt close handler
+            const receiptOverlay = document.getElementById('receipt-overlay');
+            if (receiptOverlay) {
+                receiptOverlay.onclick = (e) => {
+                    if (e.target === receiptOverlay) {
+                        closeReceipt();
+                    }
+                };
+            }
         }
+
+        // Make closeReceipt available globally for print button onclick
+        window.closeReceipt = closeReceipt;
 
         async function init() {
             state.isLoading = true;
