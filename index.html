@@ -258,10 +258,11 @@
             border-radius: 20px;
             padding: 16px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-            max-height: 80vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow: visible;
+            max-height: none;
+            height: auto;
         }
         .order-panel h3 {
             font-size: 20px;
@@ -395,13 +396,13 @@
             width: 100%;
         }
         .order-list {
-            flex: 1;
+            flex: 1 1 auto;
             overflow-y: auto;
             margin-bottom: 10px;
             padding: 8px;
             background: #f8fafc;
             border-radius: 14px;
-            min-height: 80px;
+            min-height: 60px;
             max-height: 180px;
         }
         .order-item {
@@ -439,6 +440,8 @@
             display: flex;
             justify-content: space-between;
             flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 6px;
         }
         .order-total .discount-info {
             font-size: 13px;
@@ -457,6 +460,8 @@
             flex-wrap: wrap;
             margin-top: 6px;
             flex-shrink: 0;
+            padding-top: 6px;
+            border-top: 1px solid #e2e8f0;
         }
         .order-actions button {
             padding: 10px;
