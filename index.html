@@ -2221,18 +2221,18 @@
         }
 
         /* ============================================================
-           RECEIPT PRINT STYLES - OPTIMIZED FOR 80mm THERMAL PRINTER
+           RECEIPT PRINT STYLES - OPTIMIZED FOR 80mm GP-80250VN THERMAL PRINTER
            ============================================================ */
         @page {
             margin: 0;
-            size: 58mm auto;
+            size: 80mm auto;
         }
 
         @media print {
             html, body {
-                margin: 0;
-                padding: 0;
-                background: #fff;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
             }
             body * {
                 visibility: hidden;
@@ -2244,90 +2244,148 @@
                 position: absolute;
                 top: 0;
                 left: 0;
-                width: 58mm;
-                padding: 0 !important;
+                width: 100%;
+                max-width: 80mm;
+                padding: 4px 8px !important;
                 margin: 0 !important;
                 border: none !important;
                 border-radius: 0 !important;
                 box-shadow: none !important;
                 background: #fff !important;
-                font-family: 'Courier New', monospace !important;
-                font-size: 10px !important;
-                line-height: 1.3 !important;
+                font-family: 'Courier New', 'Lucida Console', monospace !important;
+                font-size: 15px !important;
+                line-height: 1.45 !important;
                 color: #000 !important;
                 print-color-adjust: exact !important;
                 -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            .receipt-content .header {
+                text-align: center;
+                border-bottom: 2px solid #000 !important;
+                padding-bottom: 6px;
+                margin-bottom: 6px;
             }
             .receipt-content .header .rest-name {
-                font-size: 14px !important;
+                font-size: 22px !important;
                 font-weight: 800 !important;
                 color: #000 !important;
+                letter-spacing: 0.5px;
             }
             .receipt-content .header .branch-name {
-                font-size: 11px !important;
+                font-size: 16px !important;
                 font-weight: 700 !important;
                 color: #000 !important;
+                margin: 3px 0;
             }
             .receipt-content .header .rest-info {
-                font-size: 9px !important;
+                font-size: 14px !important;
                 color: #000 !important;
+                font-weight: 600 !important;
+                line-height: 1.4;
             }
             .receipt-content .header .rest-info .phone {
                 font-weight: 700 !important;
                 color: #000 !important;
             }
             .receipt-content .header .logo-receipt {
-                max-width: 30px;
-                max-height: 30px;
-                filter: brightness(0) contrast(1);
+                max-width: 48px;
+                max-height: 48px;
+                filter: brightness(0) contrast(1) !important;
+                -webkit-filter: brightness(0) contrast(1) !important;
             }
-            .receipt-content .row .label { color: #000 !important; }
-            .receipt-content .row .value { font-weight: 700 !important; color: #000 !important; }
-            .receipt-content .items-table th {
-                border-bottom: 1px solid #000 !important;
+            .receipt-content .row {
+                display: flex;
+                justify-content: space-between;
+                margin: 3px 0;
+                font-size: 15px;
+                font-weight: 600 !important;
                 color: #000 !important;
+                padding: 1px 0;
+            }
+            .receipt-content .row .label { color: #000 !important; font-weight: 600 !important; }
+            .receipt-content .row .value { font-weight: 700 !important; color: #000 !important; }
+            .receipt-content .divider {
+                border: none;
+                border-top: 2px solid #000 !important;
+                margin: 5px 0;
+            }
+            .receipt-content .items-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 5px 0;
+                font-size: 15px;
+                color: #000 !important;
+            }
+            .receipt-content .items-table th {
+                border-bottom: 2px solid #000 !important;
+                padding: 4px 4px;
+                text-align: center;
                 font-weight: 700 !important;
+                font-size: 15px;
+                color: #000 !important;
             }
             .receipt-content .items-table td {
-                border-bottom: 1px solid #ccc !important;
-                color: #000 !important;
+                padding: 4px 4px;
+                text-align: center;
+                border-bottom: 1px solid #000 !important;
+                font-size: 15px;
                 font-weight: 600 !important;
+                color: #000 !important;
             }
-            .receipt-content .items-table .item-name { font-weight: 600 !important; }
+            .receipt-content .items-table .item-name { text-align: right; font-weight: 600 !important; }
             .receipt-content .items-table .item-qty { font-weight: 600 !important; }
             .receipt-content .items-table .item-price { font-weight: 700 !important; }
             .receipt-content .total-row {
                 border-top: 2px solid #000 !important;
+                margin-top: 4px;
+                padding-top: 6px;
+                font-size: 17px;
                 font-weight: 700 !important;
+                color: #000 !important;
             }
             .receipt-content .total-row .total-amount {
-                font-size: 13px !important;
+                font-size: 22px !important;
                 font-weight: 800 !important;
                 color: #000 !important;
             }
             .receipt-content .discount-row {
                 color: #000 !important;
                 font-weight: 700 !important;
+                font-size: 15px;
+                border-top: 1px solid #000;
+                padding-top: 4px;
+                margin-top: 4px;
             }
             .receipt-content .footer {
-                border-top: 1px solid #000 !important;
+                text-align: center;
+                border-top: 2px solid #000 !important;
+                margin-top: 6px;
+                padding-top: 6px;
+                font-size: 16px;
+                font-weight: 700 !important;
                 color: #000 !important;
             }
             .receipt-content .footer .thanks {
-                font-size: 13px !important;
+                font-size: 18px !important;
                 font-weight: 700 !important;
                 color: #000 !important;
             }
             .receipt-content .payment-method {
-                background: #f8fafc !important;
-                border: 1px solid #000 !important;
+                background: #fff !important;
+                border: 2px solid #000 !important;
                 color: #000 !important;
                 font-weight: 700 !important;
+                padding: 6px 10px;
+                margin: 5px 0;
+                border-radius: 0;
+                text-align: center;
+                font-size: 15px;
             }
             .receipt-modal {
                 background: none !important;
                 padding: 0 !important;
-                max-width: 58mm !important;
+                max-width: 80mm !important;
                 box-shadow: none !important;
                 overflow: visible !important;
                 max-height: none !important;
@@ -2342,13 +2400,31 @@
                 left: 0 !important;
                 right: auto !important;
                 bottom: auto !important;
-                width: 58mm !important;
+                width: 80mm !important;
             }
             .receipt-actions { display: none !important; }
-            .divider { border-top: 1px dashed #000 !important; }
+            .receipt-content .header .rest-name,
+            .receipt-content .header .branch-name,
+            .receipt-content .header .rest-info,
+            .receipt-content .header .rest-info .phone,
+            .receipt-content .row .label,
+            .receipt-content .row .value,
+            .receipt-content .items-table th,
+            .receipt-content .items-table td,
+            .receipt-content .items-table .item-name,
+            .receipt-content .items-table .item-qty,
+            .receipt-content .items-table .item-price,
+            .receipt-content .total-row,
+            .receipt-content .total-row .total-amount,
+            .receipt-content .discount-row,
+            .receipt-content .footer,
+            .receipt-content .footer .thanks,
+            .receipt-content .payment-method {
+                color: #000 !important;
+            }
         }
 
-        /* Screen styles for receipt preview (smaller) */
+        /* Screen styles for receipt preview (larger) */
         .receipt-overlay {
             position: fixed;
             top: 0;
@@ -2369,8 +2445,8 @@
         .receipt-modal {
             background: white;
             border-radius: 12px;
-            padding: 12px;
-            max-width: 280px;
+            padding: 16px;
+            max-width: 380px;
             width: 100%;
             max-height: 95vh;
             overflow-y: auto;
@@ -2379,137 +2455,146 @@
         }
         .receipt-content {
             background: white;
-            padding: 0 !important;
+            padding: 4px 8px !important;
             margin: 0 !important;
             font-family: 'Courier New', monospace;
-            font-size: 10px;
-            line-height: 1.3;
+            font-size: 15px;
+            line-height: 1.45;
             color: #1a1a2e;
             direction: rtl;
-            max-width: 58mm;
+            max-width: 80mm;
             margin: 0 auto;
         }
         .receipt-content .header {
             text-align: center;
-            border-bottom: 1px dashed #1a1a2e;
-            padding-bottom: 4px;
-            margin-bottom: 4px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 6px;
+            margin-bottom: 6px;
         }
         .receipt-content .header .rest-name {
-            font-size: 14px;
+            font-size: 22px;
             font-weight: 800;
             color: #1a1a2e;
         }
         .receipt-content .header .branch-name {
-            font-size: 11px;
+            font-size: 16px;
             font-weight: 700;
             color: #1a1a2e;
-            margin: 2px 0;
+            margin: 3px 0;
         }
         .receipt-content .header .rest-info {
-            font-size: 9px;
-            color: #333;
-            line-height: 1.3;
+            font-size: 14px;
+            color: #1a1a2e;
+            line-height: 1.4;
         }
         .receipt-content .header .rest-info .phone {
-            font-weight: 600;
+            font-weight: 700;
             color: #1a1a2e;
         }
         .receipt-content .header .logo-receipt {
-            max-width: 30px;
-            max-height: 30px;
+            max-width: 48px;
+            max-height: 48px;
             object-fit: contain;
-            margin: 2px auto;
+            margin: 3px auto;
             display: block;
             border-radius: 4px;
         }
         .receipt-content .divider {
             border: none;
-            border-top: 1px dashed #94a3b8;
-            margin: 4px 0;
+            border-top: 2px solid #000;
+            margin: 5px 0;
         }
         .receipt-content .row {
             display: flex;
             justify-content: space-between;
-            margin: 2px 0;
-            font-size: 9px;
+            margin: 3px 0;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 1px 0;
         }
-        .receipt-content .row .label { color: #555; }
-        .receipt-content .row .value { font-weight: 600; }
+        .receipt-content .row .label { color: #1a1a2e; font-weight: 600; }
+        .receipt-content .row .value { font-weight: 700; color: #1a1a2e; }
         .receipt-content .items-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 3px 0;
-            font-size: 9px;
+            margin: 5px 0;
+            font-size: 15px;
         }
         .receipt-content .items-table th {
-            border-bottom: 1px dashed #94a3b8;
-            padding: 2px 1px;
+            border-bottom: 2px solid #000;
+            padding: 4px 4px;
             text-align: center;
             font-weight: 700;
-            font-size: 8px;
-            color: #333;
+            font-size: 15px;
+            color: #1a1a2e;
         }
         .receipt-content .items-table td {
-            padding: 2px 1px;
+            padding: 4px 4px;
             text-align: center;
-            border-bottom: 1px dashed #e2e8f0;
-            font-size: 8px;
+            border-bottom: 1px solid #000;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a2e;
         }
-        .receipt-content .items-table .item-name { text-align: right; }
-        .receipt-content .items-table .item-qty { min-width: 20px; }
-        .receipt-content .items-table .item-price { min-width: 40px; }
+        .receipt-content .items-table .item-name { text-align: right; font-weight: 600; }
+        .receipt-content .items-table .item-qty { font-weight: 600; }
+        .receipt-content .items-table .item-price { font-weight: 700; }
         .receipt-content .total-row {
-            border-top: 1px dashed #1a1a2e;
-            margin-top: 3px;
-            padding-top: 3px;
-            font-size: 10px;
+            border-top: 2px solid #000;
+            margin-top: 4px;
+            padding-top: 6px;
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a1a2e;
         }
         .receipt-content .total-row .total-amount {
-            font-size: 12px;
+            font-size: 22px;
             font-weight: 800;
             color: #6c5ce7;
         }
         .receipt-content .discount-row {
             color: #e17055;
-            font-weight: 600;
-            font-size: 9px;
+            font-weight: 700;
+            font-size: 15px;
+            border-top: 1px solid #000;
+            padding-top: 4px;
+            margin-top: 4px;
         }
         .receipt-content .footer {
             text-align: center;
-            border-top: 1px dashed #1a1a2e;
-            margin-top: 4px;
-            padding-top: 4px;
-            font-size: 10px;
+            border-top: 2px solid #000;
+            margin-top: 6px;
+            padding-top: 6px;
+            font-size: 16px;
+            font-weight: 700;
             color: #1a1a2e;
-            font-weight: 500;
         }
         .receipt-content .footer .thanks {
-            font-size: 13px;
+            font-size: 18px;
             font-weight: 700;
             color: #6c5ce7;
         }
         .receipt-content .payment-method {
             background: #f8fafc;
             border-radius: 6px;
-            padding: 3px 6px;
-            margin: 3px 0;
-            font-weight: 600;
+            padding: 6px 10px;
+            margin: 5px 0;
+            font-weight: 700;
             text-align: center;
-            border: 1px solid #e2e8f0;
-            font-size: 8px;
+            border: 2px solid #000;
+            font-size: 15px;
         }
         .receipt-actions {
             display: flex;
-            gap: 6px;
-            margin-top: 8px;
+            gap: 8px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
         .receipt-actions .btn {
             flex: 1;
-            min-width: 60px;
-            padding: 6px 10px;
-            font-size: 11px;
+            min-width: 70px;
+            padding: 8px 12px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -3762,7 +3847,7 @@
                             </div>
                             ${tableInfo ? `<div class="row"><span class="label">مێز:</span><span class="value">${tableInfo}</span></div>` : ''}
                             
-                            <hr class="divider" />
+                            <div class="divider"></div>
                             
                             <table class="items-table">
                                 <thead>
@@ -3777,7 +3862,7 @@
                                 </tbody>
                             </table>
                             
-                            <hr class="divider" />
+                            <div class="divider"></div>
                             
                             ${discountHtml}
                             
@@ -3792,7 +3877,7 @@
                             
                             <div class="footer">
                                 <div class="thanks">❤️ Thank You For Visiting Us ❤️</div>
-                                <div style="font-size:8px;color:#64748b;margin-top:2px;">${restName} - ${branchName}</div>
+                                <div style="font-size:13px;color:#64748b;margin-top:3px;">${restName} - ${branchName}</div>
                             </div>
                         </div>
                         
