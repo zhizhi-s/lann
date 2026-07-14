@@ -2802,64 +2802,8 @@
             }
         };
 
-        const state = {
-            currentPage: 'options',
-            currentRole: null,
-            currentUser: null,
-            branch: null,
-            orders: [],
-            items: [],
-            cart: [],
-            orderType: 'dine',
-            partner: null,
-            partnerCode: '',
-            chefView: 'all',
-            managerTab: 'dashboard',
-            partnerImages: { talabat: '', zuu: '', wade: '', leezu: '' },
-            branchFilter: 'all',
-            loginType: null,
-            editingItemId: null,
-            showItemModal: false,
-            isLoading: true,
-            isInitialized: false,
-            selectedGroup: 'هەموو',
-            selectedBranch: 'زانکۆ',
-            firebaseError: null,
-            unsubscribeItems: null,
-            unsubscribeOrders: null,
-            unsubscribePartnerOrders: null,
-            showPartnerCodeModal: false,
-            pendingPartner: null,
-            partnerOrders: [],
-            selectedChefGroup: 'skip',
-            savedScrollPosition: 0,
-            lastResetDate: null,
-            lastMonthlyReset: null,
-            usedOrderNumbers: new Set(),
-            itemsPanelScrollTop: 0,
-            dailyResetDone: false,
-            monthlyResetDone: false,
-            dailyResetTimestamp: null,
-            monthlyResetTimestamp: null,
-            currentDayOrders: [],
-            currentMonthOrders: [],
-            lastPlayedOrderId: null,
-            isSoundEnabled: true,
-            usedTables: new Set(),
-            showTableModal: false,
-            selectedTableNumber: null,
-            pendingOrder: null,
-            previousOrderIds: new Set(),
-            discount: 0,
-            discountAmount: 0,
-            originalTotal: 0,
-            showReceipt: false,
-            receiptOrder: null,
-            receiptPrinted: false
-        };
-
         // ============================================================
-        // BUSINESS DAY UTILITY FUNCTIONS - Reset at 3:00 AM
+        // BUSINESS DAY UTILITY FUNCTIONS - Reset at 2:30 AM (Previously 3:00 AM)
         // ============================================================
 
         function getBusinessDayStart(timestamp) {
@@ -2868,8 +2812,9 @@
             const minutes = date.getMinutes();
             const seconds = date.getSeconds();
             
-            if (hours < 3 || (hours === 3 && minutes === 0 && seconds === 0)) {
-                if (hours === 3 && minutes === 0 && seconds === 0) {
+            // Reset at 2:30 AM - Orders from 12:00 AM to 2:29:59 AM belong to previous day
+            if (hours < 2 || (hours === 2 && minutes < 30) || (hours === 2 && minutes === 30 && seconds === 0)) {
+                if (hours === 2 && minutes === 30 && seconds === 0) {
                     return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
                 }
                 const prevDay = new Date(date);
@@ -2893,7 +2838,10 @@
             const minutes = now.getMinutes();
             const seconds = now.getSeconds();
             
-            if (hours < 3 || (hours === 3 && minutes === 0 && seconds === 0)) {
+            if (hours < 2 || (hours === 2 && minutes < 30) || (hours === 2 && minutes === 30 && seconds === 0)) {
+                if (hours === 2 && minutes === 30 && seconds === 0) {
+                    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+                }
                 const prevDay = new Date(now);
                 prevDay.setDate(prevDay.getDate() - 1);
                 return new Date(prevDay.getFullYear(), prevDay.getMonth(), prevDay.getDate(), 0, 0, 0, 0);
@@ -2912,14 +2860,14 @@
             const hours = now.getHours();
             const minutes = now.getMinutes();
             const seconds = now.getSeconds();
-            return hours === 3 && minutes === 0 && seconds < 5;
+            return hours === 2 && minutes === 30 && seconds < 5;
         }
 
         function isResetWindow() {
             const now = new Date();
             const hours = now.getHours();
             const minutes = now.getMinutes();
-            return hours === 3 && minutes < 5;
+            return hours === 2 && minutes < 35;
         }
 
         function playChefNotificationSound(chefGroup) {
@@ -3114,7 +3062,8 @@
         }
 
         // ============================================================
-        // DAILY RESET - Filters orders to today only (runs at 3:00 AM)
+        // DAILY RESET - Filters orders to today only (runs at 2:30 AM)
+        // NEVER DELETES MONTHLY DATA - ONLY FILTERS FOR DISPLAY
         // ============================================================
         function performDailyReset() {
             const now = new Date();
@@ -3128,28 +3077,30 @@
                 }
             }
             
+            // ✅ فیلتەرکردن بۆ ڕۆژی ئێستا - بۆ بینین لە کاشێر و شێف
+            // ✅ داتاکان هەرگیز سڕ نابێنەوە، تەنها فیلتەر دەکرێن بۆ بینین
             const todayOrders = state.orders.filter(o => {
                 return isSameBusinessDay(o.timestamp, now);
             });
             
-            state.orders = todayOrders;
+            // ✅ داتاکان هەرگیز لەناوناچن، تەنها فیلتەری بینین گۆڕدراوە
             state.currentDayOrders = todayOrders;
             state.dailyResetDone = true;
             state.dailyResetTimestamp = now.toISOString();
             refreshUsedOrderNumbers();
             refreshUsedTables();
             
+            // ✅ تەنها کاتەکانی ڕێست کردن نوێ دەکرێنەوە، داتا ناسڕدرێتەوە
             updateDoc(docRef, {
                 dailyResetTimestamp: state.dailyResetTimestamp,
-                orders: state.orders,
                 lastUpdated: new Date().toISOString()
             }).catch(err => console.error('Error saving daily reset:', err));
             
-            toast('🔄 سیستەم نوێ بویەوە (٣:٠٠ بەیانی)');
+            toast('🔄 سیستەم نوێ بویەوە (٢:٣٠ بەیانی) - داتاکان هەرگیز ناسڕدرێنەوە');
         }
 
         // ============================================================
-        // MONTHLY RESET - NEVER DELETES DATA, ONLY UPDATES TIMESTAMP
+        // MONTHLY RESET - ONLY UPDATES TIMESTAMP, NEVER DELETES DATA
         // ============================================================
         function performMonthlyReset() {
             const now = new Date();
@@ -3169,6 +3120,7 @@
             state.monthlyResetDone = true;
             state.monthlyResetTimestamp = now.toISOString();
             
+            // ✅ تەنها کاتی ڕێستکردن نوێ دەکرێتەوە، هیچ داتایەک ناسڕدرێتەوە
             updateDoc(docRef, {
                 monthlyResetTimestamp: state.monthlyResetTimestamp,
                 lastUpdated: new Date().toISOString()
@@ -3201,6 +3153,7 @@
                 performMonthlyReset();
             }
             
+            // ✅ داتاکان هەرگیز سڕ نابێنەوە، تەنها فیلتەر دەکرێن
             state.currentDayOrders = state.orders.filter(o => {
                 return isSameBusinessDay(o.timestamp, now);
             });
@@ -3214,6 +3167,7 @@
         }
 
         function getThisMonthOrders() {
+            // ✅ هەموو داتاکان بۆ مانگ دەگەڕێنرێنەوە، هیچی سڕ نەکراوە
             return state.orders;
         }
 
@@ -3226,7 +3180,11 @@
         }
 
         function getOrdersForBusinessMonth(year, month) {
-            return state.orders;
+            // ✅ هەموو داتاکان دەگەڕێنرێنەوە بۆ مانگ، هیچی سڕ نەکراوە
+            return state.orders.filter(o => {
+                const date = new Date(o.timestamp);
+                return date.getMonth() === month && date.getFullYear() === year;
+            });
         }
 
         async function loadResetTimestamps() {
@@ -3414,9 +3372,8 @@
         function isOrderFullyReady(order) {
             if (!order.itemStatuses) return false;
             
-            // تەنها ئایتمەکانی کە گرووپیان skip نییە پشکنین بکە
             const nonSkipItems = order.items.filter(item => item.chefGroup !== 'skip');
-            if (nonSkipItems.length === 0) return true; // ئەگەر هەمووی skip بن، ئۆردەر ئامادەیە
+            if (nonSkipItems.length === 0) return true;
             
             const allReady = nonSkipItems.every(item => {
                 const status = order.itemStatuses[item.id] || 'pending';
@@ -3426,7 +3383,6 @@
         }
 
         function updateOrderOverallStatus(order) {
-            // تەنها ئایتمەکانی کە گرووپیان skip نییە پشکنین بکە
             const nonSkipItems = order.items.filter(item => item.chefGroup !== 'skip');
             if (nonSkipItems.length === 0) {
                 order.status = 'ready';
@@ -3502,7 +3458,6 @@
                             if (!o.itemStatuses) {
                                 o.itemStatuses = {};
                                 o.items.forEach(item => {
-                                    // 🔧 FIX: ئایتمەکانی skip خۆکارانە ready دەکرێن
                                     if (item.chefGroup === 'skip') {
                                         o.itemStatuses[item.id] = 'ready';
                                     } else {
@@ -3530,9 +3485,6 @@
                         checkAndApplyResets();
                         render();
 
-                        // ============================================================
-                        // 🔇 FIX: تەنها کاشێری ٣٢ پارک دەنگ دروست دەکات
-                        // ============================================================
                         if (state.currentPage === 'chef' && newOrders.length > 0 && state.isSoundEnabled) {
                             const ordersFromPark32 = newOrders.filter(order => order.branch === 'park32');
                             
@@ -3683,7 +3635,6 @@
                 }
                 updateOrderOverallStatus(order);
                 order.items.forEach(item => {
-                    // 🔧 FIX: ئایتمەکانی skip بەردەوام مەبە
                     if (item.chefGroup === 'skip') return;
                     
                     let shouldShow = false;
@@ -4528,6 +4479,7 @@
                 </div>
             `;
 
+            // ✅ Monthly chart - uses ALL historical data, never resets to zero
             const monthDays = getMonthDays();
             
             let monthlyFilteredOrders = state.orders.filter(o => {
@@ -4539,6 +4491,7 @@
                 monthlyFilteredOrders = monthlyFilteredOrders.filter(o => o.branch === state.branchFilter);
             }
 
+            // ✅ Calculate day totals from ALL historical data
             const dayTotals = monthDays.map(day => {
                 const dayOrders = monthlyFilteredOrders.filter(o => {
                     const orderBusinessDay = getBusinessDayStart(o.timestamp);
@@ -4579,6 +4532,7 @@
                 `;
             }).join('');
 
+            // ✅ Trend calculation from ALL historical data
             const last30Days = dayTotals.slice(-30);
             const trend = last30Days.length > 1 ? 
                 ((last30Days[last30Days.length - 1] - last30Days[0]) / (last30Days[0] || 1) * 100) : 0;
@@ -4658,7 +4612,7 @@
                                 ${cashierStatsHtml}
                             </div>
 
-                            <h4 style="font-size:15px;margin:12px 0 8px;">📈 ڕەوتی مانگانە (ساڵە و سەفەری)</h4>
+                            <h4 style="font-size:15px;margin:12px 0 8px;">📈 ڕەوتی مانگانە (ساڵە و سەفەری) - هەموو داتاکان پارێزراون</h4>
                             
                             <div class="monthly-chart-modern">
                                 <div class="chart-header-simple">
@@ -5392,7 +5346,7 @@
 
             document.querySelectorAll('[data-action="view-monthly-details"]').forEach(el => {
                 el.onclick = () => {
-                    toast('📊 وردەکاری ڕەوتی مانگانە');
+                    toast('📊 وردەکاری ڕەوتی مانگانە - هەموو داتاکان پارێزراون');
                 };
             });
 
@@ -5817,6 +5771,66 @@
         }
 
         window.closeReceipt = closeReceipt;
+
+        // ============================================================
+        // STATE
+        // ============================================================
+
+        const state = {
+            currentPage: 'options',
+            currentRole: null,
+            currentUser: null,
+            branch: null,
+            orders: [],
+            items: [],
+            cart: [],
+            orderType: 'dine',
+            partner: null,
+            partnerCode: '',
+            chefView: 'all',
+            managerTab: 'dashboard',
+            partnerImages: { talabat: '', zuu: '', wade: '', leezu: '' },
+            branchFilter: 'all',
+            loginType: null,
+            editingItemId: null,
+            showItemModal: false,
+            isLoading: true,
+            isInitialized: false,
+            selectedGroup: 'هەموو',
+            selectedBranch: 'زانکۆ',
+            firebaseError: null,
+            unsubscribeItems: null,
+            unsubscribeOrders: null,
+            unsubscribePartnerOrders: null,
+            showPartnerCodeModal: false,
+            pendingPartner: null,
+            partnerOrders: [],
+            selectedChefGroup: 'skip',
+            savedScrollPosition: 0,
+            lastResetDate: null,
+            lastMonthlyReset: null,
+            usedOrderNumbers: new Set(),
+            itemsPanelScrollTop: 0,
+            dailyResetDone: false,
+            monthlyResetDone: false,
+            dailyResetTimestamp: null,
+            monthlyResetTimestamp: null,
+            currentDayOrders: [],
+            currentMonthOrders: [],
+            lastPlayedOrderId: null,
+            isSoundEnabled: true,
+            usedTables: new Set(),
+            showTableModal: false,
+            selectedTableNumber: null,
+            pendingOrder: null,
+            previousOrderIds: new Set(),
+            discount: 0,
+            discountAmount: 0,
+            originalTotal: 0,
+            showReceipt: false,
+            receiptOrder: null,
+            receiptPrinted: false
+        };
 
         // ============================================================
         // INIT
