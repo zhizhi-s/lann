@@ -1355,7 +1355,7 @@
             padding: 10px 24px;
             display: inline-block;
         }
-        .partner-code-modal .modal { max-width: 400px; text-align: center; }
+        .partner-code-modal .modal { max-width: 420px; text-align: center; }
         .partner-code-modal .modal input {
             font-size: 28px;
             letter-spacing: 6px;
@@ -1373,28 +1373,97 @@
             box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
         }
         .partner-code-modal .modal .partner-logo-big {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             object-fit: contain;
-            margin: 0 auto 8px;
+            margin: 0 auto 10px;
             display: block;
             background: white;
-            padding: 6px;
-            border-radius: 14px;
+            padding: 8px;
+            border-radius: 16px;
             border: 2px solid #e2e8f0;
         }
         .partner-code-modal .modal .hint {
             color: #64748b;
-            font-size: 13px;
+            font-size: 14px;
             margin: 8px 0;
         }
         .partner-code-modal .modal .code-error {
             color: #ff6b6b;
-            font-size: 13px;
+            font-size: 14px;
             margin-top: 6px;
             display: none;
         }
         .partner-code-modal .modal .code-error.show { display: block; }
+        /* Numpad buttons for partner code - BIGGER */
+        .partner-code-modal .modal .numpad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 12px auto;
+            max-width: 280px;
+        }
+        .partner-code-modal .modal .numpad-grid button {
+            padding: 18px 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            background: #f8fafc;
+            font-size: 26px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1a1a2e;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .partner-code-modal .modal .numpad-grid button:hover {
+            background: #6c5ce7;
+            color: white;
+            border-color: #6c5ce7;
+            transform: scale(1.05);
+        }
+        .partner-code-modal .modal .numpad-grid button:active {
+            transform: scale(0.95);
+        }
+        .partner-code-modal .modal .numpad-grid button.clear-btn {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+        }
+        .partner-code-modal .modal .numpad-grid button.clear-btn:hover {
+            background: #e55a5a;
+            border-color: #e55a5a;
+        }
+        .partner-code-modal .modal .numpad-grid button.backspace-btn {
+            background: #fdcb6e;
+            color: #1a1a2e;
+            border-color: #fdcb6e;
+        }
+        .partner-code-modal .modal .numpad-grid button.backspace-btn:hover {
+            background: #f0b84d;
+            border-color: #f0b84d;
+        }
+        .partner-code-modal .modal .code-display {
+            font-size: 38px;
+            letter-spacing: 10px;
+            text-align: center;
+            padding: 14px;
+            margin: 6px auto;
+            display: block;
+            border: 3px solid #6c5ce7;
+            border-radius: 14px;
+            font-weight: 700;
+            background: #f8fafc;
+            min-height: 68px;
+            width: 210px;
+            color: #1a1a2e;
+        }
+        .partner-code-modal .modal .code-display .cursor {
+            animation: blink 0.8s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
         .no-scroll-reset {
             overflow-y: auto !important;
             scroll-behavior: auto !important;
@@ -1407,89 +1476,71 @@
         .table-modal .modal {
             max-width: 420px;
             text-align: center;
-        }
-        .table-modal .modal .table-number-display {
-            font-size: 48px;
-            font-weight: 800;
-            color: #6c5ce7;
-            margin: 8px 0 16px 0;
-            padding: 12px;
-            background: #f8fafc;
-            border-radius: 16px;
-            border: 3px solid #e2e8f0;
-        }
-        .table-modal .modal .table-number-input {
-            font-size: 32px;
-            text-align: center;
             padding: 16px;
-            width: 120px;
-            margin: 8px auto;
-            display: block;
-            border: 3px solid #6c5ce7;
-            border-radius: 14px;
-            font-weight: 700;
         }
-        .table-modal .modal .table-number-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
+        .table-modal .modal h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
         }
         .table-modal .modal .table-hint {
             color: #64748b;
-            font-size: 14px;
-            margin: 8px 0;
+            font-size: 13px;
+            margin: 4px 0;
         }
         .table-modal .modal .table-error {
             color: #ff6b6b;
-            font-size: 14px;
-            margin-top: 6px;
+            font-size: 13px;
+            margin-top: 4px;
             display: none;
         }
         .table-modal .modal .table-error.show { display: block; }
         .table-modal .modal .used-tables {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 4px;
             justify-content: center;
-            margin: 10px 0;
-            padding: 10px;
+            margin: 6px 0;
+            padding: 6px 8px;
             background: #f8fafc;
-            border-radius: 12px;
-            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
         .table-modal .modal .used-tables .table-pill {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: 600;
             background: #ff6b6b;
             color: white;
         }
         .table-modal .modal .used-tables .empty-tables {
             color: #94a3b8;
-            font-size: 13px;
-            padding: 4px 0;
+            font-size: 11px;
+            padding: 2px 0;
         }
+        /* گەورەترکردنی دوگمەکانی ژمارەکان */
         .table-modal .modal .table-buttons-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 6px;
-            margin: 12px 0;
+            margin: 10px 0;
         }
         .table-modal .modal .table-buttons-grid button {
-            padding: 10px 6px;
+            padding: 12px 4px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             background: white;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 18px;
             cursor: pointer;
             transition: 0.3s;
             color: #1a1a2e;
+            min-height: 48px;
         }
         .table-modal .modal .table-buttons-grid button:hover {
             border-color: #6c5ce7;
             background: #f8f7ff;
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
         .table-modal .modal .table-buttons-grid button.active {
             border-color: #6c5ce7;
@@ -1500,7 +1551,7 @@
             border-color: #ff6b6b;
             background: #fff5f5;
             color: #ff6b6b;
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
         }
         .table-modal .modal .table-buttons-grid button.used:hover {
@@ -1508,6 +1559,24 @@
             border-color: #ff6b6b;
             background: #fff5f5;
         }
+        .table-modal .modal .flex {
+            margin-top: 10px;
+            gap: 6px;
+        }
+        .table-modal .modal .flex .btn {
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+        /* بۆکسی داخستن بە هەمان شێوە */
+        .table-modal .modal .close-btn {
+            float: left;
+            background: none;
+            border: none;
+            font-size: 26px;
+            cursor: pointer;
+            color: #64748b;
+        }
+        .table-modal .modal .close-btn:hover { color: #1a1a2e; }
 
         .monthly-chart-modern {
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
@@ -2020,21 +2089,34 @@
             .btn { font-size: 15px; padding: 12px 20px; }
             table { font-size: 11px; }
             table th, table td { padding: 6px 4px; }
+            /* مۆبایل بۆ دوگمەکانی مێز */
             .table-modal .modal .table-buttons-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(5, 1fr);
                 gap: 4px;
             }
             .table-modal .modal .table-buttons-grid button {
-                padding: 8px 4px;
-                font-size: 12px;
+                padding: 10px 3px;
+                font-size: 16px;
+                min-height: 42px;
             }
-            .table-modal .modal .table-number-display {
-                font-size: 36px;
+            .partner-code-modal .modal .numpad-grid {
+                gap: 6px;
+                max-width: 220px;
             }
-            .table-modal .modal .table-number-input {
-                font-size: 24px;
-                width: 100px;
-                padding: 12px;
+            .partner-code-modal .modal .numpad-grid button {
+                padding: 14px 6px;
+                font-size: 20px;
+            }
+            .partner-code-modal .modal .code-display {
+                font-size: 28px;
+                letter-spacing: 6px;
+                padding: 10px;
+                width: 160px;
+                min-height: 52px;
+            }
+            .partner-code-modal .modal .partner-logo-big {
+                width: 56px;
+                height: 56px;
             }
             .stats-grid {
                 grid-template-columns: 1fr 1fr !important;
@@ -2153,7 +2235,36 @@
             .btn { font-size: 13px; padding: 10px 16px; }
             .modal { padding: 12px; }
             .modal h3 { font-size: 18px; }
-            .partner-code-modal .modal input { font-size: 24px; letter-spacing: 4px; padding: 10px; width: 140px; }
+            /* مۆبایل بچووک بۆ دوگمەکانی مێز */
+            .table-modal .modal .table-buttons-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 3px;
+            }
+            .table-modal .modal .table-buttons-grid button {
+                padding: 8px 2px;
+                font-size: 14px;
+                min-height: 36px;
+            }
+            .partner-code-modal .modal .numpad-grid {
+                gap: 4px;
+                max-width: 180px;
+            }
+            .partner-code-modal .modal .numpad-grid button {
+                padding: 12px 4px;
+                font-size: 18px;
+                border-radius: 10px;
+            }
+            .partner-code-modal .modal .code-display {
+                font-size: 24px;
+                letter-spacing: 4px;
+                padding: 8px;
+                width: 140px;
+                min-height: 44px;
+            }
+            .partner-code-modal .modal .partner-logo-big {
+                width: 48px;
+                height: 48px;
+            }
             table { font-size: 10px; }
             table th, table td { padding: 4px 3px; }
             .partner-detail-grid { gap: 10px; }
@@ -2164,22 +2275,6 @@
             .partner-stat-number { font-size: 16px; }
             .partner-order-item { font-size: 10px; padding: 4px 6px; }
             .toast { font-size: 13px; padding: 10px 16px; bottom: 12px; right: 12px; left: 12px; }
-            .table-modal .modal .table-buttons-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 3px;
-            }
-            .table-modal .modal .table-buttons-grid button {
-                padding: 6px 3px;
-                font-size: 11px;
-            }
-            .table-modal .modal .table-number-display {
-                font-size: 28px;
-            }
-            .table-modal .modal .table-number-input {
-                font-size: 20px;
-                width: 80px;
-                padding: 10px;
-            }
             .stats-grid {
                 gap: 4px !important;
             }
@@ -2763,6 +2858,100 @@
             receiptPrinted: false
         };
 
+        // ============================================================
+        // BUSINESS DAY UTILITY FUNCTIONS - Reset at 3:00 AM
+        // ============================================================
+
+        /**
+         * Get the business day start date for a given timestamp
+         * Business day runs from 3:00 AM to 2:59:59 AM next day
+         */
+        function getBusinessDayStart(timestamp) {
+            const date = new Date(timestamp);
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            const seconds = date.getSeconds();
+            
+            // If time is before 3:00 AM, we're still in previous business day
+            if (hours < 3 || (hours === 3 && minutes === 0 && seconds === 0)) {
+                // If exactly 3:00:00 AM, it's the start of new business day
+                if (hours === 3 && minutes === 0 && seconds === 0) {
+                    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+                }
+                // Before 3:00 AM -> previous day
+                const prevDay = new Date(date);
+                prevDay.setDate(prevDay.getDate() - 1);
+                return new Date(prevDay.getFullYear(), prevDay.getMonth(), prevDay.getDate(), 0, 0, 0, 0);
+            }
+            
+            // 3:00 AM or later -> today is the business day
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+        }
+
+        /**
+         * Check if two timestamps are in the same business day
+         */
+        function isSameBusinessDay(date1, date2) {
+            const d1 = new Date(date1);
+            const d2 = new Date(date2);
+            
+            const businessDay1 = getBusinessDayStart(d1);
+            const businessDay2 = getBusinessDayStart(d2);
+            
+            return businessDay1.getTime() === businessDay2.getTime();
+        }
+
+        /**
+         * Get the current business day start (today's start at 3:00 AM)
+         */
+        function getCurrentBusinessDayStart() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            
+            // If before 3:00 AM, business day is previous day
+            if (hours < 3 || (hours === 3 && minutes === 0 && seconds === 0)) {
+                const prevDay = new Date(now);
+                prevDay.setDate(prevDay.getDate() - 1);
+                return new Date(prevDay.getFullYear(), prevDay.getMonth(), prevDay.getDate(), 0, 0, 0, 0);
+            }
+            
+            return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+        }
+
+        /**
+         * Get the current month start based on business days
+         */
+        function getCurrentBusinessMonthStart() {
+            const now = new Date();
+            const businessDay = getBusinessDayStart(now);
+            return new Date(businessDay.getFullYear(), businessDay.getMonth(), 1);
+        }
+
+        /**
+         * Check if current time is exactly at 3:00 AM reset time
+         */
+        function isResetTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            
+            // Reset at exactly 3:00:00 AM
+            return hours === 3 && minutes === 0 && seconds < 5;
+        }
+
+        /**
+         * Check if it's time to reset (between 3:00 AM and 3:05 AM)
+         */
+        function isResetWindow() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            return hours === 3 && minutes < 5;
+        }
+
         function playChefNotificationSound(chefGroup) {
             if (state.currentPage !== 'chef') return;
             const soundConfig = CHEF_SOUND_MAP[chefGroup];
@@ -2859,8 +3048,9 @@
 
         function refreshUsedTables() {
             state.usedTables.clear();
+            const today = new Date();
             state.orders.forEach(o => {
-                if (o.tableNumber && o.status !== 'completed') {
+                if (o.tableNumber && o.status !== 'completed' && isSameBusinessDay(o.timestamp, today)) {
                     state.usedTables.add(o.tableNumber);
                 }
             });
@@ -2882,8 +3072,9 @@
 
         function refreshUsedOrderNumbers() {
             state.usedOrderNumbers.clear();
+            const today = new Date();
             state.orders.forEach(o => {
-                if (o.status !== 'completed' && o.orderNumber && o.orderNumber <= 50) {
+                if (o.status !== 'completed' && o.orderNumber && o.orderNumber <= 50 && isSameBusinessDay(o.timestamp, today)) {
                     state.usedOrderNumbers.add(o.orderNumber);
                 }
             });
@@ -2938,8 +3129,9 @@
         function getMonthDays() {
             const days = [];
             const now = new Date();
-            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            const businessDayStart = getBusinessDayStart(now);
+            const firstDay = new Date(businessDayStart.getFullYear(), businessDayStart.getMonth(), 1);
+            const lastDay = new Date(businessDayStart.getFullYear(), businessDayStart.getMonth() + 1, 0);
             for (let d = new Date(firstDay); d <= lastDay; d.setDate(d.getDate() + 1)) {
                 days.push(new Date(d));
             }
@@ -2951,120 +3143,135 @@
             return days[date.getDay()];
         }
 
+        // ============================================================
+        // DAILY RESET - Filters orders to today only (runs at 3:00 AM)
+        // ============================================================
         function performDailyReset() {
             const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const businessDayStart = getCurrentBusinessDayStart();
+            
             if (state.dailyResetTimestamp) {
                 const lastResetDate = new Date(state.dailyResetTimestamp);
-                if (lastResetDate.getDate() === today.getDate() &&
-                    lastResetDate.getMonth() === today.getMonth() &&
-                    lastResetDate.getFullYear() === today.getFullYear()) {
+                const lastBusinessDay = getBusinessDayStart(lastResetDate);
+                if (lastBusinessDay.getTime() === businessDayStart.getTime()) {
                     return;
                 }
             }
+            
             const todayOrders = state.orders.filter(o => {
-                const orderDate = new Date(o.timestamp);
-                return orderDate.getDate() === today.getDate() &&
-                       orderDate.getMonth() === today.getMonth() &&
-                       orderDate.getFullYear() === today.getFullYear();
+                return isSameBusinessDay(o.timestamp, now);
             });
+            
             state.orders = todayOrders;
             state.currentDayOrders = todayOrders;
             state.dailyResetDone = true;
             state.dailyResetTimestamp = now.toISOString();
             refreshUsedOrderNumbers();
             refreshUsedTables();
+            
             updateDoc(docRef, {
                 dailyResetTimestamp: state.dailyResetTimestamp,
                 orders: state.orders,
                 lastUpdated: new Date().toISOString()
             }).catch(err => console.error('Error saving daily reset:', err));
-            toast('🔄 سیستەم نوێ بویەوە (٤:٠٠ بەیانی)');
+            
+            toast('🔄 سیستەم نوێ بویەوە (٣:٠٠ بەیانی)');
         }
 
+        // ============================================================
+        // MONTHLY RESET - NEVER DELETES DATA, ONLY UPDATES TIMESTAMP
+        // This function ONLY updates the timestamp, never filters orders
+        // ============================================================
         function performMonthlyReset() {
             const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
+            const businessDayStart = getBusinessDayStart(now);
+            const currentMonth = businessDayStart.getMonth();
+            const currentYear = businessDayStart.getFullYear();
+            
             if (state.monthlyResetTimestamp) {
                 const lastReset = new Date(state.monthlyResetTimestamp);
-                if (lastReset.getMonth() === currentMonth && 
-                    lastReset.getFullYear() === currentYear) {
+                const lastBusinessDay = getBusinessDayStart(lastReset);
+                if (lastBusinessDay.getMonth() === currentMonth && 
+                    lastBusinessDay.getFullYear() === currentYear) {
                     return;
                 }
             }
-            const currentMonthOrders = state.orders.filter(o => {
-                const orderDate = new Date(o.timestamp);
-                return orderDate.getMonth() === currentMonth &&
-                       orderDate.getFullYear() === currentYear;
-            });
-            state.orders = currentMonthOrders;
-            state.currentMonthOrders = currentMonthOrders;
+            
+            // ✅ ONLY update timestamp - NEVER delete or filter orders
             state.monthlyResetDone = true;
             state.monthlyResetTimestamp = now.toISOString();
-            refreshUsedOrderNumbers();
+            
+            // Keep ALL orders - DO NOT filter by month
+            // state.orders = state.orders; // Unchanged - all data preserved
+            
+            // Just update the timestamp in Firestore
             updateDoc(docRef, {
                 monthlyResetTimestamp: state.monthlyResetTimestamp,
-                orders: state.orders,
                 lastUpdated: new Date().toISOString()
-            }).catch(err => console.error('Error saving monthly reset:', err));
+            }).catch(err => console.error('Error saving monthly reset timestamp:', err));
+            
+            toast('📅 ڕێستکردنی مانگانە تەنها کات نوێ کرایەوە (هەموو داتاکان پارێزراون)');
         }
 
         function checkAndApplyResets() {
             const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
             
-            // ڕۆژانە لە 4:00 AM ڕێکدەخاتەوە
-            if (hours === 4 && minutes >= 0 && minutes < 5) {
+            // Daily reset - filters orders to today only (at 3:00 AM)
+            if (isResetWindow()) {
                 performDailyReset();
             }
             
-            // پشکنینی کاتی ڕۆژانە لە 4:00 AM
-            if ((hours > 4 || (hours === 4 && minutes >= 0)) && hours < 5) {
-                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                if (state.dailyResetTimestamp) {
-                    const lastReset = new Date(state.dailyResetTimestamp);
-                    if (lastReset.getDate() !== today.getDate() ||
-                        lastReset.getMonth() !== today.getMonth() ||
-                        lastReset.getFullYear() !== today.getFullYear()) {
-                        performDailyReset();
-                    }
-                } else {
-                    performDailyReset();
-                }
-            }
+            // Monthly reset - ONLY timestamp update, NO data deletion EVER
+            // Check if we need to update monthly timestamp (only once per month)
+            const currentBusinessMonth = getBusinessDayStart(now);
+            const currentMonth = currentBusinessMonth.getMonth();
+            const currentYear = currentBusinessMonth.getFullYear();
             
-            // مانگانە لە 4:00 AM ڕێکدەخاتەوە
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
             if (state.monthlyResetTimestamp) {
                 const lastReset = new Date(state.monthlyResetTimestamp);
-                if (lastReset.getMonth() !== currentMonth || 
-                    lastReset.getFullYear() !== currentYear) {
+                const lastBusinessDay = getBusinessDayStart(lastReset);
+                const lastMonth = lastBusinessDay.getMonth();
+                const lastYear = lastBusinessDay.getFullYear();
+                
+                if (lastMonth !== currentMonth || lastYear !== currentYear) {
+                    // New month - update timestamp but keep all data
                     performMonthlyReset();
                 }
             } else {
+                // No timestamp set yet - set it (data preserved)
                 performMonthlyReset();
             }
+            
+            // Keep all orders for monthly view - NEVER filter by month
+            state.currentDayOrders = state.orders.filter(o => {
+                return isSameBusinessDay(o.timestamp, now);
+            });
+            
+            // All orders are kept for monthly view - NO filtering
+            state.currentMonthOrders = state.orders;
         }
 
-        function checkAndResetStats() {
-            checkAndApplyResets();
-            refreshUsedTables();
+        function getTodayOrders() {
             const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            state.currentDayOrders = state.orders.filter(o => {
-                const orderDate = new Date(o.timestamp);
-                return orderDate.getDate() === today.getDate() &&
-                       orderDate.getMonth() === today.getMonth() &&
-                       orderDate.getFullYear() === today.getFullYear();
+            return state.orders.filter(o => isSameBusinessDay(o.timestamp, now));
+        }
+
+        function getThisMonthOrders() {
+            // Return ALL orders - never filter by month
+            return state.orders;
+        }
+
+        function getOrdersForBusinessDay(date) {
+            return state.orders.filter(o => {
+                const orderBusinessDay = getBusinessDayStart(o.timestamp);
+                const targetBusinessDay = getBusinessDayStart(date);
+                return orderBusinessDay.getTime() === targetBusinessDay.getTime();
             });
-            state.currentMonthOrders = state.orders.filter(o => {
-                const orderDate = new Date(o.timestamp);
-                return orderDate.getMonth() === now.getMonth() &&
-                       orderDate.getFullYear() === now.getFullYear();
-            });
+        }
+
+        function getOrdersForBusinessMonth(year, month) {
+            // Return all orders - no monthly filtering
+            return state.orders;
         }
 
         async function loadResetTimestamps() {
@@ -3077,6 +3284,32 @@
                     }
                     if (data.monthlyResetTimestamp) {
                         state.monthlyResetTimestamp = data.monthlyResetTimestamp;
+                    }
+                    
+                    const now = new Date();
+                    if (state.dailyResetTimestamp) {
+                        const lastReset = new Date(state.dailyResetTimestamp);
+                        if (!isSameBusinessDay(lastReset, now)) {
+                            performDailyReset();
+                        }
+                    }
+                    
+                    // Monthly reset - only update timestamp if needed, NEVER delete data
+                    const currentBusinessMonth = getBusinessDayStart(now);
+                    const currentMonth = currentBusinessMonth.getMonth();
+                    const currentYear = currentBusinessMonth.getFullYear();
+                    
+                    if (state.monthlyResetTimestamp) {
+                        const lastReset = new Date(state.monthlyResetTimestamp);
+                        const lastBusinessDay = getBusinessDayStart(lastReset);
+                        const lastMonth = lastBusinessDay.getMonth();
+                        const lastYear = lastBusinessDay.getFullYear();
+                        
+                        if (lastMonth !== currentMonth || lastYear !== currentYear) {
+                            performMonthlyReset();
+                        }
+                    } else {
+                        performMonthlyReset();
                     }
                 }
             } catch (error) {
@@ -3126,7 +3359,7 @@
                         }
                         state.isLoading = false;
                         state.firebaseError = null;
-                        checkAndResetStats();
+                        checkAndApplyResets();
                         render();
                     } else {
                         createDefaultDocument();
@@ -3220,6 +3453,10 @@
             }
         }
 
+        // ============================================================
+        // 🔇 FIX: تەنها کاشێری ٣٢ پارک دەنگ دروست دەکات
+        // کاشێری زانکۆ هیچ دەنگێک دروست ناکات
+        // ============================================================
         function loadOrdersFromFirestore() {
             if (state.unsubscribeOrders) {
                 state.unsubscribeOrders();
@@ -3261,35 +3498,44 @@
                             state.monthlyResetTimestamp = data.monthlyResetTimestamp;
                         }
                         
-                        checkAndResetStats();
+                        checkAndApplyResets();
                         render();
 
+                        // ============================================================
+                        // 🔇 FIX: تەنها کاشێری ٣٢ پارک دەنگ دروست دەکات
+                        // کاشێری زانکۆ هیچ دەنگێک دروست ناکات
+                        // ============================================================
                         if (state.currentPage === 'chef' && newOrders.length > 0 && state.isSoundEnabled) {
-                            const currentChefView = state.chefView;
-                            const chefGroupMap = {
-                                'pizza': 'پیتزا',
-                                'grill': 'بەرگر',
-                                'gas': 'گەس'
-                            };
-                            const currentChefGroup = chefGroupMap[currentChefView];
+                            // ✅ تەنها ئەگەر کاشێر لە ٣٢ پارکەوە ناردوویەتی دەنگ بەدەر بکە
+                            const ordersFromPark32 = newOrders.filter(order => order.branch === 'park32');
                             
-                            if (currentChefGroup) {
-                                const ordersForThisChef = newOrders.filter(order => {
-                                    return order.items.some(item => 
-                                        item.chefGroup === currentChefGroup
-                                    );
-                                });
-
-                                if (ordersForThisChef.length > 0) {
-                                    ordersForThisChef.forEach((order, index) => {
-                                        setTimeout(() => {
-                                            const soundConfig = CHEF_SOUND_MAP[currentChefGroup];
-                                            if (soundConfig) {
-                                                playChefNotificationSound(currentChefGroup);
-                                                toast(`🔔 ${soundConfig.emoji} ئۆردەری ${soundConfig.label} #${order.orderNumber} هات!`);
-                                            }
-                                        }, index * 400);
+                            if (ordersFromPark32.length > 0) {
+                                const currentChefView = state.chefView;
+                                const chefGroupMap = {
+                                    'pizza': 'پیتزا',
+                                    'grill': 'بەرگر',
+                                    'gas': 'گەس'
+                                };
+                                const currentChefGroup = chefGroupMap[currentChefView];
+                                
+                                if (currentChefGroup) {
+                                    const ordersForThisChef = ordersFromPark32.filter(order => {
+                                        return order.items.some(item => 
+                                            item.chefGroup === currentChefGroup
+                                        );
                                     });
+
+                                    if (ordersForThisChef.length > 0) {
+                                        ordersForThisChef.forEach((order, index) => {
+                                            setTimeout(() => {
+                                                const soundConfig = CHEF_SOUND_MAP[currentChefGroup];
+                                                if (soundConfig) {
+                                                    playChefNotificationSound(currentChefGroup);
+                                                    toast(`🔔 ${soundConfig.emoji} ئۆردەری ${soundConfig.label} #${order.orderNumber} هات!`);
+                                                }
+                                            }, index * 400);
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -3433,39 +3679,73 @@
         function openPartnerCodeModal(partner) {
             state.pendingPartner = partner;
             state.showPartnerCodeModal = true;
+            state.partnerCode = '';
             render();
             setTimeout(() => {
-                const input = document.getElementById('partner-code-input');
-                if (input) input.focus();
+                // Focus the display for accessibility
             }, 100);
         }
 
         function closePartnerCodeModal() {
             state.showPartnerCodeModal = false;
             state.pendingPartner = null;
+            state.partnerCode = '';
             render();
         }
 
         function confirmPartnerCode() {
-            const input = document.getElementById('partner-code-input');
-            const errorEl = document.getElementById('partner-code-error');
-            if (!input) return;
-            const code = input.value.trim();
+            const code = state.partnerCode || '';
             if (code.length === 4 && /^\d{4}$/.test(code)) {
                 state.partner = state.pendingPartner;
-                state.partnerCode = code;
                 state.orderType = 'partner';
                 state.showPartnerCodeModal = false;
                 state.pendingPartner = null;
                 toast('✅ کۆد پشتڕاست کرایەوە!');
                 render();
             } else {
+                const errorEl = document.getElementById('partner-code-error');
                 if (errorEl) {
-                    errorEl.textContent = '⚠️ تکایە ٤ ژمارە داخل بکە';
+                    errorEl.textContent = '⚠️ تکایە ٤ ژمارە تەواو بکە';
                     errorEl.classList.add('show');
                 }
-                input.value = '';
-                input.focus();
+                toast('تکایە ٤ ژمارە تەواو بکە', true);
+            }
+        }
+
+        function appendPartnerCodeDigit(digit) {
+            if (state.partnerCode.length < 4) {
+                state.partnerCode += digit;
+                updatePartnerCodeDisplay();
+                const errorEl = document.getElementById('partner-code-error');
+                if (errorEl) errorEl.classList.remove('show');
+            }
+            if (state.partnerCode.length === 4) {
+                setTimeout(() => {
+                    confirmPartnerCode();
+                }, 350);
+            }
+        }
+
+        function clearPartnerCode() {
+            state.partnerCode = '';
+            updatePartnerCodeDisplay();
+            const errorEl = document.getElementById('partner-code-error');
+            if (errorEl) errorEl.classList.remove('show');
+        }
+
+        function backspacePartnerCode() {
+            state.partnerCode = state.partnerCode.slice(0, -1);
+            updatePartnerCodeDisplay();
+            const errorEl = document.getElementById('partner-code-error');
+            if (errorEl) errorEl.classList.remove('show');
+        }
+
+        function updatePartnerCodeDisplay() {
+            const display = document.getElementById('partner-code-display');
+            if (display) {
+                const code = state.partnerCode || '';
+                const padded = code + '_'.repeat(4 - code.length);
+                display.textContent = padded;
             }
         }
 
@@ -3515,9 +3795,9 @@
             const errorEl = document.getElementById('table-error');
             if (!input) return;
             let num = parseInt(input.value.trim());
-            if (isNaN(num) || num < 1 || num > 40) {
+            if (isNaN(num) || num < 1 || num > 30) {
                 if (errorEl) {
-                    errorEl.textContent = '⚠️ تکایە ژمارەیەک لە نێوان ١ بۆ ٤٠ داخل بکە';
+                    errorEl.textContent = '⚠️ تکایە ژمارەیەک لە نێوان ١ بۆ ٣٠ داخل بکە';
                     errorEl.classList.add('show');
                 }
                 input.value = '';
@@ -3600,17 +3880,14 @@
             toast(`✅ ئۆردەر #${orderNumber} بۆ مێز ${tableNumber} سەیڤ کرا!`);
             await saveOrdersToFirestore();
             
-            // Auto print receipt for dine-in
             state.receiptOrder = receiptOrder;
             state.showReceipt = true;
             state.receiptPrinted = false;
             render();
-            // Trigger auto print after render
             setTimeout(() => {
                 if (!state.receiptPrinted) {
                     state.receiptPrinted = true;
                     window.print();
-                    // Close receipt after print dialog
                     setTimeout(() => {
                         state.showReceipt = false;
                         state.receiptOrder = null;
@@ -3993,9 +4270,13 @@
             attachEvents();
         }
 
+        // ============================================================
+        // renderTableModal - بەبێ بۆکسی پێشوین (preview box)
+        // دوگمەکانی ژمارەکان گەورەتر کراوە
+        // ============================================================
         function renderTableModal() {
             const usedTablesArray = Array.from(state.usedTables).sort((a, b) => a - b);
-            const allTables = Array.from({ length: 40 }, (_, i) => i + 1);
+            const allTables = Array.from({ length: 30 }, (_, i) => i + 1);
             
             const tableButtonsHtml = allTables.map(num => {
                 const isUsed = state.usedTables.has(num);
@@ -4015,29 +4296,25 @@
                     <div class="modal" id="table-modal">
                         <button class="close-btn" id="close-table-modal">✕</button>
                         <h3>🪑 هەڵبژاردنی ژمارەی مێز</h3>
-                        <p class="table-hint">تکایە ژمارەی مێز دیاری بکە (١ بۆ ٤٠)</p>
+                        <p class="table-hint">تکایە ژمارەی مێز دیاری بکە (١ بۆ ٣٠)</p>
                         
                         <div class="used-tables">
-                            <span style="font-weight:600;font-size:13px;width:100%;text-align:center;color:#1a1a2e;margin-bottom:4px;">مێزە داگیرکراوەکان:</span>
+                            <span style="font-weight:600;font-size:12px;width:100%;text-align:center;color:#1a1a2e;margin-bottom:3px;">مێزە داگیرکراوەکان:</span>
                             ${usedTablesHtml}
                         </div>
 
                         <input type="number" id="table-number-input" class="table-number-input" 
-                               placeholder="_ _" min="1" max="40" 
+                               placeholder="_ _" min="1" max="30" 
                                value="${state.selectedTableNumber || ''}" />
                         <div id="table-error" class="table-error"></div>
-                        
-                        <div class="table-number-display" id="table-number-display">
-                            ${state.selectedTableNumber || '?'}
-                        </div>
 
                         <div class="table-buttons-grid">
                             ${tableButtonsHtml}
                         </div>
 
-                        <div class="flex" style="margin-top:16px;gap:10px;">
-                            <button class="btn" id="confirm-table-btn" style="flex:1;">✅ پشتڕاستی مێز</button>
-                            <button class="btn btn-danger" id="cancel-table-btn" style="flex:1;">🚫 ڕەتکردنەوە</button>
+                        <div class="flex" style="margin-top:8px;gap:6px;">
+                            <button class="btn" id="confirm-table-btn" style="flex:1;padding:10px 12px;font-size:14px;">✅ پشتڕاستی مێز</button>
+                            <button class="btn btn-danger" id="cancel-table-btn" style="flex:1;padding:10px 12px;font-size:14px;">🚫 ڕەتکردنەوە</button>
                         </div>
                     </div>
                 </div>
@@ -4048,6 +4325,24 @@
             const partner = state.pendingPartner;
             const logo = PARTNER_LOGOS[partner] || '';
             const label = partner.charAt(0).toUpperCase() + partner.slice(1);
+            
+            // Build numpad buttons - NO confirm button inside
+            const numpadHtml = `
+                <div class="numpad-grid">
+                    ${[1,2,3].map(n => `<button data-numpad="${n}">${n}</button>`).join('')}
+                    ${[4,5,6].map(n => `<button data-numpad="${n}">${n}</button>`).join('')}
+                    ${[7,8,9].map(n => `<button data-numpad="${n}">${n}</button>`).join('')}
+                    <button class="clear-btn" data-numpad="clear">✕</button>
+                    <button data-numpad="0">0</button>
+                    <button class="backspace-btn" data-numpad="backspace">⌫</button>
+                </div>
+            `;
+            
+            // Display code with cursor
+            const displayCode = state.partnerCode || '';
+            const displayHtml = displayCode + '_'.repeat(4 - displayCode.length);
+            
+            // No confirm or cancel buttons - auto-confirm when 4 digits entered
             return `
                 <div class="modal-overlay partner-code-modal" id="partner-code-modal-overlay">
                     <div class="modal" id="partner-code-modal">
@@ -4055,19 +4350,9 @@
                         <img src="${logo}" class="partner-logo-big" alt="${label}" />
                         <h3>📦 کۆدی ${label}</h3>
                         <p class="hint">تکایە ٤ ژمارەی کۆتای پسولە داخل بکە</p>
-                        <input 
-                            type="text" 
-                            id="partner-code-input" 
-                            maxlength="4" 
-                            placeholder="_ _ _ _" 
-                            inputmode="numeric"
-                            autofocus
-                        />
+                        <div class="code-display" id="partner-code-display">${displayHtml}</div>
                         <div id="partner-code-error" class="code-error"></div>
-                        <div class="flex" style="margin-top:16px;gap:10px;">
-                            <button class="btn" id="confirm-partner-code-btn" style="flex:1;">✅ پشتڕاست</button>
-                            <button class="btn btn-danger" id="cancel-partner-code-btn" style="flex:1;">🚫 ڕەتکردنەوە</button>
-                        </div>
+                        ${numpadHtml}
                     </div>
                 </div>
             `;
@@ -4270,7 +4555,8 @@
                 const readyOrders = state.orders.filter(o => 
                     o.branch === 'park32' && 
                     o.status === 'ready' &&
-                    o.status !== 'completed'
+                    o.status !== 'completed' &&
+                    isSameBusinessDay(o.timestamp, new Date())
                 );
                 
                 readyOrdersHtml = readyOrders.length ? readyOrders.map(o => {
@@ -4294,7 +4580,8 @@
             const activeOrdersCount = state.orders.filter(o => 
                 o.branch === 'park32' && 
                 o.status !== 'completed' && 
-                o.orderType === 'dine'
+                o.orderType === 'dine' &&
+                isSameBusinessDay(o.timestamp, new Date())
             ).length;
 
             return `
@@ -4373,7 +4660,7 @@
         }
 
         function renderManager() {
-            checkAndResetStats();
+            checkAndApplyResets();
             
             let filteredItems = state.items.filter(item => item.branch === state.selectedBranch);
 
@@ -4401,7 +4688,7 @@
                 <option value="${b}" ${state.selectedBranch === b ? 'selected' : ''}>${b}</option>
             `).join('');
 
-            let dineTakeawayOrders = state.currentDayOrders.filter(o => {
+            let dineTakeawayOrders = getTodayOrders().filter(o => {
                 const isPartner = o.partner && o.orderType === 'partner';
                 return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
             });
@@ -4434,10 +4721,7 @@
 
             let partnerOrders = state.partnerOrders.filter(o => {
                 const orderDate = new Date(o.timestamp);
-                const now = new Date();
-                return orderDate.getDate() === now.getDate() &&
-                       orderDate.getMonth() === now.getMonth() &&
-                       orderDate.getFullYear() === now.getFullYear();
+                return isSameBusinessDay(orderDate, new Date());
             });
             
             if (state.branchFilter !== 'all') {
@@ -4497,7 +4781,8 @@
 
             const monthDays = getMonthDays();
             
-            let monthlyFilteredOrders = state.currentMonthOrders.filter(o => {
+            // Get ALL orders for monthly view - NO filtering by month
+            let monthlyFilteredOrders = state.orders.filter(o => {
                 const isPartner = o.partner && o.orderType === 'partner';
                 return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
             });
@@ -4507,10 +4792,10 @@
             }
 
             const dayTotals = monthDays.map(day => {
-                const dayStr = day.toDateString();
                 const dayOrders = monthlyFilteredOrders.filter(o => {
-                    const d = new Date(o.timestamp);
-                    return d.toDateString() === dayStr;
+                    const orderBusinessDay = getBusinessDayStart(o.timestamp);
+                    const targetBusinessDay = getBusinessDayStart(day);
+                    return orderBusinessDay.getTime() === targetBusinessDay.getTime();
                 });
                 return dayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
             });
@@ -4597,7 +4882,7 @@
                                 </div>
                                 <div class="stat-card">
                                     <div class="number">${formatPrice(nightRevenueDineTakeaway)}</div>
-                                    <div class="label">شەفتی شەو (٥:٣٠ - ٤)</div>
+                                    <div class="label">شەفتی شەو (٥:٣٠ - ٣)</div>
                                 </div>
                                 <div class="stat-card">
                                     <div class="number">${formatPrice(totalRevenueDineTakeaway)}</div>
@@ -5030,7 +5315,7 @@
                 });
                 tableInput.addEventListener('input', () => {
                     const val = parseInt(tableInput.value);
-                    if (!isNaN(val) && val >= 1 && val <= 40) {
+                    if (!isNaN(val) && val >= 1 && val <= 30) {
                         const errorEl = document.getElementById('table-error');
                         if (errorEl) errorEl.classList.remove('show');
                         if (!state.usedTables.has(val)) {
@@ -5078,6 +5363,7 @@
             document.querySelectorAll('[data-action="open-partner-code"]').forEach(el => {
                 el.onclick = () => {
                     const partner = el.dataset.partner;
+                    state.partnerCode = '';
                     openPartnerCodeModal(partner);
                 };
             });
@@ -5292,18 +5578,15 @@
                     toast(`✅ ئۆردەر #${orderNumber} سەیڤ کرا!`);
                     await saveOrdersToFirestore();
                     
-                    // Show receipt and auto print for dine-in and takeaway only
                     if (state.orderType === 'dine' || state.orderType === 'takeaway') {
                         state.receiptOrder = receiptOrder;
                         state.showReceipt = true;
                         state.receiptPrinted = false;
                         render();
-                        // Auto print after render
                         setTimeout(() => {
                             if (!state.receiptPrinted) {
                                 state.receiptPrinted = true;
                                 window.print();
-                                // Close receipt after print dialog
                                 setTimeout(() => {
                                     state.showReceipt = false;
                                     state.receiptOrder = null;
@@ -5491,19 +5774,23 @@
                 };
             });
 
+            // Partner code modal numpad events
+            document.querySelectorAll('[data-numpad]').forEach(el => {
+                el.onclick = () => {
+                    const value = el.dataset.numpad;
+                    if (value === 'clear') {
+                        clearPartnerCode();
+                    } else if (value === 'backspace') {
+                        backspacePartnerCode();
+                    } else {
+                        appendPartnerCodeDigit(value);
+                    }
+                };
+            });
+
             const closePartnerModalBtn = document.getElementById('close-partner-code-modal');
             if (closePartnerModalBtn) {
                 closePartnerModalBtn.onclick = closePartnerCodeModal;
-            }
-
-            const cancelPartnerBtn = document.getElementById('cancel-partner-code-btn');
-            if (cancelPartnerBtn) {
-                cancelPartnerBtn.onclick = closePartnerCodeModal;
-            }
-
-            const confirmPartnerBtn = document.getElementById('confirm-partner-code-btn');
-            if (confirmPartnerBtn) {
-                confirmPartnerBtn.onclick = confirmPartnerCode;
             }
 
             const partnerOverlay = document.getElementById('partner-code-modal-overlay');
@@ -5515,22 +5802,6 @@
                 };
             }
 
-            const codeInput = document.getElementById('partner-code-input');
-            if (codeInput) {
-                codeInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        confirmPartnerCode();
-                    }
-                });
-                codeInput.addEventListener('input', () => {
-                    codeInput.value = codeInput.value.replace(/\D/g, '').slice(0, 4);
-                    const errorEl = document.getElementById('partner-code-error');
-                    if (errorEl) errorEl.classList.remove('show');
-                });
-            }
-
-            // Receipt close handler
             const receiptOverlay = document.getElementById('receipt-overlay');
             if (receiptOverlay) {
                 receiptOverlay.onclick = (e) => {
@@ -5541,7 +5812,6 @@
             }
         }
 
-        // Make closeReceipt available globally for print button onclick
         window.closeReceipt = closeReceipt;
 
         async function init() {
