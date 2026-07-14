@@ -2862,89 +2862,59 @@
         // BUSINESS DAY UTILITY FUNCTIONS - Reset at 3:00 AM
         // ============================================================
 
-        /**
-         * Get the business day start date for a given timestamp
-         * Business day runs from 3:00 AM to 2:59:59 AM next day
-         */
         function getBusinessDayStart(timestamp) {
             const date = new Date(timestamp);
             const hours = date.getHours();
             const minutes = date.getMinutes();
             const seconds = date.getSeconds();
             
-            // If time is before 3:00 AM, we're still in previous business day
             if (hours < 3 || (hours === 3 && minutes === 0 && seconds === 0)) {
-                // If exactly 3:00:00 AM, it's the start of new business day
                 if (hours === 3 && minutes === 0 && seconds === 0) {
                     return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
                 }
-                // Before 3:00 AM -> previous day
                 const prevDay = new Date(date);
                 prevDay.setDate(prevDay.getDate() - 1);
                 return new Date(prevDay.getFullYear(), prevDay.getMonth(), prevDay.getDate(), 0, 0, 0, 0);
             }
-            
-            // 3:00 AM or later -> today is the business day
             return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
         }
 
-        /**
-         * Check if two timestamps are in the same business day
-         */
         function isSameBusinessDay(date1, date2) {
             const d1 = new Date(date1);
             const d2 = new Date(date2);
-            
             const businessDay1 = getBusinessDayStart(d1);
             const businessDay2 = getBusinessDayStart(d2);
-            
             return businessDay1.getTime() === businessDay2.getTime();
         }
 
-        /**
-         * Get the current business day start (today's start at 3:00 AM)
-         */
         function getCurrentBusinessDayStart() {
             const now = new Date();
             const hours = now.getHours();
             const minutes = now.getMinutes();
             const seconds = now.getSeconds();
             
-            // If before 3:00 AM, business day is previous day
             if (hours < 3 || (hours === 3 && minutes === 0 && seconds === 0)) {
                 const prevDay = new Date(now);
                 prevDay.setDate(prevDay.getDate() - 1);
                 return new Date(prevDay.getFullYear(), prevDay.getMonth(), prevDay.getDate(), 0, 0, 0, 0);
             }
-            
             return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
         }
 
-        /**
-         * Get the current month start based on business days
-         */
         function getCurrentBusinessMonthStart() {
             const now = new Date();
             const businessDay = getBusinessDayStart(now);
             return new Date(businessDay.getFullYear(), businessDay.getMonth(), 1);
         }
 
-        /**
-         * Check if current time is exactly at 3:00 AM reset time
-         */
         function isResetTime() {
             const now = new Date();
             const hours = now.getHours();
             const minutes = now.getMinutes();
             const seconds = now.getSeconds();
-            
-            // Reset at exactly 3:00:00 AM
             return hours === 3 && minutes === 0 && seconds < 5;
         }
 
-        /**
-         * Check if it's time to reset (between 3:00 AM and 3:05 AM)
-         */
         function isResetWindow() {
             const now = new Date();
             const hours = now.getHours();
@@ -3180,7 +3150,6 @@
 
         // ============================================================
         // MONTHLY RESET - NEVER DELETES DATA, ONLY UPDATES TIMESTAMP
-        // This function ONLY updates the timestamp, never filters orders
         // ============================================================
         function performMonthlyReset() {
             const now = new Date();
@@ -3197,14 +3166,9 @@
                 }
             }
             
-            // ✅ ONLY update timestamp - NEVER delete or filter orders
             state.monthlyResetDone = true;
             state.monthlyResetTimestamp = now.toISOString();
             
-            // Keep ALL orders - DO NOT filter by month
-            // state.orders = state.orders; // Unchanged - all data preserved
-            
-            // Just update the timestamp in Firestore
             updateDoc(docRef, {
                 monthlyResetTimestamp: state.monthlyResetTimestamp,
                 lastUpdated: new Date().toISOString()
@@ -3216,13 +3180,10 @@
         function checkAndApplyResets() {
             const now = new Date();
             
-            // Daily reset - filters orders to today only (at 3:00 AM)
             if (isResetWindow()) {
                 performDailyReset();
             }
             
-            // Monthly reset - ONLY timestamp update, NO data deletion EVER
-            // Check if we need to update monthly timestamp (only once per month)
             const currentBusinessMonth = getBusinessDayStart(now);
             const currentMonth = currentBusinessMonth.getMonth();
             const currentYear = currentBusinessMonth.getFullYear();
@@ -3234,20 +3195,16 @@
                 const lastYear = lastBusinessDay.getFullYear();
                 
                 if (lastMonth !== currentMonth || lastYear !== currentYear) {
-                    // New month - update timestamp but keep all data
                     performMonthlyReset();
                 }
             } else {
-                // No timestamp set yet - set it (data preserved)
                 performMonthlyReset();
             }
             
-            // Keep all orders for monthly view - NEVER filter by month
             state.currentDayOrders = state.orders.filter(o => {
                 return isSameBusinessDay(o.timestamp, now);
             });
             
-            // All orders are kept for monthly view - NO filtering
             state.currentMonthOrders = state.orders;
         }
 
@@ -3257,7 +3214,6 @@
         }
 
         function getThisMonthOrders() {
-            // Return ALL orders - never filter by month
             return state.orders;
         }
 
@@ -3270,7 +3226,6 @@
         }
 
         function getOrdersForBusinessMonth(year, month) {
-            // Return all orders - no monthly filtering
             return state.orders;
         }
 
@@ -3294,7 +3249,6 @@
                         }
                     }
                     
-                    // Monthly reset - only update timestamp if needed, NEVER delete data
                     const currentBusinessMonth = getBusinessDayStart(now);
                     const currentMonth = currentBusinessMonth.getMonth();
                     const currentYear = currentBusinessMonth.getFullYear();
@@ -3454,9 +3408,79 @@
         }
 
         // ============================================================
-        // 🔇 FIX: تەنها کاشێری ٣٢ پارک دەنگ دروست دەکات
-        // کاشێری زانکۆ هیچ دەنگێک دروست ناکات
+        // 🔧 FIX: ئایتمەکانی Skip خۆکارانە Ready دەبن
         // ============================================================
+
+        function isOrderFullyReady(order) {
+            if (!order.itemStatuses) return false;
+            
+            // تەنها ئایتمەکانی کە گرووپیان skip نییە پشکنین بکە
+            const nonSkipItems = order.items.filter(item => item.chefGroup !== 'skip');
+            if (nonSkipItems.length === 0) return true; // ئەگەر هەمووی skip بن، ئۆردەر ئامادەیە
+            
+            const allReady = nonSkipItems.every(item => {
+                const status = order.itemStatuses[item.id] || 'pending';
+                return status === 'ready';
+            });
+            return allReady;
+        }
+
+        function updateOrderOverallStatus(order) {
+            // تەنها ئایتمەکانی کە گرووپیان skip نییە پشکنین بکە
+            const nonSkipItems = order.items.filter(item => item.chefGroup !== 'skip');
+            if (nonSkipItems.length === 0) {
+                order.status = 'ready';
+                return;
+            }
+            
+            const allReady = nonSkipItems.every(item => {
+                const status = order.itemStatuses[item.id] || 'pending';
+                return status === 'ready';
+            });
+            
+            if (allReady) {
+                order.status = 'ready';
+            } else {
+                const hasPreparing = nonSkipItems.some(item => {
+                    const status = order.itemStatuses[item.id] || 'pending';
+                    return status === 'preparing';
+                });
+                if (hasPreparing) {
+                    order.status = 'preparing';
+                } else {
+                    order.status = 'pending';
+                }
+            }
+        }
+
+        async function completeOrderByCashier(uniqueId) {
+            const order = findOrderByUniqueId(uniqueId);
+            if (!order) {
+                toast('ئۆردەر نەدۆزرایەوە!', true);
+                return;
+            }
+            if (order.branch !== 'park32') return;
+            if (!isOrderFullyReady(order)) {
+                toast('تکایە چاوەڕێ بکە هەتا هەموو ئایتمەکان ئامادە بن!', true);
+                return;
+            }
+            order.status = 'completed';
+            order.completedAt = new Date().toISOString();
+            if (order.tableNumber) {
+                state.usedTables.delete(order.tableNumber);
+            }
+            if (order.orderNumber) {
+                state.usedOrderNumbers.delete(order.orderNumber);
+            }
+            await saveOrdersToFirestore();
+            render();
+            toast(`✅ ئۆردەر #${order.orderNumber} تەواو کرا!`);
+        }
+
+        // ============================================================
+        // ORDERS
+        // ============================================================
+
         function loadOrdersFromFirestore() {
             if (state.unsubscribeOrders) {
                 state.unsubscribeOrders();
@@ -3478,7 +3502,12 @@
                             if (!o.itemStatuses) {
                                 o.itemStatuses = {};
                                 o.items.forEach(item => {
-                                    o.itemStatuses[item.id] = 'pending';
+                                    // 🔧 FIX: ئایتمەکانی skip خۆکارانە ready دەکرێن
+                                    if (item.chefGroup === 'skip') {
+                                        o.itemStatuses[item.id] = 'ready';
+                                    } else {
+                                        o.itemStatuses[item.id] = 'pending';
+                                    }
                                 });
                             }
                             if (!oldOrderIds.has(o.uniqueId) && o.status !== 'completed') {
@@ -3503,10 +3532,8 @@
 
                         // ============================================================
                         // 🔇 FIX: تەنها کاشێری ٣٢ پارک دەنگ دروست دەکات
-                        // کاشێری زانکۆ هیچ دەنگێک دروست ناکات
                         // ============================================================
                         if (state.currentPage === 'chef' && newOrders.length > 0 && state.isSoundEnabled) {
-                            // ✅ تەنها ئەگەر کاشێر لە ٣٢ پارکەوە ناردوویەتی دەنگ بەدەر بکە
                             const ordersFromPark32 = newOrders.filter(order => order.branch === 'park32');
                             
                             if (ordersFromPark32.length > 0) {
@@ -3598,31 +3625,6 @@
             }
         }
 
-        function isOrderFullyReady(order) {
-            if (!order.itemStatuses) return false;
-            const allReady = order.items.every(item => {
-                const status = order.itemStatuses[item.id] || 'pending';
-                return status === 'ready';
-            });
-            return allReady;
-        }
-
-        function updateOrderOverallStatus(order) {
-            if (isOrderFullyReady(order)) {
-                order.status = 'ready';
-            } else {
-                const hasPreparing = order.items.some(item => {
-                    const status = order.itemStatuses[item.id] || 'pending';
-                    return status === 'preparing';
-                });
-                if (hasPreparing) {
-                    order.status = 'preparing';
-                } else {
-                    order.status = 'pending';
-                }
-            }
-        }
-
         async function updateItemStatus(uniqueId, itemId, newStatus) {
             const order = findOrderByUniqueId(uniqueId);
             if (!order) {
@@ -3633,7 +3635,11 @@
             if (!order.itemStatuses) {
                 order.itemStatuses = {};
                 order.items.forEach(item => {
-                    order.itemStatuses[item.id] = 'pending';
+                    if (item.chefGroup === 'skip') {
+                        order.itemStatuses[item.id] = 'ready';
+                    } else {
+                        order.itemStatuses[item.id] = 'pending';
+                    }
                 });
             }
             const currentStatus = order.itemStatuses[itemId] || 'pending';
@@ -3652,266 +3658,9 @@
             toast(`🔄 ${itemName} گۆڕدرا بۆ: ${newStatus}`);
         }
 
-        async function completeOrderByCashier(uniqueId) {
-            const order = findOrderByUniqueId(uniqueId);
-            if (!order) {
-                toast('ئۆردەر نەدۆزرایەوە!', true);
-                return;
-            }
-            if (order.branch !== 'park32') return;
-            if (!isOrderFullyReady(order)) {
-                toast('تکایە چاوەڕێ بکە هەتا هەموو ئایتمەکان ئامادە بن!', true);
-                return;
-            }
-            order.status = 'completed';
-            order.completedAt = new Date().toISOString();
-            if (order.tableNumber) {
-                state.usedTables.delete(order.tableNumber);
-            }
-            if (order.orderNumber) {
-                state.usedOrderNumbers.delete(order.orderNumber);
-            }
-            await saveOrdersToFirestore();
-            render();
-            toast(`✅ ئۆردەر #${order.orderNumber} تەواو کرا!`);
-        }
-
-        function openPartnerCodeModal(partner) {
-            state.pendingPartner = partner;
-            state.showPartnerCodeModal = true;
-            state.partnerCode = '';
-            render();
-            setTimeout(() => {
-                // Focus the display for accessibility
-            }, 100);
-        }
-
-        function closePartnerCodeModal() {
-            state.showPartnerCodeModal = false;
-            state.pendingPartner = null;
-            state.partnerCode = '';
-            render();
-        }
-
-        function confirmPartnerCode() {
-            const code = state.partnerCode || '';
-            if (code.length === 4 && /^\d{4}$/.test(code)) {
-                state.partner = state.pendingPartner;
-                state.orderType = 'partner';
-                state.showPartnerCodeModal = false;
-                state.pendingPartner = null;
-                toast('✅ کۆد پشتڕاست کرایەوە!');
-                render();
-            } else {
-                const errorEl = document.getElementById('partner-code-error');
-                if (errorEl) {
-                    errorEl.textContent = '⚠️ تکایە ٤ ژمارە تەواو بکە';
-                    errorEl.classList.add('show');
-                }
-                toast('تکایە ٤ ژمارە تەواو بکە', true);
-            }
-        }
-
-        function appendPartnerCodeDigit(digit) {
-            if (state.partnerCode.length < 4) {
-                state.partnerCode += digit;
-                updatePartnerCodeDisplay();
-                const errorEl = document.getElementById('partner-code-error');
-                if (errorEl) errorEl.classList.remove('show');
-            }
-            if (state.partnerCode.length === 4) {
-                setTimeout(() => {
-                    confirmPartnerCode();
-                }, 350);
-            }
-        }
-
-        function clearPartnerCode() {
-            state.partnerCode = '';
-            updatePartnerCodeDisplay();
-            const errorEl = document.getElementById('partner-code-error');
-            if (errorEl) errorEl.classList.remove('show');
-        }
-
-        function backspacePartnerCode() {
-            state.partnerCode = state.partnerCode.slice(0, -1);
-            updatePartnerCodeDisplay();
-            const errorEl = document.getElementById('partner-code-error');
-            if (errorEl) errorEl.classList.remove('show');
-        }
-
-        function updatePartnerCodeDisplay() {
-            const display = document.getElementById('partner-code-display');
-            if (display) {
-                const code = state.partnerCode || '';
-                const padded = code + '_'.repeat(4 - code.length);
-                display.textContent = padded;
-            }
-        }
-
-        function openTableModal() {
-            if (!state.cart.length) {
-                toast('تکایە لاپەڕەکە پڕ بکە', true);
-                return;
-            }
-            state.showTableModal = true;
-            state.selectedTableNumber = null;
-            refreshUsedTables();
-            render();
-            setTimeout(() => {
-                const input = document.getElementById('table-number-input');
-                if (input) input.focus();
-            }, 100);
-        }
-
-        function closeTableModal() {
-            state.showTableModal = false;
-            state.selectedTableNumber = null;
-            render();
-        }
-
-        function selectTableNumber(num) {
-            if (state.usedTables.has(num)) {
-                toast(`⚠️ مێز ${num} داگیرکراوە!`, true);
-                return;
-            }
-            state.selectedTableNumber = num;
-            const display = document.getElementById('table-number-display');
-            if (display) {
-                display.textContent = num;
-                display.style.borderColor = '#00b894';
-                display.style.background = '#f0fdf6';
-            }
-            const input = document.getElementById('table-number-input');
-            if (input) {
-                input.value = num;
-            }
-            const errorEl = document.getElementById('table-error');
-            if (errorEl) errorEl.classList.remove('show');
-        }
-
-        function confirmTableNumber() {
-            const input = document.getElementById('table-number-input');
-            const errorEl = document.getElementById('table-error');
-            if (!input) return;
-            let num = parseInt(input.value.trim());
-            if (isNaN(num) || num < 1 || num > 30) {
-                if (errorEl) {
-                    errorEl.textContent = '⚠️ تکایە ژمارەیەک لە نێوان ١ بۆ ٣٠ داخل بکە';
-                    errorEl.classList.add('show');
-                }
-                input.value = '';
-                input.focus();
-                return;
-            }
-            if (state.usedTables.has(num)) {
-                if (errorEl) {
-                    errorEl.textContent = `⚠️ مێز ${num} داگیرکراوە! تکایە ژمارەیەکی تر هەڵبژێرە`;
-                    errorEl.classList.add('show');
-                }
-                input.value = '';
-                input.focus();
-                return;
-            }
-            state.selectedTableNumber = num;
-            state.showTableModal = false;
-            saveOrderWithTable(num);
-        }
-
-        async function saveOrderWithTable(tableNumber) {
-            if (!state.cart.length) {
-                toast('تکایە لاپەڕەکە پڕ بکە', true);
-                return;
-            }
-
-            const uniqueId = generateUniqueOrderId();
-            const orderNumber = getSmallestAvailableOrderNumber();
-            
-            const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-            const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
-            const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
-
-            const orderData = {
-                items: state.cart.map(i => ({ 
-                    id: i.id, 
-                    name: i.name, 
-                    qty: i.qty, 
-                    price: i.price, 
-                    group: i.group, 
-                    image: i.image,
-                    chefGroup: i.chefGroup || 'skip'
-                })),
-                total: discountedTotal,
-                originalTotal: originalTotal,
-                discount: state.discount,
-                discountAmount: discountAmount,
-                orderType: 'dine',
-                tableNumber: tableNumber,
-                time: now(),
-                shift: getShift(),
-                cashier: state.currentUser,
-                branch: state.branch,
-                timestamp: Date.now(),
-                image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp'
-            };
-
-            const order = {
-                uniqueId: uniqueId,
-                orderNumber: orderNumber,
-                ...orderData,
-                status: 'pending',
-                itemStatuses: {}
-            };
-
-            order.items.forEach(item => {
-                order.itemStatuses[item.id] = 'pending';
-            });
-
-            state.orders.push(order);
-            state.usedOrderNumbers.add(orderNumber);
-            state.usedTables.add(tableNumber);
-            
-            const receiptOrder = { ...order };
-            state.cart = [];
-            state.discount = 0;
-            state.discountAmount = 0;
-            state.previousOrderIds.add(uniqueId);
-            
-            toast(`✅ ئۆردەر #${orderNumber} بۆ مێز ${tableNumber} سەیڤ کرا!`);
-            await saveOrdersToFirestore();
-            
-            state.receiptOrder = receiptOrder;
-            state.showReceipt = true;
-            state.receiptPrinted = false;
-            render();
-            setTimeout(() => {
-                if (!state.receiptPrinted) {
-                    state.receiptPrinted = true;
-                    window.print();
-                    setTimeout(() => {
-                        state.showReceipt = false;
-                        state.receiptOrder = null;
-                        render();
-                    }, 500);
-                }
-            }, 300);
-        }
-
-        function showReceiptForOrder(order) {
-            state.receiptOrder = order;
-            state.showReceipt = true;
-            render();
-        }
-
-        function closeReceipt() {
-            state.showReceipt = false;
-            state.receiptOrder = null;
-            render();
-        }
-
-        function printReceipt() {
-            window.print();
-        }
+        // ============================================================
+        // RENDER FUNCTIONS
+        // ============================================================
 
         function renderChef() {
             const labels = { grill: 'بەرگر', pizza: 'پیتزا', gas: 'گەس', cashier: 'کاشێر' };
@@ -3925,11 +3674,18 @@
                 if (!order.itemStatuses) {
                     order.itemStatuses = {};
                     order.items.forEach(item => {
-                        order.itemStatuses[item.id] = 'pending';
+                        if (item.chefGroup === 'skip') {
+                            order.itemStatuses[item.id] = 'ready';
+                        } else {
+                            order.itemStatuses[item.id] = 'pending';
+                        }
                     });
                 }
                 updateOrderOverallStatus(order);
                 order.items.forEach(item => {
+                    // 🔧 FIX: ئایتمەکانی skip بەردەوام مەبە
+                    if (item.chefGroup === 'skip') return;
+                    
                     let shouldShow = false;
                     const itemStatus = order.itemStatuses[item.id] || 'pending';
                     if (state.chefView === 'grill' && item.chefGroup === 'بەرگر') {
@@ -4270,10 +4026,6 @@
             attachEvents();
         }
 
-        // ============================================================
-        // renderTableModal - بەبێ بۆکسی پێشوین (preview box)
-        // دوگمەکانی ژمارەکان گەورەتر کراوە
-        // ============================================================
         function renderTableModal() {
             const usedTablesArray = Array.from(state.usedTables).sort((a, b) => a - b);
             const allTables = Array.from({ length: 30 }, (_, i) => i + 1);
@@ -4326,7 +4078,6 @@
             const logo = PARTNER_LOGOS[partner] || '';
             const label = partner.charAt(0).toUpperCase() + partner.slice(1);
             
-            // Build numpad buttons - NO confirm button inside
             const numpadHtml = `
                 <div class="numpad-grid">
                     ${[1,2,3].map(n => `<button data-numpad="${n}">${n}</button>`).join('')}
@@ -4338,11 +4089,9 @@
                 </div>
             `;
             
-            // Display code with cursor
             const displayCode = state.partnerCode || '';
             const displayHtml = displayCode + '_'.repeat(4 - displayCode.length);
             
-            // No confirm or cancel buttons - auto-confirm when 4 digits entered
             return `
                 <div class="modal-overlay partner-code-modal" id="partner-code-modal-overlay">
                     <div class="modal" id="partner-code-modal">
@@ -4781,7 +4530,6 @@
 
             const monthDays = getMonthDays();
             
-            // Get ALL orders for monthly view - NO filtering by month
             let monthlyFilteredOrders = state.orders.filter(o => {
                 const isPartner = o.partner && o.orderType === 'partner';
                 return !isPartner && (o.orderType === 'dine' || o.orderType === 'takeaway');
@@ -5091,6 +4839,10 @@
                 </div>
             `;
         }
+
+        // ============================================================
+        // ATTACH EVENTS
+        // ============================================================
 
         function attachEvents() {
             document.querySelectorAll('[data-action="manager-login"]').forEach(el => {
@@ -5556,8 +5308,13 @@
                         itemStatuses: {}
                     };
 
+                    // 🔧 FIX: ئایتمەکانی skip خۆکارانە ready دەکرێن
                     order.items.forEach(item => {
-                        order.itemStatuses[item.id] = 'pending';
+                        if (item.chefGroup === 'skip') {
+                            order.itemStatuses[item.id] = 'ready';
+                        } else {
+                            order.itemStatuses[item.id] = 'pending';
+                        }
                     });
 
                     state.orders.push(order);
@@ -5812,7 +5569,258 @@
             }
         }
 
+        // ============================================================
+        // PARTNER CODE MODAL FUNCTIONS
+        // ============================================================
+
+        function openPartnerCodeModal(partner) {
+            state.pendingPartner = partner;
+            state.showPartnerCodeModal = true;
+            state.partnerCode = '';
+            render();
+        }
+
+        function closePartnerCodeModal() {
+            state.showPartnerCodeModal = false;
+            state.pendingPartner = null;
+            state.partnerCode = '';
+            render();
+        }
+
+        function confirmPartnerCode() {
+            const code = state.partnerCode || '';
+            if (code.length === 4 && /^\d{4}$/.test(code)) {
+                state.partner = state.pendingPartner;
+                state.orderType = 'partner';
+                state.showPartnerCodeModal = false;
+                state.pendingPartner = null;
+                toast('✅ کۆد پشتڕاست کرایەوە!');
+                render();
+            } else {
+                const errorEl = document.getElementById('partner-code-error');
+                if (errorEl) {
+                    errorEl.textContent = '⚠️ تکایە ٤ ژمارە تەواو بکە';
+                    errorEl.classList.add('show');
+                }
+                toast('تکایە ٤ ژمارە تەواو بکە', true);
+            }
+        }
+
+        function appendPartnerCodeDigit(digit) {
+            if (state.partnerCode.length < 4) {
+                state.partnerCode += digit;
+                updatePartnerCodeDisplay();
+                const errorEl = document.getElementById('partner-code-error');
+                if (errorEl) errorEl.classList.remove('show');
+            }
+            if (state.partnerCode.length === 4) {
+                setTimeout(() => {
+                    confirmPartnerCode();
+                }, 350);
+            }
+        }
+
+        function clearPartnerCode() {
+            state.partnerCode = '';
+            updatePartnerCodeDisplay();
+            const errorEl = document.getElementById('partner-code-error');
+            if (errorEl) errorEl.classList.remove('show');
+        }
+
+        function backspacePartnerCode() {
+            state.partnerCode = state.partnerCode.slice(0, -1);
+            updatePartnerCodeDisplay();
+            const errorEl = document.getElementById('partner-code-error');
+            if (errorEl) errorEl.classList.remove('show');
+        }
+
+        function updatePartnerCodeDisplay() {
+            const display = document.getElementById('partner-code-display');
+            if (display) {
+                const code = state.partnerCode || '';
+                const padded = code + '_'.repeat(4 - code.length);
+                display.textContent = padded;
+            }
+        }
+
+        // ============================================================
+        // TABLE MODAL FUNCTIONS
+        // ============================================================
+
+        function openTableModal() {
+            if (!state.cart.length) {
+                toast('تکایە لاپەڕەکە پڕ بکە', true);
+                return;
+            }
+            state.showTableModal = true;
+            state.selectedTableNumber = null;
+            refreshUsedTables();
+            render();
+            setTimeout(() => {
+                const input = document.getElementById('table-number-input');
+                if (input) input.focus();
+            }, 100);
+        }
+
+        function closeTableModal() {
+            state.showTableModal = false;
+            state.selectedTableNumber = null;
+            render();
+        }
+
+        function selectTableNumber(num) {
+            if (state.usedTables.has(num)) {
+                toast(`⚠️ مێز ${num} داگیرکراوە!`, true);
+                return;
+            }
+            state.selectedTableNumber = num;
+            const display = document.getElementById('table-number-display');
+            if (display) {
+                display.textContent = num;
+                display.style.borderColor = '#00b894';
+                display.style.background = '#f0fdf6';
+            }
+            const input = document.getElementById('table-number-input');
+            if (input) {
+                input.value = num;
+            }
+            const errorEl = document.getElementById('table-error');
+            if (errorEl) errorEl.classList.remove('show');
+        }
+
+        function confirmTableNumber() {
+            const input = document.getElementById('table-number-input');
+            const errorEl = document.getElementById('table-error');
+            if (!input) return;
+            let num = parseInt(input.value.trim());
+            if (isNaN(num) || num < 1 || num > 30) {
+                if (errorEl) {
+                    errorEl.textContent = '⚠️ تکایە ژمارەیەک لە نێوان ١ بۆ ٣٠ داخل بکە';
+                    errorEl.classList.add('show');
+                }
+                input.value = '';
+                input.focus();
+                return;
+            }
+            if (state.usedTables.has(num)) {
+                if (errorEl) {
+                    errorEl.textContent = `⚠️ مێز ${num} داگیرکراوە! تکایە ژمارەیەکی تر هەڵبژێرە`;
+                    errorEl.classList.add('show');
+                }
+                input.value = '';
+                input.focus();
+                return;
+            }
+            state.selectedTableNumber = num;
+            state.showTableModal = false;
+            saveOrderWithTable(num);
+        }
+
+        async function saveOrderWithTable(tableNumber) {
+            if (!state.cart.length) {
+                toast('تکایە لاپەڕەکە پڕ بکە', true);
+                return;
+            }
+
+            const uniqueId = generateUniqueOrderId();
+            const orderNumber = getSmallestAvailableOrderNumber();
+            
+            const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
+            const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
+
+            const orderData = {
+                items: state.cart.map(i => ({ 
+                    id: i.id, 
+                    name: i.name, 
+                    qty: i.qty, 
+                    price: i.price, 
+                    group: i.group, 
+                    image: i.image,
+                    chefGroup: i.chefGroup || 'skip'
+                })),
+                total: discountedTotal,
+                originalTotal: originalTotal,
+                discount: state.discount,
+                discountAmount: discountAmount,
+                orderType: 'dine',
+                tableNumber: tableNumber,
+                time: now(),
+                shift: getShift(),
+                cashier: state.currentUser,
+                branch: state.branch,
+                timestamp: Date.now(),
+                image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp'
+            };
+
+            const order = {
+                uniqueId: uniqueId,
+                orderNumber: orderNumber,
+                ...orderData,
+                status: 'pending',
+                itemStatuses: {}
+            };
+
+            // 🔧 FIX: ئایتمەکانی skip خۆکارانە ready دەکرێن
+            order.items.forEach(item => {
+                if (item.chefGroup === 'skip') {
+                    order.itemStatuses[item.id] = 'ready';
+                } else {
+                    order.itemStatuses[item.id] = 'pending';
+                }
+            });
+
+            state.orders.push(order);
+            state.usedOrderNumbers.add(orderNumber);
+            state.usedTables.add(tableNumber);
+            
+            const receiptOrder = { ...order };
+            state.cart = [];
+            state.discount = 0;
+            state.discountAmount = 0;
+            state.previousOrderIds.add(uniqueId);
+            
+            toast(`✅ ئۆردەر #${orderNumber} بۆ مێز ${tableNumber} سەیڤ کرا!`);
+            await saveOrdersToFirestore();
+            
+            state.receiptOrder = receiptOrder;
+            state.showReceipt = true;
+            state.receiptPrinted = false;
+            render();
+            setTimeout(() => {
+                if (!state.receiptPrinted) {
+                    state.receiptPrinted = true;
+                    window.print();
+                    setTimeout(() => {
+                        state.showReceipt = false;
+                        state.receiptOrder = null;
+                        render();
+                    }, 500);
+                }
+            }, 300);
+        }
+
+        function showReceiptForOrder(order) {
+            state.receiptOrder = order;
+            state.showReceipt = true;
+            render();
+        }
+
+        function closeReceipt() {
+            state.showReceipt = false;
+            state.receiptOrder = null;
+            render();
+        }
+
+        function printReceipt() {
+            window.print();
+        }
+
         window.closeReceipt = closeReceipt;
+
+        // ============================================================
+        // INIT
+        // ============================================================
 
         async function init() {
             state.isLoading = true;
