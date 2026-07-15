@@ -2777,7 +2777,7 @@
         const PARTNER_LOGOS = {
             talabat: 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
             zuu: 'https://i.ibb.co/gMT6mBmc/unnamed.webp',
-            wade: 'https://i.ibb.co/gL5Lv9tH/unnamed.png',
+            wade: 'https://i.ibb.co/gL5L9vT9H/unnamed.png',
             leezu: 'https://www.lezzoo.com/icon.png'
         };
 
@@ -5217,11 +5217,104 @@
                         return;
                     }
 
+                    // ============================================================
+                    // 🔧 FIX: پشکنینی تەواوی گرووپی Skip یان تێکەڵ
+                    // ============================================================
+                    const allItemsAreSkip = state.cart.every(item => item.chefGroup === 'skip');
+                    const hasNonSkip = state.cart.some(item => item.chefGroup !== 'skip');
+
+                    // ئەگەر هەموو ئایتمەکان Skip بن => ڕەوتی Skip
+                    if (allItemsAreSkip) {
+                        // 🚫 بۆ ئۆردەری Skip:
+                        // - داوای ژمارەی مێز ناکات
+                        // - ژمارەی ئۆردەر دروست ناکات
+                        // - پوپاپی مێز دەرناکەوێت
+                        // - ڕاستەوخۆ سەیڤ دەکرێت
+                        // - پڕۆسە یەکسەر تەواو دەبێت
+                        // - ناچێت بۆ کاشێر بۆ دوگمەی Complete
+                        
+                        const uniqueId = generateUniqueOrderId();
+                        // 🚫 هیچ order number دروست ناکەین
+                        const orderNumber = null; // بۆ Skip هیچ ژمارەیەک نییە
+                        
+                        const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+                        const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
+                        const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
+
+                        const orderData = {
+                            items: state.cart.map(i => ({ 
+                                id: i.id, 
+                                name: i.name, 
+                                qty: i.qty, 
+                                price: i.price, 
+                                group: i.group, 
+                                image: i.image,
+                                chefGroup: i.chefGroup || 'skip'
+                            })),
+                            total: discountedTotal,
+                            originalTotal: originalTotal,
+                            discount: state.discount,
+                            discountAmount: discountAmount,
+                            orderType: state.orderType,
+                            partner: state.partner,
+                            partnerCode: state.partnerCode,
+                            time: now(),
+                            shift: getShift(),
+                            cashier: state.currentUser,
+                            branch: state.branch,
+                            timestamp: Date.now(),
+                            image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
+                            // ✅ نیشانە بۆ ئەوەی ئەم ئۆردەرە Skip یە
+                            isSkipOrder: true,
+                            // ✅ بۆ ئامار و ڕاپۆرتەکان، ژمارەی ئۆردەر وەک null دەهێڵین
+                            orderNumber: null
+                        };
+
+                        const order = {
+                            uniqueId: uniqueId,
+                            ...orderData,
+                            status: 'completed', // ✅ یەکسەر تەواو دەبێت
+                            itemStatuses: {}
+                        };
+
+                        // ✅ هەموو ئایتمەکان بە Ready دادەنرێن
+                        order.items.forEach(item => {
+                            order.itemStatuses[item.id] = 'ready';
+                        });
+
+                        // ✅ ئۆردەرەکە زیاد بکە
+                        state.orders.push(order);
+                        
+                        // ✅ بۆ پارتنەر ئەگەر بوو
+                        if (state.orderType === 'partner' && state.partner) {
+                            await savePartnerOrderToFirestore(orderData);
+                        }
+                        
+                        // 🧹 کۆڕبەکان پاک بکە
+                        state.cart = [];
+                        state.partnerCode = '';
+                        state.discount = 0;
+                        state.discountAmount = 0;
+                        state.previousOrderIds.add(uniqueId);
+                        
+                        toast(`✅ ئۆردەری خێرا (Skip) سەیڤ کرا! (بەبێ ژمارە)`);
+                        await saveOrdersToFirestore();
+                        
+                        // 🚫 هیچ چاپکردن و ڕیسێڤتێک نییە
+                        render();
+                        return;
+                    }
+
+                    // ئەگەر تێکەڵی Skip + هەر شتێکی تر بوو => ڕەوتی ئاسایی
                     if (state.branch === 'park32' && state.orderType === 'dine') {
+                        // داوای مێز بکە
                         openTableModal();
                         return;
                     }
 
+                    // ============================================================
+                    // ڕەوتی ئاسایی (ئەگەر dine بێت و مێز پێویست نەبێت)
+                    // ============================================================
                     const uniqueId = generateUniqueOrderId();
                     const orderNumber = getSmallestAvailableOrderNumber();
 
@@ -5262,7 +5355,7 @@
                         itemStatuses: {}
                     };
 
-                    // 🔧 FIX: ئایتمەکانی skip خۆکارانە ready دەکرێن
+                    // 🔧 ئایتمەکانی skip خۆکارانە ready دەکرێن
                     order.items.forEach(item => {
                         if (item.chefGroup === 'skip') {
                             order.itemStatuses[item.id] = 'ready';
@@ -5676,6 +5769,86 @@
                 return;
             }
 
+            // ============================================================
+            // 🔧 FIX: پشکنینی تەواوی گرووپی Skip یان تێکەڵ (بۆ سەیڤ بە مێز)
+            // ============================================================
+            const allItemsAreSkip = state.cart.every(item => item.chefGroup === 'skip');
+            const hasNonSkip = state.cart.some(item => item.chefGroup !== 'skip');
+
+            // ئەگەر هەموو ئایتمەکان Skip بن => ڕەوتی Skip
+            if (allItemsAreSkip) {
+                // 🚫 بۆ ئۆردەری Skip:
+                // - داوای ژمارەی مێز ناکات
+                // - ژمارەی ئۆردەر دروست ناکات
+                // - پوپاپی مێز دەرناکەوێت
+                // - ڕاستەوخۆ سەیڤ دەکرێت
+                // - پڕۆسە یەکسەر تەواو دەبێت
+                // - ناچێت بۆ کاشێر بۆ دوگمەی Complete
+                
+                const uniqueId = generateUniqueOrderId();
+                // 🚫 هیچ order number دروست ناکەین
+                const orderNumber = null;
+                
+                const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+                const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
+                const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
+
+                const orderData = {
+                    items: state.cart.map(i => ({ 
+                        id: i.id, 
+                        name: i.name, 
+                        qty: i.qty, 
+                        price: i.price, 
+                        group: i.group, 
+                        image: i.image,
+                        chefGroup: i.chefGroup || 'skip'
+                    })),
+                    total: discountedTotal,
+                    originalTotal: originalTotal,
+                    discount: state.discount,
+                    discountAmount: discountAmount,
+                    orderType: 'dine',
+                    // 🚫 مێز بۆ Skip دانابەزێنرێت
+                    tableNumber: null,
+                    time: now(),
+                    shift: getShift(),
+                    cashier: state.currentUser,
+                    branch: state.branch,
+                    timestamp: Date.now(),
+                    image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
+                    isSkipOrder: true,
+                    orderNumber: null
+                };
+
+                const order = {
+                    uniqueId: uniqueId,
+                    ...orderData,
+                    status: 'completed', // ✅ یەکسەر تەواو دەبێت
+                    itemStatuses: {}
+                };
+
+                // ✅ هەموو ئایتمەکان بە Ready دادەنرێن
+                order.items.forEach(item => {
+                    order.itemStatuses[item.id] = 'ready';
+                });
+
+                state.orders.push(order);
+                
+                // 🧹 کۆڕبەکان پاک بکە
+                state.cart = [];
+                state.discount = 0;
+                state.discountAmount = 0;
+                state.previousOrderIds.add(uniqueId);
+                
+                toast(`✅ ئۆردەری خێرا (Skip) سەیڤ کرا! (بەبێ ژمارە و مێز)`);
+                await saveOrdersToFirestore();
+                
+                // 🚫 هیچ چاپکردن و ڕیسێڤتێک نییە
+                render();
+                return;
+            }
+
+            // ئەگەر تێکەڵی Skip + هەر شتێکی تر بوو => ڕەوتی ئاسایی
             const uniqueId = generateUniqueOrderId();
             const orderNumber = getSmallestAvailableOrderNumber();
             
@@ -5715,7 +5888,7 @@
                 itemStatuses: {}
             };
 
-            // 🔧 FIX: ئایتمەکانی skip خۆکارانە ready دەکرێن
+            // 🔧 ئایتمەکانی skip خۆکارانە ready دەکرێن
             order.items.forEach(item => {
                 if (item.chefGroup === 'skip') {
                     order.itemStatuses[item.id] = 'ready';
