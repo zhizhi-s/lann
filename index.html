@@ -2803,7 +2803,7 @@
         };
 
         // ============================================================
-        // BUSINESS DAY UTILITY FUNCTIONS - Reset at 2:30 AM (Previously 3:00 AM)
+        // BUSINESS DAY UTILITY FUNCTIONS - Reset at 2:30 AM
         // ============================================================
 
         function getBusinessDayStart(timestamp) {
@@ -2812,7 +2812,6 @@
             const minutes = date.getMinutes();
             const seconds = date.getSeconds();
             
-            // Reset at 2:30 AM - Orders from 12:00 AM to 2:29:59 AM belong to previous day
             if (hours < 2 || (hours === 2 && minutes < 30) || (hours === 2 && minutes === 30 && seconds === 0)) {
                 if (hours === 2 && minutes === 30 && seconds === 0) {
                     return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
@@ -2853,14 +2852,6 @@
             const now = new Date();
             const businessDay = getBusinessDayStart(now);
             return new Date(businessDay.getFullYear(), businessDay.getMonth(), 1);
-        }
-
-        function isResetTime() {
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-            return hours === 2 && minutes === 30 && seconds < 5;
         }
 
         function isResetWindow() {
@@ -2918,11 +2909,6 @@
                 console.warn('دەنگی ئاگادارکردنەوە شکستی هێنا:', error);
                 return false;
             }
-        }
-
-        function playOrderNotificationSound() {
-            if (state.currentPage !== 'chef') return;
-            return playChefNotificationSound('پیتزا');
         }
 
         function toggleSound() {
@@ -3062,8 +3048,7 @@
         }
 
         // ============================================================
-        // DAILY RESET - Filters orders to today only (runs at 2:30 AM)
-        // NEVER DELETES MONTHLY DATA - ONLY FILTERS FOR DISPLAY
+        // DAILY RESET
         // ============================================================
         function performDailyReset() {
             const now = new Date();
@@ -3077,20 +3062,16 @@
                 }
             }
             
-            // ✅ فیلتەرکردن بۆ ڕۆژی ئێستا - بۆ بینین لە کاشێر و شێف
-            // ✅ داتاکان هەرگیز سڕ نابێنەوە، تەنها فیلتەر دەکرێن بۆ بینین
             const todayOrders = state.orders.filter(o => {
                 return isSameBusinessDay(o.timestamp, now);
             });
             
-            // ✅ داتاکان هەرگیز لەناوناچن، تەنها فیلتەری بینین گۆڕدراوە
             state.currentDayOrders = todayOrders;
             state.dailyResetDone = true;
             state.dailyResetTimestamp = now.toISOString();
             refreshUsedOrderNumbers();
             refreshUsedTables();
             
-            // ✅ تەنها کاتەکانی ڕێست کردن نوێ دەکرێنەوە، داتا ناسڕدرێتەوە
             updateDoc(docRef, {
                 dailyResetTimestamp: state.dailyResetTimestamp,
                 lastUpdated: new Date().toISOString()
@@ -3100,7 +3081,7 @@
         }
 
         // ============================================================
-        // MONTHLY RESET - ONLY UPDATES TIMESTAMP, NEVER DELETES DATA
+        // MONTHLY RESET
         // ============================================================
         function performMonthlyReset() {
             const now = new Date();
@@ -3120,7 +3101,6 @@
             state.monthlyResetDone = true;
             state.monthlyResetTimestamp = now.toISOString();
             
-            // ✅ تەنها کاتی ڕێستکردن نوێ دەکرێتەوە، هیچ داتایەک ناسڕدرێتەوە
             updateDoc(docRef, {
                 monthlyResetTimestamp: state.monthlyResetTimestamp,
                 lastUpdated: new Date().toISOString()
@@ -3153,7 +3133,6 @@
                 performMonthlyReset();
             }
             
-            // ✅ داتاکان هەرگیز سڕ نابێنەوە، تەنها فیلتەر دەکرێن
             state.currentDayOrders = state.orders.filter(o => {
                 return isSameBusinessDay(o.timestamp, now);
             });
@@ -3167,24 +3146,7 @@
         }
 
         function getThisMonthOrders() {
-            // ✅ هەموو داتاکان بۆ مانگ دەگەڕێنرێنەوە، هیچی سڕ نەکراوە
             return state.orders;
-        }
-
-        function getOrdersForBusinessDay(date) {
-            return state.orders.filter(o => {
-                const orderBusinessDay = getBusinessDayStart(o.timestamp);
-                const targetBusinessDay = getBusinessDayStart(date);
-                return orderBusinessDay.getTime() === targetBusinessDay.getTime();
-            });
-        }
-
-        function getOrdersForBusinessMonth(year, month) {
-            // ✅ هەموو داتاکان دەگەڕێنرێنەوە بۆ مانگ، هیچی سڕ نەکراوە
-            return state.orders.filter(o => {
-                const date = new Date(o.timestamp);
-                return date.getMonth() === month && date.getFullYear() === year;
-            });
         }
 
         async function loadResetTimestamps() {
@@ -3366,7 +3328,7 @@
         }
 
         // ============================================================
-        // 🔧 FIX: ئایتمەکانی Skip خۆکارانە Ready دەبن
+        // ORDERS FUNCTIONS
         // ============================================================
 
         function isOrderFullyReady(order) {
@@ -3432,10 +3394,6 @@
             render();
             toast(`✅ ئۆردەر #${order.orderNumber} تەواو کرا!`);
         }
-
-        // ============================================================
-        // ORDERS
-        // ============================================================
 
         function loadOrdersFromFirestore() {
             if (state.unsubscribeOrders) {
@@ -4156,17 +4114,25 @@
             const currentBranch = state.branch === 'zanco' ? 'زانکۆ' : '٣٢ پارک';
             filteredItems = filteredItems.filter(item => item.branch === currentBranch);
 
-            const itemsHtml = filteredItems.map(item => `
-                <div class="item-card" data-id="${item.id}">
-                    <div class="item-image-wrapper">
-                        ${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />` : ''}
-                        <span class="emoji-placeholder" style="${item.image ? 'display:none;' : ''}">🍽️</span>
+            const itemsHtml = filteredItems.map(item => {
+                // نرخی دروست بۆ پیشاندان لەسەر کارتەکە (بە پێی جۆری ئۆردەر)
+                let displayPrice = item.price;
+                if (state.orderType === 'partner' && state.partner && item.partnerPrices && item.partnerPrices[state.partner] !== undefined && item.partnerPrices[state.partner] !== null) {
+                    displayPrice = item.partnerPrices[state.partner];
+                }
+                
+                return `
+                    <div class="item-card" data-id="${item.id}">
+                        <div class="item-image-wrapper">
+                            ${item.image ? `<img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />` : ''}
+                            <span class="emoji-placeholder" style="${item.image ? 'display:none;' : ''}">🍽️</span>
+                        </div>
+                        <div class="name">${item.name}</div>
+                        <div class="price">${formatPrice(displayPrice)}</div>
+                        ${item.branch && item.branch !== 'هەموو' ? `<div class="item-branch-info">📌 ${item.branch}</div>` : ''}
                     </div>
-                    <div class="name">${item.name}</div>
-                    <div class="price">${formatPrice(item.price)}</div>
-                    ${item.branch && item.branch !== 'هەموو' ? `<div class="item-branch-info">📌 ${item.branch}</div>` : ''}
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             const groupButtonsHtml = ['هەموو', ...GROUP_OPTIONS].map(g => `
                 <button class="${state.selectedGroup === g ? 'active' : ''}" data-action="filter-group" data-group="${g}">${g}</button>
@@ -4479,7 +4445,7 @@
                 </div>
             `;
 
-            // ✅ Monthly chart - uses ALL historical data, never resets to zero
+            // Monthly chart
             const monthDays = getMonthDays();
             
             let monthlyFilteredOrders = state.orders.filter(o => {
@@ -4491,7 +4457,6 @@
                 monthlyFilteredOrders = monthlyFilteredOrders.filter(o => o.branch === state.branchFilter);
             }
 
-            // ✅ Calculate day totals from ALL historical data
             const dayTotals = monthDays.map(day => {
                 const dayOrders = monthlyFilteredOrders.filter(o => {
                     const orderBusinessDay = getBusinessDayStart(o.timestamp);
@@ -4532,7 +4497,6 @@
                 `;
             }).join('');
 
-            // ✅ Trend calculation from ALL historical data
             const last30Days = dayTotals.slice(-30);
             const trend = last30Days.length > 1 ? 
                 ((last30Days[last30Days.length - 1] - last30Days[0]) / (last30Days[0] || 1) * 100) : 0;
@@ -5055,12 +5019,30 @@
 
             document.querySelectorAll('[data-action="set-type"]').forEach(el => {
                 el.onclick = () => {
+                    const previousType = state.orderType;
+                    const previousPartner = state.partner;
                     state.orderType = el.dataset.type;
+                    
+                    // Reset partner if switching away from partner
                     if (state.orderType !== 'partner') {
                         state.partner = null;
                         state.partnerCode = '';
+                        // ✅ گەڕاندنەوەی نرخەکان بۆ نرخی ئاسایی (Sale/Dine-In)
+                        if (state.cart.length > 0 && previousType === 'partner') {
+                            state.cart = state.cart.map(item => {
+                                const newPrice = item.price || 0; // نرخی بنەڕەتی (ئاسایی)
+                                return { ...item, price: newPrice };
+                            });
+                            toast('🔄 نرخەکان گەڕانەوە بۆ نرخی ئاسایی (Sale)');
+                        }
                         state.discount = 0;
                         state.discountAmount = 0;
+                    } else {
+                        // ئەگەر هاتووە بۆ شەریکە، نرخەکان بە پێی شەریک نەگۆڕدرێت تا کۆد پشتڕاست نەکرێتەوە
+                        // بەڵام ئەگەر پێشتر شەریک هەڵبژێردرابوو (partner !== null) نرخەکان بگۆڕدرێت
+                        if (state.partner) {
+                            updatePricesForPartner(state.partner);
+                        }
                     }
                     render();
                 };
@@ -5070,6 +5052,7 @@
                 el.onclick = () => {
                     const partner = el.dataset.partner;
                     state.partnerCode = '';
+                    // ✅ گۆڕینی نرخەکان بۆ نرخی شەریک کاتێک کۆد دەکرێتەوە
                     openPartnerCodeModal(partner);
                 };
             });
@@ -5147,11 +5130,18 @@
                     const item = state.items.find(i => i.id === id);
                     if (item) {
                         const existing = state.cart.find(i => i.id === id);
+                        // نرخی دروست بە پێی جۆری ئۆردەر و شەریک
+                        let priceToUse = item.price;
+                        if (state.orderType === 'partner' && state.partner && item.partnerPrices && item.partnerPrices[state.partner] !== undefined && item.partnerPrices[state.partner] !== null) {
+                            priceToUse = item.partnerPrices[state.partner];
+                        }
+                        
                         if (existing) {
                             existing.qty += 1;
+                            // نرخەکە نوێ بکە (ئەگەر نرخ گۆڕابێت)
+                            existing.price = priceToUse;
                         } else {
-                            const price = getPrice(item, state.partner);
-                            state.cart.push({ ...item, price, qty: 1 });
+                            state.cart.push({ ...item, price: priceToUse, qty: 1 });
                         }
                         state.discount = 0;
                         state.discountAmount = 0;
@@ -5225,17 +5215,8 @@
 
                     // ئەگەر هەموو ئایتمەکان Skip بن => ڕەوتی Skip
                     if (allItemsAreSkip) {
-                        // 🚫 بۆ ئۆردەری Skip:
-                        // - داوای ژمارەی مێز ناکات
-                        // - ژمارەی ئۆردەر دروست ناکات
-                        // - پوپاپی مێز دەرناکەوێت
-                        // - ڕاستەوخۆ سەیڤ دەکرێت
-                        // - پڕۆسە یەکسەر تەواو دەبێت
-                        // - ناچێت بۆ کاشێر بۆ دوگمەی Complete
-                        
                         const uniqueId = generateUniqueOrderId();
-                        // 🚫 هیچ order number دروست ناکەین
-                        const orderNumber = null; // بۆ Skip هیچ ژمارەیەک نییە
+                        const orderNumber = null;
                         
                         const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
                         const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
@@ -5264,33 +5245,27 @@
                             branch: state.branch,
                             timestamp: Date.now(),
                             image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
-                            // ✅ نیشانە بۆ ئەوەی ئەم ئۆردەرە Skip یە
                             isSkipOrder: true,
-                            // ✅ بۆ ئامار و ڕاپۆرتەکان، ژمارەی ئۆردەر وەک null دەهێڵین
                             orderNumber: null
                         };
 
                         const order = {
                             uniqueId: uniqueId,
                             ...orderData,
-                            status: 'completed', // ✅ یەکسەر تەواو دەبێت
+                            status: 'completed',
                             itemStatuses: {}
                         };
 
-                        // ✅ هەموو ئایتمەکان بە Ready دادەنرێن
                         order.items.forEach(item => {
                             order.itemStatuses[item.id] = 'ready';
                         });
 
-                        // ✅ ئۆردەرەکە زیاد بکە
                         state.orders.push(order);
                         
-                        // ✅ بۆ پارتنەر ئەگەر بوو
                         if (state.orderType === 'partner' && state.partner) {
                             await savePartnerOrderToFirestore(orderData);
                         }
                         
-                        // 🧹 کۆڕبەکان پاک بکە
                         state.cart = [];
                         state.partnerCode = '';
                         state.discount = 0;
@@ -5299,21 +5274,18 @@
                         
                         toast(`✅ ئۆردەری خێرا (Skip) سەیڤ کرا! (بەبێ ژمارە)`);
                         await saveOrdersToFirestore();
-                        
-                        // 🚫 هیچ چاپکردن و ڕیسێڤتێک نییە
                         render();
                         return;
                     }
 
                     // ئەگەر تێکەڵی Skip + هەر شتێکی تر بوو => ڕەوتی ئاسایی
                     if (state.branch === 'park32' && state.orderType === 'dine') {
-                        // داوای مێز بکە
                         openTableModal();
                         return;
                     }
 
                     // ============================================================
-                    // ڕەوتی ئاسایی (ئەگەر dine بێت و مێز پێویست نەبێت)
+                    // ڕەوتی ئاسایی
                     // ============================================================
                     const uniqueId = generateUniqueOrderId();
                     const orderNumber = getSmallestAvailableOrderNumber();
@@ -5355,7 +5327,6 @@
                         itemStatuses: {}
                     };
 
-                    // 🔧 ئایتمەکانی skip خۆکارانە ready دەکرێن
                     order.items.forEach(item => {
                         if (item.chefGroup === 'skip') {
                             order.itemStatuses[item.id] = 'ready';
@@ -5631,6 +5602,7 @@
             state.showPartnerCodeModal = false;
             state.pendingPartner = null;
             state.partnerCode = '';
+            // ئەگەر شەریک هەڵنەبژێردرابوو، نرخەکان نەگۆڕدرێن
             render();
         }
 
@@ -5641,6 +5613,8 @@
                 state.orderType = 'partner';
                 state.showPartnerCodeModal = false;
                 state.pendingPartner = null;
+                // ✅ گۆڕینی نرخەکان بۆ نرخی شەریک
+                updatePricesForPartner(state.partner);
                 toast('✅ کۆد پشتڕاست کرایەوە!');
                 render();
             } else {
@@ -5687,6 +5661,61 @@
                 const code = state.partnerCode || '';
                 const padded = code + '_'.repeat(4 - code.length);
                 display.textContent = padded;
+            }
+        }
+
+        // ============================================================
+        // PRICE UPDATE FUNCTIONS
+        // ============================================================
+
+        function updatePricesForPartner(partner) {
+            if (!partner) return;
+            if (state.cart.length === 0) return;
+            
+            let changed = false;
+            state.cart = state.cart.map(item => {
+                if (item.partnerPrices && item.partnerPrices[partner] !== undefined && item.partnerPrices[partner] !== null) {
+                    const newPrice = item.partnerPrices[partner];
+                    if (item.price !== newPrice) {
+                        changed = true;
+                        return { ...item, price: newPrice };
+                    }
+                }
+                return item;
+            });
+            
+            if (changed) {
+                // دوبارە حیسابکردنەوەی کۆی گشتی
+                state.originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+                if (state.discount > 0) {
+                    state.discountAmount = (state.originalTotal * state.discount) / 100;
+                }
+                toast(`🔄 نرخەکان گۆڕدران بۆ نرخی شەریک (${partner.toUpperCase()})`);
+                render();
+            }
+        }
+
+        function resetPricesToDefault() {
+            if (state.cart.length === 0) return;
+            
+            let changed = false;
+            state.cart = state.cart.map(item => {
+                // بگەڕێرەوە بۆ نرخی بنەڕەتی ئایتم
+                const defaultPrice = state.items.find(i => i.id === item.id)?.price || item.price;
+                if (item.price !== defaultPrice) {
+                    changed = true;
+                    return { ...item, price: defaultPrice };
+                }
+                return item;
+            });
+            
+            if (changed) {
+                state.originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+                if (state.discount > 0) {
+                    state.discountAmount = (state.originalTotal * state.discount) / 100;
+                }
+                toast('🔄 نرخەکان گەڕانەوە بۆ نرخی ئاسایی (Sale)');
+                render();
             }
         }
 
@@ -5777,16 +5806,7 @@
 
             // ئەگەر هەموو ئایتمەکان Skip بن => ڕەوتی Skip
             if (allItemsAreSkip) {
-                // 🚫 بۆ ئۆردەری Skip:
-                // - داوای ژمارەی مێز ناکات
-                // - ژمارەی ئۆردەر دروست ناکات
-                // - پوپاپی مێز دەرناکەوێت
-                // - ڕاستەوخۆ سەیڤ دەکرێت
-                // - پڕۆسە یەکسەر تەواو دەبێت
-                // - ناچێت بۆ کاشێر بۆ دوگمەی Complete
-                
                 const uniqueId = generateUniqueOrderId();
-                // 🚫 هیچ order number دروست ناکەین
                 const orderNumber = null;
                 
                 const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
@@ -5808,7 +5828,6 @@
                     discount: state.discount,
                     discountAmount: discountAmount,
                     orderType: 'dine',
-                    // 🚫 مێز بۆ Skip دانابەزێنرێت
                     tableNumber: null,
                     time: now(),
                     shift: getShift(),
@@ -5823,18 +5842,16 @@
                 const order = {
                     uniqueId: uniqueId,
                     ...orderData,
-                    status: 'completed', // ✅ یەکسەر تەواو دەبێت
+                    status: 'completed',
                     itemStatuses: {}
                 };
 
-                // ✅ هەموو ئایتمەکان بە Ready دادەنرێن
                 order.items.forEach(item => {
                     order.itemStatuses[item.id] = 'ready';
                 });
 
                 state.orders.push(order);
                 
-                // 🧹 کۆڕبەکان پاک بکە
                 state.cart = [];
                 state.discount = 0;
                 state.discountAmount = 0;
@@ -5842,8 +5859,6 @@
                 
                 toast(`✅ ئۆردەری خێرا (Skip) سەیڤ کرا! (بەبێ ژمارە و مێز)`);
                 await saveOrdersToFirestore();
-                
-                // 🚫 هیچ چاپکردن و ڕیسێڤتێک نییە
                 render();
                 return;
             }
@@ -5888,7 +5903,6 @@
                 itemStatuses: {}
             };
 
-            // 🔧 ئایتمەکانی skip خۆکارانە ready دەکرێن
             order.items.forEach(item => {
                 if (item.chefGroup === 'skip') {
                     order.itemStatuses[item.id] = 'ready';
