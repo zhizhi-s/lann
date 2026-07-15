@@ -5021,28 +5021,32 @@
                 el.onclick = () => {
                     const previousType = state.orderType;
                     const previousPartner = state.partner;
-                    state.orderType = el.dataset.type;
+                    const newType = el.dataset.type;
                     
-                    // Reset partner if switching away from partner
-                    if (state.orderType !== 'partner') {
+                    state.orderType = newType;
+                    
+                    // ✅ گۆڕینی نرخەکان بە پێی جۆری نوێ
+                    if (newType === 'partner' && state.partner) {
+                        // ئەگەر شەریک هەڵبژێردراوە، نرخەکان بگۆڕە بۆ نرخی شەریک
+                        updatePricesForPartner(state.partner);
+                    } else if (newType !== 'partner' && previousType === 'partner') {
+                        // ئەگەر لە شەریکەوە گەڕایەوە بۆ sale/dine
+                        resetPricesToDefault();
                         state.partner = null;
                         state.partnerCode = '';
-                        // ✅ گەڕاندنەوەی نرخەکان بۆ نرخی ئاسایی (Sale/Dine-In)
-                        if (state.cart.length > 0 && previousType === 'partner') {
-                            state.cart = state.cart.map(item => {
-                                const newPrice = item.price || 0; // نرخی بنەڕەتی (ئاسایی)
-                                return { ...item, price: newPrice };
-                            });
-                            toast('🔄 نرخەکان گەڕانەوە بۆ نرخی ئاسایی (Sale)');
-                        }
+                    } else if (newType !== 'partner') {
+                        // گەڕانەوە بۆ نرخی ئاسایی (ئەگەر نرخەکان گۆڕابوون)
+                        resetPricesToDefault();
+                    }
+                    
+                    // ئەگەر نرخی شەریک هەبێت و جۆری ئۆردەر partner بێت
+                    if (newType === 'partner' && state.partner) {
+                        updatePricesForPartner(state.partner);
+                    }
+                    
+                    if (newType !== 'partner') {
                         state.discount = 0;
                         state.discountAmount = 0;
-                    } else {
-                        // ئەگەر هاتووە بۆ شەریکە، نرخەکان بە پێی شەریک نەگۆڕدرێت تا کۆد پشتڕاست نەکرێتەوە
-                        // بەڵام ئەگەر پێشتر شەریک هەڵبژێردرابوو (partner !== null) نرخەکان بگۆڕدرێت
-                        if (state.partner) {
-                            updatePricesForPartner(state.partner);
-                        }
                     }
                     render();
                 };
