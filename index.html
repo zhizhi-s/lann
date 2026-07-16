@@ -5212,12 +5212,17 @@
                     }
 
                     // ============================================================
+                    // 🔧 FIX: بۆ کاشێری لقی زانکۆ، ژمارەی ئۆردەر نەبێت
+                    // ============================================================
+                    const isZancoBranch = state.branch === 'zanco';
+                    
+                    // ============================================================
                     // 🔧 FIX: پشکنینی تەواوی گرووپی Skip یان تێکەڵ
                     // ============================================================
                     const allItemsAreSkip = state.cart.every(item => item.chefGroup === 'skip');
                     const hasNonSkip = state.cart.some(item => item.chefGroup !== 'skip');
 
-                    // ئەگەر هەموو ئایتمەکان Skip بن => ڕەوتی Skip
+                    // ئەگەر هەموو ئایتمەکان Skip بن => ڕەوتی Skip (بەبێ ژمارە)
                     if (allItemsAreSkip) {
                         const uniqueId = generateUniqueOrderId();
                         const orderNumber = null;
@@ -5282,14 +5287,87 @@
                         return;
                     }
 
-                    // ئەگەر تێکەڵی Skip + هەر شتێکی تر بوو => ڕەوتی ئاسایی
-                    if (state.branch === 'park32' && state.orderType === 'dine') {
+                    // ============================================================
+                    // بۆ لقی زانکۆ: ڕاستەوخۆ سەیڤ بکە بەبێ مێز و بەبێ ژمارەی ئۆردەر
+                    // ============================================================
+                    if (isZancoBranch) {
+                        // بۆ زانکۆ هیچ مێز و ژمارەی ئۆردەرێک پێویست نییە
+                        const uniqueId = generateUniqueOrderId();
+                        const orderNumber = null; // بۆ زانکۆ ژمارە نەبێت
+
+                        const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+                        const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
+                        const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
+
+                        const orderData = {
+                            items: state.cart.map(i => ({ 
+                                id: i.id, 
+                                name: i.name, 
+                                qty: i.qty, 
+                                price: i.price, 
+                                group: i.group, 
+                                image: i.image,
+                                chefGroup: i.chefGroup || 'skip'
+                            })),
+                            total: discountedTotal,
+                            originalTotal: originalTotal,
+                            discount: state.discount,
+                            discountAmount: discountAmount,
+                            orderType: state.orderType,
+                            partner: state.partner,
+                            partnerCode: state.partnerCode,
+                            time: now(),
+                            shift: getShift(),
+                            cashier: state.currentUser,
+                            branch: state.branch,
+                            timestamp: Date.now(),
+                            image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
+                            orderNumber: null // بەبێ ژمارە
+                        };
+
+                        const order = {
+                            uniqueId: uniqueId,
+                            ...orderData,
+                            status: 'completed', // یەکسەر تەواو دەبێت چونکە لقی زانکۆیە
+                            itemStatuses: {}
+                        };
+
+                        // هەموو ئایتمەکان بە Ready دادەنرێن
+                        order.items.forEach(item => {
+                            order.itemStatuses[item.id] = 'ready';
+                        });
+
+                        state.orders.push(order);
+                        
+                        if (state.orderType === 'partner' && state.partner) {
+                            await savePartnerOrderToFirestore(orderData);
+                        }
+                        
+                        state.cart = [];
+                        state.partnerCode = '';
+                        state.discount = 0;
+                        state.discountAmount = 0;
+                        state.previousOrderIds.add(uniqueId);
+                        
+                        toast(`✅ ئۆردەر سەیڤ کرا! (بەبێ ژمارە)`);
+                        await saveOrdersToFirestore();
+                        
+                        // هیچ چاپکردن و ڕیسێڤتێک نییە بۆ زانکۆ
+                        render();
+                        return;
+                    }
+
+                    // ============================================================
+                    // 🔧 FIX: پشکنینی تێکەڵ بۆ 32 پارک
+                    // ============================================================
+                    // ئەگەر تێکەڵی Skip + هەر شتێکی تر بوو => ڕەوتی ئاسایی (تەنها بۆ ٣٢ پارک)
+                    if (state.branch === 'park32' && state.orderType === 'dine' && hasNonSkip) {
                         openTableModal();
                         return;
                     }
 
                     // ============================================================
-                    // ڕەوتی ئاسایی
+                    // ڕەوتی ئاسایی (بۆ ٣٢ پارک)
                     // ============================================================
                     const uniqueId = generateUniqueOrderId();
                     const orderNumber = getSmallestAvailableOrderNumber();
