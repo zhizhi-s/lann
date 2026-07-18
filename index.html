@@ -2696,6 +2696,33 @@
             padding: 8px 12px;
             font-size: 14px;
         }
+        /* زانکۆ - پرێنت بە ڕەنگی جیاواز */
+        .receipt-content.zanco-receipt .header .rest-name {
+            color: #e17055 !important;
+        }
+        .receipt-content.zanco-receipt .header .branch-name {
+            color: #e17055 !important;
+        }
+        .receipt-content.zanco-receipt .total-row .total-amount {
+            color: #e17055 !important;
+        }
+        .receipt-content.zanco-receipt .footer .thanks {
+            color: #e17055 !important;
+        }
+        .receipt-content.zanco-receipt .payment-method {
+            border-color: #e17055 !important;
+        }
+        @media print {
+            .receipt-content.zanco-receipt .header .rest-name,
+            .receipt-content.zanco-receipt .header .branch-name,
+            .receipt-content.zanco-receipt .total-row .total-amount,
+            .receipt-content.zanco-receipt .footer .thanks {
+                color: #000 !important;
+            }
+            .receipt-content.zanco-receipt .payment-method {
+                border-color: #000 !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -3723,19 +3750,23 @@
             `;
         }
 
+        // ============================================================
+        // RECEIPT MODAL - SEPARATE FOR ZANCO AND PARK32
+        // ============================================================
         function renderReceiptModal() {
             if (!state.receiptOrder) return '';
             
             const order = state.receiptOrder;
-            const branchName = order.branch === 'zanco' ? 'زانکۆ' : '٣٢ پارک';
+            const isZanco = order.branch === 'zanco';
+            const branchName = isZanco ? 'زانکۆ' : '٣٢ پارک';
             const restName = 'چێشتخانەی ئایس پۆپ';
             const restPhone = '0750 123 4567';
-            const restAddress = branchName === 'زانکۆ' ? 'شەقامی زانکۆ، هەولێر' : '٣٢ پارک، هەولێر';
+            const restAddress = isZanco ? 'شەقامی زانکۆ، هەولێر' : '٣٢ پارک، هەولێر';
             const logo = 'https://i.ibb.co/5g9D2kBt/file-0000000075187246ad73011f5eda1ff3.png';
             
             const orderTypeLabel = order.orderType === 'dine' ? 'ساڵە' : 'سەفەری';
             const tableInfo = order.tableNumber ? `مێز ${order.tableNumber}` : '';
-            const receiptNo = String(order.orderNumber).padStart(4, '0');
+            const receiptNo = isZanco ? 'ZN' + String(Date.now()).slice(-6) : String(order.orderNumber || '0000').padStart(4, '0');
             
             const dateObj = new Date(order.timestamp);
             const dateStr = dateObj.toLocaleDateString('ku');
@@ -3758,10 +3789,13 @@
             
             const paymentMethod = order.partner ? `شەریکە (${order.partner.toUpperCase()})` : 'نەقد';
 
+            // زانکۆ پرێنت بە کڵاسی تایبەت
+            const zancoClass = isZanco ? 'zanco-receipt' : '';
+
             return `
                 <div class="receipt-overlay" id="receipt-overlay">
                     <div class="receipt-modal">
-                        <div class="receipt-content" id="receipt-content">
+                        <div class="receipt-content ${zancoClass}" id="receipt-content">
                             <div class="header">
                                 <img src="${logo}" class="logo-receipt" onerror="this.style.display='none'" />
                                 <div class="rest-name">${restName}</div>
@@ -5196,8 +5230,14 @@
                 };
             });
 
+            // ============================================================
+            // SAVE ORDER - FIXED PRINTING BUG (Chrome Kiosk Printing)
+            // Separated for ZANCO and PARK32 with different receipt styles
+            // ============================================================
             document.querySelectorAll('[data-action="save-order"]').forEach(el => {
-                el.onclick = async () => {
+                el.onclick = async function(e) {
+                    e.preventDefault();
+                    
                     if (!state.cart.length) {
                         toast('تکایە لاپەڕەکە پڕ بکە', true);
                         return;
@@ -5211,22 +5251,13 @@
                         return;
                     }
 
-                    // ============================================================
-                    // 🔧 FIX: بۆ کاشێری لقی زانکۆ، ژمارەی ئۆردەر نەبێت
-                    // ============================================================
                     const isZancoBranch = state.branch === 'zanco';
-                    
-                    // ============================================================
-                    // 🔧 FIX: پشکنینی تەواوی گرووپی Skip یان تێکەڵ
-                    // ============================================================
                     const allItemsAreSkip = state.cart.every(item => item.chefGroup === 'skip');
                     const hasNonSkip = state.cart.some(item => item.chefGroup !== 'skip');
 
-                    // ئەگەر هەموو ئایتمەکان Skip بن => ڕەوتی Skip (بەبێ ژمارە)
+                    // Skip order handling
                     if (allItemsAreSkip) {
                         const uniqueId = generateUniqueOrderId();
-                        const orderNumber = null;
-                        
                         const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
                         const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
                         const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
@@ -5288,13 +5319,10 @@
                     }
 
                     // ============================================================
-                    // بۆ لقی زانکۆ: ڕاستەوخۆ سەیڤ بکە بەبێ مێز و بەبێ ژمارەی ئۆردەر
+                    // ZANCO BRANCH - Print with ZANCO style (orange theme, no order number)
                     // ============================================================
                     if (isZancoBranch) {
-                        // بۆ زانکۆ هیچ مێز و ژمارەی ئۆردەرێک پێویست نییە
                         const uniqueId = generateUniqueOrderId();
-                        const orderNumber = null; // بۆ زانکۆ ژمارە نەبێت
-
                         const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
                         const discountedTotal = state.discount > 0 ? originalTotal - (originalTotal * state.discount) / 100 : originalTotal;
                         const discountAmount = state.discount > 0 ? (originalTotal * state.discount) / 100 : 0;
@@ -5322,17 +5350,16 @@
                             branch: state.branch,
                             timestamp: Date.now(),
                             image: state.cart[0]?.image || 'https://i.ibb.co/MkN7kVY2/Tlogo-500.webp',
-                            orderNumber: null // بەبێ ژمارە
+                            orderNumber: null
                         };
 
                         const order = {
                             uniqueId: uniqueId,
                             ...orderData,
-                            status: 'completed', // یەکسەر تەواو دەبێت چونکە لقی زانکۆیە
+                            status: 'completed',
                             itemStatuses: {}
                         };
 
-                        // هەموو ئایتمەکان بە Ready دادەنرێن
                         order.items.forEach(item => {
                             order.itemStatuses[item.id] = 'ready';
                         });
@@ -5343,32 +5370,47 @@
                             await savePartnerOrderToFirestore(orderData);
                         }
                         
+                        const receiptOrder = { ...order };
                         state.cart = [];
                         state.partnerCode = '';
                         state.discount = 0;
                         state.discountAmount = 0;
                         state.previousOrderIds.add(uniqueId);
                         
-                        toast(`✅ ئۆردەر سەیڤ کرا! (بەبێ ژمارە)`);
+                        toast(`✅ ئۆردەر سەیڤ کرا! (زانکۆ)`);
                         await saveOrdersToFirestore();
                         
-                        // هیچ چاپکردن و ڕیسێڤتێک نییە بۆ زانکۆ
+                        // ============================================================
+                        // ZANCO PRINTING - Same fix with different receipt style
+                        // ============================================================
+                        state.receiptPrinted = false;
+                        state.receiptPrintTimeout = null;
+                        state.showReceipt = true;
+                        state.receiptOrder = receiptOrder;
+                        
                         render();
+                        
+                        setTimeout(() => {
+                            if (state.showReceipt && state.receiptOrder) {
+                                state.receiptPrinted = true;
+                                window.print();
+                                setTimeout(() => {
+                                    state.showReceipt = false;
+                                    state.receiptOrder = null;
+                                    render();
+                                }, 3000);
+                            }
+                        }, 500);
                         return;
                     }
 
-                    // ============================================================
-                    // 🔧 FIX: پشکنینی تێکەڵ بۆ 32 پارک
-                    // ============================================================
-                    // ئەگەر تێکەڵی Skip + هەر شتێکی تر بوو => ڕەوتی ئاسایی (تەنها بۆ ٣٢ پارک)
+                    // Park32 branch with dine - open table modal
                     if (state.branch === 'park32' && state.orderType === 'dine' && hasNonSkip) {
                         openTableModal();
                         return;
                     }
 
-                    // ============================================================
-                    // ڕەوتی ئاسایی (بۆ ٣٢ پارک)
-                    // ============================================================
+                    // Normal order for Park32 (takeaway or dine with no non-skip items)
                     const uniqueId = generateUniqueOrderId();
                     const orderNumber = getSmallestAvailableOrderNumber();
 
@@ -5435,22 +5477,28 @@
                     toast(`✅ ئۆردەر #${orderNumber} سەیڤ کرا!`);
                     await saveOrdersToFirestore();
                     
+                    // ============================================================
+                    // PARK32 PRINTING FIX: Reset any stuck print state and print immediately
+                    // ============================================================
                     if (state.orderType === 'dine' || state.orderType === 'takeaway') {
-                        state.receiptOrder = receiptOrder;
-                        state.showReceipt = true;
                         state.receiptPrinted = false;
+                        state.receiptPrintTimeout = null;
+                        state.showReceipt = true;
+                        state.receiptOrder = receiptOrder;
+                        
                         render();
+                        
                         setTimeout(() => {
-                            if (!state.receiptPrinted) {
+                            if (state.showReceipt && state.receiptOrder) {
                                 state.receiptPrinted = true;
                                 window.print();
                                 setTimeout(() => {
                                     state.showReceipt = false;
                                     state.receiptOrder = null;
                                     render();
-                                }, 500);
+                                }, 3000);
                             }
-                        }, 300);
+                        }, 500);
                     }
                 };
             });
@@ -5684,7 +5732,6 @@
             state.showPartnerCodeModal = false;
             state.pendingPartner = null;
             state.partnerCode = '';
-            // ئەگەر شەریک هەڵنەبژێردرابوو، نرخەکان نەگۆڕدرێن
             render();
         }
 
@@ -5695,7 +5742,6 @@
                 state.orderType = 'partner';
                 state.showPartnerCodeModal = false;
                 state.pendingPartner = null;
-                // ✅ گۆڕینی نرخەکان بۆ نرخی شەریک
                 updatePricesForPartner(state.partner);
                 toast('✅ کۆد پشتڕاست کرایەوە!');
                 render();
@@ -5767,7 +5813,6 @@
             });
             
             if (changed) {
-                // دوبارە حیسابکردنەوەی کۆی گشتی
                 state.originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
                 if (state.discount > 0) {
                     state.discountAmount = (state.originalTotal * state.discount) / 100;
@@ -5782,7 +5827,6 @@
             
             let changed = false;
             state.cart = state.cart.map(item => {
-                // بگەڕێرەوە بۆ نرخی بنەڕەتی ئایتم
                 const defaultPrice = state.items.find(i => i.id === item.id)?.price || item.price;
                 if (item.price !== defaultPrice) {
                     changed = true;
@@ -5880,13 +5924,9 @@
                 return;
             }
 
-            // ============================================================
-            // 🔧 FIX: پشکنینی تەواوی گرووپی Skip یان تێکەڵ (بۆ سەیڤ بە مێز)
-            // ============================================================
             const allItemsAreSkip = state.cart.every(item => item.chefGroup === 'skip');
             const hasNonSkip = state.cart.some(item => item.chefGroup !== 'skip');
 
-            // ئەگەر هەموو ئایتمەکان Skip بن => ڕەوتی Skip
             if (allItemsAreSkip) {
                 const uniqueId = generateUniqueOrderId();
                 const orderNumber = null;
@@ -5945,7 +5985,6 @@
                 return;
             }
 
-            // ئەگەر تێکەڵی Skip + هەر شتێکی تر بوو => ڕەوتی ئاسایی
             const uniqueId = generateUniqueOrderId();
             const orderNumber = getSmallestAvailableOrderNumber();
             
@@ -6006,21 +6045,27 @@
             toast(`✅ ئۆردەر #${orderNumber} بۆ مێز ${tableNumber} سەیڤ کرا!`);
             await saveOrdersToFirestore();
             
-            state.receiptOrder = receiptOrder;
-            state.showReceipt = true;
+            // ============================================================
+            // PARK32 PRINTING FIX: Reset any stuck print state and print immediately
+            // ============================================================
             state.receiptPrinted = false;
+            state.receiptPrintTimeout = null;
+            state.showReceipt = true;
+            state.receiptOrder = receiptOrder;
+            
             render();
+            
             setTimeout(() => {
-                if (!state.receiptPrinted) {
+                if (state.showReceipt && state.receiptOrder) {
                     state.receiptPrinted = true;
                     window.print();
                     setTimeout(() => {
                         state.showReceipt = false;
                         state.receiptOrder = null;
                         render();
-                    }, 500);
+                    }, 3000);
                 }
-            }, 300);
+            }, 500);
         }
 
         function showReceiptForOrder(order) {
@@ -6098,7 +6143,8 @@
             originalTotal: 0,
             showReceipt: false,
             receiptOrder: null,
-            receiptPrinted: false
+            receiptPrinted: false,
+            receiptPrintTimeout: null
         };
 
         // ============================================================
