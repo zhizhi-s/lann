@@ -4241,14 +4241,18 @@
                 </span>
             ` : '';
 
-            const discountButtons = `
-                <div class="discount-buttons">
-                    <span class="label">🏷️ داشکان:</span>
-                    <button class="btn-discount ${state.discount === 30 ? 'active' : ''}" data-action="set-discount" data-percent="30">%30</button>
-                    <button class="btn-discount ${state.discount === 50 ? 'active' : ''}" data-action="set-discount" data-percent="50">%50</button>
-                    ${state.discount > 0 ? `<button class="btn-discount" data-action="set-discount" data-percent="0" style="background:#e2e8f0;color:#1a1a2e;box-shadow:none;">✕ لابردن</button>` : ''}
-                </div>
-            `;
+            // ڕێگەدان بە داشکان تەنها بۆ ساڵە و سەفەری
+            let discountButtons = '';
+            if (state.orderType === 'dine' || state.orderType === 'takeaway') {
+                discountButtons = `
+                    <div class="discount-buttons">
+                        <span class="label">🏷️ داشکان:</span>
+                        <button class="btn-discount ${state.discount === 30 ? 'active' : ''}" data-action="set-discount" data-percent="30">%30</button>
+                        <button class="btn-discount ${state.discount === 50 ? 'active' : ''}" data-action="set-discount" data-percent="50">%50</button>
+                        ${state.discount > 0 ? `<button class="btn-discount" data-action="set-discount" data-percent="0" style="background:#e2e8f0;color:#1a1a2e;box-shadow:none;">✕ لابردن</button>` : ''}
+                    </div>
+                `;
+            }
 
             let readyOrdersHtml = '';
             if (state.branch === 'park32') {
@@ -4321,7 +4325,7 @@
                                 ${partnerInfo}
                             </div>
 
-                            ${state.orderType !== 'partner' ? discountButtons : ''}
+                            ${discountButtons}
 
                             <div class="order-list" id="cart-list">
                                 ${cartHtml || '<p style="color:#94a3b8;text-align:center;padding:20px;">تا ئێستا هیچ شتێک زیاد نەکراوە</p>'}
@@ -5320,6 +5324,7 @@
 
                     // ============================================================
                     // ZANCO BRANCH - Print with ZANCO style (orange theme, no order number)
+                    // ONLY for Dine-in and Takeaway orders. Partner orders do NOT print.
                     // ============================================================
                     if (isZancoBranch) {
                         const uniqueId = generateUniqueOrderId();
@@ -5381,26 +5386,33 @@
                         await saveOrdersToFirestore();
                         
                         // ============================================================
-                        // ZANCO PRINTING - Same fix with different receipt style
+                        // ZANCO PRINTING: ONLY print for Dine-in and Takeaway orders.
+                        // Partner orders do NOT trigger the receipt.
                         // ============================================================
-                        state.receiptPrinted = false;
-                        state.receiptPrintTimeout = null;
-                        state.showReceipt = true;
-                        state.receiptOrder = receiptOrder;
+                        const isDineOrTakeaway = state.orderType === 'dine' || state.orderType === 'takeaway';
                         
-                        render();
-                        
-                        setTimeout(() => {
-                            if (state.showReceipt && state.receiptOrder) {
-                                state.receiptPrinted = true;
-                                window.print();
-                                setTimeout(() => {
-                                    state.showReceipt = false;
-                                    state.receiptOrder = null;
-                                    render();
-                                }, 3000);
-                            }
-                        }, 500);
+                        if (isDineOrTakeaway) {
+                            state.receiptPrinted = false;
+                            state.receiptPrintTimeout = null;
+                            state.showReceipt = true;
+                            state.receiptOrder = receiptOrder;
+                            
+                            render();
+                            
+                            setTimeout(() => {
+                                if (state.showReceipt && state.receiptOrder) {
+                                    state.receiptPrinted = true;
+                                    window.print();
+                                    setTimeout(() => {
+                                        state.showReceipt = false;
+                                        state.receiptOrder = null;
+                                        render();
+                                    }, 3000);
+                                }
+                            }, 500);
+                        }
+                        // For partner orders, just render without showing receipt.
+                        // No else needed because we already showed the toast above.
                         return;
                     }
 
