@@ -1395,7 +1395,6 @@
             display: none;
         }
         .partner-code-modal .modal .code-error.show { display: block; }
-        /* Numpad buttons for partner code - BIGGER */
         .partner-code-modal .modal .numpad-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -1518,7 +1517,6 @@
             font-size: 11px;
             padding: 2px 0;
         }
-        /* گەورەترکردنی دوگمەکانی ژمارەکان */
         .table-modal .modal .table-buttons-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -1567,7 +1565,6 @@
             padding: 10px 12px;
             font-size: 14px;
         }
-        /* بۆکسی داخستن بە هەمان شێوە */
         .table-modal .modal .close-btn {
             float: left;
             background: none;
@@ -2089,7 +2086,6 @@
             .btn { font-size: 15px; padding: 12px 20px; }
             table { font-size: 11px; }
             table th, table td { padding: 6px 4px; }
-            /* مۆبایل بۆ دوگمەکانی مێز */
             .table-modal .modal .table-buttons-grid {
                 grid-template-columns: repeat(5, 1fr);
                 gap: 4px;
@@ -2235,7 +2231,6 @@
             .btn { font-size: 13px; padding: 10px 16px; }
             .modal { padding: 12px; }
             .modal h3 { font-size: 18px; }
-            /* مۆبایل بچووک بۆ دوگمەکانی مێز */
             .table-modal .modal .table-buttons-grid {
                 grid-template-columns: repeat(4, 1fr);
                 gap: 3px;
@@ -2696,7 +2691,6 @@
             padding: 8px 12px;
             font-size: 14px;
         }
-        /* زانکۆ - پرێنت بە ڕەنگی جیاواز */
         .receipt-content.zanco-receipt .header .rest-name {
             color: #e17055 !important;
         }
@@ -3355,7 +3349,7 @@
         }
 
         // ============================================================
-        // ORDERS FUNCTIONS
+        // FIXED: ORDERS FUNCTIONS - ئۆردەرەکان بە شێوەی لایڤ
         // ============================================================
 
         function isOrderFullyReady(order) {
@@ -3405,10 +3399,12 @@
                 return;
             }
             if (order.branch !== 'park32') return;
+            
             if (!isOrderFullyReady(order)) {
                 toast('تکایە چاوەڕێ بکە هەتا هەموو ئایتمەکان ئامادە بن!', true);
                 return;
             }
+            
             order.status = 'completed';
             order.completedAt = new Date().toISOString();
             if (order.tableNumber) {
@@ -3417,11 +3413,12 @@
             if (order.orderNumber) {
                 state.usedOrderNumbers.delete(order.orderNumber);
             }
+            
             await saveOrdersToFirestore();
-            render();
             toast(`✅ ئۆردەر #${order.orderNumber} تەواو کرا!`);
         }
 
+        // FIXED: Load orders from Firestore with proper live updates
         function loadOrdersFromFirestore() {
             if (state.unsubscribeOrders) {
                 state.unsubscribeOrders();
@@ -3433,9 +3430,7 @@
                         const data = docSnapshot.data();
                         const ordersData = data.orders || [];
                         
-                        const oldOrderIds = new Set(state.orders.map(o => o.uniqueId));
-                        
-                        const newOrders = [];
+                        // Process all orders without filtering
                         const processedOrders = ordersData.map(o => {
                             if (!o.uniqueId) {
                                 o.uniqueId = generateUniqueOrderId();
@@ -3450,13 +3445,21 @@
                                     }
                                 });
                             }
-                            if (!oldOrderIds.has(o.uniqueId) && o.status !== 'completed') {
-                                newOrders.push(o);
-                            }
                             return o;
                         });
 
+                        // Check for new orders before updating state
+                        const previousOrderIds = state.previousOrderIds || new Set();
+                        const newOrders = processedOrders.filter(o => 
+                            !previousOrderIds.has(o.uniqueId) && 
+                            o.status !== 'completed' && 
+                            o.branch === 'park32'
+                        );
+
+                        // Update state with all orders
                         state.orders = processedOrders;
+                        state.previousOrderIds = new Set(processedOrders.map(o => o.uniqueId));
+                        
                         refreshUsedOrderNumbers();
                         refreshUsedTables();
                         
@@ -3468,8 +3471,11 @@
                         }
                         
                         checkAndApplyResets();
+                        
+                        // Render immediately to show all updates
                         render();
 
+                        // Play notification for new orders
                         if (state.currentPage === 'chef' && newOrders.length > 0 && state.isSoundEnabled) {
                             const ordersFromPark32 = newOrders.filter(order => order.branch === 'park32');
                             
@@ -3503,8 +3509,6 @@
                                 }
                             }
                         }
-
-                        state.previousOrderIds = new Set(state.orders.map(o => o.uniqueId));
                     }
                 }, (error) => {
                     console.error('Error loading orders:', error);
@@ -3549,19 +3553,27 @@
             }
         }
 
+        // FIXED: Save orders to Firestore
         async function saveOrdersToFirestore() {
             try {
+                const ordersToSave = state.orders.map(o => ({
+                    ...o,
+                    itemStatuses: o.itemStatuses || {}
+                }));
+                
                 await updateDoc(docRef, {
-                    orders: state.orders,
+                    orders: ordersToSave,
                     lastUpdated: new Date().toISOString()
                 });
                 refreshUsedOrderNumbers();
                 refreshUsedTables();
             } catch (error) {
                 console.error('Error saving orders:', error);
+                toast('هەڵە لە سەیڤکردنی ئۆردەرەکان', true);
             }
         }
 
+        // FIXED: Update item status with proper flow
         async function updateItemStatus(uniqueId, itemId, newStatus) {
             const order = findOrderByUniqueId(uniqueId);
             if (!order) {
@@ -3569,6 +3581,7 @@
                 return;
             }
             if (order.branch !== 'park32') return;
+            
             if (!order.itemStatuses) {
                 order.itemStatuses = {};
                 order.items.forEach(item => {
@@ -3579,18 +3592,22 @@
                     }
                 });
             }
+            
             const currentStatus = order.itemStatuses[itemId] || 'pending';
-            const statusFlow = ['pending', 'preparing', 'ready'];
-            const currentIndex = statusFlow.indexOf(currentStatus);
-            const newIndex = statusFlow.indexOf(newStatus);
-            if (newIndex > currentIndex + 1 || newIndex < currentIndex) {
-                toast('ناتوانیت دۆخی ئایتم بگۆڕیت', true);
+            
+            // Only prevent going back from ready
+            if (currentStatus === 'ready' && newStatus !== 'ready') {
+                toast('ناتوانیت دۆخی ئامادە کراوە بگۆڕیت', true);
                 return;
             }
+            
+            // Allow any forward status change
             order.itemStatuses[itemId] = newStatus;
             updateOrderOverallStatus(order);
+            
+            // Save to Firestore - onSnapshot will trigger render
             await saveOrdersToFirestore();
-            render();
+            
             const itemName = order.items.find(i => i.id === itemId)?.name || 'ئایتم';
             toast(`🔄 ${itemName} گۆڕدرا بۆ: ${newStatus}`);
         }
@@ -3599,6 +3616,7 @@
         // RENDER FUNCTIONS
         // ============================================================
 
+        // FIXED: Render chef view
         function renderChef() {
             const labels = { grill: 'بەرگر', pizza: 'پیتزا', gas: 'گەس', cashier: 'کاشێر' };
             const roleLabel = labels[state.chefView] || 'شێف';
@@ -3789,7 +3807,6 @@
             
             const paymentMethod = order.partner ? `شەریکە (${order.partner.toUpperCase()})` : 'نەقد';
 
-            // زانکۆ پرێنت بە کڵاسی تایبەت
             const zancoClass = isZanco ? 'zanco-receipt' : '';
 
             return `
@@ -4138,6 +4155,7 @@
             `;
         }
 
+        // FIXED: Render cashier view with proper ready orders
         function renderCashier() {
             let filteredItems = state.items;
             
@@ -4149,7 +4167,6 @@
             filteredItems = filteredItems.filter(item => item.branch === currentBranch);
 
             const itemsHtml = filteredItems.map(item => {
-                // نرخی دروست بۆ پیشاندان لەسەر کارتەکە (بە پێی جۆری ئۆردەر)
                 let displayPrice = item.price;
                 if (state.orderType === 'partner' && state.partner && item.partnerPrices && item.partnerPrices[state.partner] !== undefined && item.partnerPrices[state.partner] !== null) {
                     displayPrice = item.partnerPrices[state.partner];
@@ -4241,7 +4258,6 @@
                 </span>
             ` : '';
 
-            // ڕێگەدان بە داشکان تەنها بۆ ساڵە و سەفەری
             let discountButtons = '';
             if (state.orderType === 'dine' || state.orderType === 'takeaway') {
                 discountButtons = `
@@ -4254,6 +4270,7 @@
                 `;
             }
 
+            // FIXED: Get all ready orders (not completed) with proper filtering
             let readyOrdersHtml = '';
             if (state.branch === 'park32') {
                 const readyOrders = state.orders.filter(o => 
@@ -4262,6 +4279,8 @@
                     o.status !== 'completed' &&
                     isSameBusinessDay(o.timestamp, new Date())
                 );
+                
+                readyOrders.sort((a, b) => (a.orderNumber || 0) - (b.orderNumber || 0));
                 
                 readyOrdersHtml = readyOrders.length ? readyOrders.map(o => {
                     const items = o.items.map(i => `${i.name} ×${i.qty}`).join('، ');
@@ -4363,6 +4382,10 @@
             `;
         }
 
+        // ============================================================
+        // MANAGER - REMOVED "شەریکەکان" TAB (partners management)
+        // Keep "شەریکە" tab (partner detail) unchanged
+        // ============================================================
         function renderManager() {
             checkAndApplyResets();
             
@@ -4432,6 +4455,7 @@
                 partnerOrders = partnerOrders.filter(o => o.branch === state.branchFilter);
             }
 
+            // PARTNER DETAIL SECTION - KEPT UNCHANGED (تەنها شەریکە دیتەیڵ)
             const partnerDetailHtml = `
                 <div class="dashboard" style="margin-top:16px;">
                     <h3 style="font-size:18px;margin-bottom:10px;">📊 دیتەیڵی شەریکەکان <span class="live-indicator"></span> لایڤ</h3>
@@ -4553,6 +4577,80 @@
                 </div>
             `).join('') : '<p style="color:#94a3b8;text-align:center;padding:16px;">هیچ ئۆردەرێکی ساڵە و سەفەری نییە</p>';
 
+            // --- Chef Orders Management Section ---
+            const chefOrders = state.orders.filter(o => 
+                o.branch === 'park32' && 
+                o.status !== 'completed' &&
+                o.items.some(item => item.chefGroup !== 'skip')
+            );
+
+            const pizzaOrders = chefOrders.filter(o => o.items.some(item => item.chefGroup === 'پیتزا'));
+            const burgerOrders = chefOrders.filter(o => o.items.some(item => item.chefGroup === 'بەرگر'));
+            const gasOrders = chefOrders.filter(o => o.items.some(item => item.chefGroup === 'گەس'));
+
+            const renderChefGroupOrders = (orders, groupName, emoji) => {
+                if (orders.length === 0) {
+                    return `<p style="color:#94a3b8;text-align:center;padding:10px;font-size:13px;">هیچ ئۆردەرێکی ${groupName} نییە</p>`;
+                }
+
+                const sortedOrders = [...orders].sort((a, b) => a.timestamp - b.timestamp);
+
+                return sortedOrders.map(o => {
+                    const items = o.items.filter(item => item.chefGroup === groupName);
+                    const itemsText = items.map(i => `${i.name} ×${i.qty}`).join('، ');
+                    const isReady = o.status === 'ready';
+                    const isFullyReady = isOrderFullyReady(o);
+                    
+                    const groupItemsReady = items.every(item => {
+                        const status = o.itemStatuses?.[item.id] || 'pending';
+                        return status === 'ready';
+                    });
+
+                    return `
+                        <div class="chef-order-mini" style="border-right-color: ${isReady ? '#00b894' : '#6c5ce7'};">
+                            <span class="order-id">#${o.orderNumber}</span>
+                            <span class="order-items">${itemsText}</span>
+                            ${o.tableNumber ? `<span style="font-size:11px;color:#6c5ce7;font-weight:600;">🪑 مێز ${o.tableNumber}</span>` : ''}
+                            <span class="order-time">${o.time}</span>
+                            <span class="order-status-badge ${isReady ? 'ready' : ''}" style="${isReady ? '' : 'background:#fdcb6e;color:#1a1a2e;'}">
+                                ${isReady ? '✅ ئامادە کراوە' : (isFullyReady ? '🔄 چاوەڕوانی تەواو' : '⏳ ئامادە دەکرێت')}
+                            </span>
+                            ${!isReady ? `
+                                <button class="btn btn-sm btn-danger" data-action="admin-delete-chef-order" data-unique-id="${o.uniqueId}" style="font-size:11px;padding:4px 10px;">🗑️ سڕینەوە</button>
+                            ` : `
+                                <span style="font-size:11px;color:#00b894;font-weight:600;">✅ Ready</span>
+                                <button class="btn btn-sm btn-danger" data-action="admin-delete-chef-order" data-unique-id="${o.uniqueId}" style="font-size:11px;padding:4px 10px;">🗑️ سڕینەوە</button>
+                            `}
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            const chefOrdersHtml = `
+                <div class="dashboard" style="margin-top:16px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+                        <h3 style="font-size:18px;margin:0;">👨‍🍳 بەڕێوەبردنی ئۆردەری شێفەکان</h3>
+                        <button class="btn btn-danger" id="reset-chef-orders-btn" style="width:auto;padding:8px 20px;font-size:14px;background:#e17055;">🔄 Reset / Clear Orders</button>
+                    </div>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:10px;">
+                        <div class="chef-orders-column" style="border-color:#e17055;">
+                            <div class="column-title" style="color:#e17055;border-color:#e17055;">🍕 پیتزا (${pizzaOrders.length})</div>
+                            ${renderChefGroupOrders(pizzaOrders, 'پیتزا', '🍕')}
+                        </div>
+                        <div class="chef-orders-column" style="border-color:#fdcb6e;">
+                            <div class="column-title" style="color:#fdcb6e;border-color:#fdcb6e;">🍔 بەرگر (${burgerOrders.length})</div>
+                            ${renderChefGroupOrders(burgerOrders, 'بەرگر', '🍔')}
+                        </div>
+                        <div class="chef-orders-column" style="border-color:#74b9ff;">
+                            <div class="column-title" style="color:#74b9ff;border-color:#74b9ff;">🥩 گەس (${gasOrders.length})</div>
+                            ${renderChefGroupOrders(gasOrders, 'گەس', '🥩')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // --- MANAGER MENU - removed the "شەریکەکان" (partners) tab ---
             return `
                 <div>
                     <div class="header-bar">
@@ -4572,8 +4670,8 @@
                     <div class="manager-menu">
                         <button class="${state.managerTab === 'dashboard' ? 'active' : ''}" data-action="manager-tab" data-tab="dashboard">📊 داشبۆرد</button>
                         <button class="${state.managerTab === 'items' ? 'active' : ''}" data-action="manager-tab" data-tab="items">🛒 ئایتمەکان</button>
-                        <button class="${state.managerTab === 'partners' ? 'active' : ''}" data-action="manager-tab" data-tab="partners">🤝 شەریکەکان</button>
                         <button class="${state.managerTab === 'partner-detail' ? 'active' : ''}" data-action="manager-tab" data-tab="partner-detail">📊 شەریکە</button>
+                        <button class="${state.managerTab === 'chef-orders' ? 'active' : ''}" data-action="manager-tab" data-tab="chef-orders">👨‍🍳 شێفەکان</button>
                     </div>
 
                     ${state.managerTab === 'dashboard' ? `
@@ -4699,27 +4797,9 @@
                         </div>
                     ` : ''}
 
-                    ${state.managerTab === 'partners' ? `
-                        <div class="dashboard">
-                            <h3 style="font-size:18px;margin-bottom:10px;">🤝 بەڕێوەبردنی شەریکەکان</h3>
-                            <div class="partner-grid">
-                                ${['talabat', 'zuu', 'wade', 'leezu'].map(p => {
-                                    const img = state.partnerImages[p] || PARTNER_LOGOS[p] || '';
-                                    const display = img ? `<img src="${img}" class="partner-logo" style="object-fit:contain;background:white;padding:4px;" onerror="this.style.display='none';" />` :
-                                        `<div class="partner-logo-placeholder">📷</div>`;
-                                    return `
-                                        <div class="partner-card">
-                                            ${display}
-                                            <div style="font-weight:600;margin-top:6px;font-size:14px;">${p.toUpperCase()}</div>
-                                            <button class="btn btn-sm btn-primary" data-action="upload-partner" data-partner="${p}" style="margin-top:6px;font-size:12px;padding:6px 12px;">📤 بارکردن</button>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-
                     ${state.managerTab === 'partner-detail' ? partnerDetailHtml : ''}
+
+                    ${state.managerTab === 'chef-orders' ? chefOrdersHtml : ''}
                 </div>
             `;
         }
@@ -5063,21 +5143,16 @@
                     
                     state.orderType = newType;
                     
-                    // ✅ گۆڕینی نرخەکان بە پێی جۆری نوێ
                     if (newType === 'partner' && state.partner) {
-                        // ئەگەر شەریک هەڵبژێردراوە، نرخەکان بگۆڕە بۆ نرخی شەریک
                         updatePricesForPartner(state.partner);
                     } else if (newType !== 'partner' && previousType === 'partner') {
-                        // ئەگەر لە شەریکەوە گەڕایەوە بۆ sale/dine
                         resetPricesToDefault();
                         state.partner = null;
                         state.partnerCode = '';
                     } else if (newType !== 'partner') {
-                        // گەڕانەوە بۆ نرخی ئاسایی (ئەگەر نرخەکان گۆڕابوون)
                         resetPricesToDefault();
                     }
                     
-                    // ئەگەر نرخی شەریک هەبێت و جۆری ئۆردەر partner بێت
                     if (newType === 'partner' && state.partner) {
                         updatePricesForPartner(state.partner);
                     }
@@ -5094,7 +5169,6 @@
                 el.onclick = () => {
                     const partner = el.dataset.partner;
                     state.partnerCode = '';
-                    // ✅ گۆڕینی نرخەکان بۆ نرخی شەریک کاتێک کۆد دەکرێتەوە
                     openPartnerCodeModal(partner);
                 };
             });
@@ -5172,7 +5246,6 @@
                     const item = state.items.find(i => i.id === id);
                     if (item) {
                         const existing = state.cart.find(i => i.id === id);
-                        // نرخی دروست بە پێی جۆری ئۆردەر و شەریک
                         let priceToUse = item.price;
                         if (state.orderType === 'partner' && state.partner && item.partnerPrices && item.partnerPrices[state.partner] !== undefined && item.partnerPrices[state.partner] !== null) {
                             priceToUse = item.partnerPrices[state.partner];
@@ -5180,7 +5253,6 @@
                         
                         if (existing) {
                             existing.qty += 1;
-                            // نرخەکە نوێ بکە (ئەگەر نرخ گۆڕابێت)
                             existing.price = priceToUse;
                         } else {
                             state.cart.push({ ...item, price: priceToUse, qty: 1 });
@@ -5234,10 +5306,7 @@
                 };
             });
 
-            // ============================================================
-            // SAVE ORDER - FIXED PRINTING BUG (Chrome Kiosk Printing)
-            // Separated for ZANCO and PARK32 with different receipt styles
-            // ============================================================
+            // FIXED: Save order with proper handling
             document.querySelectorAll('[data-action="save-order"]').forEach(el => {
                 el.onclick = async function(e) {
                     e.preventDefault();
@@ -5259,7 +5328,6 @@
                     const allItemsAreSkip = state.cart.every(item => item.chefGroup === 'skip');
                     const hasNonSkip = state.cart.some(item => item.chefGroup !== 'skip');
 
-                    // Skip order handling
                     if (allItemsAreSkip) {
                         const uniqueId = generateUniqueOrderId();
                         const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
@@ -5322,10 +5390,6 @@
                         return;
                     }
 
-                    // ============================================================
-                    // ZANCO BRANCH - Print with ZANCO style (orange theme, no order number)
-                    // ONLY for Dine-in and Takeaway orders. Partner orders do NOT print.
-                    // ============================================================
                     if (isZancoBranch) {
                         const uniqueId = generateUniqueOrderId();
                         const originalTotal = state.cart.reduce((sum, i) => sum + i.price * i.qty, 0);
@@ -5385,10 +5449,6 @@
                         toast(`✅ ئۆردەر سەیڤ کرا! (زانکۆ)`);
                         await saveOrdersToFirestore();
                         
-                        // ============================================================
-                        // ZANCO PRINTING: ONLY print for Dine-in and Takeaway orders.
-                        // Partner orders do NOT trigger the receipt.
-                        // ============================================================
                         const isDineOrTakeaway = state.orderType === 'dine' || state.orderType === 'takeaway';
                         
                         if (isDineOrTakeaway) {
@@ -5411,18 +5471,14 @@
                                 }
                             }, 500);
                         }
-                        // For partner orders, just render without showing receipt.
-                        // No else needed because we already showed the toast above.
                         return;
                     }
 
-                    // Park32 branch with dine - open table modal
                     if (state.branch === 'park32' && state.orderType === 'dine' && hasNonSkip) {
                         openTableModal();
                         return;
                     }
 
-                    // Normal order for Park32 (takeaway or dine with no non-skip items)
                     const uniqueId = generateUniqueOrderId();
                     const orderNumber = getSmallestAvailableOrderNumber();
 
@@ -5489,9 +5545,6 @@
                     toast(`✅ ئۆردەر #${orderNumber} سەیڤ کرا!`);
                     await saveOrdersToFirestore();
                     
-                    // ============================================================
-                    // PARK32 PRINTING FIX: Reset any stuck print state and print immediately
-                    // ============================================================
                     if (state.orderType === 'dine' || state.orderType === 'takeaway') {
                         state.receiptPrinted = false;
                         state.receiptPrintTimeout = null;
@@ -5648,41 +5701,7 @@
                 };
             }
 
-            document.querySelectorAll('[data-action="upload-partner"]').forEach(el => {
-                el.onclick = () => {
-                    const partner = el.dataset.partner;
-                    const fileInput = document.createElement('input');
-                    fileInput.type = 'file';
-                    fileInput.accept = 'image/*';
-                    fileInput.style.display = 'none';
-                    document.body.appendChild(fileInput);
-                    fileInput.onchange = async (e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                            toast('⏳ وێنە بار دەکرێت...');
-                            try {
-                                const reader = new FileReader();
-                                reader.onload = async (event) => {
-                                    const base64Image = event.target.result;
-                                    state.partnerImages[partner] = base64Image;
-                                    toast('✅ وێنە بۆ ' + partner.toUpperCase() + ' بارکرا');
-                                    await savePartnerImagesToFirestore();
-                                    render();
-                                };
-                                reader.onerror = () => {
-                                    toast('هەڵە لە خوێندنەوەی وێنە', true);
-                                };
-                                reader.readAsDataURL(file);
-                            } catch (error) {
-                                console.error('Error uploading image:', error);
-                                toast('هەڵە لە بارکردنی وێنە', true);
-                            }
-                        }
-                        fileInput.remove();
-                    };
-                    fileInput.click();
-                };
-            });
+            // REMOVED: upload-partner button handler (part of removed "شەریکەکان" tab)
 
             document.querySelectorAll('.partner-detail-card').forEach(el => {
                 el.onclick = () => {
@@ -5691,7 +5710,6 @@
                 };
             });
 
-            // Partner code modal numpad events
             document.querySelectorAll('[data-numpad]').forEach(el => {
                 el.onclick = () => {
                     const value = el.dataset.numpad;
@@ -5727,6 +5745,60 @@
                     }
                 };
             }
+
+            // Chef Orders Events
+            const resetBtn = document.getElementById('reset-chef-orders-btn');
+            if (resetBtn) {
+                resetBtn.onclick = async () => {
+                    if (!confirm('دڵنیای لە سڕینەوەی هەموو ئۆردەرەکانی شێفەکان؟ ئەم کردارە ناگەڕێتەوە!')) return;
+                    
+                    const ordersToDelete = state.orders.filter(o => 
+                        o.branch === 'park32' && 
+                        o.status !== 'completed' &&
+                        o.items.some(item => item.chefGroup !== 'skip')
+                    );
+
+                    if (ordersToDelete.length === 0) {
+                        toast('هیچ ئۆردەرێکی شێف نییە بۆ سڕینەوە');
+                        return;
+                    }
+
+                    const idsToDelete = new Set(ordersToDelete.map(o => o.uniqueId));
+                    state.orders = state.orders.filter(o => !idsToDelete.has(o.uniqueId));
+                    
+                    ordersToDelete.forEach(o => {
+                        if (o.tableNumber) state.usedTables.delete(o.tableNumber);
+                        if (o.orderNumber) state.usedOrderNumbers.delete(o.orderNumber);
+                    });
+
+                    await saveOrdersToFirestore();
+                    toast(`✅ ${ordersToDelete.length} ئۆردەری شێف سڕایەوە!`);
+                    render();
+                };
+            }
+
+            document.querySelectorAll('[data-action="admin-delete-chef-order"]').forEach(el => {
+                el.onclick = async (e) => {
+                    e.stopPropagation();
+                    const uniqueId = el.dataset.uniqueId;
+                    const order = findOrderByUniqueId(uniqueId);
+                    if (!order) {
+                        toast('ئۆردەر نەدۆزرایەوە!', true);
+                        return;
+                    }
+                    
+                    if (!confirm(`دڵنیای لە سڕینەوەی ئۆردەر #${order.orderNumber || 'N/A'}؟`)) return;
+                    
+                    state.orders = state.orders.filter(o => o.uniqueId !== uniqueId);
+                    
+                    if (order.tableNumber) state.usedTables.delete(order.tableNumber);
+                    if (order.orderNumber) state.usedOrderNumbers.delete(order.orderNumber);
+                    
+                    await saveOrdersToFirestore();
+                    toast(`🗑️ ئۆردەر #${order.orderNumber || 'N/A'} سڕایەوە`);
+                    render();
+                };
+            });
         }
 
         // ============================================================
@@ -6057,9 +6129,6 @@
             toast(`✅ ئۆردەر #${orderNumber} بۆ مێز ${tableNumber} سەیڤ کرا!`);
             await saveOrdersToFirestore();
             
-            // ============================================================
-            // PARK32 PRINTING FIX: Reset any stuck print state and print immediately
-            // ============================================================
             state.receiptPrinted = false;
             state.receiptPrintTimeout = null;
             state.showReceipt = true;
